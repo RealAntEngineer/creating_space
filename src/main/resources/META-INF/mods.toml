@@ -1,0 +1,32 @@
+
+modLoader="javafml"
+loaderVersion="[43,)"
+license="MIT"
+
+
+[[mods]]
+modId="creatingspace"
+version="1.4.3"
+displayName="Creating Space"
+logoFile="logo.jpg"
+credits='''
+Translation :
+RealAntEngineer -> English and French
+PopCorn -> Russian and Ukrainian
+'''
+authors="Real Ant Engineer"
+
+description='''
+Going to space with create
+'''
+
+[[dependencies.creatingspace]]
+modId="create"
+mandatory=true
+versionRange="[0.5.1.a,)"
+ordering="NONE"
+side="BOTH"
+
+
+
+

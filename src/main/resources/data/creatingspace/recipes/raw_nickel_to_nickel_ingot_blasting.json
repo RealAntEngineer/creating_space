@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "creatingspace:raw_nickel"
+  },
+  "result": "creatingspace:nickel_ingot",
+  "cookingtime": 20
+}

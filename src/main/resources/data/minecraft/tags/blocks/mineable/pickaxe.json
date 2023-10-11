@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "creatingspace:moon_stone",
+    "creatingspace:nickel_ore",
+    "creatingspace:deepslate_nickel_ore",
+    "creatingspace:moon_nickel_ore",
+    "creatingspace:raw_nickel_block",
+    "creatingspace:moon_cobalt_ore",
+    "creatingspace:raw_cobalt_block",
+    "creatingspace:moon_aluminum_ore",
+    "creatingspace:raw_aluminum_block",
+    "creatingspace:small_rocket_engine",
+    "creatingspace:small_engine_structure",
+    "creatingspace:big_rocket_engine",
+    "creatingspace:big_engine_structure",
+    "creatingspace:rocket_controls",
+    "creatingspace:rocket_motor",
+    "creatingspace:chemical_synthesizer",
+    "creatingspace:mechanical_electrolyzer",
+    "creatingspace:flow_meter"
+  ]
+}

@@ -1,0 +1,20 @@
+
+{
+  "variants": {
+    "facing=north": {
+      "model": "creatingspace:block/flow_meter/block"
+    },
+    "facing=south": {
+      "model": "creatingspace:block/flow_meter/block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "creatingspace:block/flow_meter/block",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "creatingspace:block/flow_meter/block",
+      "y": 90
+    }
+  }
+}

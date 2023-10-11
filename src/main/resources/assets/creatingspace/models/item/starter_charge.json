@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "creatingspace:item/3d_items",
+	"texture_size": [32, 32],
+	"textures": {
+		"1": "creatingspace:items/starter_charge"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 6],
+			"to": [10, 14, 10],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 7], "texture": "#1"},
+				"east": {"uv": [2, 0, 4, 7], "texture": "#1"},
+				"south": {"uv": [4, 0, 6, 7], "texture": "#1"},
+				"west": {"uv": [6, 0, 8, 7], "texture": "#1"},
+				"up": {"uv": [2, 9, 0, 7], "texture": "#1"},
+				"down": {"uv": [4, 7, 2, 9], "texture": "#1"}
+			}
+		}
+	]
+}

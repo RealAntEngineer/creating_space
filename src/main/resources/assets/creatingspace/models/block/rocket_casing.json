@@ -1,0 +1,4 @@
+{
+  "parent": "block/cube_all",
+  "textures": {"all": "creatingspace:blocks/rocket_casing"}
+}

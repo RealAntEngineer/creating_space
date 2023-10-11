@@ -1,0 +1,104 @@
+{
+  "block.creatingspace.small_rocket_engine": "Small Rocket Engine",
+  "block.creatingspace.big_rocket_engine": "Big Rocket Engine",
+
+  "block.creatingspace.rocket_controls": "Rocket Controls",
+  "block.creatingspace.rocket_motor": "Rocket Motor",
+  "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
+  "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
+  "block.creatingspace.flow_meter": "Flowmeter",
+
+  "block.creatingspace.clamps": "Clamps",
+  "block.creatingspace.rocket_casing": "Rocket Casing",
+
+
+  "block.creatingspace.moon_stone": "Moon Stone",
+  "block.creatingspace.moon_regolith": "Moon Regolith",
+  "block.creatingspace.moon_surface_regolith": "Moon Surface Regolith",
+
+  "block.creatingspace.nickel_ore": "Nickel Ore",
+  "block.creatingspace.deepslate_nickel_ore": "Deepslate Nickel Ore",
+  "block.creatingspace.moon_nickel_ore": "Moon Nickel Ore",
+  "block.creatingspace.moon_cobalt_ore": "Moon Cobalt Ore",
+  "block.creatingspace.moon_aluminum_ore": "Moon Aluminum Ore",
+
+  "block.creatingspace.raw_nickel_block": "Raw Nickel Block",
+  "block.creatingspace.raw_cobalt_block": "Raw Cobalt Block",
+  "block.creatingspace.raw_aluminum_block": "Raw Aluminum Block",
+
+  "item.creatingspace.injector": "Injector",
+  "item.creatingspace.reinforced_injector": "Reinforced Injector",
+
+  "item.creatingspace.incomplete_injector": "Incomplete Injector",
+  "item.creatingspace.injector_grid": "Injector Grid",
+  "item.creatingspace.reinforced_injector_grid": "Reinforced Injector Grid",
+
+  "item.creatingspace.incomplete_injector_grid": "Incomplete Injector Grid",
+  "item.creatingspace.starter_charge": "Starter Charge",
+  "item.creatingspace.sturdy_propeller": "Sturdy Propeller",
+  "item.creatingspace.combustion_chamber": "Combustion Chamber",
+  "item.creatingspace.bell_nozzle": "Bell Nozzle",
+  "item.creatingspace.copper_coil":"Copper Coil",
+  "item.creatingspace.basic_catalyst":"Basic Catalyst",
+
+
+  "item.creatingspace.nickel_ingot": "Nickel Ingot",
+  "item.creatingspace.nickel_nugget": "Nickel Nugget",
+  "item.creatingspace.nickel_sheet": "Nickel Sheet",
+  "item.creatingspace.crushed_nickel_ore": "Crushed Nickel Ore",
+  "item.creatingspace.raw_nickel": "Raw Nickel",
+  "item.creatingspace.nickel_dust":"Nickel Dust",
+
+  "item.creatingspace.coal_dust": "Coal Dust",
+
+  "item.creatingspace.cobalt_ingot": "Cobalt Ingot",
+  "item.creatingspace.cobalt_nugget": "Cobalt Nugget",
+  "item.creatingspace.cobalt_sheet": "Cobalt Sheet",
+  "item.creatingspace.crushed_cobalt_ore": "Crushed Cobalt Ore",
+  "item.creatingspace.raw_cobalt": "Raw Cobalt",
+
+  "item.creatingspace.aluminum_ingot": "Aluminum Ingot",
+  "item.creatingspace.aluminum_nugget": "Aluminum Nugget",
+  "item.creatingspace.aluminum_sheet": "Aluminum Sheet",
+  "item.creatingspace.crushed_aluminum_ore": "Crushed Aluminum Ore",
+  "item.creatingspace.raw_aluminum": "Raw Aluminum",
+
+
+  "item.creatingspace.liquid_methane_bucket": "Bucket of Liquid Methane",
+  "item.creatingspace.liquid_oxygen_bucket": "Bucket of Liquid Oxygen",
+  "item.creatingspace.liquid_hydrogen_bucket": "Bucket of Liquid Hydrogen",
+
+  "fluid.creatingspace.liquid_methane" : "Liquid Methane",
+  "fluid.creatingspace.liquid_oxygen" : "Liquid Oxygen",
+  "fluid.creatingspace.liquid_hydrogen" : "Liquid Hydrogen",
+
+  "item.creatingspace.space_food": "Space Food",
+
+  "itemGroup.machine_tab": "Machine Tab",
+  "itemGroup.component_tab": "Component Tab",
+  "itemGroup.minerals_tab": "Minerals Tab",
+
+  "container.creatingspace.rocket_controls": "Rocket Controls",
+  "container.creatingspace.synthesizer": "Synthesizer",
+
+  "creatingspace.ponder.rocket.header": "Rockets",
+  "creatingspace.ponder.rocket.text_1": "Rocket Controls",
+  "creatingspace.ponder.rocket.text_2": "Don't forget the seat or you will be left Behind",
+  "creatingspace.ponder.rocket.text_3": "Fill the tanks and your are ready",
+
+  "creatingspace.ponder.synthesizer.header": "Crafting Methane",
+  "creatingspace.ponder.synthesizer.text_1": "You need to put hydrogen in it...",
+  "creatingspace.ponder.synthesizer.text_2": "...And put coal dust, then wait for methane to be produced",
+  "creatingspace.ponder.synthesizer.text_3": "It produces 100mb of methane every 4 seconds",
+
+  "creatingspace.launch": "Launch",
+  "creatingspace.try_seal": "Try Sealing",
+  "creatingspace.isSealed": "Is Sealed ?",
+  "creatingspace:earth_orbit": "Earth Orbit",
+  "creatingspace:moon_orbit": "Moon Orbit",
+  "creatingspace:the_moon": "The Moon",
+  "minecraft:overworld": "The Earth",
+
+  "death.attack.no_oxygen": "%1$s didn't found oxygen in space"
+
+}

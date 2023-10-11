@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "creatingspace:block/explosive_starter",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "creatingspace:block/explosive_starter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "creatingspace:block/explosive_starter"
+    },
+    "facing=south": {
+      "model": "creatingspace:block/explosive_starter",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "creatingspace:block/explosive_starter"
+    },
+    "facing=west": {
+      "model": "creatingspace:block/explosive_starter",
+      "y": 270
+    }
+  }
+}

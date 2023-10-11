@@ -1,0 +1,20 @@
+
+{
+  "variants": {
+    "facing=north": {
+      "model": "creatingspace:block/chemical_synthesizer"
+    },
+    "facing=south": {
+      "model": "creatingspace:block/chemical_synthesizer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "creatingspace:block/chemical_synthesizer",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "creatingspace:block/chemical_synthesizer",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "creatingspace:raw_nickel_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "creatingspace:raw_nickel"
+  }
+}

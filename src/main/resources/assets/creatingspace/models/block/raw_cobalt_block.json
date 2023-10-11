@@ -1,0 +1,4 @@
+{
+  "parent": "block/cube_all",
+  "textures": {"all": "creatingspace:blocks/raw_cobalt_block"}
+}

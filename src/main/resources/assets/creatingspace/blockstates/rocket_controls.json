@@ -1,0 +1,20 @@
+
+{
+  "variants": {
+    "facing=north": {
+      "model": "creatingspace:block/rocket_controls"
+    },
+    "facing=south": {
+      "model": "creatingspace:block/rocket_controls",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "creatingspace:block/rocket_controls",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "creatingspace:block/rocket_controls",
+      "y": 90
+    }
+  }
+}
