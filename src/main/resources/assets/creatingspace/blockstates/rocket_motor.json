@@ -1,0 +1,115 @@
+{
+  "variants": {
+    "charged=false,hfacing=north,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 180
+    },
+    "charged=false,hfacing=north,face=wall": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 90
+    },
+    "charged=false,hfacing=north,face=floor": {
+      "model": "creatingspace:block/rocket_motor/empty"
+    },
+
+    "charged=false,hfacing=south,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 180,
+      "y": 180
+    },
+    "charged=false,hfacing=south,face=wall": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 90,
+      "y": 180
+    },
+    "charged=false,hfacing=south,face=floor": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "y": 180
+    },
+
+    "charged=false,hfacing=west,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 180,
+      "y": 270
+    },
+    "charged=false,hfacing=west,face=wall": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 90,
+      "y": 270
+    },
+    "charged=false,hfacing=west,face=floor": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "y": 270
+    },
+
+    "charged=false,hfacing=east,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 180,
+      "y": 90
+    },
+    "charged=false,hfacing=east,face=wall": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "x": 90,
+      "y": 90
+    },
+    "charged=false,hfacing=east,face=floor": {
+      "model": "creatingspace:block/rocket_motor/empty",
+      "y": 90
+    },
+
+    "charged=true,hfacing=north,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "x": 180
+    },
+    "charged=true,hfacing=north,face=wall": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "x": 90
+    },
+    "charged=true,hfacing=north,face=floor": {
+      "model": "creatingspace:block/rocket_motor/loaded"
+    },
+
+    "charged=true,hfacing=south,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "x": 180,
+      "y": 180
+    },
+    "charged=true,hfacing=south,face=wall": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "x": 90,
+      "y": 180
+    },
+    "charged=true,hfacing=south,face=floor": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "y": 180
+    },
+
+    "charged=true,hfacing=west,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "y": 270
+    },
+    "charged=true,hfacing=west,face=wall": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "y": 270
+    },
+    "charged=true,hfacing=west,face=floor": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "y": 270
+    },
+
+    "charged=true,hfacing=east,face=ceiling": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "x": 180,
+      "y": 90
+    },
+    "charged=true,hfacing=east,face=wall": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "x": 90,
+      "y": 90
+    },
+    "charged=true,hfacing=east,face=floor": {
+      "model": "creatingspace:block/rocket_motor/loaded",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "create:mechanical_crafting",
+  "key": {
+    "S": {
+      "item": "create:sturdy_sheet"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "pattern": [
+    "S   S",
+    " O O ",
+    "S   S",
+    "S   S",
+    "S   S"
+  ],
+  "result": {
+    "item": "creatingspace:bell_nozzle"
+  }
+}

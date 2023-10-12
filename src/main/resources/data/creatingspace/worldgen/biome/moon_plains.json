@@ -1,0 +1,30 @@
+{
+  "temperature": 0.8,
+  "downfall": 0.4,
+  "has_precipitation": false,
+  "temperature_modifier": "none",
+  "effects": {
+    "sky_color": 16777215,
+    "fog_color": 14540253,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "grass_color_modifier": "none"
+  },
+  "spawners": {},
+  "spawn_costs": {
+    "minecraft:skeleton": {
+      "energy_budget": 10,
+      "charge": 1
+    }
+  },
+  "carvers": {
+    "air": "creatingspace:moon_cave"
+  },
+  "features": [
+    [
+      "creatingspace:moon_aluminum_ore",
+      "creatingspace:moon_cobalt_ore",
+      "creatingspace:moon_nickel_ore"
+    ]
+  ]
+}

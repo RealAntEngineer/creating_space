@@ -1,0 +1,14 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "creatingspace:moon_cobalt_ore"
+    }
+  ],
+  "processingTime": 400,
+  "results": [
+    {
+      "item": "creatingspace:crushed_cobalt_ore"
+    }
+  ]
+}

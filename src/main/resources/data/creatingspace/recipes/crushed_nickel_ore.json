@@ -1,0 +1,14 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "creatingspace:nickel_ore"
+    }
+  ],
+  "processingTime": 400,
+  "results": [
+    {
+      "item": "creatingspace:crushed_nickel_ore"
+    }
+  ]
+}

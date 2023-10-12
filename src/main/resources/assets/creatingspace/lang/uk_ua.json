@@ -1,0 +1,99 @@
+{
+  "block.creatingspace.small_rocket_engine": "Маленький двигун ракети",
+  "block.creatingspace.big_rocket_engine": "Великий двигун ракети",
+
+  "block.creatingspace.rocket_controls": "Керувач Ракетою",
+  "block.creatingspace.rocket_motor": "двигун ракети",
+  "block.creatingspace.chemical_synthesizer": "Хімічний сінтезатор",
+  "block.creatingspace.mechanical_electrolyzer": "Механічний електризер",
+  "block.creatingspace.flow_meter": "Тідрометр",
+
+  "block.creatingspace.clamps": "Хомути",
+  "block.creatingspace.rocket_casing": "Ракетний корпус",
+
+
+  "block.creatingspace.moon_stone": "Місячний камінь",
+  "block.creatingspace.moon_regolith": "Місячна пилюка",
+  "block.creatingspace.moon_surface_regolith": "Місяяна поверхнева пилюка",
+
+  "block.creatingspace.nickel_ore": "Нікелєва руда",
+  "block.creatingspace.deepslate_nickel_ore": "Глибосланцева нікелєва",
+  "block.creatingspace.moon_nickel_ore": "Місячна нікелєва руда",
+  "block.creatingspace.moon_cobalt_ore": "Місячна кобальтова руда",
+  "block.creatingspace.moon_aluminum_ore": "Місячна алюмінієва руда",
+
+  "block.creatingspace.raw_nickel_block": "Блок необробленного нікелю",
+  "block.creatingspace.raw_cobalt_block": "Блок необробленного кобольта",
+  "block.creatingspace.raw_aluminum_block": "Блок необробленного алюмінія",
+
+  "item.creatingspace.injector": "Інжектор",
+  "item.creatingspace.reinforced_injector": "Покращенний інжектор",
+
+  "item.creatingspace.incomplete_injector": "Незавершений інжектор",
+  "item.creatingspace.injector_grid": "Інжекторна сітка",
+  "item.creatingspace.reinforced_injector_grid": "Покращенна інжекторна сітка",
+
+  "item.creatingspace.incomplete_injector_grid": "Незавершена інжекторна сітка",
+  "item.creatingspace.starter_charge": "пороховий заряд",
+  "item.creatingspace.sturdy_propeller": "Міцний Пропелер",
+  "item.creatingspace.combustion_chamber": "Камера згорання",
+  "item.creatingspace.bell_nozzle": "Конусоїдне сопло",
+  "item.creatingspace.copper_coil":"Мідяна котушка",
+  "item.creatingspace.basic_catalyst":"Початковий каталізатор",
+
+
+  "item.creatingspace.nickel_ingot": "Нікелєвий злиток",
+  "item.creatingspace.nickel_nugget": "Нікелєвий самородок",
+  "item.creatingspace.nickel_sheet": "Нікелєвий лист",
+  "item.creatingspace.crushed_nickel_ore": "Подрібнений необробленний нікель",
+  "item.creatingspace.raw_nickel": "Необроблений нікель",
+  "item.creatingspace.nickel_dust":"Нікелєвий пил",
+
+  "item.creatingspace.coal_dust": "Вугільний пил",
+
+  "item.creatingspace.cobalt_ingot": "Кобольтовий злиток",
+  "item.creatingspace.cobalt_nugget": "Кобольтовий самородок",
+  "item.creatingspace.cobalt_sheet": "Кобольтовий лист",
+  "item.creatingspace.crushed_cobalt_ore": "Подрібнений необробленний кобольт",
+  "item.creatingspace.raw_cobalt": "Необроблений кобольт",
+
+  "item.creatingspace.aluminum_ingot": "Алюмінієвий злиток",
+  "item.creatingspace.aluminum_nugget": "Алюмінієвий самородок",
+  "item.creatingspace.aluminum_sheet": "Алюмінієвий лист",
+  "item.creatingspace.crushed_aluminum_ore": "Подрібнений необробленний алюміній",
+  "item.creatingspace.raw_aluminum": "Необроблений алюміній",
+
+
+  "item.creatingspace.liquid_methane_bucket": "Відро рідкого метану",
+  "item.creatingspace.liquid_oxygen_bucket": "Відро рідкого кисню",
+  "item.creatingspace.liquid_hydrogen_bucket": "Відро рідкого водню",
+
+  "fluid.creatingspace.liquid_methane" : "рідкий метан",
+  "fluid.creatingspace.liquid_oxygen" : "рідкий кисень",
+  "fluid.creatingspace.liquid_hydrogen" : "рідкий водень",
+
+  "item.creatingspace.space_food": "Космічна їжа",
+
+  "itemGroup.creatingspace.machine_tab": "creating space: Машини",
+  "itemGroup.creatingspace.component_tab": "Creating space: предмети",
+  "itemGroup.creatingspace.minerals_tab": "Creating space: Руди",
+
+  "container.creatingspace.rocket_controls": "Керування ракетою",
+  "container.creatingspace.synthesizer": "Сінтез",
+
+  "creatingspace.ponder.rocket.header": "Ракети",
+  "creatingspace.ponder.rocket.text_1": "Керувач ракетою",
+  "creatingspace.ponder.rocket.text_2": "Не забудь поставити сидіння інакше ти впадеш",
+  "creatingspace.ponder.rocket.text_3": "Заповни Резервуари і рушай!",
+
+  "creatingspace.ponder.synthesizer.header": "Створюємо метан",
+  "creatingspace.ponder.synthesizer.text_1": "Ти повинен покласти водень сюди...",
+  "creatingspace.ponder.synthesizer.text_2": "...Та поклади вугільний пил,потім, зачекай поки метан створится",
+  "creatingspace.ponder.synthesizer.text_3": "виробка метану 100mb/4 сек.",
+
+  "creatingspace.launch": "Старт!",
+  "creatingspace:earth_orbit": "Орбіта Землі",
+  "creatingspace:moon_orbit": "Орбіта Місяца",
+  "creatingspace:the_moon": "Місяць",
+  "minecraft:overworld": "Земля"
+}

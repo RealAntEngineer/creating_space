@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "pattern": [
+    "PGP",
+    "PGP",
+    "PGP"
+  ],
+  "result": {
+    "item": "creatingspace:starter_charge"
+  }
+}

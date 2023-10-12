@@ -1,0 +1,99 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "forge:plates/cobalt"
+  },
+  "loops": 4,
+  "results": [
+    {
+      "chance": 120,
+      "item": "creatingspace:reinforced_injector_grid"
+    },
+    {
+      "chance": 8,
+      "item": "creatingspace:cobalt_nugget"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        },
+        {
+          "item": "creatingspace:reinforced_injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        },
+        {
+          "item": "creatingspace:reinforced_injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        },
+        {
+          "item": "creatingspace:reinforced_injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        },
+        {
+          "item": "creatingspace:reinforced_injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:reinforced_injector_grid"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:reinforced_injector_grid"
+  }
+}

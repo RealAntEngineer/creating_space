@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "C": {
+      "item": "create:copper_casing"
+    }
+  },
+  "pattern": [
+    "ICI",
+    "CIC",
+    "ICI"
+  ],
+  "result": {
+    "count": 4,
+    "item": "creatingspace:clamps"
+  }
+}

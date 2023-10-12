@@ -1,0 +1,99 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "forge:plates/copper"
+  },
+  "loops": 4,
+  "results": [
+    {
+      "chance": 120,
+      "item": "creatingspace:injector_grid"
+    },
+    {
+      "chance": 8,
+      "item": "create:golden_nugget"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        },
+        {
+          "item": "creatingspace:injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        },
+        {
+          "item": "creatingspace:injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        },
+        {
+          "item": "creatingspace:injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        },
+        {
+          "item": "creatingspace:injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_injector_grid"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:incomplete_injector_grid"
+  }
+}

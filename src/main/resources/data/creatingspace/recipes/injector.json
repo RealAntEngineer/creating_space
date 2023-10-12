@@ -1,0 +1,51 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "creatingspace:nickel_sheet"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "chance": 120,
+      "item": "creatingspace:injector"
+    },
+    {
+      "chance": 8,
+      "item": "create:golden_nugget"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_injector"
+        },
+        {
+          "tag": "forge:nuggets/gold"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_injector"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_injector"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:incomplete_injector"
+  }
+}

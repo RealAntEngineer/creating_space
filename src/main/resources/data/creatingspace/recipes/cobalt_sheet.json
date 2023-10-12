@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "creatingspace:cobalt_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:cobalt_sheet"
+    }
+  ]
+}
