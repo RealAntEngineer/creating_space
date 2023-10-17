@@ -147,22 +147,30 @@ public class SmallRocketStructuralBlock extends DirectionalBlock implements IWre
         //makeSomething to prevent stackOverFlow -> while
         ArrayList<BlockPos> posDiscovered = new ArrayList<>();
         //posDiscovered.add(pos);
-        BlockPos targetedPos = pos.relative(state.getValue(FACING));
+        BlockState targetedState;
+        BlockPos targetedPos = pos;
         //make it like the oxygen ... and make something to prevent a lo
         while (!posDiscovered.contains(pos) && posDiscovered.size() < 10) {
-            Direction direction = level.getBlockState(targetedPos).getValue(FACING);
-            targetedPos = pos.relative(direction);
-            BlockState targetedState = level.getBlockState(targetedPos);
+            targetedState = level.getBlockState(targetedPos);
+
             if (targetedState.is(BlockInit.SMALL_ENGINE_STRUCTURAL.get())) {
                 posDiscovered.add(targetedPos);
             }
             else if (targetedState.is(BlockInit.SMALL_ROCKET_ENGINE.get())){
-                posDiscovered.add(targetedPos);
-                break;
+                return targetedPos;
             }
+            if (targetedState.hasProperty(FACING)) {
+                Direction direction = level.getBlockState(targetedPos).getValue(FACING);
+
+                targetedPos = pos.relative(direction);
+            }
+            else {
+                return targetedPos;
+            }
+
         }
 
-        return posDiscovered.get(posDiscovered.size() - 1);
+        return targetedPos;
     }
 
     public boolean stillValid(BlockGetter level, BlockPos pos, BlockState state) {

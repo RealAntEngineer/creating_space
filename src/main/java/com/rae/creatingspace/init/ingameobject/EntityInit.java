@@ -1,7 +1,7 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.client.renderer.RocketContraptionEntityRenderer;
+import com.rae.creatingspace.client.renderer.entity.RocketContraptionEntityRenderer;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;

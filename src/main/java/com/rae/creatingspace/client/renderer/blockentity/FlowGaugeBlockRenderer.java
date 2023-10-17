@@ -1,4 +1,4 @@
-package com.rae.creatingspace.client.renderer;
+package com.rae.creatingspace.client.renderer.blockentity;
 
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;

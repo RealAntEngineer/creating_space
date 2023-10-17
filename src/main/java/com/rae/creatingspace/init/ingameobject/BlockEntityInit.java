@@ -1,9 +1,10 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.client.renderer.FlowGaugeBlockRenderer;
-import com.rae.creatingspace.client.renderer.MechanicalElectrolyserBlockRenderer;
-import com.rae.creatingspace.client.renderer.OxygenSealerRenderer;
-import com.rae.creatingspace.client.renderer.RocketMotorBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.FlowGaugeBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.MechanicalElectrolyserBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.OxygenSealerRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.RocketMotorBlockRenderer;
+import com.rae.creatingspace.client.renderer.instance.OxygenSealerInstance;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.server.blockentities.*;
 import com.rae.creatingspace.server.blockentities.atmosphere.OxygenBlockEntity;
@@ -76,7 +77,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<SealerBlockEntity> OXYGEN_SEALER =
             REGISTRATE.blockEntity(
                     "oxygen_sealer", SealerBlockEntity::new)
-                    .instance(()-> ShaftInstance::new)
+                    .instance(()-> OxygenSealerInstance::new)
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> OxygenSealerRenderer::new)
                     .register();

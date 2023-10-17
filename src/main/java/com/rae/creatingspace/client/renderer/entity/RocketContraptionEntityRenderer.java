@@ -1,4 +1,4 @@
-package com.rae.creatingspace.client.renderer;
+package com.rae.creatingspace.client.renderer.entity;
 
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.content.contraptions.render.ContraptionEntityRenderer;

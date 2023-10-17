@@ -1,4 +1,4 @@
-package com.rae.creatingspace.client.renderer;
+package com.rae.creatingspace.client.renderer.blockentity;
 
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -37,11 +37,6 @@ public class OxygenSealerRenderer extends KineticBlockEntityRenderer<SealerBlock
         int lightBehind = LevelRenderer.getLightColor(be.getLevel(), be.getBlockPos().relative(direction.getOpposite()));
         int lightInFront = LevelRenderer.getLightColor(be.getLevel(), be.getBlockPos().relative(direction));
 
-        SuperByteBuffer shaftHalf =
-                CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, be.getBlockState(), direction.getOpposite());
-        SuperByteBuffer fanInner =
-                CachedBufferer.partialFacing(AllPartialModels.ENCASED_FAN_INNER, be.getBlockState(), direction.getOpposite());
-
         float time = AnimationTickHolder.getRenderTime(be.getLevel());
         float speed = be.getSpeed() * 5;
         if (speed > 0)
@@ -51,8 +46,19 @@ public class OxygenSealerRenderer extends KineticBlockEntityRenderer<SealerBlock
         float angle = (time * speed * 3 / 10f) % 360;
         angle = angle / 180f * (float) Math.PI;
 
+        ms.pushPose();
+        SuperByteBuffer shaftHalf =
+                CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, be.getBlockState(), direction.getOpposite());
         standardKineticRotationTransform(shaftHalf, be, lightBehind).renderInto(ms, vb);
+        ms.popPose();
+
+        ms.pushPose();
+        SuperByteBuffer fanInner =
+                CachedBufferer.partialFacing(AllPartialModels.ENCASED_FAN_INNER, be.getBlockState(), direction.getOpposite());
         kineticRotationTransform(fanInner, be, direction.getAxis(), angle, lightInFront).renderInto(ms, vb);
+        ms.popPose();
+
+        System.out.println(ms);
     }
 
 }

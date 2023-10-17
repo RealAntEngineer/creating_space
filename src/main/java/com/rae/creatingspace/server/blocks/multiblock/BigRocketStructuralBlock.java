@@ -147,29 +147,29 @@ public class BigRocketStructuralBlock extends DirectionalBlock implements IWrenc
     }
 
     public static BlockPos getMaster(BlockGetter level, BlockPos pos, BlockState state) {
-        //makeSomething to prevent stackOverFlow -> while
         ArrayList<BlockPos> posDiscovered = new ArrayList<>();
-        posDiscovered.add(pos);
-        BlockState targetedState = null;
+        BlockState targetedState;
+        BlockPos targetedPos = pos;
+
         while (!posDiscovered.contains(pos) && posDiscovered.size() < 10) {
-            Direction direction = state.getValue(FACING);
-            BlockPos targetedPos = pos.relative(direction);
             targetedState = level.getBlockState(targetedPos);
             if (targetedState.is(BlockInit.BIG_ENGINE_STRUCTURAL.get())) {
                 posDiscovered.add(targetedPos);
             }
+            else if (targetedState.is(BlockInit.BIG_ROCKET_ENGINE.get())){
+                return targetedPos;
+            }
+            if (targetedState.hasProperty(FACING)) {
+                Direction direction = level.getBlockState(targetedPos).getValue(FACING);
+                targetedPos = pos.relative(direction);
+            }
+            else {
+                return targetedPos;
+            }
         }
-        if (targetedState.is(BlockInit.BIG_ENGINE_STRUCTURAL.get())){
-            System.out.println("getMaster is looping");
-        }
-        else if (targetedState.is(BlockInit.BIG_ROCKET_ENGINE.get())){
-            System.out.println("getMaster is working");
-        }
-        else {
-            System.out.println("getMaster got on the void");
-        }
-        return posDiscovered.get(posDiscovered.size() - 1);
+        return targetedPos;
     }
+
 
     public boolean stillValid(BlockGetter level, BlockPos pos, BlockState state) {
         if (!state.is(this))

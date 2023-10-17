@@ -1,4 +1,4 @@
-package com.rae.creatingspace.client.renderer;
+package com.rae.creatingspace.client.renderer.blockentity;
 
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;

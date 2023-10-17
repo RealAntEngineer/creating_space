@@ -4,6 +4,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.simibubi.create.AllParticleTypes;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 import net.minecraft.client.particle.ParticleEngine;
@@ -19,64 +20,46 @@ import java.util.Locale;
 public class RocketPlumeParticleData implements ParticleOptions,ICustomParticleDataWithSprite<RocketPlumeParticleData>
 
     {
-
         public static final Codec<RocketPlumeParticleData> CODEC = RecordCodecBuilder.create(i ->
                 i.group(
-                                Codec.INT.fieldOf("x").forGetter(p -> p.posX),
-                                Codec.INT.fieldOf("y").forGetter(p -> p.posY),
-                                Codec.INT.fieldOf("z").forGetter(p -> p.posZ))
+                                Codec.FLOAT.fieldOf("drag").forGetter(p -> p.drag))
                         .apply(i, RocketPlumeParticleData::new));
-
         public static final ParticleOptions.Deserializer<RocketPlumeParticleData> DESERIALIZER = new ParticleOptions.Deserializer<RocketPlumeParticleData>() {
             public RocketPlumeParticleData fromCommand(ParticleType<RocketPlumeParticleData> particleTypeIn, StringReader reader)
                     throws CommandSyntaxException {
                 reader.expect(' ');
-                int x = reader.readInt();
-                reader.expect(' ');
-                int y = reader.readInt();
-                reader.expect(' ');
-                int z = reader.readInt();
-                return new RocketPlumeParticleData(x, y, z);
+                float drag = reader.readFloat();
+                return new RocketPlumeParticleData(drag);
             }
 
             public RocketPlumeParticleData fromNetwork(ParticleType<RocketPlumeParticleData> particleTypeIn, FriendlyByteBuf buffer) {
-                return new RocketPlumeParticleData(buffer.readInt(), buffer.readInt(), buffer.readInt());
+                return new RocketPlumeParticleData(buffer.readFloat());
             }
         };
+        public float drag;
 
-        final int posX;
-        final int posY;
-        final int posZ;
 
-	public RocketPlumeParticleData(Vec3i pos) {
-        this(pos.getX(), pos.getY(), pos.getZ());
-    }
-
-	public RocketPlumeParticleData(int posX, int posY, int posZ) {
-        this.posX = posX;
-        this.posY = posY;
-        this.posZ = posZ;
+	public RocketPlumeParticleData(float drag) {
+        this.drag =drag;
     }
 
 	public RocketPlumeParticleData() {
-        this(0, 0, 0);
+        this(0);
     }
 
         @Override
         public ParticleType<?> getType() {
-        return AllParticleTypes.AIR_FLOW.get();
+        return ParticleTypeInit.ROCKET_PLUME.get();
     }
 
         @Override
         public void writeToNetwork(FriendlyByteBuf buffer) {
-        buffer.writeInt(posX);
-        buffer.writeInt(posY);
-        buffer.writeInt(posZ);
+        buffer.writeFloat(drag);
     }
 
         @Override
         public String writeToString() {
-        return String.format(Locale.ROOT, "%s %d %d %d", AllParticleTypes.AIR_FLOW.parameter(), posX, posY, posZ);
+        return String.format(Locale.ROOT, "%s %f", ParticleTypeInit.ROCKET_PLUME.parameter(), drag);
     }
 
         @Override
