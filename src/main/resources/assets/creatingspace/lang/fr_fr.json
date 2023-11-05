@@ -89,9 +89,9 @@
 
   "item.creatingspace.space_food": "Space Food",
 
-  "itemGroup.machine_tab": "Machine",
-  "itemGroup.component_tab": "Composant",
-  "itemGroup.minerals_tab": "Minéraux",
+  "itemGroup.creatingspace.machine_tab": "Machine",
+  "itemGroup.creatingspace.component_tab": "Composant",
+  "itemGroup.creatingspace.minerals_tab": "Minéraux",
 
   "container.creatingspace.rocket_controls": "Rocket Controls",
   "container.creatingspace.synthesizer": "Synthesizer",
@@ -104,10 +104,14 @@
   "creatingspace.ponder.synthesizer.header": "Fabriquer du Méthane",
 
   "creatingspace.gui.sealer.try_seal": "Démarrer",
+  "creatingspace.gui.sealer.automatic_retry": "Essai Automatic ?",
   "creatingspace.gui.sealer.isSealed": "Est pressurisé ?",
   "creatingspace.gui.sealer.settings": "Réglage",
   "creatingspace.gui.sealer.range": "Portée",
   "creatingspace.gui.rocket_controls.launch": "Lancement",
+  "creatingspace.gui.rocket_controls.send_setting": "Valider",
+  "creatingspace.gui.rocket_controls.destination_cost": "deltaV demandé",
+  "creatingspace.gui.rocket_controls.pos_selection": "Pos ?",
   "creatingspace:earth_orbit": "Orbite Terrestre",
   "creatingspace:moon_orbit": "Orbite Lunaire",
   "creatingspace:the_moon": "La Lune",
@@ -117,7 +121,13 @@
   "creatingspace.ponder.synthesizer.text_2": "...Puis de la poudre de charbon, enfin attendez que le méthane soit produit",
   "creatingspace.ponder.synthesizer.text_3": "Il y a production de 100mb de methane toutes les 4 secondes",
 
-  "death.attack.no_oxygen": "%1$s n'a pas trouvé d'oxygène dans l'espace"
+  "death.attack.no_oxygen": "%1$s n'a pas trouvé d'oxygène dans l'espace",
+
+  "creatingspace.science.trust": "Poussé",
+  "creatingspace.science.unit.newton": "N",
+  "creatingspace.science.isp": "ISP",
+  "creatingspace.science.unit.second": "s",
+  "creatingspace.science.unit.flow.millibucket_by_ticks": "ms/t"
 
 
 

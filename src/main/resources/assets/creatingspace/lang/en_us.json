@@ -89,9 +89,9 @@
 
   "item.creatingspace.space_food": "Space Food",
 
-  "itemGroup.machine_tab": "Machine Tab",
-  "itemGroup.component_tab": "Component Tab",
-  "itemGroup.minerals_tab": "Minerals Tab",
+  "itemGroup.creatingspace.machine_tab": "Machine Tab",
+  "itemGroup.creatingspace.component_tab": "Component Tab",
+  "itemGroup.creatingspace.minerals_tab": "Minerals Tab",
 
   "container.creatingspace.rocket_controls": "Rocket Controls",
   "container.creatingspace.synthesizer": "Synthesizer",

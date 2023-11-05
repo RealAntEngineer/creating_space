@@ -42,20 +42,10 @@ public class FlowGaugeBlockEntity extends GaugeBlockEntity {
 
         PipeConnection connection = behavior
                 .getConnection(state.getValue(FlowGaugeBlock.FACING).getClockWise());
-        if (connection!=null) {
-            Couple<Float> pressure = connection.getPressure();
+        PipeConnection reverseConnection = behavior
+                .getConnection(state.getValue(FlowGaugeBlock.FACING).getCounterClockWise());
 
-            FluidStack pipeFlow = behavior
-                    .getConnection(state.getValue(FlowGaugeBlock.FACING).getClockWise())
-                    .getProvidedFluid();
-            System.out.println(pipeFlow.getAmount());
-            flowGaugeBlockEntity.flow = Math.max(
-                    pressure.getFirst(), pressure.getSecond())
-                    * pipeFlow.getAmount();
-        }
-        else {
-            flowGaugeBlockEntity.flow = 0;
-        }
+        flowGaugeBlockEntity.flow = getCalculatedFlow(connection, reverseConnection);
         flowGaugeBlockEntity.dialTarget = min(flowGaugeBlockEntity.flow/1000,1);
 
         flowGaugeBlockEntity.setChanged();
@@ -63,6 +53,30 @@ public class FlowGaugeBlockEntity extends GaugeBlockEntity {
 
     }
 
+    private static float getCalculatedFlow(PipeConnection connection, PipeConnection reverseConnection) {
+        float calutatedFlow = 0F;
+        if (connection !=null) {
+            Couple<Float> pressure = connection.getPressure();
+
+            FluidStack pipeFlow = connection
+                    .provideOutboundFlow();
+
+            calutatedFlow = Math.max(Math.max(
+                    pressure.getFirst(), pressure.getSecond())
+                    * pipeFlow.getAmount(),calutatedFlow);
+        }
+        if (reverseConnection !=null){
+            Couple<Float> pressure = reverseConnection.getPressure();
+
+            FluidStack pipeFlow = reverseConnection
+                    .provideOutboundFlow();
+
+            calutatedFlow = Math.max(Math.max(
+                pressure.getFirst(), pressure.getSecond())
+                * pipeFlow.getAmount(),calutatedFlow);
+        }
+        return calutatedFlow;
+    }
 
 
     @Override

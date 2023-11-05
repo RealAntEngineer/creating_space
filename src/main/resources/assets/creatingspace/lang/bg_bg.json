@@ -74,9 +74,9 @@
 
   "item.creatingspace.space_food": "Космическа храна",
 
-  "itemGroup.machine_tab": "Машини",
-  "itemGroup.component_tab": "Компоненти",
-  "itemGroup.minerals_tab": "Минерали",
+  "itemGroup.creatingspace.machine_tab": "Машини",
+  "itemGroup.creatingspace.component_tab": "Компоненти",
+  "itemGroup.creatingspace.minerals_tab": "Минерали",
 
   "container.creatingspace.rocket_controls": "Ракетен контролен панел",
   "container.creatingspace.synthesizer": "Синтезатор",
@@ -91,7 +91,7 @@
   "creatingspace.ponder.synthesizer.text_2": "...и сложи прах от въглен, тогава чакай да се създаде метан.",
   "creatingspace.ponder.synthesizer.text_3": "Създава 100мл метан всеки 4 секунди.",
 
-  "creatingspace.launch": "Изстрелване",
+  "creatingspace.gui.rocket_controls.launch": "Изстрелване",
   "creatingspace:earth_orbit": "Земна орбита",
   "creatingspace:moon_orbit": "Лунна орбита",
   "creatingspace:the_moon": "Луната",

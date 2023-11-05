@@ -9,19 +9,19 @@ import net.minecraft.world.item.ItemStack;
 public class CreativeModeTabsInit {
 
     public static final CreativeModeTab MACHINE_TAB =
-            new CreativeModeTab("machine_tab") {
+            new CreativeModeTab("creatingspace.machine_tab") {
         @Override
         public ItemStack makeIcon() {
             return BlockItem.byBlock(BlockInit.MECHANICAL_ELECTROLYZER.get()).getDefaultInstance();
         }
     };
-    public static final CreativeModeTab COMPONENT_TAB = new CreativeModeTab("component_tab") {
+    public static final CreativeModeTab COMPONENT_TAB = new CreativeModeTab("creatingspace.component_tab") {
         @Override
         public ItemStack makeIcon() {
             return ItemInit.INJECTOR.get().getDefaultInstance();
         }
     };
-    public static final CreativeModeTab MINERALS_TAB = new CreativeModeTab("minerals_tab") {
+    public static final CreativeModeTab MINERALS_TAB = new CreativeModeTab("creatingspace.minerals_tab") {
         @Override
         public ItemStack makeIcon() {
             return BlockItem.byBlock(BlockInit.NICKEL_ORE.get()).getDefaultInstance();
