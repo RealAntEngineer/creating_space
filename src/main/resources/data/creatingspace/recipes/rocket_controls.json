@@ -4,15 +4,16 @@
     "T": {
       "item": "create:controls"
     },
-    "E": {
+    "E" : {
       "item": "create:electron_tube"
     },
-    "R": {
+    "R" : {
       "item": "create:redstone_link"
     },
     "S": {
       "item": "create:sturdy_sheet"
     }
+
   },
   "pattern": [
     "ERE",

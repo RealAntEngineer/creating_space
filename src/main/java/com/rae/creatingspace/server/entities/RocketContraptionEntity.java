@@ -8,8 +8,8 @@ import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.ContraptionCollider;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -25,10 +25,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,7 +49,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public BlockPos rocketEntryCoordinate = new BlockPos(0,0,0);
-    public boolean atmosphericReentry = false;
+    public boolean reentry = false;
     public boolean havePropellantsTanks = false;
     public float trust = 0;
     public float dryMass = 0;
@@ -68,42 +71,52 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         entity.dryMass = contraption.getDryMass();
         entity.trust = contraption.getTrust();
         entity.propellantConsumption = contraption.getPropellantConsumption();
-        System.out.println(entity.propellantConsumption);
         entity.originDimension = level.dimension();
         entity.destination = destination;
         LOGGER.info("finishing setting up parameters");
+        entity.noPhysics = false;
 
         return entity;
     }
-    static final EntityDataAccessor<Float> SPEED_ENTITY_DATA_ACCESSOR =
-            SynchedEntityData.defineId(AbstractContraptionEntity.class, EntityDataSerializers.FLOAT);
-    static final EntityDataAccessor<Float> ACCELERATION_ENTITY_DATA_ACCESSOR =
-            SynchedEntityData.defineId(AbstractContraptionEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> SPEED_ENTITY_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> ACCELERATION_ENTITY_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.FLOAT);
 
+    public static final EntityDataAccessor<Float> D_ACCELERATION_ENTITY_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.FLOAT);
 
     static final EntityDataAccessor<Float> OXYGEN_AMOUNT_DATA_ACCESSOR =
-            SynchedEntityData.defineId(AbstractContraptionEntity.class, EntityDataSerializers.FLOAT);
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.FLOAT);
 
     static final EntityDataAccessor<Float> METHANE_AMOUNT_DATA_ACCESSOR =
-            SynchedEntityData.defineId(AbstractContraptionEntity.class, EntityDataSerializers.FLOAT);
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.FLOAT);
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SPEED_ENTITY_DATA_ACCESSOR, 0f);
         this.entityData.define(ACCELERATION_ENTITY_DATA_ACCESSOR,0f);
+        this.entityData.define(D_ACCELERATION_ENTITY_DATA_ACCESSOR,0f);
         this.entityData.define(OXYGEN_AMOUNT_DATA_ACCESSOR, 0f);
         this.entityData.define(METHANE_AMOUNT_DATA_ACCESSOR, 0f);
     }
+
     @Override
     protected void readAdditional(CompoundTag compound, boolean spawnData) {
         super.readAdditional(compound, spawnData);
         this.havePropellantsTanks = compound.getBoolean("havePropellantsTanks");
         this.trust = compound.getFloat("trust");
         this.dryMass = compound.getFloat("dryMass");
+        this.inertFluidsMass = compound.getFloat("inertFluidMass");
         this.propellantConsumption = compound.getInt("propellantConsumption");
+        this.reentry = compound.getBoolean("reentry");
         this.entityData.set(SPEED_ENTITY_DATA_ACCESSOR, compound.getFloat("verticalSpeed"));
         this.entityData.set(ACCELERATION_ENTITY_DATA_ACCESSOR,compound.getFloat("verticalAcceleration"));
+        this.entityData.set(D_ACCELERATION_ENTITY_DATA_ACCESSOR,compound.getFloat("dAcceleration"));
+        this.entityData.set(OXYGEN_AMOUNT_DATA_ACCESSOR, compound.getFloat("oxygenAmount"));
+        this.entityData.set(METHANE_AMOUNT_DATA_ACCESSOR,compound.getFloat("methaneAmount"));
+
         this.destination = ResourceKey.create(Registries.DIMENSION,
                 new ResourceLocation(
                         compound.getString("destination:nameSpace"),
@@ -115,9 +128,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putInt("propellantConsumption", this.propellantConsumption);
         compound.putFloat("trust",this.trust);
         compound.putFloat("dryMass",this.dryMass);
-        compound.putFloat("verticalSpeed",this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR));
-        compound.putFloat("verticalAcceleration",this.entityData.get(ACCELERATION_ENTITY_DATA_ACCESSOR));
+        compound.putFloat("inertFluidMass",this.inertFluidsMass);
+        compound.putFloat("verticalSpeed",getSpeed());
+        compound.putFloat("verticalAcceleration",getAcceleration());
+        compound.putFloat("dAcceleration",getDAcceleration());
+        compound.putFloat("oxygenAmount",this.entityData.get(OXYGEN_AMOUNT_DATA_ACCESSOR));
+        compound.putFloat("methaneAmount",this.entityData.get(METHANE_AMOUNT_DATA_ACCESSOR));
 
+        compound.putBoolean("reentry",this.reentry);
         compound.putString("destination:nameSpace",this.destination.location().getNamespace());
         compound.putString("destination:path",this.destination.location().getPath());
         super.writeAdditional(compound, spawnPacket);
@@ -127,94 +145,102 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     protected void tickContraption() {
         tickActors();
-        if (!(level().isClientSide())){
-            float speed = this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR);
-            float gravity = DimensionInit.gravity(this.level().dimensionTypeId());
+
+        if (!(level().isClientSide())) calculateNewFlightParameter();
+
+        float partialTick = Minecraft.getInstance().getPartialTick();
+        if (!level().isClientSide()){
+            partialTick = 0;
+        }
+        float accelerationOffset = partialTick*getAcceleration()+ 0.5f*partialTick*partialTick*getDAcceleration();
+
+        setContraptionMotion(new Vec3(0,getSpeed() + accelerationOffset, 0));
+        move(0, getSpeed() + accelerationOffset, 0);
+
+        if (!level().isClientSide() ) tickDimensionChangeLogic();
+    }
+
+    private void tickDimensionChangeLogic() {
+        if (position().get(Direction.Axis.Y) > 300  &&  getSpeed() >= 0){
 
 
-            float o2mass = this.entityData.get(OXYGEN_AMOUNT_DATA_ACCESSOR) *
-                    FluidInit.LIQUID_OXYGEN.getType().getDensity() / 1000;
-            float ch4mass =  this.entityData.get(METHANE_AMOUNT_DATA_ACCESSOR) *
-                    FluidInit.LIQUID_METHANE.getType().getDensity() / 1000;
+            ServerLevel destServerLevel = this.level().getServer().getLevel(this.destination);
 
-            if (this.havePropellantsTanks && !this.atmosphericReentry && !(o2mass == 0f || ch4mass == 0f)) {
-                float acceleration  = (float) ((this.trust/((this.dryMass + this.inertFluidsMass + o2mass + ch4mass)*9.81)- gravity )/20);
-                this.entityData.set(ACCELERATION_ENTITY_DATA_ACCESSOR,acceleration);
+            if (destServerLevel!=null && level().dimension() == this.originDimension) {
 
-                consumePropellant(this);
-
-            } else if(gravity!=0 || speed!=0){
-                this.entityData.set(ACCELERATION_ENTITY_DATA_ACCESSOR,
-                        - gravity /20 );
+                this.changeDimension(destServerLevel,new CustomTeleporter(destServerLevel));
             }
             else {
-                disassemble();
-            }
-            float acceleration = this.entityData.get(ACCELERATION_ENTITY_DATA_ACCESSOR);
-            speed = constrainToRange(speed + acceleration,-1,2);
-
-            this.entityData.set(SPEED_ENTITY_DATA_ACCESSOR,speed);
-        }
-
-        setContraptionMotion(new Vec3(0,this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR), 0));
-        move(0, this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR), 0);
-
-        if (ContraptionCollider.collideBlocks(this)) {
-            if (!level().isClientSide) {
-                //unstuck(this);
-                LOGGER.info("rocket collide" + "acceleration :" + this.getAcceleration());
-                disassemble();
-            }
-        }
-
-        if (!level().isClientSide ) {
-
-            if (position().get(Direction.Axis.Y) > 300  ){
-
-
-                ServerLevel destServerLevel = this.level().getServer().getLevel(this.destination);
-
-                if (destServerLevel!=null && level().dimension() == this.originDimension && (this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR) > 1.5 || DimensionInit.gravity(this.level().dimensionTypeId())==0)) {
-
-                    this.changeDimension(destServerLevel,new CustomTeleporter(destServerLevel));
-                }
-                else {
-                    LOGGER.info("dimension change failed at first step");
-                    LOGGER.info("rocket info :");
-                    LOGGER.info("destination :" + destServerLevel);
-                    LOGGER.info("current dimension :" + level().dimension());
-                    LOGGER.info("origin Dimension : " + this.originDimension);
-                    LOGGER.info("speed :" + this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR));
-                    LOGGER.info("gravity of current dimension" + DimensionInit.gravity(this.level().dimensionTypeId()));
-                }
-                disassemble();
+                LOGGER.info("dimension change failed at first step");
+                LOGGER.info("rocket info :");
+                LOGGER.info("destination :" + destServerLevel);
+                LOGGER.info("current dimension :" + level().dimension());
+                LOGGER.info("origin Dimension : " + this.originDimension);
+                LOGGER.info("speed :" + this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR));
+                LOGGER.info("gravity of current dimension" + DimensionInit.gravity(this.level().dimensionTypeId()));
             }
         }
     }
 
-    /*@Override
-    public void disassemble() {
-        BlockPos anchor = this.contraption.anchor;
-        Block anchoringBlock = this.contraption.getBlocks().get(anchor).state.getBlock();
-        if (anchoringBlock instanceof ControlsBlock){
 
+    private void calculateNewFlightParameter() {
+        float prevAcceleration = getAcceleration();
+        float speed = this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR);
+        float gravity = DimensionInit.gravity(this.level().dimensionTypeId());
+
+        float o2mass = this.entityData.get(OXYGEN_AMOUNT_DATA_ACCESSOR) *
+                FluidInit.LIQUID_OXYGEN.getType().getDensity() / 1000;
+        float ch4mass =  this.entityData.get(METHANE_AMOUNT_DATA_ACCESSOR) *
+                FluidInit.LIQUID_METHANE.getType().getDensity() / 1000;
+
+        if (this.havePropellantsTanks && !this.reentry && !(o2mass == 0f || ch4mass == 0f)) {
+
+            float acceleration  = (float) ((this.trust/((this.dryMass + this.inertFluidsMass + o2mass + ch4mass)*9.81)- gravity )/20);
+            //acceleration = Mth.clamp(acceleration,0,3/20f);
+            this.entityData.set(ACCELERATION_ENTITY_DATA_ACCESSOR,acceleration);
+
+            consumePropellant(this);
+
+        } else if(gravity!=0){
+            this.entityData.set(ACCELERATION_ENTITY_DATA_ACCESSOR,
+                    - gravity / 20 );
         }
-        super.disassemble();
-    }*/
+        else if (speed==0f){
+            disassemble();
+        }
+
+        if (speed >= 2 || speed <= -1f){
+            this.entityData.set(ACCELERATION_ENTITY_DATA_ACCESSOR,0f);
+        }
+
+        float acceleration = this.entityData.get(ACCELERATION_ENTITY_DATA_ACCESSOR);
+
+        this.entityData.set(D_ACCELERATION_ENTITY_DATA_ACCESSOR,acceleration-prevAcceleration);
+
+        speed = constrainToRange(speed + acceleration, -1, 2);
+
+        this.entityData.set(SPEED_ENTITY_DATA_ACCESSOR,speed);
+    }
 
     //utility methods
-    private void unstuck(RocketContraptionEntity contraptionEntity){
-        while (ContraptionCollider.collideBlocks(contraptionEntity)){
-            contraptionEntity.move(0,1,0);
-            contraptionEntity.setContraptionMotion(new Vec3(0,1,0));
+
+
+    @Override
+    public void move(double x, double y, double z) {
+        Vec3 prevPos = this.position();
+        super.move(MoverType.SELF,new Vec3(x, y, z));
+        if (!this.level().isClientSide() && (y!=0||x!=0||z!=0)){
+            if(prevPos == this.position() ){
+                disassemble();
+            }
         }
     }
+
     private void consumePropellant(RocketContraptionEntity rocketContraptionEntity) {
         RocketContraption rocketContraption = (RocketContraption) rocketContraptionEntity.contraption;
         IFluidHandler fluidHandler = rocketContraption.getSharedFluidTanks();
 
         int drainAmount = this.propellantConsumption;
-        System.out.println(drainAmount);
         fluidHandler.drain(new FluidStack(FluidInit.LIQUID_METHANE.get(),drainAmount) , IFluidHandler.FluidAction.EXECUTE );//drain methane
         fluidHandler.drain(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),drainAmount) , IFluidHandler.FluidAction.EXECUTE );//drain oxygen
 
@@ -252,8 +278,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         }
         contraptionEntity.entityData.set(OXYGEN_AMOUNT_DATA_ACCESSOR,o2amount);
         contraptionEntity.entityData.set(METHANE_AMOUNT_DATA_ACCESSOR,ch4amount);
-        System.out.println(o2amount);
-        System.out.println(ch4amount);
+
         return foundMethaneTank && foundOxygenTank;
     }
     @Nullable
@@ -284,7 +309,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                 entity.restoreFrom(this);//copy the contraption first
                                 entity.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, portalinfo.yRot, entity.getXRot());
                                 entity.setDeltaMovement(portalinfo.speed);
-
+                                entity.entityData.set(SPEED_ENTITY_DATA_ACCESSOR,(float) portalinfo.speed.y());
                                 //adding previously riding passengers
                                 for (int i = 0; i < passengers.size(); i++) {
                                     Entity passenger = passengers.get(i);
@@ -303,11 +328,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
 
                                 destLevel.addDuringTeleport(entity);
-                                if ((entity instanceof RocketContraptionEntity) && DimensionInit.gravity(destLevel.dimensionTypeId())==0f){
+                                if (DimensionInit.gravity(destLevel.dimensionTypeId()) == 0f){
                                     entity.disassemble();
                                 }
                                 else{
-                                    entity.atmosphericReentry = true;
+                                    entity.reentry = true;
                                 }
                             }
                             return entity;
@@ -350,10 +375,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         return localPos;
     }
 
-
-
-
-
     @Override
     protected StructureTransform makeStructureTransform() {
         return new StructureTransform(BlockPos.containing(getAnchorVec().add(.5, .5, .5)), 0, 0, 0);
@@ -375,12 +396,22 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
-
+        //matrixStack.translate(0,getAcceleration()*partialTicks,0);
     }
 
-
+    public float getDAcceleration(){
+        return this.entityData.get(D_ACCELERATION_ENTITY_DATA_ACCESSOR);
+    }
     public float getAcceleration() {
         return this.entityData.get(ACCELERATION_ENTITY_DATA_ACCESSOR);
+    }
+    public float getSpeed() {
+        return this.entityData.get(SPEED_ENTITY_DATA_ACCESSOR);
+    }
+    @Override
+    protected void outOfWorld() {
+        //super.outOfWorld();
     }
 }

@@ -1,3 +1,4 @@
+
 {
   "type": "create:crushing",
   "ingredients": [
@@ -7,9 +8,8 @@
   ],
   "processingTime": 400,
   "results": [
-    {
-      "count": 2,
-      "item": "creatingspace:nickel_dust"
-    }
+    {"count": 2,
+    "item": "creatingspace:nickel_dust"
+  }
   ]
 }

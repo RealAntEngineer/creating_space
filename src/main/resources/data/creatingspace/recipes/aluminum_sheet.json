@@ -1,8 +1,8 @@
 {
   "type": "create:pressing",
-  "ingredients": [
+  "ingredients":[
     {
-      "item": "creatingspace:aluminum_ingot"
+      "item":"creatingspace:aluminum_ingot"
     }
   ],
   "results": [

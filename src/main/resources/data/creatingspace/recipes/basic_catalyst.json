@@ -1,10 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "B": {
+    "B" : {
       "item": "minecraft:bone_meal"
     },
-    "N": {
+    "N":{
       "item": "creatingspace:nickel_dust"
     }
   },

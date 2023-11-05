@@ -3,7 +3,7 @@
 	"parent": "creatingspace:block/createblock",
 	"texture_size": [64, 64],
 	"textures": {
-		"5": "creatingspace:blocks/flow_meter",
+		"5": "creatingspace:block/flow_meter",
 		"particle": "create:block/pipes"
 	},
 	"elements": [

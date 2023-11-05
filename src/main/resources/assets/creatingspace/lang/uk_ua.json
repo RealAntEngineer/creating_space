@@ -3,7 +3,7 @@
   "block.creatingspace.big_rocket_engine": "Великий двигун ракети",
 
   "block.creatingspace.rocket_controls": "Керувач Ракетою",
-  "block.creatingspace.rocket_motor": "двигун ракети",
+  "block.creatingspace.rocket_generator": "двигун ракети",
   "block.creatingspace.chemical_synthesizer": "Хімічний сінтезатор",
   "block.creatingspace.mechanical_electrolyzer": "Механічний електризер",
   "block.creatingspace.flow_meter": "Тідрометр",
@@ -74,9 +74,9 @@
 
   "item.creatingspace.space_food": "Космічна їжа",
 
-  "itemGroup.creatingspace.machine_tab": "creating space: Машини",
-  "itemGroup.creatingspace.component_tab": "Creating space: предмети",
-  "itemGroup.creatingspace.minerals_tab": "Creating space: Руди",
+  "itemGroup.machine_tab": "creating space: Машини",
+  "itemGroup.component_tab": "Creating space: предмети",
+  "itemGroup.minerals_tab": "Creating space: Руди",
 
   "container.creatingspace.rocket_controls": "Керування ракетою",
   "container.creatingspace.synthesizer": "Сінтез",
@@ -91,7 +91,7 @@
   "creatingspace.ponder.synthesizer.text_2": "...Та поклади вугільний пил,потім, зачекай поки метан створится",
   "creatingspace.ponder.synthesizer.text_3": "виробка метану 100mb/4 сек.",
 
-  "creatingspace.launch": "Старт!",
+  "creatingspace.gui.rocket_controls.launch": "Старт!",
   "creatingspace:earth_orbit": "Орбіта Землі",
   "creatingspace:moon_orbit": "Орбіта Місяца",
   "creatingspace:the_moon": "Місяць",

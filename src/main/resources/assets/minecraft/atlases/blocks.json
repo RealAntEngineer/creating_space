@@ -1,0 +1,25 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "creatingspace:fluid/liquid_methane_flow"
+    },{
+      "type": "single",
+      "resource": "creatingspace:fluid/liquid_methane_still"
+    },
+    {
+      "type": "single",
+      "resource": "creatingspace:fluid/liquid_oxygen_flow"
+    },{
+      "type": "single",
+      "resource": "creatingspace:fluid/liquid_oxygen_still"
+    },
+    {
+      "type": "single",
+      "resource": "creatingspace:fluid/liquid_hydrogen_flow"
+    },{
+      "type": "single",
+      "resource": "creatingspace:fluid/liquid_hydrogen_still"
+    }
+  ]
+}

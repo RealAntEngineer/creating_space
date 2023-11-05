@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "C": {
+    "C" : {
       "item": "minecraft:copper_ingot"
     }
   },

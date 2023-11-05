@@ -4,27 +4,28 @@
     "C": {
       "item": "creatingspace:rocket_casing"
     },
-    "I": {
+    "I" : {
       "item": "creatingspace:cobalt_sheet"
     },
-    "R": {
+    "R" : {
       "item": "creatingspace:reinforced_injector_grid"
     },
     "P": {
       "item": "creatingspace:sturdy_propeller"
     },
-    "S": {
+    "S" : {
       "item": "create:sturdy_sheet"
     },
-    "O": {
+    "O" : {
       "item": "minecraft:obsidian"
     },
-    "V": {
+    "V" : {
       "item": "create:fluid_valve"
     },
-    "L": {
+    "L" : {
       "item": "create:redstone_link"
     }
+
   },
   "pattern": [
     "  L  ",

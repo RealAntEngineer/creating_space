@@ -2,8 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "creatingspace:aluminum_nugget"
-    }
+      "item": "creatingspace:aluminum_nugget"}
   },
   "pattern": [
     "###",

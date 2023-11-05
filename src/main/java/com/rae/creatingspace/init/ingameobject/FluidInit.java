@@ -2,7 +2,6 @@ package com.rae.creatingspace.init.ingameobject;
 
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
 import com.simibubi.create.content.fluids.VirtualFluid;
 import com.simibubi.create.foundation.data.CreateRegistrate;

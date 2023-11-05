@@ -15,6 +15,11 @@ public enum GuiTexturesInit implements ScreenElement {
 
     ROCKET_CONTROLS("rocket_controls",13,0,226,226),
     LAUNCH_BUTTON("rocket_controls",155,202,77,18),
+    SEALER_BACKGROUND("oxygen_sealer",13,0,256,124),
+    SCROLL_BACKGROUND("scroll_background",0,0,66,20),
+    O2_GAUGE_FRAME("o2_gauge/frame",0,0,32,64,64,64),
+    O2_GAUGE_SLIDER("o2_gauge/slider",0,0,32,64,64,64),
+    O2_GAUGE_SHADOW("o2_gauge/shadow",0,0,32,64,64,64),
     UP_ARROW("rocket_controls",159,231,16,23),
     DOWN_ARROW("rocket_controls",211,232,16,23),
 
@@ -68,6 +73,12 @@ public enum GuiTexturesInit implements ScreenElement {
     public void render(GuiGraphics graphics, int x, int y, Color c) {
         bind();
         UIRenderHelper.drawColoredTexture(graphics, c, x, y, startX, startY, width, height);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void renderNotStandardSheetSize(GuiGraphics graphics, int x, int y, Color c) {
+        bind();
+        UIRenderHelper.drawColoredTexture(graphics, c, x, y,0, startX, startY, width, height, sheet_width, sheet_height);
     }
 
 

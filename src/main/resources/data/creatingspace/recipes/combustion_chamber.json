@@ -4,15 +4,16 @@
     "I": {
       "item": "creatingspace:injector_grid"
     },
-    "S": {
+    "S" : {
       "item": "create:sturdy_sheet"
     },
-    "V": {
+    "V" : {
       "item": "create:fluid_valve"
     },
-    "C": {
+    "C":{
       "item": "create:copper_casing"
     }
+
   },
   "pattern": [
     "CCC",

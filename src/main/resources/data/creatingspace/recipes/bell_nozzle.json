@@ -1,12 +1,13 @@
 {
   "type": "create:mechanical_crafting",
   "key": {
-    "S": {
+    "S" : {
       "item": "create:sturdy_sheet"
     },
-    "O": {
+    "O" : {
       "item": "minecraft:obsidian"
     }
+
   },
   "pattern": [
     "S   S",

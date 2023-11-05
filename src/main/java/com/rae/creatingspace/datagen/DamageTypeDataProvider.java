@@ -30,6 +30,6 @@ public class DamageTypeDataProvider extends DatapackBuiltinEntriesProvider {
     @Override
     @NotNull
     public String getName() {
-        return "Create's Damage Type Data";
+        return "CreatingSpace's Damage Type Data";
     }
 }

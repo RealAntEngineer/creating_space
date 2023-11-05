@@ -4,13 +4,33 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.simibubi.create.AllCreativeModeTabs;
+import com.simibubi.create.AllItems;
+import com.simibubi.create.content.equipment.armor.BacktankUtil;
+import com.tterrag.registrate.util.entry.ItemProviderEntry;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CreativeModeTabsInit {
     private static final DeferredRegister<CreativeModeTab> TAB_REGISTER =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreatingSpace.MODID);
@@ -31,6 +51,8 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.CHEMICAL_SYNTHESIZER);
                         output.accept(BlockInit.MECHANICAL_ELECTROLYZER);
                         output.accept(BlockInit.FLOW_METER);
+                        output.accept(BlockInit.OXYGEN_SEALER);
+                        output.acceptAll(makeStackListFunc().apply(BlockInit.CRYOGENIC_TANK.asItem()));
                     })
                     .build());
     public static final RegistryObject<CreativeModeTab> COMPONENT_TAB = TAB_REGISTER.register(
@@ -68,14 +90,26 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.ALUMINUM_INGOT);
                         output.accept(ItemInit.ALUMINUM_NUGGET);
                         output.accept(ItemInit.ALUMINUM_SHEET);
+                        output.accept(ItemInit.ALUMINUM_SHEET);
+                        output.accept(ItemInit.BASIC_SPACESUIT_FABRIC);
+                        output.accept(ItemInit.ADVANCED_SPACESUIT_FABRIC);
+                        output.accept(ItemInit.BASIC_SPACESUIT_HELMET);
+                        output.accept(makeStackFunc().apply(ItemInit.COPPER_OXYGEN_BACKTANK.get()));
+                        output.accept(ItemInit.BASIC_SPACESUIT_LEGGINGS);
+                        output.accept(ItemInit.BASIC_SPACESUIT_BOOTS);
+                        output.accept(ItemInit.ADVANCED_SPACESUIT_HELMET);
+                        output.accept(makeStackFunc().apply(ItemInit.NETHERITE_OXYGEN_BACKTANK.get()));
+                        output.accept(ItemInit.ADVANCED_SPACESUIT_LEGGINGS);
+                        output.accept(ItemInit.ADVANCED_SPACESUIT_BOOTS);
+
                     })
                     .build());
     public static final RegistryObject<CreativeModeTab> MINERALS_TAB = TAB_REGISTER.register("minerals_tab",
             ()->
             CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.creatingspace.component_tab"))
+                    .title(Component.translatable("itemGroup.creatingspace.minerals_tab"))
                     .withTabsBefore(COMPONENT_TAB.getKey())
-                    .icon(ItemInit.INJECTOR::asStack)
+                    .icon(BlockInit.NICKEL_ORE::asStack)
                     .displayItems(($1,output)-> {
                         output.accept(BlockInit.MOON_STONE);
                         output.accept(BlockInit.MOON_REGOLITH);
@@ -91,10 +125,80 @@ public class CreativeModeTabsInit {
                         output.accept(FluidInit.CREATIVE_BUCKET_HYDROGEN);
                         output.accept(FluidInit.CREATIVE_BUCKET_OXYGEN);
                         output.accept(FluidInit.CREATIVE_BUCKET_METHANE);
-
                     })
                     .build());
 
-    public static void init() {
+    private static Function<Item, ItemStack> makeStackFunc() {
+        Map<Item, Function<Item, ItemStack>> factories = new Reference2ReferenceOpenHashMap<>();
+
+        Map<ItemProviderEntry<?>, Function<Item, ItemStack>> simpleFactories = Map.of(
+                ItemInit.COPPER_OXYGEN_BACKTANK, item -> {
+                    ItemStack stack = new ItemStack(item);
+                    CompoundTag nbt = new CompoundTag();
+                    nbt.putFloat("Oxygen", OxygenBacktankUtil.maxOxygenWithoutEnchants());
+                    nbt.putFloat("prevOxygen",OxygenBacktankUtil.maxOxygenWithoutEnchants());
+                    stack.setTag(nbt);
+                    return stack;
+                },
+                ItemInit.NETHERITE_OXYGEN_BACKTANK, item -> {
+                    ItemStack stack = new ItemStack(item);
+                    CompoundTag nbt = new CompoundTag();
+                    nbt.putFloat("Oxygen", OxygenBacktankUtil.maxOxygenWithoutEnchants());
+                    nbt.putFloat("prevOxygen",OxygenBacktankUtil.maxOxygenWithoutEnchants());
+                    stack.setTag(nbt);
+                    return stack;
+                }
+        );
+
+        simpleFactories.forEach((entry, factory) -> {
+            factories.put(entry.asItem(), factory);
+        });
+
+        return item -> {
+            Function<Item, ItemStack> factory = factories.get(item);
+            if (factory != null) {
+                return factory.apply(item);
+            }
+            return new ItemStack(item);
+        };
     }
+
+    private static Function<Item, Collection<ItemStack>> makeStackListFunc() {
+        Map<Item, Function<Item, Collection<ItemStack>>> factories = new Reference2ReferenceOpenHashMap<>();
+
+        Map<ItemProviderEntry<?>, Function<Item, Collection<ItemStack>>> simpleFactories = Map.of(
+            BlockInit.CRYOGENIC_TANK, item -> {
+                Collection<ItemStack> itemStacks = new ArrayList<>();
+                    for (Fluid fluid : ForgeRegistries.FLUIDS) {
+                        String fluidName = ForgeRegistries.FLUIDS.getKey(fluid).toString();
+                        if (fluid.getFluidType().getTemperature() < 200 && !fluidName.contains("flowing")) {
+                            ItemStack itemStack = item.getDefaultInstance();
+                            CompoundTag tag = itemStack.getOrCreateTag();
+                            FluidStack fluidStack = new FluidStack(fluid, 4000);
+                            tag.put("Tank", fluidStack.writeToNBT(new CompoundTag()));
+                            itemStack.setTag(tag);
+                            itemStacks.add(itemStack);
+                        }
+                    }
+                    return itemStacks;
+                }
+        );
+
+        simpleFactories.forEach((entry, factory) -> {
+            factories.put(entry.asItem(), factory);
+        });
+
+        return item -> {
+            Function<Item, Collection<ItemStack>> factory = factories.get(item);
+            if (factory != null) {
+                return factory.apply(item);
+            }
+            return Collections.singleton(new ItemStack(item));
+        };
+    }
+
+    public static void register(IEventBus modEventBus) {
+        TAB_REGISTER.register(modEventBus);
+    }
+
 }

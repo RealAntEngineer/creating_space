@@ -4,9 +4,10 @@
     "S": {
       "item": "create:sturdy_sheet"
     },
-    "I": {
+    "I" : {
       "item": "minecraft:iron_ingot"
     }
+
   },
   "pattern": [
     " S ",

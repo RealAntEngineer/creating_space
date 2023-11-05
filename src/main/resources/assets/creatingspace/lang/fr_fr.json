@@ -1,11 +1,14 @@
 {
   "block.creatingspace.small_rocket_engine": "Petit Moteur Fusée",
   "block.creatingspace.big_rocket_engine": "Gros Moteur Fusée",
-  "block.creatingspace.rocket_motor": "Rocket Motor",
+  "block.creatingspace.rocket_generator": "Générateur MethaLox",
   "block.creatingspace.rocket_controls": "Controleur de fusée",
   "block.creatingspace.chemical_synthesizer": "Synthetiseur chimique",
-  "block.creatingspace.mechanical_electrolyzer": "Electrolyser méchanique",
+  "block.creatingspace.mechanical_electrolyzer": "Électrolyseur méchanique",
   "block.creatingspace.flow_meter": "Débitmètre",
+  "block.creatingspace.oxygen_sealer": "Pressurisateur à oxygène",
+  "block.creatingspace.cryogenic_tank": "Réservoir cryogénique",
+
 
   "block.creatingspace.clamps": "Pince",
   "block.creatingspace.rocket_casing": "Revêtement de Fusée",
@@ -26,6 +29,20 @@
 
   "block.creatingspace.moon_aluminum_ore": "Minerai d'Aluminium Lunaire",
   "block.creatingspace.raw_aluminum_block": "Bloc d'Aluminum Brute",
+
+  "item.creatingspace.basic_spacesuit_helmet": "Casque spatial basique",
+  "item.creatingspace.copper_oxygen_backtank": "Bouteille d'oxygène en cuivre",
+  "item.creatingspace.basic_spacesuit_leggings": "Jambière spatial basique",
+  "item.creatingspace.basic_spacesuit_boots": "Bottes spatial basique",
+
+  "item.creatingspace.advanced_spacesuit_helmet": "Casque spatial avancé",
+  "item.creatingspace.netherite_oxygen_backtank" : "Bouteille d'oxygène en Netherite",
+  "item.creatingspace.advanced_spacesuit_leggings": "Jambière spatial avancé",
+  "item.creatingspace.advanced_spacesuit_boots": "Bottes spatial avancé",
+
+  "item.creatingspace.basic_spacesuit_fabric": "Tissu pour combinaison spatial basic",
+  "item.creatingspace.advanced_spacesuit_fabric": "Tissu pour combinaison spatial avancée",
+
 
   "item.creatingspace.injector": "Injecteur",
   "item.creatingspace.incomplete_injector": "Injecteur Incomplet",
@@ -85,16 +102,23 @@
   "creatingspace.ponder.rocket.text_3": "Remplissez les réservoirs et vous pouvez partir",
 
   "creatingspace.ponder.synthesizer.header": "Fabriquer du Méthane",
-  "creatingspace.ponder.synthesizer.text_1": "You need to put hydrogen in it...",
-  "creatingspace.ponder.synthesizer.text_2": "...And put coal dust, then wait for methane to be produced",
-  "creatingspace.ponder.synthesizer.text_3": "It produces 100mb of methane every 4 seconds",
 
-  "creatingspace.launch": "Lancement",
+  "creatingspace.gui.sealer.try_seal": "Démarrer",
+  "creatingspace.gui.sealer.isSealed": "Est pressurisé ?",
+  "creatingspace.gui.sealer.settings": "Réglage",
+  "creatingspace.gui.sealer.range": "Portée",
+  "creatingspace.gui.rocket_controls.launch": "Lancement",
   "creatingspace:earth_orbit": "Orbite Terrestre",
   "creatingspace:moon_orbit": "Orbite Lunaire",
   "creatingspace:the_moon": "La Lune",
   "minecraft:overworld": "La Terre",
 
-  "death.attack.no_oxygen": "%1$s n'a pas trouvé d'oxygen dans l'espace"
+  "creatingspace.ponder.synthesizer.text_1": "Vous devez mettre de l'hydrogène ...",
+  "creatingspace.ponder.synthesizer.text_2": "...Puis de la poudre de charbon, enfin attendez que le méthane soit produit",
+  "creatingspace.ponder.synthesizer.text_3": "Il y a production de 100mb de methane toutes les 4 secondes",
+
+  "death.attack.no_oxygen": "%1$s n'a pas trouvé d'oxygène dans l'espace"
+
+
 
 }

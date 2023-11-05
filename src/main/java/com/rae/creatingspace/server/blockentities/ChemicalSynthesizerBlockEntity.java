@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -149,8 +148,8 @@ public class ChemicalSynthesizerBlockEntity extends BlockEntity /*implements Men
 
 
 
-
-    private final ContainerData data = new ContainerData() {
+    //to delete
+    /*private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
             return switch (index) {
@@ -177,7 +176,7 @@ public class ChemicalSynthesizerBlockEntity extends BlockEntity /*implements Men
 
     public ContainerData getContainerData() {
         return this.data;
-    }
+    }*/
 
     public ItemStackHandler getInventory() {
         return inventory;

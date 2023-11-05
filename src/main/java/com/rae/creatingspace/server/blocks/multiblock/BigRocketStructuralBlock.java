@@ -34,6 +34,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -146,13 +147,27 @@ public class BigRocketStructuralBlock extends DirectionalBlock implements IWrenc
     }
 
     public static BlockPos getMaster(BlockGetter level, BlockPos pos, BlockState state) {
-        Direction direction = state.getValue(FACING);
-        BlockPos targetedPos = pos.relative(direction);
-        BlockState targetedState = level.getBlockState(targetedPos);
-        if (targetedState.is(BlockInit.BIG_ENGINE_STRUCTURAL.get()))
-            return getMaster(level, targetedPos, targetedState);
-        return targetedPos;
+        ArrayList<BlockPos> posDiscovered = new ArrayList<>();
+        BlockState targetedState;
+        BlockPos targetedPos = pos;
+
+        while (posDiscovered.size() < 10) {
+            targetedState = level.getBlockState(targetedPos);
+            if (targetedState.is(BlockInit.BIG_ENGINE_STRUCTURAL.get())) {
+                posDiscovered.add(targetedPos);
+            } else if (targetedState.is(BlockInit.BIG_ROCKET_ENGINE.get())) {
+                return targetedPos;
+            }
+            if (targetedState.hasProperty(FACING)) {
+                Direction direction = targetedState.getValue(FACING);
+                targetedPos = targetedPos.relative(direction);
+            } else {
+                return targetedPos;
+            }
+        }
+        return pos;
     }
+
 
     public boolean stillValid(BlockGetter level, BlockPos pos, BlockState state) {
         if (!state.is(this))

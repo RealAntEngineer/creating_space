@@ -1,12 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "I": {
+    "I" : {
       "item": "minecraft:iron_block"
     },
-    "C": {
+    "C":{
       "item": "create:copper_casing"
     }
+
   },
   "pattern": [
     "ICI",

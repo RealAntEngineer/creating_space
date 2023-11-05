@@ -3,14 +3,16 @@
   "block.creatingspace.big_rocket_engine": "Big Rocket Engine",
 
   "block.creatingspace.rocket_controls": "Rocket Controls",
-  "block.creatingspace.rocket_motor": "Rocket Motor",
+  "block.creatingspace.rocket_generator": "Rocket Generator",
   "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
   "block.creatingspace.flow_meter": "Flowmeter",
+  "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
 
   "block.creatingspace.clamps": "Clamps",
   "block.creatingspace.rocket_casing": "Rocket Casing",
 
+  "block.creatingspace.cryogenic_tank": "Cryogenic Tank",
 
   "block.creatingspace.moon_stone": "Moon Stone",
   "block.creatingspace.moon_regolith": "Moon Regolith",
@@ -25,6 +27,20 @@
   "block.creatingspace.raw_nickel_block": "Raw Nickel Block",
   "block.creatingspace.raw_cobalt_block": "Raw Cobalt Block",
   "block.creatingspace.raw_aluminum_block": "Raw Aluminum Block",
+
+  "item.creatingspace.basic_spacesuit_helmet": "Basic Spacesuit Helmet",
+  "item.creatingspace.copper_oxygen_backtank" : "Copper Oxygen Backtank",
+  "item.creatingspace.basic_spacesuit_leggings": "Basic Spacesuit Legging",
+  "item.creatingspace.basic_spacesuit_boots": "Basic Spacesuit Boots",
+
+  "item.creatingspace.advanced_spacesuit_helmet": "Advanced Spacesuit Helmet",
+  "item.creatingspace.netherite_oxygen_backtank" : "Netherite Oxygen Backtank",
+  "item.creatingspace.advanced_spacesuit_leggings": "Advanced Spacesuit Legging",
+  "item.creatingspace.advanced_spacesuit_boots": "Advanced Spacesuit Boots",
+
+  "item.creatingspace.basic_spacesuit_fabric": "Basic Spacesuit Fabric",
+  "item.creatingspace.advanced_spacesuit_fabric": "Advanced Spacesuit Fabric",
+
 
   "item.creatingspace.injector": "Injector",
   "item.creatingspace.reinforced_injector": "Reinforced Injector",
@@ -63,10 +79,12 @@
   "item.creatingspace.crushed_aluminum_ore": "Crushed Aluminum Ore",
   "item.creatingspace.raw_aluminum": "Raw Aluminum",
 
-
   "item.creatingspace.liquid_methane_bucket": "Bucket of Liquid Methane",
   "item.creatingspace.liquid_oxygen_bucket": "Bucket of Liquid Oxygen",
   "item.creatingspace.liquid_hydrogen_bucket": "Bucket of Liquid Hydrogen",
+
+
+
 
   "fluid.creatingspace.liquid_methane" : "Liquid Methane",
   "fluid.creatingspace.liquid_oxygen" : "Liquid Oxygen",
@@ -91,11 +109,17 @@
   "creatingspace.ponder.synthesizer.text_2": "...And put coal dust, then wait for methane to be produced",
   "creatingspace.ponder.synthesizer.text_3": "It produces 100mb of methane every 4 seconds",
 
-  "creatingspace.launch": "Launch",
+  "creatingspace.gui.rocket_controls.launch": "Launch",
+  "creatingspace.gui.sealer.try_seal": "Try Sealing",
+  "creatingspace.gui.sealer.isSealed": "Is Sealed ?",
+  "creatingspace.gui.sealer.settings": "Settings",
+  "creatingspace.gui.sealer.range": "Range",
+  "creatingspace.gui.sealer.automatic_retry": "Automatic Retry ?",
   "creatingspace:earth_orbit": "Earth Orbit",
   "creatingspace:moon_orbit": "Moon Orbit",
   "creatingspace:the_moon": "The Moon",
   "minecraft:overworld": "The Earth",
 
   "death.attack.no_oxygen": "%1$s didn't found oxygen in space"
+
 }

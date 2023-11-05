@@ -1,10 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "C": {
+    "C" : {
       "item": "creatingspace:basic_catalyst"
     },
-    "P": {
+    "P" : {
       "item": "create:fluid_pipe"
     },
     "X": {
@@ -13,6 +13,7 @@
     "T": {
       "item": "create:fluid_tank"
     }
+
   },
   "pattern": [
     "XTX",

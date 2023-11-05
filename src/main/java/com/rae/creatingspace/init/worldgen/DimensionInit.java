@@ -1,6 +1,8 @@
 package com.rae.creatingspace.init.worldgen;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.utilities.AccessibilityMatrixReader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -9,6 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.eventbus.api.IEventBus;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class DimensionInit {
@@ -56,17 +60,33 @@ public class DimensionInit {
     }
 
     public static List<ResourceKey<Level>> accessibleFrom(ResourceKey<Level> currentDimension) {
-        if (currentDimension == EARTH_ORBIT_KEY){
+        List<String> list = CSConfigs.COMMON.dimAccess.accessibility_matrix.get();
+        HashMap<ResourceKey<Level>, ResourceKey<Level>[]> accessibilityMap = AccessibilityMatrixReader.createFromStringList(list);
 
-            return List.of(Level.OVERWORLD,MOON_ORBIT_KEY);
+        if (accessibilityMap.containsKey(currentDimension)){
+            return Arrays.stream(accessibilityMap.get(currentDimension)).toList();
         }
-        if (currentDimension == MOON_ORBIT_KEY){
-            return List.of(EARTH_ORBIT_KEY,MOON_KEY);
+        return List.of();
+    }
+
+    public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
+        boolean no_02 = CSConfigs.COMMON.dimAccess.no_02.get().contains(dimension.location().toString());
+        return !no_02;
+    }
+
+    public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
+        return gravity(dimensionType) == 0;
+    }
+
+    public static ResourceKey<Level> planetUnder(ResourceKey<Level> dimension){
+        ResourceKey<Level> underDimension = null;
+        if (dimension == MOON_ORBIT_KEY){
+            underDimension = MOON_KEY;
         }
-        if (currentDimension == MOON_KEY){
-            return List.of(MOON_ORBIT_KEY);
+        if (dimension == EARTH_ORBIT_KEY){
+            underDimension = Level.OVERWORLD;
         }
-        return List.of(EARTH_ORBIT_KEY);
+        return underDimension;
     }
 }
 

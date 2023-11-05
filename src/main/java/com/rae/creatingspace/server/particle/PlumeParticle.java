@@ -1,32 +1,44 @@
 package com.rae.creatingspace.server.particle;
 
 import com.simibubi.create.foundation.utility.Color;
-import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
+import java.util.List;
+
+import static net.minecraft.util.Mth.clamp;
 
 public class PlumeParticle extends SimpleAnimatedParticle {
-    protected PlumeParticle(ClientLevel world, double x, double y, double z,
-                              SpriteSet sprite) {
+    private float drag;
+    private Vec3 speed;
+    public PlumeParticle(ClientLevel world, RocketPlumeParticleData data,
+                         double x, double y, double z,
+                         double xSpeed, double ySpeed, double zSpeed,
+                         SpriteSet sprite)
+        {
         super(world, x, y, z, sprite, world.random.nextFloat() * .5f);
         this.quadSize *= 0.75F;
-        this.lifetime = 200;
+        this.lifetime = (int) (200*world.random.nextFloat());
         hasPhysics = true;
-        selectSprite(7);
-        Vec3 offset = VecHelper.offsetRandomly(Vec3.ZERO, world.random, .25f);
-        this.setPos(x + offset.x, y + offset.y, z + offset.z);
+        selectSprite(0);
+        this.setPos(x, y, z);
+        this.drag = (float) (data.drag*Math.max(0.8,(world.random.nextFloat()+0.4)));
         this.xo = x;
         this.yo = y;
         this.zo = z;
-        setAlpha(.25f);
+
+        this.speed = new Vec3(xSpeed,ySpeed,zSpeed);
+        this.morphColor();
+        //setAlpha(.25f);
     }
+
     @Nonnull
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
@@ -34,60 +46,89 @@ public class PlumeParticle extends SimpleAnimatedParticle {
 
     @Override
     public void tick() {
-
         this.xo = this.x;
         this.yo = this.y;
         this.zo = this.z;
+
         if (this.age++ >= this.lifetime) {
             this.remove();
-        } else {
+            return;
+        }
+        if (drag!=0) {
+            float scaleFactor = drag > 0 ? 1 / (1 + drag) : (1 - drag);
 
-            Vec3 directionVec = Vec3.atLowerCornerOf(Direction.DOWN.getNormal());
-            Vec3 motion = directionVec.scale(1 / 8f);
+            speed = speed.scale(scaleFactor);
+        }
+
+        xd = speed.x();
+        yd = speed.y();
+        zd = speed.z();
 
 
-            morphType(this.age);
 
-            xd = motion.x;
-            yd = motion.y;
-            zd = motion.z;
+        //setSpriteFromAge(sprites);
+        morphColor();
+        this.move(this.xd, this.yd, this.zd);
 
-            if (this.onGround) {
-                this.xd *= 0.7;
-                this.zd *= 0.7;
+        if (speed.length()<1){
+            selectSprite(1);
+            if (this.quadSize < 2) {
+                scale(drag * 3 + 1);
             }
-            this.move(this.xd, this.yd, this.zd);
 
+            if (speed.length() < 0.05f){
+                this.remove();
+                return;
+            }
         }
 
     }
 
-    public void morphType(int time) {
 
 
-        if (time >40) {
-            setColor(Color.mixColors(0x0, 0x555555, level.random.nextFloat()));
-            setAlpha(1f);
-            selectSprite(level.random.nextInt(3));
-            if (level.random.nextFloat() < 1 / 32f)
-                level.addParticle(ParticleTypes.SMOKE, x, y, z, xd * .125f, yd * .125f,
-                        zd * .125f);
-            if (level.random.nextFloat() < 1 / 32f)
-                level.addParticle(ParticleTypes.LARGE_SMOKE, x, y, z, xd * .125f, yd * .125f,
-                        zd * .125f);
-        } else  {
-            setColor(0xEEEEEE);
-            setAlpha(.25f);
-            setSize(.2f, .2f);
+    @Override
+    public void move(double vx, double vy, double vz) {
+        //List<VoxelShape> list = this.level.getEntityCollisions(null,this.getBoundingBox().expandTowards(vx,vy,vz));
+        Vec3 vec3 = Entity.collideBoundingBox(null, new Vec3(vx, vy, vz), this.getBoundingBox(), this.level, List.of());
+
+        float coef = vec3.distanceTo(new Vec3(vx,vy,vz)) > 0.1 ? (float) 0.7 : 1;
+
+        Vec3 vFinal = vec3.normalize().scale(speed.length()*coef);
+
+        speed = vFinal;
+        this.setBoundingBox(this.getBoundingBox().move(vec3));
+        this.setLocationFromBoundingbox();
+    }
+
+    public void setFire(){
+        BlockPos collidePos = new BlockPos((int) x, (int) y, (int) z);
+        //BlockState blockState = this.level.getBlockState(collidePos.below());
+        if (((FireBlock)Blocks.FIRE).canCatchFire(this.level,collidePos.below(),Direction.UP)) {
+            this.level.setBlockAndUpdate(collidePos, Blocks.FIRE.defaultBlockState());
+            //this.level.sendPacketToServer(Packet);
+            this.level.scheduleTick(collidePos,this.level.getBlockState(collidePos).getBlock(),1);
         }
+    }
+
+    public void morphColor() {
+        Color color = new Color(0x0088EE);
+        color = color.setAlpha(1f);
+        if (speed.length() < 1D){
+            color = color.mixWith(Color.WHITE, (float) (1 - speed.length()/3f));
+        }
+
+        Vec3 colorVec = color.asVector();
+        setColor((float) colorVec.x, (float) colorVec.y, (float) colorVec.z);
+        setAlpha((float) clamp(speed.length()*2,0.2,1));
+
     }
     public int getLightColor(float partialTick) {
         BlockPos blockpos = new BlockPos((int) this.x, (int) this.y, (int) this.z);
-        return this.level.isLoaded(blockpos) ? LevelRenderer.getLightColor(level, blockpos) : 0;
+        return this.level.isLoaded(blockpos) ? 15728880 : 0;
     }
 
     private void selectSprite(int index) {
-        setSprite(sprites.get(index, 8));
+        setSprite(sprites.get(index, 1));
     }
 
     public static class Factory implements ParticleProvider<RocketPlumeParticleData> {
@@ -99,7 +140,7 @@ public class PlumeParticle extends SimpleAnimatedParticle {
 
         public Particle createParticle(RocketPlumeParticleData data, ClientLevel worldIn, double x, double y, double z,
                                        double xSpeed, double ySpeed, double zSpeed) {
-            return new PlumeParticle(worldIn, x, y, z, this.spriteSet);
+            return new PlumeParticle(worldIn,data, x, y, z,xSpeed,ySpeed,zSpeed, this.spriteSet);
         }
     }
 }

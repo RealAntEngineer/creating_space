@@ -56,18 +56,12 @@ public class SmallEngineBlock extends RocketEngineBlock implements IBE<SmallEngi
 				.setValue(SmallRocketStructuralBlock.FACING, targetSide.getOpposite());
 		pLevel.setBlockAndUpdate(structurePos, requiredStructure);
 
+		//make the same for big engine block
 
 	}
 
 	@Override
 	public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState1, boolean isMoving) {
 		super.onRemove(blockState, level, blockPos, blockState1, isMoving);
-	}
-
-	public void placeStructure(BlockPos pos, ServerLevel level){
-
-	}
-	public void verifySpace(BlockPos pos, ServerLevel level){
-
 	}
 }

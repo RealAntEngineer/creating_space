@@ -1,8 +1,8 @@
 {
   "type": "create:pressing",
-  "ingredients": [
+  "ingredients":[
     {
-      "item": "creatingspace:nickel_ingot"
+      "item":"creatingspace:nickel_ingot"
     }
   ],
   "results": [

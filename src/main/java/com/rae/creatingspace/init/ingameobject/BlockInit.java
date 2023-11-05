@@ -1,13 +1,18 @@
 package com.rae.creatingspace.init.ingameobject;
 
+import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
+import com.rae.creatingspace.server.armor.OxygenBacktankBlock;
 import com.rae.creatingspace.server.blocks.*;
+import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
+import com.rae.creatingspace.server.blocks.atmosphere.SealerBlock;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.BigEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.rae.creatingspace.server.contraption.movementbehaviour.EngineMovementBehaviour;
 import com.rae.creatingspace.server.items.BigEngineItem;
+import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.SmallEngineItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
@@ -23,8 +28,8 @@ import net.minecraftforge.common.Tags;
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
-import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
-import static com.simibubi.create.foundation.data.TagGen.tagBlockAndItem;
+import static com.simibubi.create.foundation.data.TagGen.*;
+import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 public class BlockInit {
 
@@ -203,12 +208,12 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    public static final BlockEntry<RocketMotorBlock> ROCKET_MOTOR =REGISTRATE.block(
-            "rocket_motor", RocketMotorBlock::new)
+    public static final BlockEntry<RocketGeneratorBlock> ROCKET_GENERATOR =REGISTRATE.block(
+            "rocket_generator", RocketGeneratorBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .transform(BlockStressDefaults.setCapacity(30000))
-            .transform(BlockStressDefaults.setGeneratorSpeed(RocketMotorBlock::getSpeedRange))
+            .transform(BlockStressDefaults.setGeneratorSpeed(RocketGeneratorBlock::getSpeedRange))
             .transform(axeOrPickaxe())
             .item()
             .properties(p-> p)
@@ -243,6 +248,39 @@ public class BlockInit {
             .transform(axeOrPickaxe())
             .item()
             .transform(customItemModel())
+            .register();
+
+    public static final BlockEntry<SealerBlock> OXYGEN_SEALER = REGISTRATE
+            .block("oxygen_sealer", SealerBlock::new)
+            .properties(p->p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<OxygenBlock> OXYGEN = REGISTRATE
+            .block("oxygen",OxygenBlock::new)
+            .initialProperties(()-> Blocks.AIR)
+            .properties(p->p.noOcclusion().noCollission().dynamicShape().air())
+            .register();
+    public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
+            .block("copper_oxygen_backtank", OxygenBacktankBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p->p.noOcclusion().dynamicShape())
+            .transform(pickaxeOnly())
+            .register();
+
+    public static final BlockEntry<OxygenBacktankBlock> NETHERITE_OXYGEN_BACKTANK = REGISTRATE
+            .block("netherite_oxygen_backtank", OxygenBacktankBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p->p.noOcclusion().dynamicShape())
+            .transform(pickaxeOnly())
+            .register();
+
+    public static final BlockEntry<CryogenicTankBlock> CRYOGENIC_TANK = REGISTRATE
+            .block("cryogenic_tank", CryogenicTankBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .transform(pickaxeOnly())
+            .item(CryogenicTankItem::new)
+            .build()
             .register();
 
 

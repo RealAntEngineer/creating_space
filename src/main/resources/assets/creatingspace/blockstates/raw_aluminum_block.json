@@ -1,7 +1,7 @@
 {
   "variants" : {
     "": {
-      "model" : "creatingspace:block/raw_aluminium_block"
+      "model" : "creatingspace:block/raw_aluminum_block"
     }
   }
 }

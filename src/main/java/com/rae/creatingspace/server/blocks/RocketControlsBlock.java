@@ -1,6 +1,6 @@
 package com.rae.creatingspace.server.blocks;
 
-import com.rae.creatingspace.client.screen.DestinationScreen;
+import com.rae.creatingspace.client.gui.screen.DestinationScreen;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
@@ -76,7 +76,7 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
     //blockstate
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty ASSEMBLE_NEXT_TICK = BooleanProperty.create("assemble_next_tick");;
+    public static final BooleanProperty ASSEMBLE_NEXT_TICK = BooleanProperty.create("assemble_next_tick");
 
 
     @Override
@@ -120,13 +120,13 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         super.playerWillDestroy(level, pos, state, player);
     }*/
 
-    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos pos, BlockState blockState) {
+    /*public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos pos, BlockState blockState) {
         ItemStack itemstack = super.getCloneItemStack(blockGetter, pos, blockState);
         blockGetter.getBlockEntity(pos, BlockEntityInit.CONTROLS.get()).ifPresent((p_187446_) -> {
             p_187446_.saveToItem(itemstack);
         });
         return itemstack;
-    }
+    }*/
 
     //blockEntity
 

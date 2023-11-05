@@ -17,8 +17,8 @@ public class SpriteShiftInit {
     //
 
     private static CTSpriteShiftEntry getCT(CTType type, String blockTextureName, String connectedTextureName) {
-        return CTSpriteShifter.getCT(type, CreatingSpace.resource("blocks/" + blockTextureName),
-                CreatingSpace.resource("blocks/" + connectedTextureName + "_connected"));
+        return CTSpriteShifter.getCT(type, CreatingSpace.resource("block/" + blockTextureName),
+                CreatingSpace.resource("block/" + connectedTextureName + "_connected"));
     }
 
     private static CTSpriteShiftEntry getCT(CTType type, String blockTextureName) {

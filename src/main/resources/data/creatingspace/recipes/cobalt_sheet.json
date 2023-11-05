@@ -1,8 +1,8 @@
 {
   "type": "create:pressing",
-  "ingredients": [
+  "ingredients":[
     {
-      "item": "creatingspace:cobalt_ingot"
+      "item":"creatingspace:cobalt_ingot"
     }
   ],
   "results": [

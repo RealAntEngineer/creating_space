@@ -2,7 +2,10 @@ package com.rae.creatingspace.server.event;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.DamageSourceInit;
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
+import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
+import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.armor.BacktankUtil;
@@ -14,9 +17,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = CreatingSpace.MODID)
 public class CSEventHandler {
@@ -30,19 +38,15 @@ public class CSEventHandler {
         Level level = entityLiving.level();
         ResourceKey<Level> dimension = level.dimension();
         if (entityLiving instanceof ServerPlayer player){
-            if (DimensionInit.gravity(level.dimensionTypeId())==0){
+            if (DimensionInit.isOrbit(level.dimensionTypeId())){
                 if (!level.isClientSide){
-                    if (player.getY() < level.dimensionType().minY()+10){
-                        ResourceKey<Level> dimensionToTeleport = null;
-                        if (dimension == DimensionInit.EARTH_ORBIT_KEY){
-                            dimensionToTeleport = Level.OVERWORLD;
-                        }
-                        if (dimension == DimensionInit.MOON_ORBIT_KEY){
-                            dimensionToTeleport = DimensionInit.MOON_KEY;
-                        }
-                        if (dimensionToTeleport!=null){
-                            ServerLevel destServerLevel = level.getServer().getLevel(dimensionToTeleport);
+                    if (player.getY() < level.dimensionType().minY()+10) {
+                        ResourceKey<Level> dimensionToTeleport = DimensionInit.planetUnder(dimension);
 
+                        if (dimensionToTeleport != null) {
+                            ServerLevel destServerLevel = Objects.requireNonNull(level.getServer()).getLevel(dimensionToTeleport);
+
+                            assert destServerLevel != null;
                             player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
                         }
                     }
@@ -51,17 +55,18 @@ public class CSEventHandler {
         }
 
         if (entityLiving.tickCount % 20 == 0) {
-            if (!(dimension == Level.OVERWORLD)&&(entityLiving.isAttackable())) {
-                if (entityLiving instanceof ServerPlayer player) {
-                    if (checkPlayerO2Equipment(player) && !player.isCreative()) {
-                        ItemStack tank = player.getItemBySlot(EquipmentSlot.CHEST);
-                        BacktankUtil.consumeAir(player, tank, 1);
-                    }
-                    else {
-                        player.hurt(DamageSourceInit.NO_OXYGEN.source(level), 0.5f);
+            if (!isInO2(entityLiving)&&entityLiving.isAttackable()) {
+                if (entityLiving instanceof ServerPlayer player)  {
+                    if (playerNeedEquipment(player)) {
+                        if (checkPlayerO2Equipment(player)) {
+                            ItemStack tank = player.getItemBySlot(EquipmentSlot.CHEST);
+                            OxygenBacktankUtil.consumeOxygen(player, tank, 1);
+                        } else {
+                            player.hurt(DamageSourceInit.NO_OXYGEN.source(level), 0.5f);
 
+                        }
                     }
-                }else if (!(entityLiving instanceof Skeleton)) {
+                }else if (!(TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving))) {
                     entityLiving.hurt(DamageSourceInit.NO_OXYGEN.source(level), 0.5f);
                 }
             }
@@ -72,12 +77,36 @@ public class CSEventHandler {
 
         ItemStack chestPlate = player.getItemBySlot(EquipmentSlot.CHEST);
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
-        if ((AllItems.COPPER_BACKTANK.isIn(chestPlate)||AllItems.NETHERITE_BACKTANK.isIn(chestPlate))&& BacktankUtil.hasAirRemaining(chestPlate)){
-            if(AllItems.NETHERITE_DIVING_HELMET.isIn(helmet)||AllItems.COPPER_DIVING_HELMET.isIn(helmet)){
-                return true;
-            }
+        ItemStack leggings = player.getItemBySlot(EquipmentSlot.LEGS);
+        ItemStack boots =  player.getItemBySlot(EquipmentSlot.FEET);
+
+        if (TagsInit.CustomItemTags.OXYGEN_SOURCES.matches(chestPlate) && OxygenBacktankUtil.hasOxygenRemaining(chestPlate)){
+            return TagsInit.CustomItemTags.SPACESUIT.matches(chestPlate)&&
+                    TagsInit.CustomItemTags.SPACESUIT.matches(helmet)&&
+                    TagsInit.CustomItemTags.SPACESUIT.matches(leggings)&&
+                    TagsInit.CustomItemTags.SPACESUIT.matches(boots);
         }
 
+        return false;
+    }
+
+    public static boolean playerNeedEquipment(ServerPlayer player){
+        return !player.isCreative();
+    }
+
+    public static boolean isInO2(LivingEntity entity){
+        Level level = entity.level();
+        if (DimensionInit.hasO2Atmosphere(level.dimension())){
+            return true;
+        }
+        AABB colBox = entity.getBoundingBox();
+        Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
+        for (BlockState state : blockStateStream.toList()) {
+            if (state.getBlock() instanceof OxygenBlock){
+                //System.out.println("player is in o2 : " + state.getValue(OxygenBlock.BREATHABLE));
+                return state.getValue(OxygenBlock.BREATHABLE);
+            }
+        }
         return false;
     }
 }

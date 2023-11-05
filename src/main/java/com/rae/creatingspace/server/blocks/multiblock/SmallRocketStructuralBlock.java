@@ -34,6 +34,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -143,11 +144,32 @@ public class SmallRocketStructuralBlock extends DirectionalBlock implements IWre
     }
 
     public static BlockPos getMaster(BlockGetter level, BlockPos pos, BlockState state) {
-        Direction direction = state.getValue(FACING);
-        BlockPos targetedPos = pos.relative(direction);
-        BlockState targetedState = level.getBlockState(targetedPos);
-        if (targetedState.is(BlockInit.SMALL_ENGINE_STRUCTURAL.get()))
-            return getMaster(level, targetedPos, targetedState);
+        //makeSomething to prevent stackOverFlow -> while
+        ArrayList<BlockPos> posDiscovered = new ArrayList<>();
+        //posDiscovered.add(pos);
+        BlockState targetedState;
+        BlockPos targetedPos = pos;
+        //make it like the oxygen ... and make something to prevent a lo
+        while (!posDiscovered.contains(pos) && posDiscovered.size() < 10) {
+            targetedState = level.getBlockState(targetedPos);
+
+            if (targetedState.is(BlockInit.SMALL_ENGINE_STRUCTURAL.get())) {
+                posDiscovered.add(targetedPos);
+            }
+            else if (targetedState.is(BlockInit.SMALL_ROCKET_ENGINE.get())){
+                return targetedPos;
+            }
+            if (targetedState.hasProperty(FACING)) {
+                Direction direction = level.getBlockState(targetedPos).getValue(FACING);
+
+                targetedPos = pos.relative(direction);
+            }
+            else {
+                return targetedPos;
+            }
+
+        }
+
         return targetedPos;
     }
 

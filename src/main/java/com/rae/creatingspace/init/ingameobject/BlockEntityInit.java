@@ -1,9 +1,14 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.client.renderer.FlowGaugeBlockRenderer;
-import com.rae.creatingspace.client.renderer.MechanicalElectrolyserBlockRenderer;
-import com.rae.creatingspace.client.renderer.RocketStarterBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.FlowGaugeBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.MechanicalElectrolyserBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.OxygenSealerRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.RocketGeneratorBlockRenderer;
+import com.rae.creatingspace.client.renderer.instance.OxygenSealerInstance;
+import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.server.blockentities.*;
+import com.rae.creatingspace.server.blockentities.atmosphere.OxygenBlockEntity;
+import com.rae.creatingspace.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -20,11 +25,20 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.GROUND_STATION)
                     .register();*/
 
-    public static final BlockEntityEntry<RocketMotorBlockEntity> ROCKET_MOTOR =
-            REGISTRATE.blockEntity("rocket_motor", RocketMotorBlockEntity::new )
+    public static final BlockEntityEntry<OxygenBacktankBlockEntity> OXYGEN_BACKTANK =
+            REGISTRATE.blockEntity("oxygen_backtank",OxygenBacktankBlockEntity::new)
+                    .validBlocks(BlockInit.COPPER_OXYGEN_BACKTANK,BlockInit.NETHERITE_OXYGEN_BACKTANK)
+                    .register();
+
+    public static final BlockEntityEntry<CryogenicTankBlockEntity> CRYOGENIC_TANK =
+            REGISTRATE.blockEntity("cryogenic_tank", CryogenicTankBlockEntity::new)
+                    .validBlocks(BlockInit.CRYOGENIC_TANK)
+                    .register();
+    public static final BlockEntityEntry<RocketGeneratorBlockEntity> ROCKET_GENERATOR =
+            REGISTRATE.blockEntity("rocket_generator", RocketGeneratorBlockEntity::new )
                     .instance(() -> ShaftInstance::new, false)
-                    .validBlocks(BlockInit.ROCKET_MOTOR)
-                    .renderer(() -> RocketStarterBlockRenderer::new)
+                    .validBlocks(BlockInit.ROCKET_GENERATOR)
+                    .renderer(() -> RocketGeneratorBlockRenderer::new)
                     .register();
 
     public static final BlockEntityEntry<ChemicalSynthesizerBlockEntity> SYNTHESIZER =
@@ -57,6 +71,20 @@ public class BlockEntityInit {
                             "flow_meter", FlowGaugeBlockEntity::new)
                     .validBlocks( BlockInit.FLOW_METER)
                     .renderer(()-> FlowGaugeBlockRenderer::new)
+                    .register();
+
+    public static final BlockEntityEntry<OxygenBlockEntity> OXYGEN =
+            REGISTRATE.blockEntity(
+                            "oxygen", OxygenBlockEntity::new)
+                    .validBlocks(BlockInit.OXYGEN)
+                    .register();
+
+    public static final BlockEntityEntry<SealerBlockEntity> OXYGEN_SEALER =
+            REGISTRATE.blockEntity(
+                            "oxygen_sealer", SealerBlockEntity::new)
+                    .instance(()-> OxygenSealerInstance::new)
+                    .validBlocks(BlockInit.OXYGEN_SEALER)
+                    .renderer(() -> OxygenSealerRenderer::new)
                     .register();
 
     /*public static final BlockEntityEntry<IOBlockEntity> IO_TILE = REGISTRATE

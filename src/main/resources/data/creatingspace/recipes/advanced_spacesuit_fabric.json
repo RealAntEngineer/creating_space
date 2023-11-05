@@ -1,0 +1,63 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "chance": 120.0,
+      "item": "creatingspace:advanced_spacesuit_fabric"
+    },
+    {
+      "chance": 8.0,
+      "item": "creatingspace:cobalt_nugget"
+    }
+  ],
+  "sequence": [
+
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "minecraft:netherite_ingot"
+        },
+        {
+          "tag": "forge:nuggets/cobalt"
+        }
+      ],
+      "results": [
+        {
+            "item": "minecraft:netherite_ingot"
+        }
+      ]
+    },{
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "minecraft:netherite_ingot"
+        },
+        {
+          "item": "minecraft:white_wool"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:advanced_spacesuit_fabric"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {"item": "creatingspace:advanced_spacesuit_fabric"}
+      ],
+      "results": [
+        {"item": "creatingspace:advanced_spacesuit_fabric"}
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:advanced_spacesuit_fabric"
+  }
+}

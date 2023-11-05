@@ -6,15 +6,16 @@
   "loops": 4,
   "results": [
     {
-      "chance": 120,
+      "chance": 120.0,
       "item": "creatingspace:injector_grid"
     },
     {
-      "chance": 8,
+      "chance": 8.0,
       "item": "create:golden_nugget"
     }
   ],
   "sequence": [
+
     {
       "type": "create:deploying",
       "ingredients": [
@@ -82,14 +83,10 @@
     {
       "type": "create:pressing",
       "ingredients": [
-        {
-          "item": "creatingspace:incomplete_injector_grid"
-        }
+        {"item": "creatingspace:incomplete_injector_grid"}
       ],
       "results": [
-        {
-          "item": "creatingspace:incomplete_injector_grid"
-        }
+        {"item": "creatingspace:incomplete_injector_grid"}
       ]
     }
   ],

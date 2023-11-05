@@ -1,0 +1,63 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "create:copper_sheet"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "chance": 120.0,
+      "item": "creatingspace:basic_spacesuit_fabric"
+    },
+    {
+      "chance": 8.0,
+      "item": "create:golden_nugget"
+    }
+  ],
+  "sequence": [
+
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:basic_spacesuit_fabric"
+        },
+        {
+          "tag": "forge:nuggets/gold"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:basic_spacesuit_fabric"
+        }
+      ]
+    },{
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:basic_spacesuit_fabric"
+        },
+        {
+          "item": "minecraft:red_wool"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:basic_spacesuit_fabric"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {"item": "creatingspace:basic_spacesuit_fabric"}
+      ],
+      "results": [
+        {"item": "creatingspace:basic_spacesuit_fabric"}
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:basic_spacesuit_fabric"
+  }
+}

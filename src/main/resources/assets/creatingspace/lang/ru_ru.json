@@ -3,7 +3,7 @@
   "block.creatingspace.big_rocket_engine": "Большой двигатель ракеты",
 
   "block.creatingspace.rocket_controls": "Контроллер ракеты",
-  "block.creatingspace.rocket_motor": "мотор ракеты",
+  "block.creatingspace.rocket_generator": "мотор ракеты",
   "block.creatingspace.chemical_synthesizer": "Химический синтезатор",
   "block.creatingspace.mechanical_electrolyzer": "Механический электризер",
   "block.creatingspace.flow_meter": "Гидрометр",
@@ -74,9 +74,9 @@
 
   "item.creatingspace.space_food": "Космическая еда",
 
-  "itemGroup.creatingspace.machine_tab": "creating space: Машины",
-  "itemGroup.creatingspace.component_tab": "Creating space: компоненты",
-  "itemGroup.creatingspace.minerals_tab": "Creating space: Руды",
+  "itemGroup.machine_tab": "creating space: Машины",
+  "itemGroup.component_tab": "Creating space: компоненты",
+  "itemGroup.minerals_tab": "Creating space: Руды",
 
   "container.creatingspace.rocket_controls": "Управление ракетой",
   "container.creatingspace.synthesizer": "Синтез",
@@ -91,7 +91,7 @@
   "creatingspace.ponder.synthesizer.text_2": "...И положи угольную пыль,потом подожди пока метан создасться",
   "creatingspace.ponder.synthesizer.text_3": "производительность метана 100mb/4 сек.",
 
-  "creatingspace.launch": "Запуск!",
+  "creatingspace.gui.rocket_controls.launch": "Запуск!",
   "creatingspace:earth_orbit": "Орбита змели",
   "creatingspace:moon_orbit": "Орбита Луны",
   "creatingspace:the_moon": "Луна",

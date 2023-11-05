@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "C": {
+    "C" : {
       "item": "creatingspace:copper_coil"
     },
-    "G": {
+    "G" : {
       "item": "create:golden_sheet"
     },
-    "S": {
+    "S" : {
       "item": "create:shaft"
     },
     "X": {
@@ -16,6 +16,7 @@
     "T": {
       "item": "create:fluid_tank"
     }
+
   },
   "pattern": [
     "XSX",

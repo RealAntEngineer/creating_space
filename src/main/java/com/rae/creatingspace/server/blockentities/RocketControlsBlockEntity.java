@@ -94,7 +94,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisp
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
         if(initialPosMap.containsKey(destination.toString())){
-            rocketContraptionEntity.rocketEntryCoordinate =(BlockPos) initialPosMap.get(destination.toString());
+            rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.get(destination.toString());
         }
         level.addFreshEntity(rocketContraptionEntity);
 

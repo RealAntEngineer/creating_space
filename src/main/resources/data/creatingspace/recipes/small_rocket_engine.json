@@ -4,12 +4,13 @@
     "C": {
       "item": "creatingspace:combustion_chamber"
     },
-    "B": {
+    "B" : {
       "item": "creatingspace:bell_nozzle"
     },
-    "R": {
+    "R" : {
       "item": "create:redstone_link"
     }
+
   },
   "pattern": [
     " R ",

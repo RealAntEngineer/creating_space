@@ -6,15 +6,16 @@
   "loops": 2,
   "results": [
     {
-      "chance": 120,
+      "chance": 120.0,
       "item": "creatingspace:reinforced_injector"
     },
     {
-      "chance": 8,
+      "chance": 8.0,
       "item": "creatingspace:cobalt_nugget"
     }
   ],
   "sequence": [
+
     {
       "type": "create:deploying",
       "ingredients": [
@@ -34,14 +35,10 @@
     {
       "type": "create:pressing",
       "ingredients": [
-        {
-          "item": "creatingspace:injector"
-        }
+        {"item": "creatingspace:injector"}
       ],
       "results": [
-        {
-          "item": "creatingspace:injector"
-        }
+        {"item": "creatingspace:injector"}
       ]
     }
   ],
