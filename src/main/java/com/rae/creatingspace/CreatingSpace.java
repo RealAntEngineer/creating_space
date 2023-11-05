@@ -10,6 +10,7 @@ import com.rae.creatingspace.init.graphics.DimensionEffectInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
+import com.rae.creatingspace.server.contraption.CSContraptionType;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.TagGen;
 import com.simibubi.create.infrastructure.config.AllConfigs;
@@ -45,6 +46,8 @@ public class CreatingSpace {
         BlockEntityInit.register();
         EntityInit.register();
         FluidInit.register();
+
+        CSContraptionType.prepare();
 
         CreativeModeTabsInit.register(bus);
 

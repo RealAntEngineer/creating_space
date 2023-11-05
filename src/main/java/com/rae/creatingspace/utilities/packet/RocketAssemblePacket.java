@@ -18,7 +18,7 @@ public class RocketAssemblePacket extends BlockEntityConfigurationPacket<RocketC
     public RocketAssemblePacket(BlockPos pos, Boolean assembleNextTick) {
         super(pos);
         this.assembleNextTick = assembleNextTick;
-    };
+    }
     public RocketAssemblePacket(FriendlyByteBuf buffer) {
         super(buffer);
     }

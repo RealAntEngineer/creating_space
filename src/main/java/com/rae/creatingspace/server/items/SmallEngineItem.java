@@ -1,15 +1,22 @@
 package com.rae.creatingspace.server.items;
 
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.RocketEngineBlock;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class SmallEngineItem extends RocketEngineItem {
     public SmallEngineItem(Block p_40565_, Properties p_40566_) {
@@ -23,10 +30,7 @@ public class SmallEngineItem extends RocketEngineItem {
         Direction facing = pContext.getClickedFace();
         BlockPos mainPos = pContext.getClickedPos().offset(main.getOffset(facing));
 
-        if (!lvl.getBlockState(mainPos).isAir() || !lvl.getBlockState(mainPos.below()).isAir())
-            return false;
-
-        return true;
+        return lvl.getBlockState(mainPos).isAir() && lvl.getBlockState(mainPos.below()).isAir();
     }
 
     @Override
@@ -45,5 +49,12 @@ public class SmallEngineItem extends RocketEngineItem {
         }
 
         return true;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+
+        appendEngineDependentText(components,CSConfigs.SERVER.rocketEngine.methaloxISP.get(),CSConfigs.SERVER.rocketEngine.smallRocketEngineTrust.get());
+        super.appendHoverText(itemStack, level, components, flag);
     }
 }

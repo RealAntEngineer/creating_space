@@ -99,16 +99,6 @@ public class SmallRocketStructuralBlock extends DirectionalBlock implements IWre
         return IWrenchable.super.onSneakWrenched(state, context);
     }
 
-    @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-                                 BlockHitResult pHit) {
-        if (!stillValid(pLevel, pPos, pState))
-            return InteractionResult.FAIL;
-        if (!(pLevel.getBlockEntity(getMaster(pLevel, pPos, pState))instanceof RocketEngineBlockEntity rebe))
-            return InteractionResult.FAIL;
-        return rebe.onClick(pState,pPos,pPlayer,pHand);
-    }
-
     /*@Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (stillValid(pLevel, pPos, pState)) {

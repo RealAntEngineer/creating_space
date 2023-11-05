@@ -1,7 +1,6 @@
 package com.rae.creatingspace.server.contraption.movementbehaviour;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.server.particle.RocketPlumeParticleData;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
@@ -19,8 +18,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
 
     @Override
     public boolean isActive(MovementContext context) {
-        RocketContraptionEntity rocketEntity = (RocketContraptionEntity) context.contraption.entity;
-        return MovementBehaviour.super.isActive(context) && (context.contraption instanceof RocketContraption) && rocketEntity.getEntityData().get(RocketContraptionEntity.SPEED_ENTITY_DATA_ACCESSOR)>=0;
+        return MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && !rocketEntity.isReentry();
     }
 
     @Override

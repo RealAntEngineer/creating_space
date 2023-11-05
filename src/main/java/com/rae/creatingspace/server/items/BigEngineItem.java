@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.items;
 
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.RocketEngineBlock;
@@ -7,10 +8,17 @@ import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class BigEngineItem extends RocketEngineItem{
     public BigEngineItem(Block p_40565_, Properties p_40566_) {
@@ -56,27 +64,7 @@ public class BigEngineItem extends RocketEngineItem{
                         lvl.setBlock(place, pState, 11);
                     } else {
                         BlockPos pos = place.offset(x, y, z);
-                        Direction ghostFacing;
-                        if (x == 0 && z == 0) {
-                            if (y == -1) {
-                                ghostFacing = Direction.UP;
-                            } else {
-                                ghostFacing = Direction.DOWN;
-                            }
-                        }
-                        else if (x<0){
-                            ghostFacing = Direction.EAST;
-                        }
-                        else if (x>0){
-                            ghostFacing = Direction.WEST;
-                        }
-                        else if (z>0){
-                            ghostFacing = Direction.NORTH;
-
-                        }
-                        else {
-                            ghostFacing = Direction.SOUTH;
-                        }
+                        Direction ghostFacing = getGhostDirection(x, z, y);
 
                         BlockState ghostState = BlockInit.BIG_ENGINE_STRUCTURAL.getDefaultState()
                                     .setValue(BigRocketStructuralBlock.FACING, ghostFacing);
@@ -91,5 +79,39 @@ public class BigEngineItem extends RocketEngineItem{
             lvl.addFreshEntity(entity);
         }
         return true;
+    }
+
+    @NotNull
+    private static Direction getGhostDirection(int x, int z, int y) {
+        Direction ghostFacing;
+        if (x == 0 && z == 0) {
+            if (y == -1) {
+                ghostFacing = Direction.UP;
+            } else {
+                ghostFacing = Direction.DOWN;
+            }
+        }
+        else if (x <0){
+            ghostFacing = Direction.EAST;
+        }
+        else if (x >0){
+            ghostFacing = Direction.WEST;
+        }
+        else if (z >0){
+            ghostFacing = Direction.NORTH;
+
+        }
+        else {
+            ghostFacing = Direction.SOUTH;
+        }
+        return ghostFacing;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+        appendEngineDependentText(components, CSConfigs.SERVER.rocketEngine.methaloxISP.get(),
+                CSConfigs.SERVER.rocketEngine.bigRocketEngineTrust.get());
+
+        super.appendHoverText(itemStack, level, components, flag);
     }
 }

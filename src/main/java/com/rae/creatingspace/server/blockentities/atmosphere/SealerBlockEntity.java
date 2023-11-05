@@ -44,7 +44,7 @@ public class SealerBlockEntity extends KineticBlockEntity {
     private int range = 10;
 
     public void oxygenBlockChanged() {
-        this.oxygenBlockChange =true;
+        this.oxygenBlockChange = true;
     }
 
     public void setTrying(boolean trying) {
@@ -116,8 +116,7 @@ public class SealerBlockEntity extends KineticBlockEntity {
             } else {
                 pos = toVisit.get(0);
                 toVisit.remove(0);
-                //System.out.println(toVisit);
-                // add the visited block to the world
+
                 BlockState newBlock = BlockInit.OXYGEN.getDefaultState()
                         .setValue(OxygenBlock.BREATHABLE, false);
                 level.setBlockAndUpdate(pos, newBlock);
@@ -151,8 +150,6 @@ public class SealerBlockEntity extends KineticBlockEntity {
 
         if (!level.isClientSide()){
 
-            boolean conditionAreMeet = false;
-
             prevO2amount = o2amount;
             o2amount = OXYGEN_TANK.getFluidAmount();
             setChanged();
@@ -165,7 +162,6 @@ public class SealerBlockEntity extends KineticBlockEntity {
             if (Math.abs(getSpeed())>=speedRequirement(nbrOfBlock) && OXYGEN_TANK.getFluidAmount()>= o2consumption(nbrOfBlock) ){
 
                 OXYGEN_TANK.drain(o2consumption(nbrOfBlock), IFluidHandler.FluidAction.EXECUTE);
-                conditionAreMeet = true;
                 tickSealingLogic(level,worldPos,sealerState);
 
             }
@@ -176,16 +172,6 @@ public class SealerBlockEntity extends KineticBlockEntity {
                 setTrying(automaticRetry);
             }
 
-            /*if (conditionAreMeet) {
-                //level.sendBlockUpdated(worldPos,sealerState,sealerState,2);
-                tickSealingLogic(level,worldPos,sealerState);
-            }
-            else {
-                unSealRoom();
-                resetRemainingTries();
-                removeO2inRoom(level);
-                setTrying(automaticRetry);
-            }*/
         }
         super.tick();
     }
@@ -198,39 +184,21 @@ public class SealerBlockEntity extends KineticBlockEntity {
                 removeO2inRoom(level);
                 boolean seal;
                 if (level.getBlockState(worldPos.relative(facing)).is(Blocks.AIR)) {
-                    System.out.println(range);
-                    //System.out.println("search room shape");
+
                     seal = isRoomSealable(level, worldPos.relative(facing), worldPos, range);
                 } else {
                     seal = true;
-                    System.out.println("there is a block on top");
                 }
                 if (seal) {
-                    System.out.println("is being sealed");
 
                     // make room breathable if possible
-                    for (BlockPos oxygenPos : oxygenBlockList) {
-                        BlockState state = level.getBlockState(oxygenPos);
-                        if (state.getBlock() instanceof OxygenBlock) {
-                            level.setBlockAndUpdate(oxygenPos, state.setValue(OxygenBlock.BREATHABLE, true));
-                        }
-                    }
-
-                    AllSoundEvents.CONFIRM.playAt(level, worldPos, 0.4f, 1, true);
-
-
-                    lastRoomSize = oxygenBlockList.size();
-
-                    roomIsSealed = true;
-                    setTrying(false);
+                    makeRoomBreathable(level, worldPos);
                     //make every reset after changing O2 states, so it doesn't make the room unseal itself
-                    System.out.println("room is Sealed" + roomIsSealed);
 
                 } else {
                     remainingTries--;
                 }
             } else {
-                System.out.println("fail to seal");
                 removeO2inRoom(level);
                 if (!automaticRetry) {
                     setTrying(false);
@@ -242,10 +210,9 @@ public class SealerBlockEntity extends KineticBlockEntity {
 
                 //lastRoomSize = 0;
             }
-        } else {
+        } else if (roomIsSealed) {
             if (!trying) {
                 if (oxygenBlockChange) {
-                    System.out.println("oxygenBlockChanged");
                     verificationCoolDown = 0;
                     oxygenBlockChange = false;
                 }
@@ -257,17 +224,15 @@ public class SealerBlockEntity extends KineticBlockEntity {
                     Direction facing = sealerState.getValue(SealerBlock.FACING);
                     removeO2inRoom(level);
                     boolean seal = isRoomSealable(level, worldPos.relative(facing), worldPos, range);
-                    System.out.println("is verifying again");
 
                     if (!seal) {
-                        System.out.println("isn't Sealed any more");
                         unSealRoom();
                         resetRemainingTries();
                         removeO2inRoom(level);
                         setTrying(automaticRetry);
                     } else {
-                        //if the room is sealed again look at the automaticRetry
-                        setTrying(automaticRetry);
+                        //extract methode
+                        makeRoomBreathable(level, worldPos);
                     }
                         /*else {
                             //catching the notify master of OxygenBlock
@@ -277,13 +242,31 @@ public class SealerBlockEntity extends KineticBlockEntity {
                             trying = false;
                         }*/
                 }
-            } else {
-                System.out.println("player try sealing an already sealed room");
+            } else if (!isAutomaticRetry()){
                 unSealRoom();
                 resetRemainingTries();
             }
         }
     }
+
+    private void makeRoomBreathable(Level level, BlockPos worldPos) {
+        for (BlockPos oxygenPos : oxygenBlockList) {
+            BlockState state = level.getBlockState(oxygenPos);
+            if (state.getBlock() instanceof OxygenBlock) {
+                level.setBlockAndUpdate(oxygenPos, state.setValue(OxygenBlock.BREATHABLE, true));
+            }
+        }
+
+        AllSoundEvents.CONFIRM.playAt(level, worldPos, 0.4f, 1, true);
+
+
+        lastRoomSize = oxygenBlockList.size();
+
+        roomIsSealed = true;
+        setTrying(false);
+        oxygenBlockChange = false;
+    }
+
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
         super.read(nbt, clientPacket);

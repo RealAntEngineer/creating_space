@@ -4,15 +4,31 @@
     {
       "rolls": 1,
       "bonus_rolls": 0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "creatingspace:rocket_controls"
-        }
-      ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {"type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "initialPosMap",
+                  "target": "initialPosMap"
+                }
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "creatingspace:rocket_controls"
         }
       ]
     }

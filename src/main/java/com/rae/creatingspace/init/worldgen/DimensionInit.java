@@ -59,19 +59,21 @@ public class DimensionInit {
         return 1f;
     }
 
-    public static List<ResourceKey<Level>> accessibleFrom(ResourceKey<Level> currentDimension) {
+    public static HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
         List<String> list = CSConfigs.COMMON.dimAccess.accessibility_matrix.get();
-        HashMap<ResourceKey<Level>, ResourceKey<Level>[]> accessibilityMap = AccessibilityMatrixReader.createFromStringList(list);
+        HashMap<ResourceKey<Level>, HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter>> accessibilityMap = AccessibilityMatrixReader.createFromStringList(list);
 
         if (accessibilityMap.containsKey(currentDimension)){
-            return Arrays.stream(accessibilityMap.get(currentDimension)).toList();
+            return  accessibilityMap.get(currentDimension);
         }
-        return List.of();
+        return new HashMap<>();
     }
 
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
         boolean no_02 = CSConfigs.COMMON.dimAccess.no_02.get().contains(dimension.location().toString());
+        //System.out.println(no_02);
         return !no_02;
+        //return !(dimension == EARTH_ORBIT_KEY || dimension == MOON_ORBIT_KEY || dimension == MOON_KEY);
     }
 
     public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {

@@ -83,9 +83,6 @@
   "item.creatingspace.liquid_oxygen_bucket": "Bucket of Liquid Oxygen",
   "item.creatingspace.liquid_hydrogen_bucket": "Bucket of Liquid Hydrogen",
 
-
-
-
   "fluid.creatingspace.liquid_methane" : "Liquid Methane",
   "fluid.creatingspace.liquid_oxygen" : "Liquid Oxygen",
   "fluid.creatingspace.liquid_hydrogen" : "Liquid Hydrogen",
@@ -110,6 +107,9 @@
   "creatingspace.ponder.synthesizer.text_3": "It produces 100mb of methane every 4 seconds",
 
   "creatingspace.gui.rocket_controls.launch": "Launch",
+  "creatingspace.gui.rocket_controls.send_setting": "Validate",
+  "creatingspace.gui.rocket_controls.destination_cost": "deltaV needed",
+  "creatingspace.gui.rocket_controls.pos_selection": "Pos ?",
   "creatingspace.gui.sealer.try_seal": "Try Sealing",
   "creatingspace.gui.sealer.isSealed": "Is Sealed ?",
   "creatingspace.gui.sealer.settings": "Settings",
@@ -120,6 +120,12 @@
   "creatingspace:the_moon": "The Moon",
   "minecraft:overworld": "The Earth",
 
-  "death.attack.no_oxygen": "%1$s didn't found oxygen in space"
+  "death.attack.no_oxygen": "%1$s didn't found oxygen in space",
+
+  "creatingspace.science.trust": "Trust",
+  "creatingspace.science.unit.newton": "N",
+  "creatingspace.science.isp": "ISP",
+  "creatingspace.science.unit.second": "s",
+  "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t"
 
 }

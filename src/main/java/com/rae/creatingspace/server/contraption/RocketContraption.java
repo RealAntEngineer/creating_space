@@ -1,6 +1,7 @@
 package com.rae.creatingspace.server.contraption;
 
 import com.mojang.logging.LogUtils;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.blockentities.RocketEngineBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
@@ -50,7 +51,8 @@ public class RocketContraption extends TranslatingContraption {
         if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity){
 
             this.trust += engineBlockEntity.getTrust();
-            this.propellantConsumption += engineBlockEntity.getTrust()/(engineBlockEntity.getIsp()*9.81*20)*2;
+            this.propellantConsumption += (float) (engineBlockEntity.getTrust()/(
+                    engineBlockEntity.getIsp()* CSConfigs.SERVER.rocketEngine.ISPModifier.get() *9.81));
         }
         if (blockAdded.defaultBlockState() == AllBlocks.FLUID_TANK.getDefaultState()){
 

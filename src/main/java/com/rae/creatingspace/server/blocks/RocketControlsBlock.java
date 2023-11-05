@@ -8,9 +8,13 @@ import com.simibubi.create.foundation.gui.ScreenOpener;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -35,6 +39,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Optional;
 
 public class RocketControlsBlock extends Block implements IBE<RocketControlsBlockEntity>, TooltipModifier {
 
@@ -102,31 +109,41 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         builder.add(ASSEMBLE_NEXT_TICK);
     }
 
-    //item
-    /*public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        BlockEntity blockentity = level.getBlockEntity(pos);
-        if (blockentity instanceof RocketControlsBlockEntity rocketControlsBlockEntity) {
-            if (!level.isClientSide && player.isCreative() && !rocketControlsBlockEntity.noLocalisation()) {
-                ItemStack itemstack = BlockItem.byBlock(BlockInit.ROCKET_CONTROLS.get()).getDefaultInstance();
-                blockentity.saveToItem(itemstack);
+    @Override
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, entity, stack);
 
-
-                ItemEntity itementity = new ItemEntity(level, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, itemstack);
-                itementity.setDefaultPickUpDelay();
-                level.addFreshEntity(itementity);
-            }
-        }
-
-        super.playerWillDestroy(level, pos, state, player);
-    }*/
-
-    /*public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos pos, BlockState blockState) {
-        ItemStack itemstack = super.getCloneItemStack(blockGetter, pos, blockState);
-        blockGetter.getBlockEntity(pos, BlockEntityInit.CONTROLS.get()).ifPresent((p_187446_) -> {
-            p_187446_.saveToItem(itemstack);
+        if (worldIn.isClientSide)
+            return;
+        withBlockEntityDo(worldIn, pos, be -> {
+            be.setInitialPosMap(RocketControlsBlockEntity.getPosMap( stack.getOrCreateTag().getCompound("initialPosMap")));
+            if (stack.hasCustomHoverName())
+                be.setCustomName(stack.getHoverName());
         });
-        return itemstack;
-    }*/
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos pos, BlockState state) {
+        Item item = asItem();
+
+        ItemStack stack = new ItemStack(item);
+        Optional<RocketControlsBlockEntity> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
+
+        CompoundTag tag = stack.getOrCreateTag();
+        HashMap<String, BlockPos> blockPosHashMap = blockEntityOptional.map(RocketControlsBlockEntity::getInitialPosMap).orElse(null);
+        if(blockPosHashMap!= null){
+            CompoundTag compoundTag = new CompoundTag();
+
+            RocketControlsBlockEntity.putPosMap(blockPosHashMap,compoundTag);
+            tag.put("initialPosMap",compoundTag);
+        }
+        Component customName = blockEntityOptional.map(RocketControlsBlockEntity::getCustomName).orElse(null);
+        if (customName != null)
+            stack.setHoverName(customName);
+
+        stack.setTag(tag);
+        return stack;
+    }
 
     //blockEntity
 

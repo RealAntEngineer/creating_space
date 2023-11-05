@@ -1,9 +1,7 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.utilities.packet.RocketAssemblePacket;
-import com.rae.creatingspace.utilities.packet.SealerSettings;
-import com.rae.creatingspace.utilities.packet.SealerTrySealing;
+import com.rae.creatingspace.utilities.packet.*;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,12 +17,15 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT;
 import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum PacketInit {
     ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket::new, PLAY_TO_SERVER),
-    SEALER_TRY_SEALING(SealerTrySealing .class, SealerTrySealing::new, PLAY_TO_SERVER),
-    SEALER_SETTINGS(SealerSettings .class, SealerSettings::new, PLAY_TO_SERVER);
+    ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
+    SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
+    SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
+    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT);
     public static final ResourceLocation CHANNEL_NAME = CreatingSpace.resource("main");
     public static final int NETWORK_VERSION = 3;
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
