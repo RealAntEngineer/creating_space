@@ -88,7 +88,8 @@ public class BigEngineBlock extends RocketEngineBlock implements IBE<BigEngine> 
 
 	private boolean isRightState(BlockState ghostState, BlockState blockState) {
 		if(blockState.is(ghostState.getBlock()))
-			return blockState.getValue(FACING) == ghostState.getValue(FACING);
+			return blockState.getValue(BigRocketStructuralBlock.FACING) ==
+					ghostState.getValue(BigRocketStructuralBlock.FACING);
 		return false;
 	}
 }

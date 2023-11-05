@@ -5,7 +5,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
-import com.simibubi.create.AllParticleTypes;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.Vec3i;

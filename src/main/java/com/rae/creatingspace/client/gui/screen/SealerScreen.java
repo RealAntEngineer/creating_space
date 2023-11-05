@@ -2,29 +2,21 @@ package com.rae.creatingspace.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.client.gui.screen.elements.DimSelectBoxWidget;
+import com.rae.creatingspace.client.gui.screen.elements.BackgroundScrollInput;
 import com.rae.creatingspace.client.gui.screen.elements.SliderWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.blockentities.atmosphere.SealerBlockEntity;
 import com.rae.creatingspace.utilities.packet.SealerSettings;
 import com.rae.creatingspace.utilities.packet.SealerTrySealing;
 import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllIcons;
-import com.simibubi.create.foundation.gui.Theme;
 import com.simibubi.create.foundation.gui.widget.*;
-import com.simibubi.create.foundation.utility.Color;
-import com.simibubi.create.foundation.utility.Couple;
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
-
-import java.util.List;
-import java.util.Vector;
 
 public class SealerScreen extends AbstractSimiScreen {
 
@@ -34,8 +26,8 @@ public class SealerScreen extends AbstractSimiScreen {
     private SliderWidget o2Gauge;
     private IconButton settingButton;
     private Indicator settingIndicator;
-    private IconButton setRangeButton;
     private ScrollInput setRangeInput;
+    private Label setRangeLabel;
     private IconButton setRetryButton;
     private Indicator retryIndicator;
     private final SealerBlockEntity blockEntity;
@@ -43,15 +35,15 @@ public class SealerScreen extends AbstractSimiScreen {
 
     //for settings
 
-    private int rangeSettings = 10;
-    private boolean retrySettings = false;
+    private int rangeSetting = 10;
+    private boolean retrySetting = false;
 
 
     public SealerScreen(SealerBlockEntity be) {
         super(Lang.translateDirect("gui.destination_screen.title"));
         this.blockEntity = be;
-        this.retrySettings = be.isAutomaticRetry();
-        this.rangeSettings = be.getRange();
+        this.retrySetting = be.isAutomaticRetry();
+        this.rangeSetting = be.getRange();
         this.background = GuiTexturesInit.SEALER_BACKGROUND;
     }
 
@@ -63,7 +55,7 @@ public class SealerScreen extends AbstractSimiScreen {
         int y = guiTop;
 
         startButton = new Button(x + 153,y + 100,16*4,20,
-                Component.translatable(CreatingSpace.MODID+".try_seal"),
+                Component.translatable("creatingspace.gui.sealer.try_seal"),
         ($) -> {
             PacketInit.getChannel().sendToServer(SealerTrySealing.trySealing(blockEntity.getBlockPos()));
         });
@@ -72,46 +64,47 @@ public class SealerScreen extends AbstractSimiScreen {
 
         settingButton = new IconButton(x+6,y+100, AllIcons.I_PLACEMENT_SETTINGS);
         settingButton.withCallback(this::switchSetting);
-        settingButton.setToolTip(Component.literal("settings"));
+        settingButton.setToolTip(Component.translatable("creatingspace.gui.sealer.settings"));
 
-        setRangeButton = new IconButton(x+30,y+100, AllIcons.I_PLACEMENT_SETTINGS);
-        setRangeButton.withCallback(
-                () -> {
-                    rangeSettings = 10;
-                    sendSettings(blockEntity.getBlockPos());
-                }
-        );
-        setRangeButton.visible = false;
+        setRangeLabel = new Label(x + 80, y + 100+9-4, Components.immutableEmpty()).withShadow();
 
-        setRangeInput = new ScrollInput(x+60,y+100,64,18);
+
+        setRangeInput = new BackgroundScrollInput(x+70,y+100,64,18);
         setRangeInput
                 .withRange(0,1000)
+                .writingTo(setRangeLabel)
+                .titled(Component.translatable("creatingspace.gui.sealer.range"))
                 .calling(
                 value -> {
-                    rangeSettings = value;
+                    rangeSetting = value;
                     sendSettings(blockEntity.getBlockPos());
                 })
-                .writingTo(new Label(x+60,x+100,Component.literal("range")))
-                .setState(rangeSettings);
+                .setState(rangeSetting);
+
         setRangeInput.visible = false;
+        setRangeInput.active = false;
+        setRangeLabel.visible = false;
+        setRangeInput.onChanged();
         addRenderableWidget(setRangeInput);
+        addRenderableWidget(setRangeLabel);
 
         setRetryButton = new IconButton(x+48,y+100, AllIcons.I_PLACEMENT_SETTINGS);
         setRetryButton.withCallback(
                 () -> {
-                    retrySettings = !retrySettings;
+                    retrySetting = !retrySetting;
+                    System.out.println(retrySetting);
                     sendSettings(blockEntity.getBlockPos());
                 }
         );
         setRetryButton.visible = false;
 
         addRenderableWidget(settingButton);
-        addRenderableWidget(setRangeButton);
+        //addRenderableWidget(setRangeButton);
         addRenderableWidget(setRetryButton);
 
-        settingIndicator = new Indicator(x+6,y+94,Component.literal("isSetting"));
+        settingIndicator = new Indicator(x+6,y+94,Component.translatable("creatingspace.gui.sealer.settings"));
 
-        retryIndicator = new Indicator(x+48,y+94,Component.literal("retry"));
+        retryIndicator = new Indicator(x+48,y+94,Component.translatable("creatingspace.gui.sealer.automatic_retry"));
 
         retryIndicator.visible = false;
 
@@ -122,8 +115,7 @@ public class SealerScreen extends AbstractSimiScreen {
 
         addRenderableWidget(o2Gauge);
 
-        sealedIndicator = new Indicator(x+199,y+94,Component.translatable("creatingspace.isSealed"));
-
+        sealedIndicator = new Indicator(x+199,y+94,Component.translatable("creatingspace.gui.sealer.isSealed"));
         addRenderableWidget(sealedIndicator);
         //add boolean in SealerBlockEntity -> trySealing
     }
@@ -139,8 +131,7 @@ public class SealerScreen extends AbstractSimiScreen {
 
         boolean roomIsSealed = blockEntity.roomIsSealed;
         sealedIndicator.state = roomIsSealed ? Indicator.State.GREEN : Indicator.State.RED;
-        retryIndicator.state = retrySettings ? Indicator.State.GREEN : Indicator.State.RED;
-
+        retryIndicator.state = retrySetting ? Indicator.State.GREEN : Indicator.State.RED;
 
 
         startButton.active = !blockEntity.isTrying();
@@ -153,15 +144,14 @@ public class SealerScreen extends AbstractSimiScreen {
 
         font.draw(ms,
                 String.valueOf(nbrOfBlock),
-                x + 139, y + 56, 0xFFFFFF);
+                x + 139, y + 55, 0xFFFFFF);
         font.draw(ms,
                 String.valueOf(SealerBlockEntity.o2consumption(nbrOfBlock)),
-                x + 73, y + 44, 0xFFFFFF);
+                x + 73, y + 43, 0xFFFFFF);
         int speedRequirement = SealerBlockEntity.speedRequirement(nbrOfBlock);
         font.draw(ms,
                 String.valueOf(speedRequirement),
-                x + 73, y + 65, Math.abs(speed) >= speedRequirement ? 0x00FF55: 0xFF5500);
-
+                x + 73, y + 66, Math.abs(speed) >= speedRequirement ? 0x00FF55: 0xFF5500);
         ms.popPose();
 
     }
@@ -172,8 +162,11 @@ public class SealerScreen extends AbstractSimiScreen {
 
         settingIndicator.state = isSetting ? Indicator.State.ON : Indicator.State.OFF;
 
-        setRangeButton.visible = isSetting;
+        //setRangeButton.visible = isSetting;
         setRangeInput.visible = isSetting;
+        setRangeInput.active = isSetting;
+        setRangeLabel.visible = isSetting;
+
         setRetryButton.visible = isSetting;
         retryIndicator.visible = isSetting;
 
@@ -183,6 +176,6 @@ public class SealerScreen extends AbstractSimiScreen {
         PacketInit.getChannel()
                 .sendToServer(
                         SealerSettings
-                                .sendSettings(blockEntityPos,rangeSettings,retrySettings));
+                                .sendSettings(blockEntityPos, rangeSetting, retrySetting));
     }
 }

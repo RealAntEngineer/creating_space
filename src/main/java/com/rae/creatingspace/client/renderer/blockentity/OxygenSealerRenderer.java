@@ -57,8 +57,6 @@ public class OxygenSealerRenderer extends KineticBlockEntityRenderer<SealerBlock
                 CachedBufferer.partialFacing(AllPartialModels.ENCASED_FAN_INNER, be.getBlockState(), direction.getOpposite());
         kineticRotationTransform(fanInner, be, direction.getAxis(), angle, lightInFront).renderInto(ms, vb);
         ms.popPose();
-
-        System.out.println(ms);
     }
 
 }

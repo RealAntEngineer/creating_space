@@ -2,13 +2,13 @@
 	"credit": "Made with Blockbench",
 	"parent": "creatingspace:block/createblock",
 	"textures": {
-		"2": "creatingspace:blocks/oxygen_sealer/gearbox2",
-		"fan_casing": "creatingspace:blocks/oxygen_sealer/fan_casing2",
-		"particle": "creatingspace:blocks/oxygen_sealer/fan_side2",
-		"fan_side": "creatingspace:blocks/oxygen_sealer/fan_side2",
-		"axis_top": "creatingspace:blocks/oxygen_sealer/axis_top",
-		"fan_blades": "creatingspace:blocks/oxygen_sealer/fan_blades",
-		"axis": "creatingspace:blocks/oxygen_sealer/axis"
+		"2": "creatingspace:block/oxygen_sealer/gearbox",
+		"fan_casing": "creatingspace:block/oxygen_sealer/fan_casing",
+		"particle": "creatingspace:block/oxygen_sealer/fan_side",
+		"fan_side": "creatingspace:block/oxygen_sealer/fan_side",
+		"axis_top": "creatingspace:block/oxygen_sealer/axis_top",
+		"fan_blades": "creatingspace:block/oxygen_sealer/fan_blades",
+		"axis": "creatingspace:block/oxygen_sealer/axis"
 	},
 	"elements": [
 		{
@@ -128,8 +128,8 @@
 				"east": {"uv": [2, 0, 14, 2], "rotation": 90, "texture": "#fan_side"},
 				"south": {"uv": [2, 0, 14, 2], "rotation": 90, "texture": "#fan_side"},
 				"west": {"uv": [2, 0, 14, 2], "rotation": 270, "texture": "#fan_side"},
-				"up": {"uv": [0, 0, 2, 2], "texture": "#missing"},
-				"down": {"uv": [0, 0, 2, 2], "rotation": 180, "texture": "#missing"}
+				"up": {"uv": [0, 0, 2, 2], "texture": "#fan_side"},
+				"down": {"uv": [0, 0, 2, 2], "rotation": 180, "texture": "#fan_side"}
 			}
 		},
 		{
@@ -141,8 +141,8 @@
 				"east": {"uv": [2, 0, 14, 2], "rotation": 90, "texture": "#fan_side"},
 				"south": {"uv": [0, 0, 2, 12], "texture": "#fan_side"},
 				"west": {"uv": [2, 0, 14, 2], "rotation": 270, "texture": "#fan_side"},
-				"up": {"uv": [0, 0, 2, 2], "texture": "#missing"},
-				"down": {"uv": [0, 0, 2, 2], "rotation": 180, "texture": "#missing"}
+				"up": {"uv": [0, 0, 2, 2], "texture": "#fan_side"},
+				"down": {"uv": [0, 0, 2, 2], "rotation": 180, "texture": "#fan_side"}
 			}
 		},
 		{

@@ -3,8 +3,8 @@
 	"parent": "creatingspace:block/1_2_1_block",
 	"texture_size": [64, 64],
 	"textures": {
-		"6": "creatingspace:blocks/small_rocket_engine/nozzle_passive",
-		"7": "creatingspace:blocks/small_rocket_engine/chamber",
+		"6": "creatingspace:block/small_rocket_engine/nozzle_passive",
+		"7": "creatingspace:block/small_rocket_engine/chamber",
 		"particle": "create:block/copper_casing"
 	},
 	"elements": [

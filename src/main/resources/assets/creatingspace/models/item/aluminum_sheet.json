@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/aluminum_sheet"
+    "layer0":"creatingspace:item/aluminum_sheet"
   }
 }

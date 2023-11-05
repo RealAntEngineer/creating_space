@@ -3,7 +3,7 @@ package com.rae.creatingspace.client.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.client.gui.screen.elements.SliderWidget;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
-import com.rae.creatingspace.server.armor.PureOxygenBacktank;
+import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +30,7 @@ public class RemainingO2Overlay implements IGuiOverlay {
 
         ItemStack itemInChestSlot = player.getItemBySlot(EquipmentSlot.CHEST);
 
-        if (itemInChestSlot.getItem() instanceof PureOxygenBacktank){
+        if (itemInChestSlot.getItem() instanceof OxygenBacktankItem){
             CompoundTag tag = itemInChestSlot.getOrCreateTag();
             float o2Value = tag.getFloat("Oxygen");
             float prevO2Value =  tag.getFloat("prevOxygen");

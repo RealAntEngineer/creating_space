@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/reinforced_injector_grid"
+    "layer0":"creatingspace:item/reinforced_injector_grid"
   }
 }

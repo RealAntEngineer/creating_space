@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/cobalt_nugget"
+    "layer0":"creatingspace:item/cobalt_nugget"
   }
 }

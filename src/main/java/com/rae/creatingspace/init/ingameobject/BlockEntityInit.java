@@ -3,7 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.rae.creatingspace.client.renderer.blockentity.FlowGaugeBlockRenderer;
 import com.rae.creatingspace.client.renderer.blockentity.MechanicalElectrolyserBlockRenderer;
 import com.rae.creatingspace.client.renderer.blockentity.OxygenSealerRenderer;
-import com.rae.creatingspace.client.renderer.blockentity.RocketMotorBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.RocketGeneratorBlockRenderer;
 import com.rae.creatingspace.client.renderer.instance.OxygenSealerInstance;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.server.blockentities.*;
@@ -27,14 +27,19 @@ public class BlockEntityInit {
 
     public static final BlockEntityEntry<OxygenBacktankBlockEntity> OXYGEN_BACKTANK =
             REGISTRATE.blockEntity("oxygen_backtank",OxygenBacktankBlockEntity::new)
-                    .validBlocks(BlockInit.COPPER_OXYGEN_BACKTANK)
+                    .validBlocks(BlockInit.COPPER_OXYGEN_BACKTANK,BlockInit.NETHERITE_OXYGEN_BACKTANK)
                     .register();
 
-    public static final BlockEntityEntry<RocketMotorBlockEntity> ROCKET_MOTOR =
-            REGISTRATE.blockEntity("rocket_motor", RocketMotorBlockEntity::new )
+    public static final BlockEntityEntry<CryogenicTankBlockEntity> CRYOGENIC_TANK =
+            REGISTRATE.blockEntity("cryogenic_tank", CryogenicTankBlockEntity::new)
+                    .validBlocks(BlockInit.CRYOGENIC_TANK)
+                    .register();
+
+    public static final BlockEntityEntry<RocketGeneratorBlockEntity> ROCKET_GENERATOR =
+            REGISTRATE.blockEntity("rocket_generator", RocketGeneratorBlockEntity::new )
                     .instance(() -> ShaftInstance::new, false)
-                    .validBlocks(BlockInit.ROCKET_MOTOR)
-                    .renderer(() -> RocketMotorBlockRenderer::new)
+                    .validBlocks(BlockInit.ROCKET_GENERATOR)
+                    .renderer(() -> RocketGeneratorBlockRenderer::new)
                     .register();
 
     public static final BlockEntityEntry<ChemicalSynthesizerBlockEntity> SYNTHESIZER =

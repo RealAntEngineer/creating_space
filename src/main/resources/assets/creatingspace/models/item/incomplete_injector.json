@@ -2,6 +2,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/transition_items/incomplete_injector"
+    "layer0":"creatingspace:item/transition_items/incomplete_injector"
   }
 }

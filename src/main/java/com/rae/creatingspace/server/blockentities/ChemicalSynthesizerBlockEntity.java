@@ -149,8 +149,8 @@ public class ChemicalSynthesizerBlockEntity extends BlockEntity /*implements Men
 
 
 
-
-    private final ContainerData data = new ContainerData() {
+    //to delete
+    /*private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
             return switch (index) {
@@ -177,7 +177,7 @@ public class ChemicalSynthesizerBlockEntity extends BlockEntity /*implements Men
 
     public ContainerData getContainerData() {
         return this.data;
-    }
+    }*/
 
     public ItemStackHandler getInventory() {
         return inventory;

@@ -3,7 +3,7 @@
 	"parent": "creatingspace:item/3d_items",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "creatingspace:items/starter_charge"
+		"1": "creatingspace:item/starter_charge"
 	},
 	"elements": [
 		{

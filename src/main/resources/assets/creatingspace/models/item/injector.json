@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/injector"
+    "layer0":"creatingspace:item/injector"
   }
 }

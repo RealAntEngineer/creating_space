@@ -100,15 +100,6 @@ public class BigRocketStructuralBlock extends DirectionalBlock implements IWrenc
         return IWrenchable.super.onSneakWrenched(state, context);
     }
 
-    @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-                                 BlockHitResult pHit) {
-        if (!stillValid(pLevel, pPos, pState))
-            return InteractionResult.FAIL;
-        if (!(pLevel.getBlockEntity(getMaster(pLevel, pPos, pState))instanceof RocketEngineBlockEntity rebe))
-            return InteractionResult.FAIL;
-        return rebe.onClick(pState,pPos,pPlayer,pHand);
-    }
 
     /*@Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
@@ -151,23 +142,21 @@ public class BigRocketStructuralBlock extends DirectionalBlock implements IWrenc
         BlockState targetedState;
         BlockPos targetedPos = pos;
 
-        while (!posDiscovered.contains(pos) && posDiscovered.size() < 10) {
+        while (posDiscovered.size() < 10) {
             targetedState = level.getBlockState(targetedPos);
             if (targetedState.is(BlockInit.BIG_ENGINE_STRUCTURAL.get())) {
                 posDiscovered.add(targetedPos);
-            }
-            else if (targetedState.is(BlockInit.BIG_ROCKET_ENGINE.get())){
+            } else if (targetedState.is(BlockInit.BIG_ROCKET_ENGINE.get())) {
                 return targetedPos;
             }
             if (targetedState.hasProperty(FACING)) {
-                Direction direction = level.getBlockState(targetedPos).getValue(FACING);
-                targetedPos = pos.relative(direction);
-            }
-            else {
+                Direction direction = targetedState.getValue(FACING);
+                targetedPos = targetedPos.relative(direction);
+            } else {
                 return targetedPos;
             }
         }
-        return targetedPos;
+        return pos;
     }
 
 

@@ -1,4 +1,4 @@
 {
   "parent": "block/cube_all",
-  "textures": {"all": "creatingspace:blocks/moon_nickel_ore"}
+  "textures": {"all": "creatingspace:block/moon_nickel_ore"}
 }

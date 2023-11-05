@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/cobalt_ingot"
+    "layer0":"creatingspace:item/cobalt_ingot"
   }
 }

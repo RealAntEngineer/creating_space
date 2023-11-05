@@ -4,8 +4,8 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"particle":"create:block/copper_casing",
-		"6": "creatingspace:blocks/small_rocket_engine/nozzle",
-		"7": "creatingspace:blocks/small_rocket_engine/chamber"
+		"6": "creatingspace:block/small_rocket_engine/nozzle",
+		"7": "creatingspace:block/small_rocket_engine/chamber"
 	},
 	"elements": [
 		{

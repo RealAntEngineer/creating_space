@@ -34,8 +34,10 @@ public class OxygenBacktankUtil {
 		addOxygenBacktankSupplier(entity -> {
 			List<ItemStack> stacks = new ArrayList<>();
 			for (ItemStack itemStack : entity.getArmorSlots())
-				if (TagsInit.CustomItemTags.OXYGEN_SOURCES.matches(itemStack))
+				if (TagsInit.CustomItemTags.OXYGEN_SOURCES.matches(itemStack)) {
 					stacks.add(itemStack);
+					System.out.println(itemStack.getItem());
+				}
 
 			return stacks;
 		});

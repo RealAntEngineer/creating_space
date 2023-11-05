@@ -3,8 +3,8 @@
 	"parent": "creatingspace:block/createblock",
 	"textures": {
 		"particle":"create:block/copper_casing",
-		"4": "creatingspace:blocks/rocket_controls/controls_frame",
-		"1_7": "creatingspace:blocks/rocket_controls/controls"
+		"4": "creatingspace:block/rocket_controls/controls_frame",
+		"1_7": "creatingspace:block/rocket_controls/controls"
 	},
 	"elements": [
 		{

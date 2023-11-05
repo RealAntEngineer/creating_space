@@ -1,6 +1,6 @@
 {
   "type": "forge:add_features",
   "biomes":"#creatingspace:is_moon",
-  "features":"creatingspace:nickel_moon_ore",
+  "features":"creatingspace:moon_nickel_ore",
   "step":"underground_ores"
 }

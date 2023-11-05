@@ -1,9 +1,9 @@
 {   "parent": "block/block",
   "textures": {
-    "particle": "creatingspace:blocks/moon_regolith",
-    "bottom": "creatingspace:blocks/moon_regolith",
-    "top": "creatingspace:blocks/moon_surface_regolith",
-    "side": "creatingspace:blocks/moon_surface_regolith_side"
+    "particle": "creatingspace:block/moon_regolith",
+    "bottom": "creatingspace:block/moon_regolith",
+    "top": "creatingspace:block/moon_surface_regolith",
+    "side": "creatingspace:block/moon_surface_regolith_side"
   },
   "elements": [
     {   "from": [ 0, 0, 0 ],

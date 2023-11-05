@@ -1,4 +1,4 @@
 {
   "parent": "block/cube_all",
-  "textures": {"all": "creatingspace:blocks/raw_aluminum_block"}
+  "textures": {"all": "creatingspace:block/raw_aluminum_block"}
 }

@@ -1,6 +1,7 @@
 package com.rae.creatingspace.server.blockentities;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.RocketControlsBlock;
 import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
@@ -12,6 +13,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -22,7 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions/*implements MenuProvider*/ {
-
+    private final Component defaultName;
+    private Component customName;
     protected AssemblyException lastException;
 
     private boolean assembleNextTick = false;
@@ -30,10 +33,25 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisp
 
     public HashMap<String,BlockPos> initialPosMap = new HashMap<>();
 
-    public static final Component TITLE = Component.translatable("container."+ CreatingSpace.MODID +".rocket_controls");
+
     public RocketControlsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type,pos, state);
+        defaultName = getDefaultName();
     }
+    public static Component getDefaultName() {
+
+        return BlockInit.ROCKET_CONTROLS.get().getName();
+    }
+
+    public void setCustomName(Component customName) {
+        this.customName = customName;
+        notifyUpdate();
+    }
+
+    public Component getCustomName() {
+        return customName;
+    }
+
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
@@ -90,7 +108,8 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisp
             destination = Level.OVERWORLD;
         }
 
-        RocketContraptionEntity rocketContraptionEntity = RocketContraptionEntity.create(level, contraption, destination);
+        RocketContraptionEntity rocketContraptionEntity =
+                RocketContraptionEntity.create(level, contraption, destination);
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
         if(initialPosMap.containsKey(destination.toString())){
@@ -105,53 +124,57 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisp
     public void tick() {
         super.tick();
 
-        if (level.isClientSide)
-            return;
+        if (!this.initialPosMap.containsKey(this.level.dimension().toString())) {
+            this.initialPosMap.put(this.level.dimension().toString(),this.getBlockPos());
+        }
+
 
         if (assembleNextTick) {
             assemble();
             assembleNextTick = false;
         }
-        if (!this.initialPosMap.containsKey(this.level.dimension().toString())) {
-            this.initialPosMap.put(this.level.dimension().toString(),this.getBlockPos());
-        }
+
     }
 
     @Override
     protected void write(CompoundTag compound, boolean clientPacket) {
         AssemblyException.write(compound, lastException);
+        compound.put("initialPosMap",putPosMap(this.initialPosMap,new CompoundTag()));
 
-        this.putPosMap(this.initialPosMap,compound);
 
         super.write(compound, clientPacket);
     }
 
-    private void putPosMap(HashMap<String,BlockPos> initialPosMap, CompoundTag compound) {
-
+    public static CompoundTag putPosMap(HashMap<String,BlockPos> initialPosMap, CompoundTag compound) {
+        if (compound==null){
+            compound = new CompoundTag();
+        }
         for (String key : initialPosMap.keySet()) {
                 compound.putLong("dimensionInitialPosOf:" + key,initialPosMap.get(key).asLong());
         }
 
+        return compound;
     }
 
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
         lastException = AssemblyException.read(compound);
 
-        this.initialPosMap = getPosMap(compound);
+        this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
 
         super.read(compound, clientPacket);
     }
 
-    private  HashMap<String,BlockPos> getPosMap(CompoundTag compound) {
+    public static  HashMap<String,BlockPos> getPosMap(CompoundTag compound) {
         HashMap<String,BlockPos> initialPosMap = new HashMap<>();
 
-
-        for (String key: compound.getAllKeys()) {
-            if(key.contains("dimensionInitialPosOf:")){
-                initialPosMap.put(
+        if (compound!=null){
+            for (String key: compound.getAllKeys()) {
+                if(key.contains("dimensionInitialPosOf:")){
+                    initialPosMap.put(
                         key.substring(22),
                         BlockPos.of(compound.getLong(key)));
+                }
             }
         }
 
@@ -160,5 +183,14 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisp
 
     public boolean noLocalisation() {
         return initialPosMap.isEmpty();
+    }
+
+    public HashMap<String, BlockPos> getInitialPosMap() {
+        return initialPosMap;
+    }
+
+    public void setInitialPosMap(HashMap<String, BlockPos> initialPosMap) {
+        this.initialPosMap = new HashMap<>(initialPosMap);
+        notifyUpdate();
     }
 }

@@ -42,8 +42,8 @@ public class SealerSettings extends BlockEntityConfigurationPacket<SealerBlockEn
 
     @Override
     protected void readSettings(FriendlyByteBuf buffer) {
-        range = buffer.readInt();
         isAutomaticRetry = buffer.readBoolean();
+        range = buffer.readInt();
     }
 
     @Override

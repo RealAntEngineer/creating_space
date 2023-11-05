@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:add",
+  "argument1": "creatingspace:moon/slopped_cheese",
+  "argument2": {
+    "type": "minecraft:range_choice",
+    "input": "creatingspace:moon/slopped_cheese",
+    "min_inclusive": -0.01,
+    "max_exclusive": 10,
+    "when_in_range": "creatingspace:moon/crater_density",
+    "when_out_of_range": 0
+  }
+}
+

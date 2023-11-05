@@ -3,7 +3,7 @@
 	"parent": "creatingspace:item/3d_items",
 	"texture_size": [64, 64],
 	"textures": {
-		"6": "creatingspace:blocks/small_rocket_engine/nozzle"
+		"6": "creatingspace:block/small_rocket_engine/nozzle"
 	},
 	"elements": [
 		{

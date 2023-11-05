@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/sturdy_propeller"
+    "layer0":"creatingspace:item/sturdy_propeller"
   }
 }

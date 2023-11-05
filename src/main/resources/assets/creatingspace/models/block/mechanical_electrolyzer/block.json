@@ -3,7 +3,7 @@
 	"parent": "creatingspace:block/createblock",
 	"texture_size": [64, 64],
 	"textures": {
-		"6": "creatingspace:blocks/mechanical_electrolyzer/copper_casing",
+		"6": "creatingspace:block/mechanical_electrolyzer/copper_casing",
 		"particle":"create:block/copper_casing"
 	},
 	"elements": [

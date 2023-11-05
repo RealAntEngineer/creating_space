@@ -3,9 +3,9 @@
 	"parent": "creatingspace:block/3_3_3_block",
 	"texture_size": [128, 128],
 	"textures": {
-		"3": "creatingspace:blocks/big_rocket_engine/bell_nozzle",
-		"5": "creatingspace:blocks/big_rocket_engine/casing",
-		"particle": "creatingspace:blocks/rocket_casing"
+		"3": "creatingspace:block/big_rocket_engine/bell_nozzle",
+		"5": "creatingspace:block/big_rocket_engine/casing",
+		"particle": "creatingspace:block/rocket_casing"
 	},
 	"elements": [
 		{

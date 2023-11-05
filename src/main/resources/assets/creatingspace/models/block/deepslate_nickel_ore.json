@@ -1,4 +1,4 @@
 {
   "parent": "block/cube_all",
-  "textures": {"all": "creatingspace:blocks/deepslate_nickel_ore"}
+  "textures": {"all": "creatingspace:block/deepslate_nickel_ore"}
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/ghost_block"
+    "layer0":"creatingspace:item/ghost_block"
   }
 }

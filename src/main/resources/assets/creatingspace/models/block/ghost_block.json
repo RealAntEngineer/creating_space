@@ -1,4 +1,4 @@
 {
   "ambientocclusion": false,
-  "particle": "creatingspace:blocks/rocket_casing"
+  "particle": "creatingspace:block/rocket_casing"
 }

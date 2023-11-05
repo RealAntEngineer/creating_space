@@ -1,4 +1,4 @@
 {
   "parent": "block/cube_all",
-  "textures": {"all": "creatingspace:blocks/clamps"}
+  "textures": {"all": "creatingspace:block/clamps"}
 }

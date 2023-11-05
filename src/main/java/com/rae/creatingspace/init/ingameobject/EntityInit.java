@@ -19,7 +19,7 @@ import net.minecraft.world.entity.MobCategory;
 public class EntityInit {
     public static final EntityEntry<RocketContraptionEntity> ROCKET_CONTRAPTION =
             contraption("rocket_contraption", RocketContraptionEntity::new,
-                    () -> RocketContraptionEntityRenderer::new, 15, 3, true)
+                    () -> RocketContraptionEntityRenderer::new, 5, 1, false)
                     .register();
 
 

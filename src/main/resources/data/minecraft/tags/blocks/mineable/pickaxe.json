@@ -15,9 +15,12 @@
     "creatingspace:big_rocket_engine",
     "creatingspace:big_engine_structure",
     "creatingspace:rocket_controls",
-    "creatingspace:rocket_motor",
+    "creatingspace:rocket_generator",
     "creatingspace:chemical_synthesizer",
     "creatingspace:mechanical_electrolyzer",
-    "creatingspace:flow_meter"
+    "creatingspace:flow_meter",
+    "creatingspace:oxygen_sealer",
+    "creatingspace:copper_oxygen_backtank",
+    "creatingspace:cryogenic_tank"
   ]
 }

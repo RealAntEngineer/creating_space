@@ -1,14 +1,12 @@
 package com.rae.creatingspace.server.armor;
 
+import com.rae.creatingspace.init.ShapesInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.equipment.armor.BacktankItem;
-import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -28,7 +26,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -143,7 +140,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	@Override
 	public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos pos, BlockState state) {
 		Item item = asItem();
-		if (item instanceof PureOxygenBacktank.O2BacktankBlockItem placeable) {
+		if (item instanceof OxygenBacktankItem.O2BacktankBlockItem placeable) {
 			item = placeable.getActualItem();
 		}
 
@@ -172,9 +169,9 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState p_220053_1_, BlockGetter p_220053_2_, BlockPos p_220053_3_,
-		CollisionContext p_220053_4_) {
-		return AllShapes.BACKTANK;
+	public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos,
+		CollisionContext collisionContext) {
+		return ShapesInit.OXYGEN_BACKTANK.get(blockState.getValue(FACING));
 	}
 
 	@Override

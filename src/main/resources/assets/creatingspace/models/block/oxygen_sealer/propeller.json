@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"axis_top": "creatingspace:blocks/oxygen_sealer/axis_top",
-		"fan_blades": "creatingspace:blocks/oxygen_sealer/fan_blades",
-		"axis": "creatingspace:blocks/oxygen_sealer/axis"
+		"axis_top": "creatingspace:block/oxygen_sealer/axis_top",
+		"fan_blades": "creatingspace:block/oxygen_sealer/fan_blades",
+		"axis": "creatingspace:block/oxygen_sealer/axis"
 	},
 	"elements": [
 		{

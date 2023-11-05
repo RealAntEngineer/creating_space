@@ -2,6 +2,7 @@ package com.rae.creatingspace.server.event;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.DamageSourceInit;
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
@@ -38,7 +39,7 @@ public class CSEventHandler {
         Level level = entityLiving.getLevel();
         ResourceKey<Level> dimension = level.dimension();
         if (entityLiving instanceof ServerPlayer player){
-            if (DimensionInit.gravity(level.dimensionTypeId())==0){
+            if (DimensionInit.isOrbit(level.dimensionTypeId())){
                 if (!level.isClientSide){
                     if (player.getY() < level.dimensionType().minY()+10){
                         ResourceKey<Level> dimensionToTeleport = DimensionInit.planetUnder(dimension);
@@ -55,7 +56,7 @@ public class CSEventHandler {
         }
 
         if (entityLiving.tickCount % 20 == 0) {
-            if (!isInO2(entityLiving)&&entityLiving.isAttackable()) {
+            if (!isInO2(entityLiving) && entityLiving.isAttackable()) {
                 if (entityLiving instanceof ServerPlayer player)  {
                     if (playerNeedEquipment(player)) {
                         if (checkPlayerO2Equipment(player)) {
@@ -66,7 +67,7 @@ public class CSEventHandler {
 
                         }
                     }
-                }else if (!(entityLiving instanceof Skeleton)) {
+                }else if (!(TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving))) {
                     entityLiving.hurt(DamageSourceInit.NO_OXYGEN, 0.5f);
                 }
             }
@@ -77,9 +78,14 @@ public class CSEventHandler {
 
         ItemStack chestPlate = player.getItemBySlot(EquipmentSlot.CHEST);
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
-        chestPlate.is(AllTags.AllItemTags.PLATES.tag);
-        if ((ItemInit.COPPER_OXYGEN_BACKTANK.isIn(chestPlate))&& OxygenBacktankUtil.hasOxygenRemaining(chestPlate)){
-            return AllItems.NETHERITE_DIVING_HELMET.isIn(helmet) || AllItems.COPPER_DIVING_HELMET.isIn(helmet);
+        ItemStack leggings = player.getItemBySlot(EquipmentSlot.LEGS);
+        ItemStack boots =  player.getItemBySlot(EquipmentSlot.FEET);
+
+        if (TagsInit.CustomItemTags.OXYGEN_SOURCES.matches(chestPlate) && OxygenBacktankUtil.hasOxygenRemaining(chestPlate)){
+            return TagsInit.CustomItemTags.SPACESUIT.matches(chestPlate)&&
+                    TagsInit.CustomItemTags.SPACESUIT.matches(helmet)&&
+                    TagsInit.CustomItemTags.SPACESUIT.matches(leggings)&&
+                    TagsInit.CustomItemTags.SPACESUIT.matches(boots);
         }
 
         return false;
@@ -98,7 +104,7 @@ public class CSEventHandler {
         Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
         for (BlockState state : blockStateStream.toList()) {
             if (state.getBlock() instanceof OxygenBlock){
-                //System.out.println("player is in o2 : " + state.getValue(OxygenBlock.BREATHABLE));
+                System.out.println("player is in o2 : " + state.getValue(OxygenBlock.BREATHABLE));
                 return state.getValue(OxygenBlock.BREATHABLE);
             }
         }

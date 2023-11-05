@@ -1,6 +1,8 @@
 package com.rae.creatingspace.init.worldgen;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.utilities.AccessibilityMatrixReader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -10,11 +12,10 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class DimensionInit {
-
-
     public  static final DeferredRegister<Level> CS_DIMENSION_REGISTRY = DeferredRegister.create(
             Registry.DIMENSION_REGISTRY,
             CreatingSpace.MODID);
@@ -47,9 +48,7 @@ public class DimensionInit {
     public static final ResourceKey<DimensionType> MOON_TYPE =
             ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY,
                     new ResourceLocation(CreatingSpace.MODID,"the_moon"));
-    public static double SpaceSpawnHeight = 64; //make the rocket came from the top rather than hard tp -> for future version
-    public static double PlanetSpawnHeight = 200;
-
+    //make the rocket came from the top rather than hard tp -> for future version
     public static void register(IEventBus bus) {
         CS_DIMENSION_REGISTRY.register(bus);
         System.out.println("Registering Dimension for : "+ CreatingSpace.MODID);
@@ -59,31 +58,30 @@ public class DimensionInit {
         if(dimensionType == EARTH_ORBIT_TYPE){
             return 0f;
         }
-        if (dimensionType ==MOON_ORBIT_TYPE){
+        if (dimensionType == MOON_ORBIT_TYPE){
             return 0f;
         }
         if (dimensionType == MOON_TYPE){
-             return 0.2f;
+             return 1.6f;
         }
-        return 1f;
+        return 9.81f;
     }
 
-    public static List<ResourceKey<Level>> accessibleFrom(ResourceKey<Level> currentDimension) {
-        if (currentDimension == EARTH_ORBIT_KEY){
+    public static HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
+        List<String> list = CSConfigs.COMMON.dimAccess.accessibility_matrix.get();
+        HashMap<ResourceKey<Level>, HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter>> accessibilityMap = AccessibilityMatrixReader.createFromStringList(list);
 
-            return List.of(Level.OVERWORLD,MOON_ORBIT_KEY);
+        if (accessibilityMap.containsKey(currentDimension)){
+            return  accessibilityMap.get(currentDimension);
         }
-        if (currentDimension == MOON_ORBIT_KEY){
-            return List.of(EARTH_ORBIT_KEY,MOON_KEY);
-        }
-        if (currentDimension == MOON_KEY){
-            return List.of(MOON_ORBIT_KEY);
-        }
-        return List.of(EARTH_ORBIT_KEY);
+        return new HashMap<>();
     }
 
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
-        return dimension == Level.OVERWORLD || dimension == Level.END || dimension == Level.NETHER;
+        boolean no_02 = CSConfigs.COMMON.dimAccess.no_02.get().contains(dimension.location().toString());
+        //System.out.println(no_02);
+        return !no_02;
+        //return !(dimension == EARTH_ORBIT_KEY || dimension == MOON_ORBIT_KEY || dimension == MOON_KEY);
     }
 
     public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/nickel_ingot"
+    "layer0":"creatingspace:item/nickel_ingot"
   }
 }

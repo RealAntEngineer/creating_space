@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures":{
-    "layer0":"creatingspace:items/generic_armor_head"
+    "layer0":"creatingspace:item/generic_armor_head"
   }
 }
