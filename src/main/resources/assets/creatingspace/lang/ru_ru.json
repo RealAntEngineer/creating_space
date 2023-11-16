@@ -1,11 +1,11 @@
 {
-  "block.creatingspace.small_rocket_engine": "Маленький двигатель ракеты",
-  "block.creatingspace.big_rocket_engine": "Большой двигатель ракеты",
+  "block.creatingspace.small_rocket_engine": "Маленький ракетный двигатель",
+  "block.creatingspace.big_rocket_engine": "Большой ракетный двигатель",
 
   "block.creatingspace.rocket_controls": "Контроллер ракеты",
-  "block.creatingspace.rocket_motor": "мотор ракеты",
+  "block.creatingspace.rocket_motor": "Мотор ракеты",
   "block.creatingspace.chemical_synthesizer": "Химический синтезатор",
-  "block.creatingspace.mechanical_electrolyzer": "Механический электризер",
+  "block.creatingspace.mechanical_electrolyzer": "Механический электролизёр",
   "block.creatingspace.flow_meter": "Гидрометр",
 
   "block.creatingspace.clamps": "Хомуты",
@@ -14,7 +14,7 @@
 
   "block.creatingspace.moon_stone": "Лунный камень",
   "block.creatingspace.moon_regolith": "Лунная пыль",
-  "block.creatingspace.moon_surface_regolith": "Лунная пыль на поверхности",
+  "block.creatingspace.moon_surface_regolith": "Поверхностная лунная пыль",
 
   "block.creatingspace.nickel_ore": "Никелевая руда",
   "block.creatingspace.deepslate_nickel_ore": "Глубинная никелевая руда",
@@ -31,21 +31,21 @@
 
   "item.creatingspace.incomplete_injector": "Незаконченный инжектор",
   "item.creatingspace.injector_grid": "Инжекторная сетка",
-  "item.creatingspace.reinforced_injector_grid": "Улучшенная Инжекторная сетка",
+  "item.creatingspace.reinforced_injector_grid": "Улучшенная инжекторная сетка",
 
-  "item.creatingspace.incomplete_injector_grid": "Незаконченная Инжекторная сетка",
-  "item.creatingspace.starter_charge": "пороховой заряд",
-  "item.creatingspace.sturdy_propeller": "крепкий пропеллер",
-  "item.creatingspace.combustion_chamber": "Камера згорания",
-  "item.creatingspace.bell_nozzle": "Конусовое сопло",
-  "item.creatingspace.copper_coil":"Медная катушка",
-  "item.creatingspace.basic_catalyst":"Начальный кататализатор",
+  "item.creatingspace.incomplete_injector_grid": "Незаконченная инжекторная сетка",
+  "item.creatingspace.starter_charge": "Пороховой заряд",
+  "item.creatingspace.sturdy_propeller": "Крепкий пропеллер",
+  "item.creatingspace.combustion_chamber": "Камера сгорания",
+  "item.creatingspace.bell_nozzle": "Сопло ракетного двигателя",
+  "item.creatingspace.copper_coil": "Медная катушка",
+  "item.creatingspace.basic_catalyst": "Начальный кататализатор",
 
 
   "item.creatingspace.nickel_ingot": "Слиток никеля",
   "item.creatingspace.nickel_nugget": "Кусочек никеля",
   "item.creatingspace.nickel_sheet": "Никелевая пластина",
-  "item.creatingspace.crushed_nickel_ore": "Дробленный рудный никель",
+  "item.creatingspace.crushed_nickel_ore": "Дробленый рудный никель",
   "item.creatingspace.raw_nickel": "Никелевая руда",
   "item.creatingspace.nickel_dust":"Никелевая пыль",
 
@@ -54,7 +54,7 @@
   "item.creatingspace.cobalt_ingot": "Слиток кобальта",
   "item.creatingspace.cobalt_nugget": "Кусочек кобальта",
   "item.creatingspace.cobalt_sheet": "Кобальтовая пластина",
-  "item.creatingspace.crushed_cobalt_ore": "Дробленный рудный кобальт",
+  "item.creatingspace.crushed_cobalt_ore": "Дробленый рудный кобальт",
   "item.creatingspace.raw_cobalt": "Кобальтовая руда",
 
   "item.creatingspace.aluminum_ingot": "Слиток алюминия",
@@ -74,25 +74,25 @@
 
   "item.creatingspace.space_food": "Космическая еда",
 
-  "itemGroup.machine_tab": "creating space: Машины",
-  "itemGroup.component_tab": "Creating space: компоненты",
-  "itemGroup.minerals_tab": "Creating space: Руды",
+  "itemGroup.machine_tab": "Creating Space: Машины",
+  "itemGroup.component_tab": "Creating Space: Компоненты",
+  "itemGroup.minerals_tab": "Creating Space: Руды",
 
   "container.creatingspace.rocket_controls": "Управление ракетой",
   "container.creatingspace.synthesizer": "Синтез",
 
   "creatingspace.ponder.rocket.header": "Ракеты",
   "creatingspace.ponder.rocket.text_1": "Контроллер ракетой",
-  "creatingspace.ponder.rocket.text_2": "Не забудь поставить сидение или же ты упадешь",
-  "creatingspace.ponder.rocket.text_3": "Заполни баки и ты готов",
+  "creatingspace.ponder.rocket.text_2": "Не забудьте поставить сидения, что бы не упасть",
+  "creatingspace.ponder.rocket.text_3": "Заполни баки ракеты топливом и готово",
 
   "creatingspace.ponder.synthesizer.header": "Создаем метан",
-  "creatingspace.ponder.synthesizer.text_1": "Ты должен положить водород сюда...",
-  "creatingspace.ponder.synthesizer.text_2": "...И положи угольную пыль,потом подожди пока метан создасться",
-  "creatingspace.ponder.synthesizer.text_3": "производительность метана 100mb/4 сек.",
+  "creatingspace.ponder.synthesizer.text_1": "Положи сюда водород...",
+  "creatingspace.ponder.synthesizer.text_2": "...И угольную пыль, после чего начнется синтез",
+  "creatingspace.ponder.synthesizer.text_3": "Производство метана: 25mb в секунду",
 
   "creatingspace.launch": "Запуск!",
-  "creatingspace:earth_orbit": "Орбита змели",
+  "creatingspace:earth_orbit": "Орбита Земли",
   "creatingspace:moon_orbit": "Орбита Луны",
   "creatingspace:the_moon": "Луна",
   "minecraft:overworld": "Земля"
