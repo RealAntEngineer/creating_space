@@ -1,7 +1,7 @@
 package com.rae.creatingspace.server.event;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.init.DamageSourceInit;
+import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
@@ -59,12 +59,12 @@ public class CSEventHandler {
                             ItemStack tank = player.getItemBySlot(EquipmentSlot.CHEST);
                             OxygenBacktankUtil.consumeOxygen(player, tank, 1);
                         } else {
-                            player.hurt(DamageSourceInit.NO_OXYGEN.source(level), 0.5f);
+                            player.hurt(CSDamageSources.no_oxygen(level), 0.5f);
 
                         }
                     }
                 }else if (!(TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving))) {
-                    entityLiving.hurt(DamageSourceInit.NO_OXYGEN.source(level), 0.5f);
+                    entityLiving.hurt(CSDamageSources.no_oxygen(level), 0.5f);
                 }
             }
         }

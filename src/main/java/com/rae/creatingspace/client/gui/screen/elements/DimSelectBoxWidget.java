@@ -46,8 +46,8 @@ public class DimSelectBoxWidget extends BoxWidget {
     }
 
     @Override
-    public void renderButton(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        super.renderButton(graphics, mouseX, mouseY, partialTicks);
+    public void doRender(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.doRender(graphics, mouseX, mouseY, partialTicks);
         if (text == null || text.getString().isEmpty())
             return;
         graphics.drawString(font,text.getString(),getX()+3, (int) (height/2f -4 + getY()),color);

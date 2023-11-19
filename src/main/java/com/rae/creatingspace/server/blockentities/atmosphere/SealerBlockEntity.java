@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.blockentities.atmosphere;
 
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
@@ -78,7 +79,7 @@ public class SealerBlockEntity extends KineticBlockEntity {
         @Override
         public boolean isFluidValid(FluidStack stack) {
             //System.out.println("got a fluid : " + stack.getFluid().getFluidType().getDescriptionId()+ "  " + stack.getAmount());
-            return stack.getFluid() == FluidInit.LIQUID_OXYGEN.get();
+            return TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(stack.getFluid());
         }
     };
     public LazyOptional<IFluidHandler> fluidOptional = LazyOptional.of(()-> this.OXYGEN_TANK);

@@ -38,7 +38,7 @@ public class CreativeModeTabsInit {
             ()->
             CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.creatingspace.machine_tab"))
-                    .withTabsBefore(AllCreativeModeTabs.BUILDING_BLOCKS_TAB.getKey())
+                    .withTabsBefore(AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getKey())
                     .icon(BlockInit.MECHANICAL_ELECTROLYZER::asStack)
                     .displayItems(($1,output)-> {
                         output.accept(BlockInit.CLAMPS);

@@ -13,6 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -71,5 +73,15 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
 
         stack.setTag(tag);
         return stack;
+    }
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide() ? null : ($0,pos,$1,blockEntity) -> {
+            if(blockEntity instanceof CryogenicTankBlockEntity cryogenicTankBlockEntity) {
+                cryogenicTankBlockEntity.tick(level,pos,state,cryogenicTankBlockEntity);
+            }
+
+        };
     }
 }

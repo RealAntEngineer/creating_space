@@ -11,8 +11,8 @@ public class BackgroundScrollInput extends ScrollInput {
     }
 
     @Override
-    public void renderButton(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void doRender(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         GuiTexturesInit.SCROLL_BACKGROUND.render(graphics,getX()-1,getY()-1);
-        super.renderButton(graphics, mouseX, mouseY, partialTicks);
+        super.doRender(graphics, mouseX, mouseY, partialTicks);
     }
 }

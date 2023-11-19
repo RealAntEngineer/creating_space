@@ -23,8 +23,8 @@ public class LabeledBoxWidget extends BoxWidget {
     }
 
     @Override
-    public void renderButton(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        super.renderButton(graphics, mouseX, mouseY, partialTicks);
+    public void doRender(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.doRender(graphics, mouseX, mouseY, partialTicks);
         if (label == null || label.text.getString().isEmpty())
             return;
         label.render(graphics,mouseX,mouseY,partialTicks);
