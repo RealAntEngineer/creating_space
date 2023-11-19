@@ -2,6 +2,7 @@ package com.rae.creatingspace.server.blockentities;
 
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
+import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.blocks.AirLiquefierBlock;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -102,10 +103,9 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         float rot_speed = this.getSpeed();
         boolean isRunning = !blockEntity.isOverStressed();
         boolean enoughSpaceInOTank = blockEntity.OXYGEN_TANK.getSpace()>oxygenProduction(rot_speed)/FluidInit.LIQUID_OXYGEN.getType().getDensity()*1000f;
-
-        return enoughSpaceInOTank && isRunning;
+        boolean isInO2 = DimensionInit.hasO2Atmosphere(blockEntity.level.dimension());
+        return enoughSpaceInOTank && isRunning && isInO2;
     }
-
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
         super.read(nbt, clientPacket);
