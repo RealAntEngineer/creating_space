@@ -2,8 +2,6 @@ package com.rae.creatingspace.datagen;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.DamageSourceInit;
-import com.simibubi.create.AllDamageTypes;
-import com.simibubi.create.Create;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;

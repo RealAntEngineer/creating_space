@@ -1,6 +1,5 @@
 package com.rae.creatingspace.client.gui.screen.elements;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import net.minecraft.client.gui.GuiGraphics;

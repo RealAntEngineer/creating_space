@@ -1,7 +1,6 @@
 package com.rae.creatingspace.init.graphics;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.foundation.gui.UIRenderHelper;
 import com.simibubi.create.foundation.gui.element.ScreenElement;

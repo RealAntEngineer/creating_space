@@ -1,6 +1,5 @@
 package com.rae.creatingspace.client.gui.screen;
 
-import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.client.gui.screen.elements.BackgroundScrollInput;
 import com.rae.creatingspace.client.gui.screen.elements.SliderWidget;
 import com.rae.creatingspace.init.PacketInit;

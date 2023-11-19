@@ -1,12 +1,10 @@
 package com.rae.creatingspace.utilities;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

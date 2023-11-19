@@ -1,7 +1,6 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.damageTypes.DamageTypeData;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.tags.DamageTypeTags;

@@ -1,6 +1,5 @@
 package com.rae.creatingspace.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.client.gui.screen.elements.DimSelectBoxWidget;
 import com.rae.creatingspace.client.gui.screen.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;

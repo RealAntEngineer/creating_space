@@ -1,6 +1,5 @@
 package com.rae.creatingspace.client.gui.screen.elements;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.widget.BoxWidget;
 import com.simibubi.create.foundation.gui.widget.Label;
 import net.minecraft.client.Minecraft;
