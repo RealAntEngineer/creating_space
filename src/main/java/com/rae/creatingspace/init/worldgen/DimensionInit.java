@@ -84,6 +84,11 @@ public class DimensionInit {
         //return !(dimension == EARTH_ORBIT_KEY || dimension == MOON_ORBIT_KEY || dimension == MOON_KEY);
     }
 
+    public static boolean hasO2Atmosphere(DimensionType dimensionType) {
+        boolean no_02 = CSConfigs.COMMON.dimAccess.no_02.get().contains(dimensionType.toString());
+        return !no_02;
+    }
+
     public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
         return gravity(dimensionType) == 0;
     }
@@ -98,6 +103,8 @@ public class DimensionInit {
         }
         return underDimension;
     }
+
+
 }
 
 

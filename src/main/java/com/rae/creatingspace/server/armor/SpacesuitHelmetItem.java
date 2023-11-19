@@ -1,6 +1,5 @@
 package com.rae.creatingspace.server.armor;
 
-import com.simibubi.create.content.equipment.armor.BacktankUtil;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import net.minecraft.resources.ResourceLocation;

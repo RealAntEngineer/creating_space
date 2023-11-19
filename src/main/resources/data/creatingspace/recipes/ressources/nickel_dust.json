@@ -8,8 +8,13 @@
   ],
   "processingTime": 400,
   "results": [
-    {"count": 2,
-    "item": "creatingspace:nickel_dust"
-  }
+    {
+      "count": 2,
+      "item": "creatingspace:nickel_dust"
+    },
+    {
+      "chance": 0.5,
+      "item": "creatingspace:nickel_dust"
+    }
   ]
 }

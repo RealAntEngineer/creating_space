@@ -9,7 +9,10 @@ import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
-import com.simibubi.create.content.contraptions.*;
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.ContraptionCollider;
+import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.contraptions.TranslatingContraption;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -59,6 +62,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     private int propellantConsumption = 0;
     public ResourceKey<Level> originDimension = Level.OVERWORLD;
     public ResourceKey<Level> destination;
+    private boolean disassembleOnFirstTick = false;
     static float O2ro = (float) FluidInit.LIQUID_OXYGEN.get().getFluidType().getDensity() / 1000;
     static float CH4ro = (float) FluidInit.LIQUID_METHANE.get().getFluidType().getDensity() / 1000;
 
@@ -138,12 +142,15 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float perTickSpeed = getPerTickSpeed(acceleration);
 
         rocketContraptionEntity.totalTickTime = distance/perTickSpeed;
+        if (acceleration <=0 ){
+            rocketContraptionEntity.disassembleOnFirstTick = true;
+        }
 
         if (rocketContraptionEntity.totalConsumedAmount > o2amount||rocketContraptionEntity.totalConsumedAmount >ch4amount){
-            rocketContraptionEntity.disassemble();
+            rocketContraptionEntity.disassembleOnFirstTick = true;
         }
         if (distance<=0){
-            rocketContraptionEntity.disassemble();
+            rocketContraptionEntity.disassembleOnFirstTick = true;
         }
     }
 
@@ -211,6 +218,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         if (!(contraption instanceof RocketContraption))
             return;
 
+        if (disassembleOnFirstTick){
+            if (!level.isClientSide){
+                disassemble();
+            }
+            return;
+        }
+
         double prevAxisMotion = axisMotion;
         if (level.isClientSide) {
             clientOffsetDiff *= .75f;
@@ -222,21 +236,32 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         Vec3 movementVec = getDeltaMovement();
         if (!level.isClientSide)tickDimensionChangeLogic();
 
+
         if (ContraptionCollider.collideBlocks(this)) {
             if (!level.isClientSide)
                 disassemble();
             return;
         }
-
-
-        movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
-        move(movementVec.x, movementVec.y, movementVec.z);
-
+        if (tickCount>2) {
+            movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
+            move(movementVec.x, movementVec.y, movementVec.z);
+        }
         if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
             contraption.stop(level);
-        if (!level.isClientSide && (prevAxisMotion != axisMotion))
+        if (!level.isClientSide)
             sendPacket();
     }
+
+    /*@Override
+    public void move(double x, double y, double z) {
+        Vec3 prevPos = this.position();
+        super.move(MoverType.PISTON,new Vec3(x, y, z));
+        if (!this.level.isClientSide() && (y!=0||x!=0||z!=0)){
+            if(prevPos == this.position() ){
+                disassemble();
+            }
+        }
+    }*/
 
 
     @Override
@@ -245,6 +270,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return getDeltaMovement();
         return super.getContactPointMotion(globalContactPoint);
     }
+
     private void tickDimensionChangeLogic() {
         if (position().get(Direction.Axis.Y) > 300  &&  !isReentry()){
 
@@ -401,7 +427,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     @Override
     protected void handleStallInformation(double x, double y, double z, float angle) {
-
+        setPosRaw(x, y, z);
+        clientOffsetDiff = 0;
     }
 
     @Override
@@ -418,10 +445,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public boolean isReentry(){
         return this.entityData.get(REENTRY_ENTITY_DATA_ACCESSOR);
     }
-    @Override
-    protected void outOfWorld() {
-        //super.outOfWorld();
-    }
+
 
     public static float getAcceleration(float initialMass, int trust, float gravity, boolean reentry) {
         if (!reentry) {
@@ -435,7 +459,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     public void updateClientMotion() {
 
-        Vec3 motion = new Vec3(0,(axisMotion + clientOffsetDiff / 2f) * ServerSpeedProvider.get(),0);
+        Vec3 motion = new Vec3(0,(axisMotion + clientOffsetDiff/2f) * ServerSpeedProvider.get(),0);
 
         motion = VecHelper.clampComponentWise(motion, 1);
         setContraptionMotion(motion);

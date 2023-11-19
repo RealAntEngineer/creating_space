@@ -2,14 +2,13 @@ package com.rae.creatingspace;
 
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.PacketInit;
-import com.rae.creatingspace.init.PonderInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.graphics.DimensionEffectInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
-import com.rae.creatingspace.init.worldgen.*;
+import com.rae.creatingspace.init.worldgen.CarverInit;
+import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +27,6 @@ public class CreatingSpace {
     public static final String MODID = "creatingspace" ;
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
-
 
     public CreatingSpace() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -49,19 +47,15 @@ public class CreatingSpace {
         DimensionInit.register(bus);
 
         PaintingInit.register(bus);
-        //ConfiguredFeatureInit.register(bus);
-        //PlacedFeatureInit.register(bus);
-        //BiomesInit.register(bus);
-        //NoiseInit.register(bus);
+
+        CarverInit.register(bus);
 
         CSContraptionType.prepare();
-
-        PonderInit.register();
 
         CSConfigs.registerConfigs(modLoadingContext);
 
         bus.addListener(CreatingSpace::init);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> client(bus));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(bus));
 
         bus.register(DimensionEffectInit.class);
     }
@@ -85,9 +79,7 @@ public class CreatingSpace {
     }
 
 
-    public static void client(IEventBus eventBus){
-        eventBus.addListener(ParticleTypeInit::registerFactories);
-    }
+
 
     public static ResourceLocation resource(String path){
         return new ResourceLocation(MODID,path);

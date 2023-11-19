@@ -1,9 +1,7 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.client.renderer.blockentity.FlowGaugeBlockRenderer;
-import com.rae.creatingspace.client.renderer.blockentity.MechanicalElectrolyserBlockRenderer;
-import com.rae.creatingspace.client.renderer.blockentity.OxygenSealerRenderer;
-import com.rae.creatingspace.client.renderer.blockentity.RocketGeneratorBlockRenderer;
+import com.rae.creatingspace.client.renderer.blockentity.*;
+import com.rae.creatingspace.client.renderer.instance.AirLiquefierInstance;
 import com.rae.creatingspace.client.renderer.instance.OxygenSealerInstance;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.server.blockentities.*;
@@ -65,6 +63,13 @@ public class BlockEntityInit {
                     .instance(()-> ShaftInstance::new)
                     .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
                     .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
+                    .register();
+    public static final BlockEntityEntry<AirLiquefierBlockEntity> AIR_LIQUEFIER =
+            REGISTRATE.blockEntity(
+                            "air_liquefier", AirLiquefierBlockEntity::new)
+                    .instance(()-> AirLiquefierInstance::new)
+                    .validBlocks( BlockInit.AIR_LIQUEFIER)
+                    .renderer(()-> AirLiquefierBlockRenderer::new)
                     .register();
 
     public static final BlockEntityEntry<FlowGaugeBlockEntity> FLOW_METER =

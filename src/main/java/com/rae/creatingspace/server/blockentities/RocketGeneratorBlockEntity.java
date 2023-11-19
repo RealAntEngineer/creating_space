@@ -4,9 +4,13 @@ package com.rae.creatingspace.server.blockentities;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.server.blocks.RocketGeneratorBlock;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
+import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.LangBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,6 +22,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class RocketGeneratorBlockEntity extends GeneratingKineticBlockEntity {
     public RocketGeneratorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -35,7 +41,7 @@ public class RocketGeneratorBlockEntity extends GeneratingKineticBlockEntity {
         syncCooldown = SYNC_RATE;
     }
 
-    private static final int SYNC_RATE = 4;
+    private static final int SYNC_RATE = 8;
     protected int syncCooldown;
     protected boolean queuedSync;
 
@@ -59,16 +65,17 @@ public class RocketGeneratorBlockEntity extends GeneratingKineticBlockEntity {
     }
     @Override
     protected void write(CompoundTag nbt, boolean clientPacket) {
-        nbt = OXYGEN_TANK.writeToNBT(nbt);
-        nbt = METHANE_TANK.writeToNBT(nbt);
+        nbt.putInt("oxygenAmount",OXYGEN_TANK.getFluidAmount());
+        nbt.putInt("methaneAmount",METHANE_TANK.getFluidAmount());
         super.write(nbt, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
         super.read(nbt, clientPacket);
-        OXYGEN_TANK.readFromNBT(nbt);
-        METHANE_TANK.readFromNBT(nbt);
+        METHANE_TANK.setFluid(new FluidStack(FluidInit.LIQUID_METHANE.get(), nbt.getInt("methaneAmount")));
+        OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(), nbt.getInt("oxygenAmount")));
+
     }
 
 
@@ -119,6 +126,8 @@ public class RocketGeneratorBlockEntity extends GeneratingKineticBlockEntity {
 
 
     public void tick(Level level, BlockPos pos, BlockState state, RocketGeneratorBlockEntity blockEntity) {
+        super.tick();
+
         if (!level.isClientSide()) {
             if (syncCooldown > 0) {
                 syncCooldown--;
@@ -127,7 +136,6 @@ public class RocketGeneratorBlockEntity extends GeneratingKineticBlockEntity {
                 }
             if (state.getValue(RocketGeneratorBlock.GENERATING)) {
                 consumePropellant();
-
                 if (OXYGEN_TANK.isEmpty() || METHANE_TANK.isEmpty()) {
                     BlockState newBlockState = state.setValue(RocketGeneratorBlock.GENERATING, false);
                     level.setBlockAndUpdate(pos, newBlockState);
@@ -137,18 +145,56 @@ public class RocketGeneratorBlockEntity extends GeneratingKineticBlockEntity {
             }
         }
 
-        super.tick();
     }
 
 
     private void consumePropellant(){
-        float o2Coef = (float) (1000 * 2 ) /FluidInit.LIQUID_OXYGEN.getType().getDensity();
-        float methCoef = (float) (1000) /FluidInit.LIQUID_METHANE.getType().getDensity();
+        float o2Coef = 4 * 1000f /FluidInit.LIQUID_OXYGEN.getType().getDensity();
+        float methCoef = 1000f /FluidInit.LIQUID_METHANE.getType().getDensity();
 
-        int amount = 16;
+        int amount = 20;
 
         OXYGEN_TANK.drain((int) (amount*o2Coef), IFluidHandler.FluidAction.EXECUTE);
         METHANE_TANK.drain((int) (amount*methCoef), IFluidHandler.FluidAction.EXECUTE);
+        sendData();
 
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        LangBuilder mb = Lang.translate("generic.unit.millibuckets");
+        LangBuilder mbs = Lang.translate("generic.unit.fluidflow");
+        Lang.translate("gui.goggles.fluid_container")
+                .forGoggles(tooltip);
+
+        for (int i = 0; i <= 1; i++) {
+            FluidTank tank = switch (i){
+                case 0 -> OXYGEN_TANK;
+                case 1 -> METHANE_TANK;
+                default -> throw new IllegalStateException("Unexpected value: " + i);
+            };
+            String fluidName = switch (i){
+                case 0 -> FluidInit.LIQUID_OXYGEN.getType().getDescriptionId();
+                case 1 -> FluidInit.LIQUID_METHANE.getType().getDescriptionId();
+                default -> throw new IllegalStateException("Unexpected value: " + i);
+            };
+
+            FluidStack fluidStack = tank.getFluidInTank(0);
+
+            Lang.builder().add(Component.translatable(fluidName))
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip, 1);
+
+            Lang.builder()
+                    .add(Lang.number(fluidStack.getAmount())
+                            .add(mb)
+                            .style(ChatFormatting.GOLD))
+                    .text(ChatFormatting.GRAY, " / ")
+                    .add(Lang.number(tank.getTankCapacity(0))
+                            .add(mb)
+                            .style(ChatFormatting.DARK_GRAY))
+                    .forGoggles(tooltip, 1);
+        }
+        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
 }

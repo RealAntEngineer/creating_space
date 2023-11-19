@@ -3,6 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
+import com.rae.creatingspace.init.TagsInit;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
 import com.simibubi.create.content.fluids.VirtualFluid;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -44,6 +45,7 @@ public class FluidInit {
             registrateCustomVirtualLiquid("liquid_methane")
                     .properties(p -> p.viscosity(1000).temperature(90).density(423)
                             .canExtinguish(true))
+                    .tag(TagsInit.CustomFluidTags.LIQUID_METHANE.tag)
                     .register();
 
     public static final ItemEntry<BucketItem> CREATIVE_BUCKET_METHANE =
@@ -58,6 +60,7 @@ public class FluidInit {
     public static final FluidEntry<VirtualFluid> LIQUID_OXYGEN =
             registrateCustomVirtualLiquid("liquid_oxygen")
                     .properties(p -> p.viscosity(1000).temperature(90).density(1141))
+                    .tag(TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag)
                     .register();
     public static final ItemEntry<BucketItem> CREATIVE_BUCKET_OXYGEN =
             CreatingSpace.REGISTRATE.item("liquid_oxygen_bucket",
@@ -70,6 +73,7 @@ public class FluidInit {
     public static final FluidEntry<VirtualFluid> LIQUID_HYDROGEN =
             registrateCustomVirtualLiquid("liquid_hydrogen")
                     .properties(p -> p.viscosity(1000).temperature(10).density(70))
+                    .tag(TagsInit.CustomFluidTags.LIQUID_HYDROGEN.tag)
                     .register();
 
     public static final ItemEntry<BucketItem> CREATIVE_BUCKET_HYDROGEN =

@@ -3,7 +3,6 @@ package com.rae.creatingspace.server.armor;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.content.equipment.armor.BacktankUtil;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;

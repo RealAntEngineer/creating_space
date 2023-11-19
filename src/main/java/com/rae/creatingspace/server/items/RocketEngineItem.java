@@ -1,6 +1,5 @@
 package com.rae.creatingspace.server.items;
 
-import com.rae.creatingspace.configs.CSConfigs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;

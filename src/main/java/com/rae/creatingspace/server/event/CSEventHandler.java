@@ -3,25 +3,21 @@ package com.rae.creatingspace.server.event;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.DamageSourceInit;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.utilities.CustomTeleporter;
-import com.simibubi.create.AllItems;
-import com.simibubi.create.AllTags;
-import com.simibubi.create.content.equipment.armor.BacktankUtil;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -33,7 +29,7 @@ public class CSEventHandler {
     public CSEventHandler() {
     }
 
-        @SubscribeEvent
+    @SubscribeEvent
     public static void entityLivingEvent(LivingEvent.LivingTickEvent livingTickEvent){
         final LivingEntity entityLiving = livingTickEvent.getEntity();
         Level level = entityLiving.getLevel();
@@ -103,11 +99,53 @@ public class CSEventHandler {
         AABB colBox = entity.getBoundingBox();
         Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
         for (BlockState state : blockStateStream.toList()) {
-            if (state.getBlock() instanceof OxygenBlock){
-                System.out.println("player is in o2 : " + state.getValue(OxygenBlock.BREATHABLE));
-                return state.getValue(OxygenBlock.BREATHABLE);
+            if (isStateBreathable(state)){
+                return true;
             }
         }
         return false;
     }
+
+
+    @SubscribeEvent
+    public static void onWaterSourceCreated(BlockEvent.CreateFluidSourceEvent fluidSourceEvent){
+        Level level = (Level) fluidSourceEvent.getLevel();
+        if (!level.isClientSide()){
+            if (!DimensionInit.hasO2Atmosphere(level.dimension())){
+                fluidSourceEvent.setCanceled(true);
+            }
+        }
+    }
+
+
+
+    private static boolean isStateBreathable(BlockState state) {
+        return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
+    }
+
+    /*@SubscribeEvent
+    public static void onFluidUpdate(BlockEvent.NeighborNotifyEvent neighborNotifyEvent){
+        Level level = (Level) neighborNotifyEvent.getLevel();
+        BlockPos pos = neighborNotifyEvent.getPos();
+        if (!level.isClientSide()) {
+            if (!DimensionInit.hasO2Atmosphere(level.dimension())) {
+                FluidState fluidState = level.getFluidState(pos);
+                if (!fluidState.isEmpty()) {
+                    if (TagsInit.CustomFluidTags.DISSIPATE_IN_SPACE.matches(fluidState)) {
+                        boolean needToDissipate = true;
+                        for (Direction direction : neighborNotifyEvent.getNotifiedSides()) {
+                            if (level.isStateAtPosition(pos.relative(direction), CSEventHandler::isStateBreathable)) {
+                                needToDissipate = false;
+                                break;
+                            }
+                        }
+                        if (needToDissipate) {
+                            level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                        }
+                    }
+                }
+            }
+        }
+    }
+   */
 }

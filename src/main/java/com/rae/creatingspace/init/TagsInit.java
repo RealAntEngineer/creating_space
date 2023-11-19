@@ -5,15 +5,20 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import static com.simibubi.create.AllTags.NameSpace.MOD;
 
 public class TagsInit extends AllTags {
 
@@ -37,6 +42,55 @@ public class TagsInit extends AllTags {
             this.optionalDefault = optionalDefault;
             this.alwaysDatagenDefault = alwaysDatagenDefault;
         }
+    }
+    public enum CustomBlockTags {
+        MOON_CARVER_REPLACEABLES(),  MOON_STONE_ORE_REPLACEABLES()  ;
+
+        public final TagKey<Block> tag;
+        public final boolean alwaysDatagen;
+
+        CustomBlockTags() {
+            this(CustomNameSpace.MOD);
+        }
+
+        CustomBlockTags(CustomNameSpace namespace) {
+            this(namespace, namespace.optionalDefault, namespace.alwaysDatagenDefault);
+        }
+
+        CustomBlockTags(CustomNameSpace namespace, String path) {
+            this(namespace, path, namespace.optionalDefault, namespace.alwaysDatagenDefault);
+        }
+
+        CustomBlockTags(CustomNameSpace namespace, boolean optional, boolean alwaysDatagen) {
+            this(namespace, null, optional, alwaysDatagen);
+        }
+
+        CustomBlockTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
+            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            if (optional) {
+                tag = optionalTag(ForgeRegistries.BLOCKS, id);
+            } else {
+                tag = BlockTags.create(id);
+            }
+            this.alwaysDatagen = alwaysDatagen;
+        }
+
+        @SuppressWarnings("deprecation")
+        public boolean matches(Block block) {
+            return block.builtInRegistryHolder()
+                    .is(tag);
+        }
+
+        public boolean matches(ItemStack stack) {
+            return stack != null && stack.getItem() instanceof BlockItem blockItem && matches(blockItem.getBlock());
+        }
+
+        public boolean matches(BlockState state) {
+            return state.is(tag);
+        }
+
+        private static void init() {}
+
     }
     public enum CustomItemTags {
         OXYGEN_SOURCES(),
@@ -83,7 +137,8 @@ public class TagsInit extends AllTags {
             return stack.is(tag);
         }
 
-        private static void init() {}
+        private static void init() {
+        }
 
     }
     public enum CustomEntityTag {
@@ -93,22 +148,22 @@ public class TagsInit extends AllTags {
         public final boolean alwaysDatagen;
 
         CustomEntityTag() {
-            this(MOD);
+            this(CustomNameSpace.MOD);
         }
 
-        CustomEntityTag(NameSpace namespace) {
+        CustomEntityTag(CustomNameSpace namespace) {
             this(namespace, namespace.optionalDefault, namespace.alwaysDatagenDefault);
         }
 
-        CustomEntityTag(NameSpace namespace, String path) {
+        CustomEntityTag(CustomNameSpace namespace, String path) {
             this(namespace, path, namespace.optionalDefault, namespace.alwaysDatagenDefault);
         }
 
-        CustomEntityTag(NameSpace namespace, boolean optional, boolean alwaysDatagen) {
+        CustomEntityTag(CustomNameSpace namespace, boolean optional, boolean alwaysDatagen) {
             this(namespace, null, optional, alwaysDatagen);
         }
 
-        CustomEntityTag(NameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
+        CustomEntityTag(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
             ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
             if (optional) {
                 tag = optionalTag(ForgeRegistries.ENTITY_TYPES, id);
@@ -126,10 +181,60 @@ public class TagsInit extends AllTags {
         private static void init() {}
 
     }
+    public enum CustomFluidTags {
 
+        LIQUID_METHANE(),
+        LIQUID_HYDROGEN(),
+        LIQUID_OXYGEN(),
+        DISSIPATE_IN_SPACE();
+
+        public final TagKey<Fluid> tag;
+        public final boolean alwaysDatagen;
+
+        CustomFluidTags() {
+            this(CustomNameSpace.MOD);
+        }
+
+        CustomFluidTags(CustomNameSpace namespace) {
+            this(namespace, namespace.optionalDefault, namespace.alwaysDatagenDefault);
+        }
+
+        CustomFluidTags(CustomNameSpace namespace, String path) {
+            this(namespace, path, namespace.optionalDefault, namespace.alwaysDatagenDefault);
+        }
+
+        CustomFluidTags(CustomNameSpace namespace, boolean optional, boolean alwaysDatagen) {
+            this(namespace, null, optional, alwaysDatagen);
+        }
+
+        CustomFluidTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
+            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            if (optional) {
+                tag = optionalTag(ForgeRegistries.FLUIDS, id);
+            } else {
+                tag = FluidTags.create(id);
+            }
+            this.alwaysDatagen = alwaysDatagen;
+        }
+
+        @SuppressWarnings("deprecation")
+        public boolean matches(Fluid fluid) {
+            return fluid.is(tag);
+        }
+
+        public boolean matches(FluidState state) {
+            return state.is(tag);
+        }
+
+        private static void init() {
+        }
+
+    }
 
     public static void init() {
+        CustomBlockTags.init();
         CustomItemTags.init();
         CustomEntityTag.init();
+        CustomFluidTags.init();
     }
 }

@@ -8,6 +8,8 @@
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
   "block.creatingspace.flow_meter": "Flowmeter",
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
+  "block.creatingspace.air_liquefier": "Air Liquefier",
+
 
   "block.creatingspace.clamps": "Clamps",
   "block.creatingspace.rocket_casing": "Rocket Casing",
@@ -104,7 +106,7 @@
   "creatingspace.ponder.synthesizer.header": "Crafting Methane",
   "creatingspace.ponder.synthesizer.text_1": "You need to put hydrogen in it...",
   "creatingspace.ponder.synthesizer.text_2": "...And put coal dust, then wait for methane to be produced",
-  "creatingspace.ponder.synthesizer.text_3": "It produces 100mb of methane every 4 seconds",
+  "creatingspace.ponder.synthesizer.text_3": "It produces 320kg of methane every 4 seconds",
 
   "creatingspace.gui.rocket_controls.launch": "Launch",
   "creatingspace.gui.rocket_controls.send_setting": "Validate",

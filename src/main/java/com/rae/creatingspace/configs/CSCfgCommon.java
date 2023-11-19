@@ -1,7 +1,5 @@
 package com.rae.creatingspace.configs;
 
-import com.simibubi.create.infrastructure.config.CClient;
-
 public class CSCfgCommon extends CSConfigBase{
 
     public final ConfigGroup rocketSpawnGroup = group(0, "rocketSpawn",

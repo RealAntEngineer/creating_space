@@ -81,7 +81,7 @@ public class BlockInit {
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
                     "nickel_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
@@ -94,7 +94,7 @@ public class BlockInit {
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(
                     "deepslate_nickel_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(4.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -105,7 +105,7 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
                     "moon_nickel_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -127,7 +127,7 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
                     "moon_cobalt_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -147,7 +147,7 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -228,7 +228,7 @@ public class BlockInit {
             "rocket_generator", RocketGeneratorBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setCapacity(30000))
+            .transform(BlockStressDefaults.setCapacity(10000))
             .transform(BlockStressDefaults.setGeneratorSpeed(RocketGeneratorBlock::getSpeedRange))
             .transform(axeOrPickaxe())
             .item()
@@ -252,13 +252,12 @@ public class BlockInit {
             "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(40000))
+            .transform(BlockStressDefaults.setImpact(10000))
             .transform(axeOrPickaxe())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
-
     public static final BlockEntry<FlowGaugeBlock> FLOW_METER = REGISTRATE
             .block("flow_meter", FlowGaugeBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -274,6 +273,16 @@ public class BlockInit {
             .item()
             .properties(p ->p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
+            .register();
+    public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
+                    "air_liquefier", AirLiquefierBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .transform(BlockStressDefaults.setImpact(500))
+            .transform(axeOrPickaxe())
+            .item()
+            .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .transform(customItemModel())
             .register();
     public static final BlockEntry<OxygenBlock> OXYGEN = REGISTRATE
             .block("oxygen",OxygenBlock::new)

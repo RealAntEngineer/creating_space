@@ -2,7 +2,6 @@ package com.rae.creatingspace.configs;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class CSDimAccess extends CSConfigBase{

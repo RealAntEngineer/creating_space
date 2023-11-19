@@ -3,7 +3,6 @@ package com.rae.creatingspace.server.armor;
 import com.rae.creatingspace.init.ShapesInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.AllEnchantments;
-import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

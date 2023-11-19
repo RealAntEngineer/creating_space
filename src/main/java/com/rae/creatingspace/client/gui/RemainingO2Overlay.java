@@ -2,8 +2,8 @@ package com.rae.creatingspace.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.client.gui.screen.elements.SliderWidget;
-import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
+import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;

@@ -1,7 +1,6 @@
 package com.rae.creatingspace.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.client.gui.screen.elements.BackgroundScrollInput;
 import com.rae.creatingspace.client.gui.screen.elements.SliderWidget;
 import com.rae.creatingspace.init.PacketInit;
@@ -11,7 +10,10 @@ import com.rae.creatingspace.utilities.packet.SealerSettings;
 import com.rae.creatingspace.utilities.packet.SealerTrySealing;
 import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllIcons;
-import com.simibubi.create.foundation.gui.widget.*;
+import com.simibubi.create.foundation.gui.widget.IconButton;
+import com.simibubi.create.foundation.gui.widget.Indicator;
+import com.simibubi.create.foundation.gui.widget.Label;
+import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.client.gui.components.Button;

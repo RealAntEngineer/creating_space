@@ -84,6 +84,20 @@ public class RocketContraption extends TranslatingContraption {
     }
 
 
+    /*@Override
+    public void addBlocksToWorld(Level world, StructureTransform transform) {
+        for (StructureTemplate.StructureBlockInfo block : blocks.values()){
+            BlockPos targetPos = transform.apply(block.pos);
+            BlockState worldState = world.getBlockState(targetPos);
+
+            if (!worldState.isAir()){
+                worldState.getBlock().canBeReplaced(worldState, Fluids.WATER.defaultFluidState().getType());
+                world.explode()
+            }
+        }
+        super.addBlocksToWorld(world, transform);
+    }*/
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public ContraptionLighter<?> makeLighter() {
