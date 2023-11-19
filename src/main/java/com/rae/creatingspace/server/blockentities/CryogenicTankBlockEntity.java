@@ -1,13 +1,18 @@
 package com.rae.creatingspace.server.blockentities;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.LangBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -21,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameable {
+public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameable, IHaveGoggleInformation {
     private final Component defaultName;
     private Component customName;
     public CryogenicTankBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
@@ -43,6 +48,7 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
         @Override
         protected void onContentsChanged() {
             super.onContentsChanged();
+            notifyUpdate();
         }
 
         @Override
@@ -96,5 +102,59 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
 
     public FluidTank getTank() {
         return TANK;
+    }
+    private static final int SYNC_RATE = 8;
+    protected int syncCooldown;
+    protected boolean queuedSync;
+
+    public void  tick(Level level, BlockPos pos, BlockState state, CryogenicTankBlockEntity cryogenicTankBlockEntity) {
+        //verifying the recipe then craft methane
+
+        super.tick();
+        if (!level.isClientSide()) {
+            if (syncCooldown > 0) {
+                syncCooldown--;
+                if (syncCooldown == 0 && queuedSync)
+                    sendData();
+            }
+        }
+    }
+    @Override
+    public void sendData() {
+        if (syncCooldown > 0) {
+            queuedSync = true;
+            return;
+        }
+        super.sendData();
+        queuedSync = false;
+        syncCooldown = SYNC_RATE;
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        LangBuilder mb = Lang.translate("generic.unit.millibuckets");
+        LangBuilder mbs = Lang.translate("generic.unit.fluidflow");
+        Lang.translate("gui.goggles.fluid_container")
+                .forGoggles(tooltip);
+
+            FluidTank tank = TANK;
+            String fluidName = TANK.getFluid().getFluid().getFluidType().getDescriptionId();
+
+            FluidStack fluidStack = tank.getFluidInTank(0);
+
+            Lang.builder().add(Component.translatable(fluidName))
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip, 1);
+
+            Lang.builder()
+                    .add(Lang.number(fluidStack.getAmount())
+                            .add(mb)
+                            .style(ChatFormatting.GOLD))
+                    .text(ChatFormatting.GRAY, " / ")
+                    .add(Lang.number(tank.getTankCapacity(0))
+                            .add(mb)
+                            .style(ChatFormatting.DARK_GRAY))
+                    .forGoggles(tooltip, 1);
+        return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
 }

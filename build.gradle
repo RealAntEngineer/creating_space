@@ -139,7 +139,7 @@ jar {
         attributes([
                 "Specification-Title"     : "creating space",
                 "Specification-Vendor"    : "Real Ant Engineer",
-                "Specification-Version"   : "1.5.3", // We are version 1.5.1 of ourselves
+                "Specification-Version"   : "1.5.3", // We are version 1.5.3 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Real Ant Engineer",

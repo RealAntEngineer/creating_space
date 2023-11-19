@@ -8,14 +8,16 @@
   "block.creatingspace.mechanical_electrolyzer": "Механический электризер",
   "block.creatingspace.flow_meter": "Гидрометр",
   "block.creatingspace.air_liquefier": "Air Liquefier",
+  "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
+  "block.creatingspace.cryogenic_tank": "Cryogenic Tank",
 
   "block.creatingspace.clamps": "Хомуты",
   "block.creatingspace.rocket_casing": "Ракетныий корпус",
 
 
   "block.creatingspace.moon_stone": "Лунный камень",
-  "block.creatingspace.moon_regolith": "Лунная пыль",
-  "block.creatingspace.moon_surface_regolith": "Лунная пыль на поверхности",
+  "block.creatingspace.moon_regolith": "плотный реголит",
+  "block.creatingspace.moon_surface_regolith": "реголит",
 
   "block.creatingspace.nickel_ore": "Никелевая руда",
   "block.creatingspace.deepslate_nickel_ore": "Глубинная никелевая руда",
@@ -36,8 +38,8 @@
 
   "item.creatingspace.incomplete_injector_grid": "Незаконченная Инжекторная сетка",
   "item.creatingspace.starter_charge": "пороховой заряд",
-  "item.creatingspace.sturdy_propeller": "крепкий пропеллер",
-  "item.creatingspace.combustion_chamber": "Камера згорания",
+  "item.creatingspace.sturdy_propeller": "прочный пропеллер",
+  "item.creatingspace.combustion_chamber": "камера Сгорания",
   "item.creatingspace.bell_nozzle": "Конусовое сопло",
   "item.creatingspace.copper_coil":"Медная катушка",
   "item.creatingspace.basic_catalyst":"Начальный кататализатор",
@@ -69,6 +71,17 @@
   "item.creatingspace.liquid_oxygen_bucket": "Ведро жидкого кислорода",
   "item.creatingspace.liquid_hydrogen_bucket": "Ведро жидкого водорода",
 
+  "item.creatingspace.basic_spacesuit_helmet": "Basic Spacesuit Helmet",
+  "item.creatingspace.copper_oxygen_backtank": "Copper Oxygen Backtank",
+  "item.creatingspace.basic_spacesuit_leggings": "Basic Spacesuit Legging",
+  "item.creatingspace.basic_spacesuit_boots": "Basic Spacesuit Boots",
+  "item.creatingspace.advanced_spacesuit_helmet": "Advanced Spacesuit Helmet",
+  "item.creatingspace.netherite_oxygen_backtank": "Netherite Oxygen Backtank",
+  "item.creatingspace.advanced_spacesuit_leggings": "Advanced Spacesuit Legging",
+  "item.creatingspace.advanced_spacesuit_boots": "Advanced Spacesuit Boots",
+  "item.creatingspace.basic_spacesuit_fabric": "Basic Spacesuit Fabric",
+  "item.creatingspace.advanced_spacesuit_fabric": "Advanced Spacesuit Fabric",
+
   "fluid.creatingspace.liquid_methane" : "Жидкий метан",
   "fluid.creatingspace.liquid_oxygen" : "Жидкий кислород",
   "fluid.creatingspace.liquid_hydrogen" : "Жидкий водород",
@@ -93,22 +106,12 @@
   "creatingspace.ponder.synthesizer.text_3": "производительность метана 100mb/4 сек.",
 
   "creatingspace.gui.rocket_controls.launch": "Запуск!",
-  "creatingspace:earth_orbit": "Орбита змели",
+  "creatingspace:earth_orbit": "Орбита ЗЕМли",
   "creatingspace:moon_orbit": "Орбита Луны",
   "creatingspace:the_moon": "Луна",
   "minecraft:overworld": "Земля",
-  "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
-  "block.creatingspace.cryogenic_tank": "Cryogenic Tank",
-  "item.creatingspace.basic_spacesuit_helmet": "Basic Spacesuit Helmet",
-  "item.creatingspace.copper_oxygen_backtank": "Copper Oxygen Backtank",
-  "item.creatingspace.basic_spacesuit_leggings": "Basic Spacesuit Legging",
-  "item.creatingspace.basic_spacesuit_boots": "Basic Spacesuit Boots",
-  "item.creatingspace.advanced_spacesuit_helmet": "Advanced Spacesuit Helmet",
-  "item.creatingspace.netherite_oxygen_backtank": "Netherite Oxygen Backtank",
-  "item.creatingspace.advanced_spacesuit_leggings": "Advanced Spacesuit Legging",
-  "item.creatingspace.advanced_spacesuit_boots": "Advanced Spacesuit Boots",
-  "item.creatingspace.basic_spacesuit_fabric": "Basic Spacesuit Fabric",
-  "item.creatingspace.advanced_spacesuit_fabric": "Advanced Spacesuit Fabric",
+
+
   "creatingspace.gui.rocket_controls.send_setting": "Validate",
   "creatingspace.gui.sealer.try_seal": "Try Sealing",
   "creatingspace.gui.sealer.isSealed": "Is Sealed ?",

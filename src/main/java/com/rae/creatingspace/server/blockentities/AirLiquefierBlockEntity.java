@@ -99,6 +99,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
             }
         }
     }
+
     private boolean hasRecipe(AirLiquefierBlockEntity blockEntity) {
         float rot_speed = this.getSpeed();
         boolean isRunning = !blockEntity.isOverStressed();
@@ -106,7 +107,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         boolean isInO2 = DimensionInit.hasO2Atmosphere(blockEntity.level.dimension());
         return enoughSpaceInOTank && isRunning && isInO2;
     }
-
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
         super.read(nbt, clientPacket);
