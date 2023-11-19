@@ -7,6 +7,7 @@
   "block.creatingspace.mechanical_electrolyzer": "Électrolyseur méchanique",
   "block.creatingspace.flow_meter": "Débitmètre",
   "block.creatingspace.oxygen_sealer": "Pressurisateur à oxygène",
+  "block.creatingspace.air_liquefier": "Air Liquefier",
   "block.creatingspace.cryogenic_tank": "Réservoir cryogénique",
 
 
@@ -119,7 +120,7 @@
 
   "creatingspace.ponder.synthesizer.text_1": "Vous devez mettre de l'hydrogène ...",
   "creatingspace.ponder.synthesizer.text_2": "...Puis de la poudre de charbon, enfin attendez que le méthane soit produit",
-  "creatingspace.ponder.synthesizer.text_3": "Il y a production de 100mb de methane toutes les 4 secondes",
+  "creatingspace.ponder.synthesizer.text_3": "Il y a production de 320kg de methane toutes les 4 secondes",
 
   "death.attack.no_oxygen": "%1$s n'a pas trouvé d'oxygène dans l'espace",
 

@@ -7,6 +7,7 @@
   "block.creatingspace.chemical_synthesizer": "Хімічний сінтезатор",
   "block.creatingspace.mechanical_electrolyzer": "Механічний електризер",
   "block.creatingspace.flow_meter": "Тідрометр",
+  "block.creatingspace.air_liquefier": "Air Liquefier",
 
   "block.creatingspace.clamps": "Хомути",
   "block.creatingspace.rocket_casing": "Ракетний корпус",
@@ -74,9 +75,9 @@
 
   "item.creatingspace.space_food": "Космічна їжа",
 
-  "itemGroup.machine_tab": "creating space: Машини",
-  "itemGroup.component_tab": "Creating space: предмети",
-  "itemGroup.minerals_tab": "Creating space: Руди",
+  "itemGroup.creatingspace.machine_tab": "creating space: Машини",
+  "itemGroup.creatingspace.component_tab": "Creating space: предмети",
+  "itemGroup.creatingspace.minerals_tab": "Creating space: Руди",
 
   "container.creatingspace.rocket_controls": "Керування ракетою",
   "container.creatingspace.synthesizer": "Сінтез",
@@ -95,5 +96,32 @@
   "creatingspace:earth_orbit": "Орбіта Землі",
   "creatingspace:moon_orbit": "Орбіта Місяца",
   "creatingspace:the_moon": "Місяць",
-  "minecraft:overworld": "Земля"
+  "minecraft:overworld": "Земля",
+
+  "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
+  "block.creatingspace.cryogenic_tank": "Cryogenic Tank",
+  "item.creatingspace.basic_spacesuit_helmet": "Basic Spacesuit Helmet",
+  "item.creatingspace.copper_oxygen_backtank": "Copper Oxygen Backtank",
+  "item.creatingspace.basic_spacesuit_leggings": "Basic Spacesuit Legging",
+  "item.creatingspace.basic_spacesuit_boots": "Basic Spacesuit Boots",
+  "item.creatingspace.advanced_spacesuit_helmet": "Advanced Spacesuit Helmet",
+  "item.creatingspace.netherite_oxygen_backtank": "Netherite Oxygen Backtank",
+  "item.creatingspace.advanced_spacesuit_leggings": "Advanced Spacesuit Legging",
+  "item.creatingspace.advanced_spacesuit_boots": "Advanced Spacesuit Boots",
+  "item.creatingspace.basic_spacesuit_fabric": "Basic Spacesuit Fabric",
+  "item.creatingspace.advanced_spacesuit_fabric": "Advanced Spacesuit Fabric",
+  "creatingspace.gui.rocket_controls.send_setting": "Validate",
+  "creatingspace.gui.sealer.try_seal": "Try Sealing",
+  "creatingspace.gui.sealer.isSealed": "Is Sealed ?",
+  "creatingspace.gui.sealer.settings": "Settings",
+  "creatingspace.gui.sealer.range": "Range",
+  "creatingspace.gui.sealer.automatic_retry": "Automatic Retry ?",
+  "death.attack.no_oxygen": "%1$s didn't found oxygen in space",
+  "creatingspace.gui.rocket_controls.destination_cost": "deltaV needed",
+  "creatingspace.gui.rocket_controls.pos_selection": "Pos ?",
+  "creatingspace.science.trust": "Trust",
+  "creatingspace.science.unit.newton": "N",
+  "creatingspace.science.isp": "ISP",
+  "creatingspace.science.unit.second": "s",
+  "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t"
 }

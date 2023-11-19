@@ -160,8 +160,9 @@ public class SealerBlockEntity extends KineticBlockEntity {
             int nbrOfBlock = lastRoomSize;
             //look for consumption
             if (Math.abs(getSpeed())>=speedRequirement(nbrOfBlock) && OXYGEN_TANK.getFluidAmount()>= o2consumption(nbrOfBlock) ){
-
-                OXYGEN_TANK.drain(o2consumption(nbrOfBlock), IFluidHandler.FluidAction.EXECUTE);
+                if (trying||roomIsSealed) {
+                    OXYGEN_TANK.drain(o2consumption(nbrOfBlock), IFluidHandler.FluidAction.EXECUTE);
+                }
                 tickSealingLogic(level,worldPos,sealerState);
 
             }

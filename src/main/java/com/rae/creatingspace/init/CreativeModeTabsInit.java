@@ -6,8 +6,6 @@ import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.simibubi.create.AllCreativeModeTabs;
-import com.simibubi.create.AllItems;
-import com.simibubi.create.content.equipment.armor.BacktankUtil;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.registries.Registries;
@@ -50,8 +48,10 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.ROCKET_CONTROLS);
                         output.accept(BlockInit.CHEMICAL_SYNTHESIZER);
                         output.accept(BlockInit.MECHANICAL_ELECTROLYZER);
+                        output.accept(BlockInit.ROCKET_GENERATOR);
                         output.accept(BlockInit.FLOW_METER);
                         output.accept(BlockInit.OXYGEN_SEALER);
+                        output.accept(BlockInit.AIR_LIQUEFIER);
                         output.acceptAll(makeStackListFunc().apply(BlockInit.CRYOGENIC_TANK.asItem()));
                     })
                     .build());
@@ -75,7 +75,7 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.COMBUSTION_CHAMBER);
                         output.accept(ItemInit.BELL_NOZZLE);
                         output.accept(ItemInit.RAW_NICKEL);
-                        output.accept(ItemInit.CRUSHED_NICKEL_ORE);
+                        //output.accept(ItemInit.CRUSHED_NICKEL_ORE);
                         output.accept(ItemInit.NICKEL_DUST);
                         output.accept(ItemInit.NICKEL_INGOT);
                         output.accept(ItemInit.NICKEL_NUGGET);
@@ -86,7 +86,7 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.COBALT_NUGGET);
                         output.accept(ItemInit.COBALT_SHEET);
                         output.accept(ItemInit.RAW_ALUMINUM);
-                        output.accept(ItemInit.CRUSHED_ALUMINUM_ORE);
+                        //output.accept(ItemInit.CRUSHED_ALUMINUM_ORE);
                         output.accept(ItemInit.ALUMINUM_INGOT);
                         output.accept(ItemInit.ALUMINUM_NUGGET);
                         output.accept(ItemInit.ALUMINUM_SHEET);

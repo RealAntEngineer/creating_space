@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.blockentities;
 
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.server.blocks.MechanicalElectrolyzerBlock;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
@@ -48,6 +49,8 @@ public class MechanicalElectrolyzerBlockEntity extends KineticBlockEntity implem
     protected int syncCooldown;
     protected boolean queuedSync;
 
+    float residualFloatO2Amount = 0;
+    float residualFloatH2Amount = 0;
     //water
     private final LazyOptional<IFluidHandler> waterFluidOptional = LazyOptional.of(()-> this.WATER_TANK);
     private final FluidTank WATER_TANK  = new FluidTank(4000){
@@ -74,7 +77,7 @@ public class MechanicalElectrolyzerBlockEntity extends KineticBlockEntity implem
 
         @Override
         public boolean isFluidValid(FluidStack stack) {
-            return stack.getFluid() == FluidInit.LIQUID_HYDROGEN.get();
+            return TagsInit.CustomFluidTags.LIQUID_HYDROGEN.matches(stack.getFluid());
         }
     };
     //oxygen
@@ -92,7 +95,7 @@ public class MechanicalElectrolyzerBlockEntity extends KineticBlockEntity implem
 
         @Override
         public boolean isFluidValid(FluidStack stack) {
-            return stack.getFluid() == FluidInit.LIQUID_OXYGEN.get();
+            return TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(stack.getFluid());
         }
     };
 
@@ -118,7 +121,7 @@ public class MechanicalElectrolyzerBlockEntity extends KineticBlockEntity implem
 
 
     public void tick(Level level, BlockPos pos, BlockState state, MechanicalElectrolyzerBlockEntity blockEntity) {
-
+        super.tick();
         if (!level.isClientSide()) {
             if (syncCooldown > 0) {
                 syncCooldown--;
@@ -128,9 +131,20 @@ public class MechanicalElectrolyzerBlockEntity extends KineticBlockEntity implem
             //setChanged();
             if (hasRecipe(blockEntity)) {
                 float rot_speed = this.getSpeed();
-                blockEntity.HYDROGEN_TANK.fill(new FluidStack(FluidInit.LIQUID_HYDROGEN.get(),hydrogenProduction(rot_speed)), IFluidHandler.FluidAction.EXECUTE);
-                blockEntity.OXYGEN_TANK.fill(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),oxygenProduction(rot_speed)), IFluidHandler.FluidAction.EXECUTE);
-                blockEntity.WATER_TANK.drain(waterConsumption(rot_speed), IFluidHandler.FluidAction.EXECUTE);
+                float H2Amount = (hydrogenProduction(rot_speed) /FluidInit.LIQUID_HYDROGEN.getType().getDensity()*1000f);
+                float O2Amount = (oxygenProduction(rot_speed) /FluidInit.LIQUID_OXYGEN.getType().getDensity()*1000f);
+
+                residualFloatH2Amount += H2Amount - (int) H2Amount;
+                residualFloatO2Amount += O2Amount - (int) O2Amount;
+
+                blockEntity.HYDROGEN_TANK.fill(new FluidStack(FluidInit.LIQUID_HYDROGEN.get(),
+                        (int) H2Amount + (int) residualFloatH2Amount), IFluidHandler.FluidAction.EXECUTE);
+                blockEntity.OXYGEN_TANK.fill(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),
+                        (int) O2Amount + (int) residualFloatO2Amount), IFluidHandler.FluidAction.EXECUTE);
+                blockEntity.WATER_TANK.drain((int) waterConsumption(rot_speed), IFluidHandler.FluidAction.EXECUTE);
+
+                residualFloatO2Amount -= (int) residualFloatO2Amount;
+                residualFloatH2Amount -= (int) residualFloatH2Amount;
             }
         }
     }
@@ -138,10 +152,10 @@ public class MechanicalElectrolyzerBlockEntity extends KineticBlockEntity implem
         float rot_speed = this.getSpeed();
         boolean isRunning = !blockEntity.isOverStressed();
         boolean enoughWater = blockEntity.WATER_TANK.getFluidAmount()>waterConsumption(rot_speed);
-        boolean enoughSpaceInHTank = blockEntity.HYDROGEN_TANK.getSpace()>hydrogenProduction(rot_speed);
-        boolean enoughSpaceInOTank = blockEntity.OXYGEN_TANK.getSpace()>oxygenProduction(rot_speed);
+        boolean enoughSpaceInHTank = blockEntity.HYDROGEN_TANK.getSpace()>hydrogenProduction(rot_speed)/FluidInit.LIQUID_HYDROGEN.getType().getDensity()*1000f;
+        boolean enoughSpaceInOTank = blockEntity.OXYGEN_TANK.getSpace()>oxygenProduction(rot_speed)/FluidInit.LIQUID_OXYGEN.getType().getDensity()*1000f;
 
-        return enoughWater && enoughSpaceInHTank && enoughSpaceInOTank && isRunning;
+        return enoughWater && /*enoughSpaceInHTank && enoughSpaceInOTank &&*/ isRunning;
     }
 
     @Override
@@ -202,16 +216,17 @@ public class MechanicalElectrolyzerBlockEntity extends KineticBlockEntity implem
         return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
 
-    private int waterConsumption(float speed){
-        return  (int) (abs(speed)*18/100);
+    float coefficient = 0.5f;
+    private float waterConsumption(float speed){
+        return  (abs(speed)*1*coefficient);
     }
 
-    private int oxygenProduction(float speed){
-        return (int) (abs(speed)*14/100);
+    private float oxygenProduction(float speed){
+        return (abs(speed)*32/36*coefficient);
     }
 
-    private int hydrogenProduction(float speed){
-        return (int) (abs(speed)*28/100);
+    private float hydrogenProduction(float speed){
+        return (abs(speed)*4/36*coefficient);
     }
 
 

@@ -1,0 +1,43 @@
+{
+  "type": "creatingspace:crater",
+  "config": {
+    "probability": 0.15,
+    "y": {
+      "absolute": 120
+    },
+    "y_scale": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 0.4,
+        "max_exclusive": 0.7
+      }
+    },
+    "debug_settings": {
+      "air_state": {
+        "Name": "minecraft:crimson_button",
+        "Properties": {
+          "face": "wall",
+          "facing": "north",
+          "powered": "false"
+        }
+      },
+      "water_state": {
+        "Name": "minecraft:candle",
+        "Properties": {
+          "candles": "1",
+          "lit": "false",
+          "waterlogged": "false"
+        }
+      },
+      "lava_state": {
+        "Name": "minecraft:orange_stained_glass"
+      },
+      "barrier_state": {
+        "Name": "minecraft:glass"
+      }
+    },
+    "max_radius": 27,
+    "min_radius": 8,
+    "ideal_range_offset": 8
+  }
+}

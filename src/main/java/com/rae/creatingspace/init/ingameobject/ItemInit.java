@@ -1,7 +1,6 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.SpacesuitHelmetItem;
@@ -9,10 +8,8 @@ import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
@@ -105,9 +102,9 @@ public class ItemInit {
             .register();
 
 
-    public static final ItemEntry<Item> CRUSHED_NICKEL_ORE = CreatingSpace.REGISTRATE.item(
+    /*public static final ItemEntry<Item> CRUSHED_NICKEL_ORE = CreatingSpace.REGISTRATE.item(
             "crushed_nickel_ore",Item::new)
-            .register();
+            .register();*/
 
     public static final ItemEntry<Item> NICKEL_DUST = CreatingSpace.REGISTRATE.item(
                     "nickel_dust",Item::new)
@@ -136,9 +133,9 @@ public class ItemInit {
             .register();
 
 
-    public static final ItemEntry<Item> CRUSHED_ALUMINUM_ORE = CreatingSpace.REGISTRATE.item(
+    /*public static final ItemEntry<Item> CRUSHED_ALUMINUM_ORE = CreatingSpace.REGISTRATE.item(
                     "crushed_aluminum_ore",Item::new)
-            .register();
+            .register();*/
 
 
     public static final ItemEntry<Item> ALUMINUM_INGOT = CreatingSpace.REGISTRATE.item(

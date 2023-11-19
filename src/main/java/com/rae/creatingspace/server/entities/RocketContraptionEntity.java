@@ -19,7 +19,6 @@ import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,6 +31,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.PortalInfo;
@@ -63,6 +63,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     private int propellantConsumption = 0;
     public ResourceKey<Level> originDimension = Level.OVERWORLD;
     public ResourceKey<Level> destination;
+    private boolean disassembleOnFirstTick = false;
     static float O2ro = (float) FluidInit.LIQUID_OXYGEN.get().getFluidType().getDensity() / 1000;
     static float CH4ro = (float) FluidInit.LIQUID_METHANE.get().getFluidType().getDensity() / 1000;
 
@@ -143,11 +144,15 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         rocketContraptionEntity.totalTickTime = distance/perTickSpeed;
 
+        if (acceleration <=0 ){
+            rocketContraptionEntity.disassembleOnFirstTick = true;
+        }
+
         if (rocketContraptionEntity.totalConsumedAmount > o2amount||rocketContraptionEntity.totalConsumedAmount >ch4amount){
-            rocketContraptionEntity.disassemble();
+            rocketContraptionEntity.disassembleOnFirstTick = true;
         }
         if (distance<=0){
-            rocketContraptionEntity.disassemble();
+            rocketContraptionEntity.disassembleOnFirstTick = true;
         }
     }
 
@@ -225,21 +230,29 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         tickActors();
         Vec3 movementVec = getDeltaMovement();
         if (!level().isClientSide)tickDimensionChangeLogic();
-
         if (ContraptionCollider.collideBlocks(this)) {
             if (!level().isClientSide)
                 disassemble();
             return;
         }
-
-
-        movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
-        move(movementVec.x, movementVec.y, movementVec.z);
-
+        if (tickCount>2) {
+            movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
+            move(movementVec.x, movementVec.y, movementVec.z);
+        }
         if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
             contraption.stop(level());
-        if (!level().isClientSide && (prevAxisMotion != axisMotion))
+        if (!level().isClientSide )
             sendPacket();
+    }
+    @Override
+    public void move(double x, double y, double z) {
+        Vec3 prevPos = this.position();
+        super.move(MoverType.SELF,new Vec3(x, y, z));
+        if (!this.level().isClientSide() && (y!=0||x!=0||z!=0)){
+            if(prevPos == this.position() ){
+                disassemble();
+            }
+        }
     }
 
 
@@ -405,7 +418,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     @Override
     protected void handleStallInformation(double x, double y, double z, float angle) {
-
+        setPosRaw(x, y, z);
+        clientOffsetDiff = 0;
     }
 
     @Override

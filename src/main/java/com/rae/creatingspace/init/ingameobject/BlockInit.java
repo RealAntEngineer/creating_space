@@ -1,6 +1,5 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlock;
 import com.rae.creatingspace.server.blocks.*;
@@ -29,7 +28,6 @@ import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
-import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 
 public class BlockInit {
 
@@ -76,7 +74,7 @@ public class BlockInit {
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
                     "nickel_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
@@ -88,7 +86,7 @@ public class BlockInit {
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(
                     "deepslate_nickel_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(4.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -98,7 +96,7 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
                     "moon_nickel_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -118,7 +116,7 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
                     "moon_cobalt_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -136,7 +134,7 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
             .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -235,12 +233,20 @@ public class BlockInit {
             "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(40000))
+            .transform(BlockStressDefaults.setImpact(10000))
             .transform(axeOrPickaxe())
             .item()
             .transform(customItemModel())
             .register();
-
+    public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
+                    "air_liquefier", AirLiquefierBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .transform(BlockStressDefaults.setImpact(500))
+            .transform(axeOrPickaxe())
+            .item()
+            .transform(customItemModel())
+            .register();
     public static final BlockEntry<FlowGaugeBlock> FLOW_METER = REGISTRATE
             .block("flow_meter", FlowGaugeBlock::new)
             .initialProperties(SharedProperties::copperMetal)

@@ -72,7 +72,7 @@ public class ChemicalSynthesizerBlock extends Block implements EntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide() ? null : ($0,pos,$1,blockEntity) -> {
             if(blockEntity instanceof ChemicalSynthesizerBlockEntity synthesizer) {
-                ChemicalSynthesizerBlockEntity.tick(level,pos,state, synthesizer);
+                synthesizer.tick(level,pos,state, synthesizer);
             }
 
         };
