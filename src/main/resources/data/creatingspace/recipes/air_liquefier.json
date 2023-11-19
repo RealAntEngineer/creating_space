@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "create:propeller"
+    },
+    "T" : {
+      "item": "create:fluid_tank"
+    },
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "N": {
+      "item": "creatingspace:cobalt_sheet"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "CTC",
+    "CCC"
+  ],
+  "result": {
+    "item": "creatingspace:oxygen_sealer"
+  }
+}
