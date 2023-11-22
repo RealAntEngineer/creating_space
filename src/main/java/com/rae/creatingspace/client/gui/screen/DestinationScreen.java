@@ -219,28 +219,19 @@ public class DestinationScreen extends AbstractSimiScreen {
     }
 
     protected void handleTooltips() {
-        if (destination==null)
+        if (destination == null)
             return;
-            /*if (validateSetting != null) {
-                IconButton button =validateSetting;
-                if (!button.getToolTip()
-                        .isEmpty()) {
-                    button.setToolTip(button.getToolTip()
-                            .get(0));
-                    button.getToolTip()
-                            .add(TooltipHelper.holdShift(TooltipHelper.Palette.BLUE, hasShiftDown()));
-                }
-            }*/
+
         if (destinationCost != null) {
             LabeledBoxWidget button = destinationCost;
-                button.getToolTip()
-                        .add(Component.translatable("creatingspace.gui.rocket_controls.destination_cost"));
+            Component tooltipText = Component.translatable("creatingspace.gui.rocket_controls.destination_cost");
+            // Check if the tooltip already contains the desired text
+            if (!button.getToolTip().contains(tooltipText)) {
+                button.getToolTip().add(tooltipText);
+            }
         }
-
-        //if (hasShiftDown()) {
-        //    fillToolTip(validateSetting, "validateSetting");
-        //}
     }
+
 
     private void fillToolTip(IconButton button, String tooltipKey) {
         if (!button.isHoveredOrFocused())
