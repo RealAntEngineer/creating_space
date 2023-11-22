@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
@@ -54,36 +55,53 @@ public class PlumeParticle extends SimpleAnimatedParticle {
             this.remove();
             return;
         }
-        if (drag!=0) {
-            float scaleFactor = drag > 0 ? 1 / (1 + drag) : (1 - drag);
 
-            speed = speed.scale(scaleFactor);
-        }
-
-        xd = speed.x();
-        yd = speed.y();
-        zd = speed.z();
-
-
-
-        //setSpriteFromAge(sprites);
-        morphColor();
-        this.move(this.xd, this.yd, this.zd);
-
-        if (speed.length()<1){
+        // Scaling and size adjustments based on speed
+        if (speed.length() > 1) {
+            scale(1.2f); // Adjust the scale for higher speeds
+            this.quadSize *= 1.1; // Increase the size to simulate cone spread
+        } else if (speed.length() < 1) {
             selectSprite(1);
             if (this.quadSize < 2) {
                 scale(drag * 3 + 1);
             }
-
-            if (speed.length() < 0.05f){
-                this.remove();
-                return;
-            }
         }
 
+        if (speed.length() < 0.05f) {
+            this.remove();
+            return;
+        }
+
+        // Apply drag if present
+        if (drag != 0) {
+            float scaleFactor = drag > 0 ? 1 / (1 + drag) : (1 - drag);
+            speed = speed.scale(scaleFactor);
+        }
+
+        // Update position
+        xd = speed.x();
+        yd = speed.y();
+        zd = speed.z();
+        morphColor();
+        this.move(this.xd, this.yd, this.zd);
+
+        // Check if the particle is close to the ground and set fire
+        if (isCloseToGround()) {
+            setFire();
+        }
     }
 
+    private boolean isCloseToGround() {
+        BlockPos pos = new BlockPos(this.x, this.y, this.z);
+        // Check a specific range below the particle, adjust the range as needed
+        for (int i = 1; i <= 3; i++) {
+            BlockPos below = pos.below(i);
+            if (!this.level.isEmptyBlock(below)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     @Override
@@ -100,27 +118,43 @@ public class PlumeParticle extends SimpleAnimatedParticle {
         this.setLocationFromBoundingbox();
     }
 
-    public void setFire(){
-        BlockPos collidePos = new BlockPos(x,y,z);
-        //BlockState blockState = this.level.getBlockState(collidePos.below());
-        if (((FireBlock)Blocks.FIRE).canCatchFire(this.level,collidePos.below(),Direction.UP)) {
-            this.level.setBlockAndUpdate(collidePos, Blocks.FIRE.defaultBlockState());
-            //this.level.sendPacketToServer(Packet);
-            this.level.scheduleTick(collidePos,this.level.getBlockState(collidePos).getBlock(),1);
+    public void setFire() {
+        BlockPos pos = new BlockPos(this.x, this.y - 1, this.z); // Position of the block directly below the particle
+        BlockState blockState = this.level.getBlockState(pos);
+
+        Direction[] directions = {Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+
+        for (Direction direction : directions) {
+            BlockPos adjacentPos = pos.relative(direction);
+            BlockState adjacentState = this.level.getBlockState(adjacentPos);
+
+            // Check if the adjacent position is air and if the block is flammable on the checked side
+            if (this.level.isEmptyBlock(adjacentPos) && blockState.getBlock().isFlammable(blockState, this.level, pos, direction)) {
+                this.level.setBlockAndUpdate(adjacentPos, Blocks.FIRE.defaultBlockState());
+                break;
+            }
         }
     }
 
+
     public void morphColor() {
-        Color color = new Color(0x0088EE);
-        color = color.setAlpha(1f);
-        if (speed.length() < 1D){
-            color = color.mixWith(Color.WHITE, (float) (1 - speed.length()/3f));
-        }
+        float speedFactor = (float) speed.length();
+        // Mix between yellow and red based on speed
+        Color yellow = new Color(0xFFFF00);
+        Color red = new Color(0xFF0000);
+        Color color = mixColors(yellow, red, speedFactor);
 
         Vec3 colorVec = color.asVector();
         setColor((float) colorVec.x, (float) colorVec.y, (float) colorVec.z);
-        setAlpha((float) clamp(speed.length()*2,0.2,1));
+        setAlpha((float) clamp(speed.length()*2, 0.2, 1));
+    }
 
+    // Utility method for color mixing
+    private Color mixColors(Color color1, Color color2, float factor) {
+        int red = (int) (color1.getRed() * (1 - factor) + color2.getRed() * factor);
+        int green = (int) (color1.getGreen() * (1 - factor) + color2.getGreen() * factor);
+        int blue = (int) (color1.getBlue() * (1 - factor) + color2.getBlue() * factor);
+        return new Color(red, green, blue);
     }
     public int getLightColor(float partialTick) {
         BlockPos blockpos = new BlockPos(this.x, this.y, this.z);
