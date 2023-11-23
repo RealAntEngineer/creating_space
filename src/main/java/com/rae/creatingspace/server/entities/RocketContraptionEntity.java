@@ -3,6 +3,7 @@ package com.rae.creatingspace.server.entities;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import com.rae.creatingspace.init.PacketInit;
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
@@ -34,6 +35,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -47,11 +49,13 @@ import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RocketContraptionEntity extends AbstractContraptionEntity {
     private static final Logger LOGGER = LogUtils.getLogger();
-    Direction movementAxis = Direction.UP;
     double clientOffsetDiff;
     double axisMotion;
     float totalConsumedAmount;
@@ -67,6 +71,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     static float O2ro = (float) FluidInit.LIQUID_OXYGEN.get().getFluidType().getDensity() / 1000;
     static float CH4ro = (float) FluidInit.LIQUID_METHANE.get().getFluidType().getDensity() / 1000;
 
+    public HashMap<String, ArrayList<Fluid>> consumableFluids = new HashMap<>(
+            Map.of("oxygen",new ArrayList<>(), "methane", new ArrayList<>()));
     //initializing and saving methods
 
     public RocketContraptionEntity(EntityType<?> type, Level level) {
@@ -113,12 +119,18 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
             FluidType fluidType = fluidInTank.getFluid().getFluidType();
 
-            if (fluidType == FluidInit.LIQUID_METHANE.getType()){
+            if (TagsInit.CustomFluidTags.LIQUID_METHANE.matches(fluidInTank.getFluid())){
                 ch4amount += fluidHandler.getFluidInTank(i).getAmount();
+                if (!rocketContraptionEntity.consumableFluids.get("methane").contains(fluidInTank.getFluid())){
+                    rocketContraptionEntity.consumableFluids.get("methane").add(fluidInTank.getFluid());
+                }
 
             }
-            else if (fluidType == FluidInit.LIQUID_OXYGEN.getType()){
+            else if (TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(fluidInTank.getFluid())){
                 o2amount += fluidHandler.getFluidInTank(i).getAmount();
+                if (!rocketContraptionEntity.consumableFluids.get("oxygen").contains(fluidInTank.getFluid())){
+                    rocketContraptionEntity.consumableFluids.get("oxygen").add(fluidInTank.getFluid());
+                }
             }
             else {
 
@@ -192,12 +204,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 new ResourceLocation(
                         compound.getString("origin:nameSpace"),
                         compound.getString("origin:path")));
-
-        NBTHelper.writeEnum(compound, "GantryAxis", movementAxis);
+        fillConsumableFluidsMap();
     }
     @Override
     protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
-        movementAxis = NBTHelper.readEnum(compound, "GantryAxis", Direction.class);
         compound.putInt("propellantConsumption", this.propellantConsumption);
         compound.putFloat("initialMass",this.initialMass);
         compound.putFloat("totalTime",this.totalTickTime);
@@ -219,6 +229,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     protected void tickContraption() {
         if (!(contraption instanceof RocketContraption))
             return;
+
+        if (disassembleOnFirstTick){
+            if (!level().isClientSide){
+                disassemble();
+            }
+            return;
+        }
 
         double prevAxisMotion = axisMotion;
         if (level().isClientSide) {
@@ -324,11 +341,39 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 partialConsumedAmount = partialConsumedAmount -1;
             }
         }
-        fluidHandler.drain(new FluidStack(FluidInit.LIQUID_METHANE.get(), (int) drainAmount) , IFluidHandler.FluidAction.EXECUTE );//drain methane
-        fluidHandler.drain(new FluidStack(FluidInit.LIQUID_OXYGEN.get(), (int) drainAmount) , IFluidHandler.FluidAction.EXECUTE );//drain oxygen
+        //make in a loop so it look for every one ?
+        Fluid methaneFluid = consumableFluids.get("methane").get(0);
+        Fluid oxygenFluid = consumableFluids.get("oxygen").get(0);
+        //correct that so it works for all the fluids matching the methane and oxygen tag -> list of consumable fluid ?
+        int consumedMethane = fluidHandler.drain(new FluidStack(methaneFluid, (int) drainAmount) , IFluidHandler.FluidAction.EXECUTE ).getAmount();//drain methane
+        int consumedOxygen = fluidHandler.drain(new FluidStack(oxygenFluid, (int) drainAmount) , IFluidHandler.FluidAction.EXECUTE ).getAmount();//drain oxygen
 
-
+        if (consumedOxygen ==0 || consumedMethane==0){
+            fillConsumableFluidsMap();
+        }
     }
+    private void fillConsumableFluidsMap(){
+        IFluidHandler fluidHandler = contraption.getSharedFluidTanks();
+
+        int nbrOfTank = fluidHandler.getTanks();
+
+        for (int i=0 ; i < nbrOfTank; i++) {
+            FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
+
+            if (TagsInit.CustomFluidTags.LIQUID_METHANE.matches(fluidInTank.getFluid())){
+                if (!this.consumableFluids.get("methane").contains(fluidInTank.getFluid())){
+                    this.consumableFluids.get("methane").add(fluidInTank.getFluid());
+                }
+
+            }
+            else if (TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(fluidInTank.getFluid())){
+                if (!this.consumableFluids.get("oxygen").contains(fluidInTank.getFluid())){
+                    this.consumableFluids.get("oxygen").add(fluidInTank.getFluid());
+                }
+            }
+        }
+    }
+
     @Nullable
     @Override
     public Entity changeDimension(ServerLevel destLevel, ITeleporter teleporter) {
