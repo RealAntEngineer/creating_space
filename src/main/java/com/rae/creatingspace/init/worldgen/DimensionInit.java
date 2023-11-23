@@ -2,7 +2,7 @@ package com.rae.creatingspace.init.worldgen;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.utilities.AccessibilityMatrixReader;
+import com.rae.creatingspace.utilities.data.AccessibilityMatrixReader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +13,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+
+import static com.rae.creatingspace.utilities.data.AccessibilityMatrixReader.translator;
 
 public class DimensionInit {
     public  static final DeferredRegister<Level> CS_DIMENSION_REGISTRY = DeferredRegister.create(
@@ -54,49 +56,7 @@ public class DimensionInit {
         System.out.println("Registering Dimension for : "+ CreatingSpace.MODID);
     }
 
-    public static float gravity(ResourceKey<DimensionType> dimensionType) {
-        if(dimensionType == EARTH_ORBIT_TYPE){
-            return 0f;
-        }
-        if (dimensionType == MOON_ORBIT_TYPE){
-            return 0f;
-        }
-        if (dimensionType == MOON_TYPE){
-             return 1.6f;
-        }
-        return 9.81f;
-    }
 
-    public static HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
-        List<String> list = CSConfigs.COMMON.dimAccess.accessibility_matrix.get();
-        HashMap<ResourceKey<Level>, HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter>> accessibilityMap = AccessibilityMatrixReader.createFromStringList(list);
-
-        if (accessibilityMap.containsKey(currentDimension)){
-            return  accessibilityMap.get(currentDimension);
-        }
-        return new HashMap<>();
-    }
-
-    public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
-        boolean no_02 = CSConfigs.COMMON.dimAccess.no_02.get().contains(dimension.location().toString());
-        //System.out.println(no_02);
-        return !no_02;
-        //return !(dimension == EARTH_ORBIT_KEY || dimension == MOON_ORBIT_KEY || dimension == MOON_KEY);
-    }
-    public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
-        return gravity(dimensionType) == 0;
-    }
-
-    public static ResourceKey<Level> planetUnder(ResourceKey<Level> dimension){
-        ResourceKey<Level> underDimension = null;
-        if (dimension == MOON_ORBIT_KEY){
-            underDimension = MOON_KEY;
-        }
-        if (dimension == EARTH_ORBIT_KEY){
-            underDimension = Level.OVERWORLD;
-        }
-        return underDimension;
-    }
 
 
 }

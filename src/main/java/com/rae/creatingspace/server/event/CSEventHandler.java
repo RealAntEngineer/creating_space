@@ -6,6 +6,7 @@ import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
+import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -35,10 +36,10 @@ public class CSEventHandler {
         Level level = entityLiving.getLevel();
         ResourceKey<Level> dimension = level.dimension();
         if (entityLiving instanceof ServerPlayer player){
-            if (DimensionInit.isOrbit(level.dimensionTypeId())){
+            if (CSDimensionUtil.isOrbit(level.dimensionTypeId())){
                 if (!level.isClientSide){
                     if (player.getY() < level.dimensionType().minY()+10){
-                        ResourceKey<Level> dimensionToTeleport = DimensionInit.planetUnder(dimension);
+                        ResourceKey<Level> dimensionToTeleport = CSDimensionUtil.planetUnder(dimension);
 
                         if (dimensionToTeleport!=null){
                             ServerLevel destServerLevel = Objects.requireNonNull(level.getServer()).getLevel(dimensionToTeleport);
@@ -93,7 +94,7 @@ public class CSEventHandler {
 
     public static boolean isInO2(LivingEntity entity){
         Level level = entity.getLevel();
-        if (DimensionInit.hasO2Atmosphere(level.dimension())){
+        if (CSDimensionUtil.hasO2Atmosphere(level.dimension())){
             return true;
         }
         AABB colBox = entity.getBoundingBox();
@@ -111,7 +112,7 @@ public class CSEventHandler {
     public static void onWaterSourceCreated(BlockEvent.CreateFluidSourceEvent fluidSourceEvent){
         Level level = (Level) fluidSourceEvent.getLevel();
         if (!level.isClientSide()){
-            if (!DimensionInit.hasO2Atmosphere(level.dimension())){
+            if (!CSDimensionUtil.hasO2Atmosphere(level.dimension())){
                 fluidSourceEvent.setCanceled(true);
             }
         }

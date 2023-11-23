@@ -25,7 +25,6 @@ import java.util.Queue;
 import java.util.Set;
 
 public class RocketContraption extends TranslatingContraption {
-    private static final Logger LOGGER = LogUtils.getLogger();
     private int trust = 0;
     private int dryMass = 0;
     private float propellantConsumption = 0;

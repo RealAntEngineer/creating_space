@@ -7,7 +7,8 @@ import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
-import com.rae.creatingspace.utilities.AccessibilityMatrixReader;
+import com.rae.creatingspace.utilities.CSDimensionUtil;
+import com.rae.creatingspace.utilities.data.AccessibilityMatrixReader;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.RocketAssemblePacket;
 import com.rae.creatingspace.utilities.packet.RocketControlsSettingsPacket;
@@ -57,7 +58,7 @@ public class DestinationScreen extends AbstractSimiScreen {
         this.initialPosMap = new HashMap<>(be.initialPosMap);
         this.background = GuiTexturesInit.ROCKET_CONTROLS;
         this.currentDimension = be.getLevel().dimension();
-        this.mapOfAccessibleDimensionAndV = DimensionInit.accessibleFrom(this.currentDimension);
+        this.mapOfAccessibleDimensionAndV = CSDimensionUtil.accessibleFrom(this.currentDimension);
         this.buttonVector = new Vector<>(this.mapOfAccessibleDimensionAndV.size());
         this.destinationChanged = false;
     }

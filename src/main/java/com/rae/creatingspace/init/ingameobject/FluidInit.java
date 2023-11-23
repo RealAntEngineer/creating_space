@@ -49,7 +49,7 @@ public class FluidInit {
                 VirtualFluid::new);
     }
 
-    public static final FluidEntry<ForgeFlowingFluid.Flowing> HOT_LAVA  =
+    /*public static final FluidEntry<ForgeFlowingFluid.Flowing> HOT_LAVA  =
             CreatingSpace.REGISTRATE.standardFluid("hot_lava",
                             SolidRenderedPlaceableFluidType.create(0x622020,
                                     () -> 1f / 32f))
@@ -63,7 +63,7 @@ public class FluidInit {
                     .bucket()
                     .tab(()-> CreativeModeTabsInit.MINERALS_TAB)
                     .build()
-                    .register();
+                    .register();*/
 
     public static final FluidEntry<VirtualFluid> LIQUID_METHANE =
             registrateCustomVirtualLiquid("liquid_methane")
