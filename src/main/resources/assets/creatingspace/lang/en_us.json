@@ -6,6 +6,8 @@
   "block.creatingspace.rocket_generator": "Rocket Generator",
   "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
+  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split water into oxygen and methane at a rate of speed mb/tick",
+
   "block.creatingspace.flow_meter": "Flowmeter",
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
   "block.creatingspace.air_liquefier": "Air Liquefier",

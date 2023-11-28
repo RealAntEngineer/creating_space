@@ -17,7 +17,9 @@ import com.rae.creatingspace.server.items.SmallEngineItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.*;
+import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -257,6 +259,7 @@ public class BlockInit {
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
+            .onRegisterAfter(Registry.ITEM_REGISTRY, i -> ItemDescription.useKey(i, "block.creatingspace.mechanical_electrolyzer"))
             .register();
     public static final BlockEntry<FlowGaugeBlock> FLOW_METER = REGISTRATE
             .block("flow_meter", FlowGaugeBlock::new)

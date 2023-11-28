@@ -11,8 +11,13 @@ import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
 import com.rae.creatingspace.utilities.data.AccessibilityMatrixReader;
+import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.rae.creatingspace.utilities.data.NoO2AtmosphereReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,7 +38,12 @@ public class CreatingSpace {
     public static final String MODID = "creatingspace" ;
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
-
+    //register tooltipModifierFactory ?
+    static {
+        REGISTRATE.setTooltipModifierFactory(item -> {
+            return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE);
+        });
+    }
     public CreatingSpace() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
@@ -79,6 +89,7 @@ public class CreatingSpace {
     {
         event.addListener(AccessibilityMatrixReader.MATRIX_HOLDER);
         event.addListener(NoO2AtmosphereReader.NO_ATMOSPHERE_HOLDER);
+        event.addListener(MassOfBlockReader.MASS_HOLDER);
     }
 
     public static ResourceLocation resource(String path){
