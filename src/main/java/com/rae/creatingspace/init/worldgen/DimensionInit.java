@@ -1,8 +1,6 @@
 package com.rae.creatingspace.init.worldgen;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.utilities.data.AccessibilityMatrixReader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -11,11 +9,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.rae.creatingspace.utilities.data.AccessibilityMatrixReader.translator;
 
 public class DimensionInit {
     public  static final DeferredRegister<Level> CS_DIMENSION_REGISTRY = DeferredRegister.create(

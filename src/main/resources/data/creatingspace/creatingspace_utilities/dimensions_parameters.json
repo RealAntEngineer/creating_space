@@ -1,0 +1,83 @@
+{
+  "values": {
+    "minecraft:overworld": {
+      "adjacentDimensions": {
+        "creatingspace:earth_orbit": {
+          "deltaV": 1500
+        }
+      },
+      "arrivalHeight": 200,
+      "gravity": 9.81,
+      "orbitingPlanet":{
+        "fileName": "name",
+        "size": 20
+      },
+      "suns":[
+        {
+          "fileName": "name",
+          "size": 20
+        }
+      ]
+    },
+    "creatingspace:earth_orbit": {
+      "adjacentDimensions": {
+        "creatingspace:moon_orbit": {
+          "deltaV": 600
+        },
+        "minecraft:overworld": {
+          "deltaV": 200
+        }
+      },
+        "arrivalHeight": 64,
+        "gravity": 0,
+        "orbitingPlanet":{
+          "fileName": "name",
+          "size": 20
+        },
+        "suns":[
+          { "fileName": "name",
+            "size": 20
+          }
+        ]
+      },
+    "creatingspace:moon_orbit": {
+      "adjacentDimensions": {
+        "creatingspace:the_moon": {
+          "deltaV": 300
+        },
+        "creatingspace:earth_orbit": {
+          "deltaV": 200
+        }
+      },
+      "arrivalHeight": 64,
+      "gravity": 0,
+      "orbitingPlanet":{
+        "fileName": "name",
+        "size": 20
+      },
+      "suns":[
+        { "fileName": "name",
+          "size": 20
+        }
+      ]
+    },
+    "creatingspace:the_moon": {
+      "adjacentDimensions": {
+        "creatingspace:moon_orbit": {
+          "deltaV": 300
+        }
+      },
+      "arrivalHeight": 200,
+      "gravity": 1.6,
+      "orbitingPlanet":{
+        "fileName": "name",
+        "size": 20
+      },
+      "suns":[
+        { "fileName": "name",
+          "size": 20
+        }
+      ]
+    }
+  }
+}

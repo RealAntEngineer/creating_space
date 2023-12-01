@@ -1,7 +1,7 @@
 package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.utilities.data.AccessibilityMatrixReader;
+import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.NoO2AtmosphereReader;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import static com.rae.creatingspace.init.worldgen.DimensionInit.*;
-import static com.rae.creatingspace.utilities.data.AccessibilityMatrixReader.translator;
+import static com.rae.creatingspace.utilities.data.DimensionParameterMapReader.translator;
 
 public class CSDimensionUtil {
 
-    public static float gravity(ResourceKey<DimensionType> dimensionType) {
+    /*public static float gravity(ResourceKey<DimensionType> dimensionType) {
         if(dimensionType == EARTH_ORBIT_TYPE){
             return 0f;
         }
@@ -27,45 +27,53 @@ public class CSDimensionUtil {
             return 1.6f;
         }
         return 9.81f;
+    }*/
+    public static float gravity(ResourceKey<DimensionType> dimensionType) {
+        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData(CreatingSpace.resource("dimensions_parameters"));
+
+        if (dimensionMapData!=null) {
+            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter = dimensionMapData.dimensionParameterMap().get(dimensionType.location().toString());
+            if (dimensionParameter!=null){
+                Float gravity = dimensionParameter.gravity();
+                if (gravity!=null){
+                    return gravity;
+                }
+            }
+        }
+        return 9.81f;
     }
 
     //to optimise
-    public static HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
-        Map<String, Map<String, AccessibilityMatrixReader.AccessibilityParameter>> compressedAccessibilityMatrix = new HashMap<>();
+    public static HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
 
-        AccessibilityMatrixReader.PartialAccessibilityMatrix matrixHolderData =
-                AccessibilityMatrixReader.MATRIX_HOLDER.getData(CreatingSpace.resource("accessibility_matrix"));
-        if (matrixHolderData!=null) {
-            Map<String, Map<String, AccessibilityMatrixReader.AccessibilityParameter>> newCompressedMatrix = matrixHolderData.partialMatrix();
+        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData(CreatingSpace.resource("dimensions_parameters"));
+        HashMap<String,HashMap<String, DimensionParameterMapReader.AccessibilityParameter>> compressedAccessibilityMatrix = new HashMap<>();
 
-            if (matrixHolderData.replace()) {
-                compressedAccessibilityMatrix = newCompressedMatrix;
-            }
-            else {
-                HashMap<String, Map<String, AccessibilityMatrixReader.AccessibilityParameter>> mutableCompressedMatrix = new HashMap<>(compressedAccessibilityMatrix);
-                HashMap<String, Map<String, AccessibilityMatrixReader.AccessibilityParameter>> mutableNewMatrix = new HashMap<>(newCompressedMatrix);
+        if (dimensionMapData!=null) {
+            Map<String, DimensionParameterMapReader.CustomDimensionParameter> mapOfDimensionParameters = dimensionMapData.dimensionParameterMap();
+            for (String originDimension : mapOfDimensionParameters.keySet()) {
+                HashMap<String, DimensionParameterMapReader.AccessibilityParameter> adjacentDimensions = new HashMap<>(mapOfDimensionParameters.get(originDimension).adjacentDimensions());
 
-                for (String origin : newCompressedMatrix.keySet()){
-                    if (mutableCompressedMatrix.containsKey(origin)){
-                        mutableCompressedMatrix.merge(origin,mutableNewMatrix.get(origin),
-                                (oldValue,newValue)-> {
-                                    HashMap<String, AccessibilityMatrixReader.AccessibilityParameter> mergedValue = new HashMap<>(oldValue);
-                                    for (String destination : newValue.keySet()){
-                                        //! immutable Map !!!
-                                        mergedValue.put(destination,newValue.get(destination));
-                                    }
-                                    return mergedValue;
-                                });
-                    } else {
-                        mutableCompressedMatrix.put(origin,mutableNewMatrix.get(origin));
+                for(String destination : adjacentDimensions.keySet()){
+                    Integer arrivalHeight = mapOfDimensionParameters.get(destination).arrivalHeight();
+                    if (arrivalHeight==null){
+                        arrivalHeight = 64;
                     }
+                    adjacentDimensions.put(destination,
+                            new DimensionParameterMapReader.AccessibilityParameter(
+                                    adjacentDimensions.get(destination).deltaV(),
+                                    arrivalHeight));
                 }
-                compressedAccessibilityMatrix = mutableCompressedMatrix;
+
+                compressedAccessibilityMatrix.put(originDimension,adjacentDimensions);
             }
+
+            //the "replace" boolean doesn't do anything for now so ...
         }
 
-
-        HashMap<ResourceKey<Level>, HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter>> accessibilityMap = translator(compressedAccessibilityMatrix);//.createFromStringList(list);
+        HashMap<ResourceKey<Level>, HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter>> accessibilityMap = translator(compressedAccessibilityMatrix);//.createFromStringList(list);
 
         //better : a get method in the Reader Class ? -> making an abstract Reader Class ?
 
@@ -81,7 +89,7 @@ public class CSDimensionUtil {
         boolean no_02 = false;
         if (data!=null) {
             List<String> dimensions = data.dimensions();
-             no_02 = /*CSConfigs.COMMON.dimAccess.no_02.get()*/dimensions.contains(dimension.location().toString());
+             no_02 = dimensions.contains(dimension.location().toString());
             //System.out.println(no_02);
         }
         return !no_02;

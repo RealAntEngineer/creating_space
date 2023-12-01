@@ -5,10 +5,9 @@ import com.rae.creatingspace.client.gui.screen.elements.DimSelectBoxWidget;
 import com.rae.creatingspace.client.gui.screen.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
-import com.rae.creatingspace.utilities.data.AccessibilityMatrixReader;
+import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.RocketAssemblePacket;
 import com.rae.creatingspace.utilities.packet.RocketControlsSettingsPacket;
@@ -35,7 +34,7 @@ public class DestinationScreen extends AbstractSimiScreen {
 
     private boolean destinationChanged;
     private Button launchButton;
-    private final HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
+    private final HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketControlsBlockEntity blockEntity;
     private final GuiTexturesInit background;

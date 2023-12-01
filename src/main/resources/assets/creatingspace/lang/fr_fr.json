@@ -128,7 +128,8 @@
   "creatingspace.science.unit.newton": "N",
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
-  "creatingspace.science.unit.flow.millibucket_by_ticks": "ms/t"
+  "creatingspace.science.unit.flow.millibucket_by_ticks": "ms/t",
+  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split water into oxygen and methane at a rate of speed mb/tick"
 
 
 
