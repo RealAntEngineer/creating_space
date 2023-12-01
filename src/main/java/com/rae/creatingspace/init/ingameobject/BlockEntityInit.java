@@ -2,6 +2,7 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.client.renderer.blockentity.*;
 import com.rae.creatingspace.client.renderer.instance.AirLiquefierInstance;
+import com.rae.creatingspace.client.renderer.instance.FlightRecorderInstance;
 import com.rae.creatingspace.client.renderer.instance.OxygenSealerInstance;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.server.blockentities.*;
@@ -90,6 +91,14 @@ public class BlockEntityInit {
                     .instance(()-> OxygenSealerInstance::new)
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> OxygenSealerRenderer::new)
+                    .register();
+
+    public static final BlockEntityEntry<FlightRecorderBlockEntity> FLIGHT_RECORDER =
+            REGISTRATE.blockEntity(
+                            "flight_recorder", FlightRecorderBlockEntity::new)
+                    .instance(()-> FlightRecorderInstance::new)
+                    .validBlocks( BlockInit.FLIGHT_RECORDER)
+                    .renderer(()-> FlightRecorderRenderer::new)
                     .register();
 
 

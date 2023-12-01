@@ -19,6 +19,7 @@ import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import jdk.jfr.FlightRecorder;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
@@ -313,6 +314,16 @@ public class BlockInit {
             .item(CryogenicTankItem::new)
             .properties(p ->p.tab(CreativeModeTabsInit.MACHINE_TAB).stacksTo(1))
             .build()
+            .register();
+
+    public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
+                    "flight_recorder", FlightRecorderBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .transform(axeOrPickaxe())
+            .item()
+            .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .transform(customItemModel())
             .register();
 
     public static void register() {}

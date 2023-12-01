@@ -10,14 +10,12 @@ import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
-import com.rae.creatingspace.utilities.data.AccessibilityMatrixReader;
+import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.rae.creatingspace.utilities.data.NoO2AtmosphereReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
-import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.item.TooltipModifier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -87,7 +85,7 @@ public class CreatingSpace {
     }
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
-        event.addListener(AccessibilityMatrixReader.MATRIX_HOLDER);
+        event.addListener(DimensionParameterMapReader.DIMENSION_MAP_HOLDER);
         event.addListener(NoO2AtmosphereReader.NO_ATMOSPHERE_HOLDER);
         event.addListener(MassOfBlockReader.MASS_HOLDER);
     }

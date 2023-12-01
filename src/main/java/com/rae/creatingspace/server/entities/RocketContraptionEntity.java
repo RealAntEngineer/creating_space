@@ -7,6 +7,7 @@ import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
+import com.rae.creatingspace.utilities.data.FlightDataHelper;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ContraptionCollider;
@@ -73,8 +74,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public ResourceKey<Level> originDimension = Level.OVERWORLD;
     public ResourceKey<Level> destination;
     private boolean disassembleOnFirstTick = false;
-    //static float O2ro = (float) FluidInit.LIQUID_OXYGEN.get().getFluidType().getDensity() / 1000;
-    //static float CH4ro = (float) FluidInit.LIQUID_METHANE.get().getFluidType().getDensity() / 1000;
+    public FlightDataHelper.RocketAssemblyData assemblyData;
 
     public HashMap<String,HashMap<TagKey<Fluid>, ArrayList<Fluid>>> consumableFluids = new HashMap<>(
                     Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
@@ -103,6 +103,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         return entity;
     }
 
+    //put that in a rocket assembly helper class ?
     private static void handelTrajectoryCalculation(RocketContraptionEntity rocketContraptionEntity){
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
@@ -162,11 +163,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
 
 
-
-            //mean consumption -> make the consumption diff between CH4 and 02 -> adding H2 for advanced engine ?
+        //mean consumption -> make the consumption diff between CH4 and 02 -> adding H2 for advanced engine ?
         //a map of fluidTag/ Integer
         //should rather calculate the deltaV max ?
-        //make a per fluidTag consumed amount
         rocketContraptionEntity.initialMass = emptyMass+initialPropellantMass;
 
         int distance = (int) (300 - rocketContraptionEntity.position().y());
@@ -177,7 +176,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float perTickSpeed = getPerTickSpeed(acceleration);
 
         rocketContraptionEntity.totalTickTime = distance/perTickSpeed;
-        //fill the real consumption map and fill the consumedMass map for amount verification
+
+        //fill the real consumption map and fill the consumedMass map for mass verification
         HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
 
         for (Couple<TagKey<Fluid>> combination:rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
@@ -214,24 +214,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         System.out.println("a "+acceleration);
         System.out.println("finalMass"+finalPropellantMass);//something is wrong -> should be independent of trust
+        //verify if there is enough fluid
+        FlightDataHelper.RocketAssemblyData assemblyData = FlightDataHelper.RocketAssemblyData.createFromPropellantMap(massForEachPropellant,consumedMassForEachPropellant,finalPropellantMass);
+        rocketContraptionEntity.disassembleOnFirstTick = assemblyData.hasFailed();//just for the fluids
+
+        //may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
         if (acceleration <=0 ){
             rocketContraptionEntity.disassembleOnFirstTick = true;
-        }
-        //verify if there is enough fluid
-
-        for (TagKey<Fluid> fluidTag:consumedMassForEachPropellant.keySet()){
-            Integer fluidMassPresent = massForEachPropellant.get(fluidTag);
-            if (fluidMassPresent==null){
-                rocketContraptionEntity.disassembleOnFirstTick = true;
-                System.out.println("null value"+consumedMassForEachPropellant);
-                break;
-            }
-            else if (consumedMassForEachPropellant.get(fluidTag) > fluidMassPresent){
-                rocketContraptionEntity.disassembleOnFirstTick = true;
-                System.out.println("not enough"+consumedMassForEachPropellant);
-
-                break;
-            }
         }
         if (distance<=0){
             rocketContraptionEntity.disassembleOnFirstTick = true;
@@ -332,7 +321,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
 
     }
-    //make a codec ?
+    //make a codec ? should not be here
     private HashMap<Couple<TagKey<Fluid>>, Couple<Float>> fromNBTtoMapCouple(CompoundTag partialDrainAmountPerFluid) {
        HashMap<Couple<TagKey<Fluid>>, Couple<Float>> returnedMap = new HashMap<>();
        for (String stringCouple:partialDrainAmountPerFluid.getAllKeys()){
@@ -468,17 +457,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public boolean causeFallDamage(float p_146828_, float p_146829_, DamageSource p_146830_) {
         return false;
     }
-    /*@Override
-    public void move(double x, double y, double z) {
-        Vec3 prevPos = this.position();
-        super.move(MoverType.PISTON,new Vec3(x, y, z));
-        if (!this.level.isClientSide() && (y!=0||x!=0||z!=0)){
-            if(prevPos == this.position() ){
-                disassemble();
-            }
-        }
-    }*/
-
 
     @Override
     public Vec3 getContactPointMotion(Vec3 globalContactPoint) {
@@ -713,7 +691,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public static float getAcceleration(float initialMass, int trust, float gravity, boolean reentry) {
         if (!reentry) {
               float acceleration = (float) trust / initialMass;
-
             return (acceleration - gravity);
         } else {
             return -gravity;
