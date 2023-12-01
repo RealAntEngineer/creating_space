@@ -93,7 +93,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         entity.theoreticalPerTagFluidConsumption = contraption.getTPTFluidConsumption();
         entity.realPerTagFluidConsumption = new HashMap<>();
         entity.consumableFluids = new HashMap<>(
-                Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));;
+                Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
         handelTrajectoryCalculation(entity);
         entity.totalTrust = contraption.getTrust();
 
@@ -406,6 +406,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 this.changeDimension(destServerLevel,new CustomTeleporter(destServerLevel));
             }
             else {
+                //put an error log with the exception thrown
                 LOGGER.info("dimension change failed at first step");
                 LOGGER.info("rocket info :");
                 LOGGER.info("destination :" + destServerLevel);
