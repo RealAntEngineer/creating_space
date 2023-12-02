@@ -3,6 +3,7 @@ package com.rae.creatingspace.utilities.data;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
+import com.rae.creatingspace.CreatingSpace;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -52,7 +53,7 @@ public class DimensionParameterMapReader {
             ).apply(instance, PartialDimensionParameterMap::new));
 
 
-    public static final CodecJsonDataManager<PartialDimensionParameterMap> DIMENSION_MAP_HOLDER = new CodecJsonDataManager("creatingspace_utilities", PARTIAL_MAP_DIM_PARAMETER_CODEC, LOGGER);
+    public static final SingleFileCodecJsonDataManager<PartialDimensionParameterMap> DIMENSION_MAP_HOLDER = new SingleFileCodecJsonDataManager<>("creatingspace_utilities", CreatingSpace.resource("dimensions_parameters"), PARTIAL_MAP_DIM_PARAMETER_CODEC, LOGGER);
 
     //make a custom codec ? -> cleaner
     public static HashMap<ResourceKey<Level>, HashMap<ResourceKey<Level>, AccessibilityParameter>> translator(HashMap<String, HashMap<String, AccessibilityParameter>> mapString){

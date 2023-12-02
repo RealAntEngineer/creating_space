@@ -16,21 +16,9 @@ import static com.rae.creatingspace.utilities.data.DimensionParameterMapReader.t
 
 public class CSDimensionUtil {
 
-    /*public static float gravity(ResourceKey<DimensionType> dimensionType) {
-        if(dimensionType == EARTH_ORBIT_TYPE){
-            return 0f;
-        }
-        if (dimensionType == MOON_ORBIT_TYPE){
-            return 0f;
-        }
-        if (dimensionType == MOON_TYPE){
-            return 1.6f;
-        }
-        return 9.81f;
-    }*/
     public static float gravity(ResourceKey<DimensionType> dimensionType) {
         DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
-                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData(CreatingSpace.resource("dimensions_parameters"));
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
 
         if (dimensionMapData!=null) {
             DimensionParameterMapReader.CustomDimensionParameter dimensionParameter = dimensionMapData.dimensionParameterMap().get(dimensionType.location().toString());
@@ -48,7 +36,7 @@ public class CSDimensionUtil {
     public static HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
 
         DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
-                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData(CreatingSpace.resource("dimensions_parameters"));
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
         HashMap<String,HashMap<String, DimensionParameterMapReader.AccessibilityParameter>> compressedAccessibilityMatrix = new HashMap<>();
 
         if (dimensionMapData!=null) {
@@ -85,7 +73,7 @@ public class CSDimensionUtil {
 
 
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
-        NoO2AtmosphereReader.PartialNoO2AtmosphereList data =  NoO2AtmosphereReader.NO_ATMOSPHERE_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
+        NoO2AtmosphereReader.PartialDimensionList data =  NoO2AtmosphereReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
         boolean no_02 = false;
         if (data!=null) {
             List<String> dimensions = data.dimensions();

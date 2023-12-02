@@ -86,7 +86,7 @@ public class CreatingSpace {
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
         event.addListener(DimensionParameterMapReader.DIMENSION_MAP_HOLDER);
-        event.addListener(NoO2AtmosphereReader.NO_ATMOSPHERE_HOLDER);
+        event.addListener(NoO2AtmosphereReader.DIMENSION_TAGS_HOLDER);
         event.addListener(MassOfBlockReader.MASS_HOLDER);
     }
 

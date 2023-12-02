@@ -3,6 +3,7 @@ package com.rae.creatingspace.utilities.data;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
+import com.rae.creatingspace.CreatingSpace;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -27,7 +28,7 @@ public class MassOfBlockReader {
             ).apply(instance, PartialMassMap::new));
 
 
-    public static final CodecJsonDataManager<PartialMassMap> MASS_HOLDER = new CodecJsonDataManager("creatingspace_utilities", PARTIAL_BLOCKS_MASS_CODEC, LOGGER);
+    public static final SingleFileCodecJsonDataManager<PartialMassMap> MASS_HOLDER = new SingleFileCodecJsonDataManager<>("creatingspace_utilities", CreatingSpace.resource("blocks_mass"), PARTIAL_BLOCKS_MASS_CODEC, LOGGER);
 
     public static Map<TagKey<Block>, Integer> getOnlyTags(PartialMassMap data) {
         Map<String, Integer> rawMap = data.massMap();

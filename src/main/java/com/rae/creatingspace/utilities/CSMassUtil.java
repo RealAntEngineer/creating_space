@@ -13,7 +13,7 @@ import java.util.Map;
 public class CSMassUtil {
 
     public static int mass(BlockState state){
-        MassOfBlockReader.PartialMassMap data = MassOfBlockReader.MASS_HOLDER.getData(CreatingSpace.resource("blocks_mass"));
+        MassOfBlockReader.PartialMassMap data = MassOfBlockReader.MASS_HOLDER.getData();
         if( data!=null){
             ResourceLocation id = Registry.BLOCK.getKey(state.getBlock());
             Map<TagKey<Block>, Integer> massOfTaggedBlocks = MassOfBlockReader.getOnlyTags(data);
