@@ -2,6 +2,7 @@ package com.rae.creatingspace.server.contraption;
 
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.blockentities.RocketEngineBlockEntity;
+import com.rae.creatingspace.server.blocks.FlightRecorderBlock;
 import com.rae.creatingspace.utilities.CSMassUtil;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
@@ -22,17 +23,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.Set;
 
 public class RocketContraption extends TranslatingContraption {
-    private int trust = 0;
+    private int thrust = 0;
     private int dryMass = 0;
-    private float propellantConsumption = 0;
     private HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo>();
 
-
+    private ArrayList<BlockPos> localPosOfFlightRecorders = new ArrayList<>();
     public RocketContraption() {
 
     }
@@ -54,8 +55,8 @@ public class RocketContraption extends TranslatingContraption {
         BlockPos localPos = pos.subtract(anchor);
         if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity){
 
-            this.trust += engineBlockEntity.getTrust();
-            float totalPropellantConsumption = (float) (engineBlockEntity.getTrust()/(
+            this.thrust += engineBlockEntity.getThrust();
+            float totalPropellantConsumption = (float) (engineBlockEntity.getThrust()/(
                     engineBlockEntity.getIsp()* CSConfigs.SERVER.rocketEngine.ISPModifier.get() *9.81));
             float ratio = engineBlockEntity.getOxFuelRatio();
             TagKey<Fluid> oxidizerTag = engineBlockEntity.getOxidizerTag();
@@ -70,12 +71,14 @@ public class RocketContraption extends TranslatingContraption {
             float oxMass = totalPropellantConsumption *(ratio/(ratio+1));
             float fuelMass = totalPropellantConsumption *(1/(ratio+1));
 
-            this.theoreticalPerTagFluidConsumption.put(combination,previousCombInfo.add(oxMass,fuelMass,engineBlockEntity.getTrust()));
+            this.theoreticalPerTagFluidConsumption.put(combination,previousCombInfo.add(oxMass,fuelMass,engineBlockEntity.getThrust()));
 
 
         }
         this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState());
-
+        if (blockAdded instanceof FlightRecorderBlock){
+            this.localPosOfFlightRecorders.add(localPos);
+        }
         super.addBlock(pos, pair);
     }
 
@@ -115,28 +118,28 @@ public class RocketContraption extends TranslatingContraption {
         return new NonStationaryLighter<>(this);
     }
 
+    public ArrayList<BlockPos> getLocalPosOfFlightRecorders() {
+        return localPosOfFlightRecorders;
+    }
 
     public float getDryMass(){
         return this.dryMass;
     }
-    public float getTrust(){
-        return this.trust;
-    }
-    public int getPropellantConsumption(){
-        return (int) this.propellantConsumption;
+    public float getThrust(){
+        return this.thrust;
     }
 
     public HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> getTPTFluidConsumption() {
         return theoreticalPerTagFluidConsumption;
     }
 
-    public record ConsumptionInfo(float oxConsumption, float fuelConsumption, int partialTrust){
-        public ConsumptionInfo add(float oxConsumption,float fuelConsumption, int partialTrust){
+    public record ConsumptionInfo(float oxConsumption, float fuelConsumption, int partialThrust){
+        public ConsumptionInfo add(float oxConsumption,float fuelConsumption, int partialThrust){
             return new ConsumptionInfo(this.oxConsumption
                     + oxConsumption,
                     this.fuelConsumption
                             +fuelConsumption,
-                    this.partialTrust+partialTrust);
+                    this.partialThrust +partialThrust);
         }
     }
 }

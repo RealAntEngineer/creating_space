@@ -61,14 +61,14 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(
                     "electrolizer", MechanicalElectrolyzerBlockEntity::new)
-                    .instance(()-> ShaftInstance::new)
+                    .instance(()-> ShaftInstance::new,false)
                     .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
                     .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
                     .register();
     public static final BlockEntityEntry<AirLiquefierBlockEntity> AIR_LIQUEFIER =
             REGISTRATE.blockEntity(
                             "air_liquefier", AirLiquefierBlockEntity::new)
-                    .instance(()-> AirLiquefierInstance::new)
+                    .instance(()-> AirLiquefierInstance::new,false)
                     .validBlocks( BlockInit.AIR_LIQUEFIER)
                     .renderer(()-> AirLiquefierBlockRenderer::new)
                     .register();
@@ -88,7 +88,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<SealerBlockEntity> OXYGEN_SEALER =
             REGISTRATE.blockEntity(
                     "oxygen_sealer", SealerBlockEntity::new)
-                    .instance(()-> OxygenSealerInstance::new)
+                    .instance(()-> OxygenSealerInstance::new,false)
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> OxygenSealerRenderer::new)
                     .register();
@@ -96,7 +96,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<FlightRecorderBlockEntity> FLIGHT_RECORDER =
             REGISTRATE.blockEntity(
                             "flight_recorder", FlightRecorderBlockEntity::new)
-                    .instance(()-> FlightRecorderInstance::new)
+                    .instance(()-> FlightRecorderInstance::new,false)
                     .validBlocks( BlockInit.FLIGHT_RECORDER)
                     .renderer(()-> FlightRecorderRenderer::new)
                     .register();

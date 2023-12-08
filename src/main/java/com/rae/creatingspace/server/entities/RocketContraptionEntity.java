@@ -8,7 +8,7 @@ import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.rae.creatingspace.utilities.data.FlightDataHelper;
-import com.rae.creatingspace.utilities.data.codec.CSNBTUtil;
+import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ContraptionCollider;
@@ -36,6 +36,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
@@ -67,12 +68,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     HashMap<Couple<TagKey<Fluid>>,Couple<Float>> partialDrainAmountPerFluid = new HashMap<>();
     public BlockPos rocketEntryCoordinate = new BlockPos(0,0,0);
-    public float totalTrust = 0;
+    public float totalThrust = 0;
     public float initialMass;
     private int propellantConsumption = 0;
     public ResourceKey<Level> originDimension = Level.OVERWORLD;
     public ResourceKey<Level> destination;
     private boolean disassembleOnFirstTick = false;
+    private List<BlockPos> localPosOfFlightRecorders;
+
     public FlightDataHelper.RocketAssemblyData assemblyData;
 
     public HashMap<String,HashMap<TagKey<Fluid>, ArrayList<Fluid>>> consumableFluids = new HashMap<>(
@@ -95,8 +98,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         entity.consumableFluids = new HashMap<>(
                 Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
         handelTrajectoryCalculation(entity);
-        entity.totalTrust = contraption.getTrust();
-
+        entity.totalThrust = contraption.getThrust();
+        entity.localPosOfFlightRecorders = contraption.getLocalPosOfFlightRecorders();
         LOGGER.info("finishing setting up parameters");
         entity.noPhysics = false;
         return entity;
@@ -112,7 +115,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         if (contraption==null){
             return;
         }
-        float totalTrust =0;
+        float totalThrust =0;
         float inertFluidsMass= 0;
         IFluidHandler fluidHandler = contraption.getSharedFluidTanks();
         int nbrOfTank = fluidHandler.getTanks();
@@ -126,13 +129,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
 
             totalTheoreticalConsumption += info.fuelConsumption()+info.oxConsumption();
-            totalTrust += info.partialTrust();
+            totalThrust += info.partialThrust();
             //initialise if not present
 
             addToConsumableFluids(rocketContraptionEntity, consumedOx,true);
             addToConsumableFluids(rocketContraptionEntity, consumedFuel,false);
         }
-        float meanVe = totalTrust/totalTheoreticalConsumption;
+        float meanVe = totalThrust/totalTheoreticalConsumption;
         // massForEachPropellant is just to determine if there is enough fluid,
         // need to be called after the consumedFluids map is build
         HashMap<TagKey<Fluid>,Integer> massForEachPropellant =
@@ -170,7 +173,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         float gravity = CSDimensionUtil.gravity(rocketContraptionEntity.level.dimensionTypeId());
 
-        float acceleration = totalTrust/(emptyMass+initialPropellantMass)-gravity;
+        float acceleration = totalThrust/(emptyMass+initialPropellantMass)-gravity;
         float perTickSpeed = getPerTickSpeed(acceleration);
 
         rocketContraptionEntity.totalTickTime = distance/perTickSpeed;
@@ -194,7 +197,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                     new RocketContraption.ConsumptionInfo(
                             partialOx/rocketContraptionEntity.totalTickTime,
                             partialFuel/rocketContraptionEntity.totalTickTime,
-                            info.partialTrust()));
+                            info.partialThrust()));
 
             Integer prevOxValue = consumedMassForEachPropellant.get(combination.get(true));
             if (prevOxValue == null){
@@ -211,7 +214,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
 
         //verify if there is enough fluid
-        FlightDataHelper.RocketAssemblyData assemblyData = FlightDataHelper.RocketAssemblyData.createFromPropellantMap(massForEachPropellant,consumedMassForEachPropellant,finalPropellantMass);
+        FlightDataHelper.RocketAssemblyData assemblyData =
+                FlightDataHelper.RocketAssemblyData.create(
+                        massForEachPropellant,
+                        consumedMassForEachPropellant,
+                        finalPropellantMass,
+                        totalThrust,
+                        (emptyMass+initialPropellantMass)*gravity);
+        rocketContraptionEntity.assemblyData = assemblyData;
         rocketContraptionEntity.disassembleOnFirstTick = assemblyData.hasFailed();//just for the fluids
 
         //may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
@@ -283,7 +293,22 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public static final EntityDataAccessor<Boolean> REENTRY_ENTITY_DATA_ACCESSOR =
             SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
 
-   @Override
+    @Override
+    public void disassemble() {
+        for (BlockPos localPos:this.localPosOfFlightRecorders){
+            StructureTemplate.StructureBlockInfo oldStructureInfo = this.contraption.getBlocks().get(localPos);
+            CompoundTag nbt = oldStructureInfo.nbt;
+            nbt.put("lastAssemblyData",FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
+            System.out.println("lastAssemblyData : "+assemblyData);
+            System.out.println("nbt : "+nbt);
+            StructureTemplate.StructureBlockInfo newStructureInfo =
+                    new StructureTemplate.StructureBlockInfo(oldStructureInfo.pos,oldStructureInfo.state,nbt);
+            this.contraption.getBlocks().put(localPos,newStructureInfo);
+        }
+        super.disassemble();
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(REENTRY_ENTITY_DATA_ACCESSOR,false);
@@ -292,12 +317,15 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     protected void readAdditional(CompoundTag compound, boolean spawnData) {
         super.readAdditional(compound, spawnData);
-        this.totalTrust = compound.getFloat("trust");
+        this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));
+        this.totalThrust = compound.getFloat("thrust");
         this.initialMass = compound.getFloat("initialMass");
         this.totalTickTime = compound.getFloat("totalTime");
         this.theoreticalPerTagFluidConsumption = CSNBTUtil.fromNBTtoMapInfo(compound.getCompound("theoreticalPerTagFluidConsumption"));
         this.realPerTagFluidConsumption = CSNBTUtil.fromNBTtoMapInfo(compound.getCompound("realPerTagFluidConsumption"));
         this.partialDrainAmountPerFluid = CSNBTUtil.fromNBTtoMapCouple(compound.getCompound("partialDrainAmountPerFluid"));
+        this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
+
         this.propellantConsumption = compound.getInt("propellantConsumption");
         this.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,compound.getBoolean("reentry"));
 
@@ -322,6 +350,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     @Override
     protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
+       compound.putLongArray("localPosOfFlightRecorders",CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));
         compound.putInt("propellantConsumption", this.propellantConsumption);
         compound.putFloat("initialMass",this.initialMass);
         compound.putFloat("totalTime",this.totalTickTime);
@@ -329,7 +358,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.put("realPerTagFluidConsumption", CSNBTUtil.fromMapInfoToNBT(this.realPerTagFluidConsumption));
         compound.put("partialDrainAmountPerFluid",CSNBTUtil.fromMapCoupleToNBT(this.partialDrainAmountPerFluid));
 
-        compound.putFloat("trust",this.totalTrust);
+        compound.put("assemblyData",FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
+        compound.putFloat("thrust",this.totalThrust);
 
         compound.putBoolean("reentry",isReentry());
 
@@ -430,7 +460,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         Vec3 movementVec;
         float acceleration = getAcceleration(
                 initialMass,
-                (int) totalTrust,gravity,isReentry());
+                (int) totalThrust,gravity,isReentry());
 
         float speed = getPerTickSpeed(acceleration);
         movementVec = new Vec3(0,speed,0);
@@ -603,9 +633,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
 
-    public static float getAcceleration(float initialMass, int trust, float gravity, boolean reentry) {
+    public static float getAcceleration(float initialMass, int thrust, float gravity, boolean reentry) {
         if (!reentry) {
-              float acceleration = (float) trust / initialMass;
+              float acceleration = (float) thrust / initialMass;
             return (acceleration - gravity);
         } else {
             return -gravity;

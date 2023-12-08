@@ -119,6 +119,16 @@
   "creatingspace.gui.sealer.settings": "Settings",
   "creatingspace.gui.sealer.range": "Range",
   "creatingspace.gui.sealer.automatic_retry": "Automatic Retry ?",
+
+  "creatingspace.overlay.flight_recorder.title": "last flight :",
+  "creatingspace.overlay.flight_recorder.no_failure": "no failure",
+  "creatingspace.overlay.flight_recorder.no_flight": "N/A",
+  "creatingspace.overlay.flight_recorder.propellant_status.not_enough_propellant": "not enough propellant",
+  "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "wrong ratio of propellant",
+  "creatingspace.overlay.flight_recorder.not_enough_thrust": "not enough thrust",
+  "creatingspace.overlay.flight_recorder.thrust1": "thrust",
+  "creatingspace.overlay.flight_recorder.thrust2": "weight",
+
   "creatingspace:earth_orbit": "Earth Orbit",
   "creatingspace:moon_orbit": "Moon Orbit",
   "creatingspace:the_moon": "The Moon",
@@ -126,8 +136,10 @@
 
   "death.attack.no_oxygen": "%1$s didn't found oxygen in space",
 
-  "creatingspace.science.trust": "Trust",
+  "creatingspace.science.thrust": "Thrust",
   "creatingspace.science.unit.newton": "N",
+  "creatingspace.science.unit.kilo_gramme": "kg",
+  "creatingspace.science.unit.metric_ton": "t",
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t"

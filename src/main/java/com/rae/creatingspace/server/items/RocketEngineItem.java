@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.items;
 
+import com.rae.creatingspace.utilities.CSUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -15,8 +16,8 @@ public abstract class RocketEngineItem extends BlockItem {
         components.add(Component.translatable("creatingspace.science.isp")
                 .append(Component.literal(" : " + ISP))
                 .append(Component.translatable("creatingspace.science.unit.second")));
-        components.add(Component.translatable("creatingspace.science.trust")
-                .append(Component.literal(" : "+Trust))
+        components.add(Component.translatable("creatingspace.science.thrust")
+                .append(Component.literal(" : "+ CSUtil.scientificNbrFormatting(Trust,10)))
                 .append(Component.translatable("creatingspace.science.unit.newton")));
 
     }

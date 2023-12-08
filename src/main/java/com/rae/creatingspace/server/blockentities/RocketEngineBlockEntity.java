@@ -15,7 +15,7 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
 
     public abstract int getIsp(); //seconds
 
-    public abstract int getTrust();//Newtons
+    public abstract int getThrust();//Newtons
     public abstract TagKey<Fluid> getOxidizerTag();
     public abstract TagKey<Fluid> getFuelTag();
     public abstract float getOxFuelRatio();
@@ -43,8 +43,8 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         }
 
         @Override
-        public int getTrust() {
-            return  CSConfigs.SERVER.rocketEngine.bigRocketEngineTrust.get();
+        public int getThrust() {
+            return  CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get();
         }
 
         @Override
@@ -73,8 +73,8 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         }
 
         @Override
-        public int getTrust() {
-            return  CSConfigs.SERVER.rocketEngine.smallRocketEngineTrust.get();
+        public int getThrust() {
+            return  CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get();
         }
 
         @Override

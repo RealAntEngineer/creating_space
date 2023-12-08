@@ -63,6 +63,9 @@ public class OxygenSealerInstance extends KineticBlockEntityInstance<SealerBlock
                 .setBlockLight(blockLight)
                 .setSkyLight(skyLight);
 
+        setup(firstShaft);
+        setup(oppositeShaft);
+        setup(fan,localAxis);
     }
     private float getFanSpeed() {
         float speed = blockEntity.getSpeed() * 5;

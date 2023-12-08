@@ -11,6 +11,7 @@ import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock
 import com.rae.creatingspace.server.blocks.multiblock.engines.BigEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.rae.creatingspace.server.contraption.movementbehaviour.EngineMovementBehaviour;
+import com.rae.creatingspace.server.contraption.movementbehaviour.FlightRecorderMovementBehaviour;
 import com.rae.creatingspace.server.items.BigEngineItem;
 import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.SmallEngineItem;
