@@ -1,19 +1,23 @@
 package com.rae.creatingspace.client.renderer.instance;
 
 import com.jozufozu.flywheel.api.MaterialManager;
+import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.rae.creatingspace.server.blockentities.FlightRecorderBlockEntity;
 import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.contraptions.elevator.ElevatorPulleyBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import com.simibubi.create.foundation.render.AllMaterialSpecs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.state.BlockState;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
 public class FlightRecorderInstance extends KineticBlockEntityInstance<FlightRecorderBlockEntity> {
-    protected final RotatingData mainShaft;
+    protected final RotatingData firstShaft;
+    protected final RotatingData oppositeShaft;
     protected final RotatingData memoryRoll;
     final Direction direction;
     public FlightRecorderInstance(MaterialManager materialManager, FlightRecorderBlockEntity blockEntity) {
@@ -26,51 +30,68 @@ public class FlightRecorderInstance extends KineticBlockEntityInstance<FlightRec
 
         Direction.Axis localAxis = axis;
 
-        mainShaft = getRotatingMaterial()
+        firstShaft = getRotatingMaterial()
                 .getModel(AllPartialModels.SHAFT_HALF, blockState,
                         Direction.fromAxisAndDirection(localAxis, Direction.AxisDirection.POSITIVE))
                 .createInstance();
+        oppositeShaft = getRotatingMaterial()
+                .getModel(AllPartialModels.SHAFT_HALF, blockState,
+                        Direction.fromAxisAndDirection(localAxis, Direction.AxisDirection.NEGATIVE))
+                .createInstance();
 
-        mainShaft.setRotationalSpeed(getBlockEntitySpeed())
+
+        firstShaft.setRotationalSpeed(getBlockEntitySpeed())
                 .setRotationOffset(getRotationOffset(localAxis)).setColor(blockEntity)
                 .setPosition(getInstancePosition())
                 .setBlockLight(blockLight)
                 .setSkyLight(skyLight);
+
+        oppositeShaft.setRotationalSpeed(-getBlockEntitySpeed())
+                .setRotationOffset(getRotationOffset(localAxis)).setColor(blockEntity)
+                .setPosition(getInstancePosition())
+                .setBlockLight(blockLight)
+                .setSkyLight(skyLight);
+
+
 
 
         memoryRoll = materialManager.defaultCutout()
                 .material(AllMaterialSpecs.ROTATING)
-                .getModel(AllPartialModels.ELEVATOR_COIL, blockState, direction)
+                .getModel(PartialModelInit.MEMORY_ROLL, blockState,
+                        Direction.fromAxisAndDirection(localAxis, Direction.AxisDirection.POSITIVE))
                 .createInstance();
 
-        localAxis = direction.getAxis();
-        memoryRoll.setRotationalSpeed(getFanSpeed())
+        //localAxis = direction.getAxis();
+        memoryRoll.setRotationalSpeed(getBlockEntitySpeed())
                 .setRotationOffset(getRotationOffset(localAxis)).setColor(blockEntity)
                 .setPosition(getInstancePosition())
                 .setBlockLight(blockLight)
                 .setSkyLight(skyLight);
 
-    }
-    private float getFanSpeed() {
-        return blockEntity.getSpeed();
+        setup(firstShaft);
+        setup(oppositeShaft);
+        setup(memoryRoll);
     }
     @Override
     public void update() {
-        updateRotation(mainShaft);
-        updateRotation(memoryRoll, direction.getAxis() ,getFanSpeed());
+        updateRotation(firstShaft);
+        updateRotation(oppositeShaft);
+        updateRotation(memoryRoll);
     }
 
     @Override
     public void updateLight() {
         BlockPos firstSide = pos.relative(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE));
-        relight(firstSide, mainShaft);
+        relight(firstSide, firstShaft);
+        BlockPos oppositeSide = pos.relative(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.NEGATIVE));
+        relight(oppositeSide,oppositeShaft);
         BlockPos inFront = pos.relative(direction);
         relight(inFront, memoryRoll);
     }
-
-    @Override
+   @Override
     public void remove() {
-        mainShaft.delete();
+        firstShaft.delete();
+        oppositeShaft.delete();
         memoryRoll.delete();
     }
 }

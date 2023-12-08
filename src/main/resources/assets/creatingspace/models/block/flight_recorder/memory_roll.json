@@ -1,0 +1,90 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"1": "creatingspace:block/flight_recorder/memory_roll",
+		"particle": "creatingspace:block/flight_recorder/gearbox"
+	},
+	"elements": [
+		{
+			"name": "octagon",
+			"from": [10, 5.92893, 3],
+			"to": [13, 10.07107, 13],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [3, 0, 13, 4], "texture": "#1"}
+			}
+		},
+		{
+			"name": "octagon",
+			"from": [10, 5.92893, 3],
+			"to": [13, 10.07107, 13],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [3, 4, 13, 8], "texture": "#1"}
+			}
+		},
+		{
+			"name": "octagon",
+			"from": [3, 5.92893, 3],
+			"to": [6, 10.07107, 13],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 8, 8]},
+			"faces": {
+				"west": {"uv": [3, 0, 13, 4], "texture": "#1"}
+			}
+		},
+		{
+			"name": "octagon",
+			"from": [3, 5.92893, 3],
+			"to": [6, 10.07107, 13],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"west": {"uv": [3, 8, 13, 4], "texture": "#1"}
+			}
+		},
+		{
+			"name": "octagon",
+			"from": [5.92893, 3, 3],
+			"to": [10.07107, 6, 13],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 8, 8]},
+			"faces": {
+				"down": {"uv": [13, 12, 3, 8], "rotation": 270, "texture": "#1"}
+			}
+		},
+		{
+			"name": "octagon",
+			"from": [5.92893, 3, 3],
+			"to": [10.07107, 6, 13],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"down": {"uv": [3, 16, 13, 12], "rotation": 270, "texture": "#1"}
+			}
+		},
+		{
+			"name": "octagon",
+			"from": [5.92893, 10, 3],
+			"to": [10.07107, 13, 13],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 8, 8]},
+			"faces": {
+				"up": {"uv": [13, 12, 3, 8], "rotation": 90, "texture": "#1"}
+			}
+		},
+		{
+			"name": "octagon",
+			"from": [5.92893, 10, 3],
+			"to": [10.07107, 13, 13],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"up": {"uv": [13, 12, 3, 16], "rotation": 90, "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "octagon",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7]
+		}
+	]
+}

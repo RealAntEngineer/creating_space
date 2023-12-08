@@ -18,7 +18,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
 
     @Override
     public boolean isActive(MovementContext context) {
-        return false;//MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && !rocketEntity.isReentry();
+        return MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && !rocketEntity.isReentry();
     }
 
     @Override
