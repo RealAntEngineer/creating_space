@@ -52,6 +52,7 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.FLOW_METER);
                         output.accept(BlockInit.OXYGEN_SEALER);
                         output.accept(BlockInit.AIR_LIQUEFIER);
+                        output.accept(BlockInit.FLIGHT_RECORDER);
                         output.acceptAll(makeStackListFunc().apply(BlockInit.CRYOGENIC_TANK.asItem()));
                     })
                     .build());

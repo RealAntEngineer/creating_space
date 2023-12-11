@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "creatingspace:crushed_cobalt_ore"
+  },
+  "result": "creatingspace:cobalt_ingot",
+  "cookingtime": 40
+}

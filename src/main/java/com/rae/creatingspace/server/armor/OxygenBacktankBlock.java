@@ -1,6 +1,6 @@
 package com.rae.creatingspace.server.armor;
 
-import com.rae.creatingspace.init.ShapesInit;
+import com.rae.creatingspace.init.graphics.ShapesInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.foundation.block.IBE;

@@ -2,17 +2,23 @@ package com.rae.creatingspace.server.blockentities;
 
 
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.init.TagsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 
 public abstract class RocketEngineBlockEntity extends BlockEntity {
 
     public abstract int getIsp(); //seconds
 
-    public abstract int getTrust();//Newtons
+    public abstract int getThrust();//Newtons
+    public abstract TagKey<Fluid> getOxidizerTag();
+    public abstract TagKey<Fluid> getFuelTag();
+    public abstract float getOxFuelRatio();
 
 
     public RocketEngineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -38,8 +44,22 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         }
 
         @Override
-        public int getTrust() {
+        public int getThrust() {
             return  CSConfigs.SERVER.rocketEngine.bigRocketEngineTrust.get();
+        }
+        @Override
+        public TagKey<Fluid> getOxidizerTag() {
+            return TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag;
+        }
+
+        @Override
+        public TagKey<Fluid> getFuelTag() {
+            return TagsInit.CustomFluidTags.LIQUID_METHANE.tag;
+        }
+
+        @Override
+        public float getOxFuelRatio() {
+            return 2f;
         }
 
         public BigEngine(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -53,8 +73,22 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         }
 
         @Override
-        public int getTrust() {
+        public int getThrust() {
             return  CSConfigs.SERVER.rocketEngine.smallRocketEngineTrust.get();
+        }
+        @Override
+        public TagKey<Fluid> getOxidizerTag() {
+            return TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag;
+        }
+
+        @Override
+        public TagKey<Fluid> getFuelTag() {
+            return TagsInit.CustomFluidTags.LIQUID_METHANE.tag;
+        }
+
+        @Override
+        public float getOxFuelRatio() {
+            return 2f;
         }
 
 

@@ -4,10 +4,10 @@ import com.rae.creatingspace.client.gui.screen.elements.DimSelectBoxWidget;
 import com.rae.creatingspace.client.gui.screen.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
-import com.rae.creatingspace.utilities.AccessibilityMatrixReader;
+import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSUtil;
+import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.packet.RocketAssemblePacket;
 import com.rae.creatingspace.utilities.packet.RocketControlsSettingsPacket;
 import com.simibubi.create.foundation.gui.AbstractSimiScreen;
@@ -35,7 +35,7 @@ public class DestinationScreen extends AbstractSimiScreen {
 
     private boolean destinationChanged;
     private Button launchButton;
-    private final HashMap<ResourceKey<Level>, AccessibilityMatrixReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
+    private final HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketControlsBlockEntity blockEntity;
     private final GuiTexturesInit background;
@@ -58,7 +58,7 @@ public class DestinationScreen extends AbstractSimiScreen {
         this.initialPosMap = new HashMap<>(be.initialPosMap);
         this.background = GuiTexturesInit.ROCKET_CONTROLS;
         this.currentDimension = be.getLevel().dimension();
-        this.mapOfAccessibleDimensionAndV = DimensionInit.accessibleFrom(this.currentDimension);
+        this.mapOfAccessibleDimensionAndV = CSDimensionUtil.accessibleFrom(this.currentDimension);
         this.buttonVector = new Vector<>(this.mapOfAccessibleDimensionAndV.size());
         this.destinationChanged = false;
     }
@@ -220,27 +220,17 @@ public class DestinationScreen extends AbstractSimiScreen {
     }
 
     protected void handleTooltips() {
-        if (destination==null)
+        if (destination == null)
             return;
-            /*if (validateSetting != null) {
-                IconButton button =validateSetting;
-                if (!button.getToolTip()
-                        .isEmpty()) {
-                    button.setToolTip(button.getToolTip()
-                            .get(0));
-                    button.getToolTip()
-                            .add(TooltipHelper.holdShift(TooltipHelper.Palette.BLUE, hasShiftDown()));
-                }
-            }*/
+
         if (destinationCost != null) {
             LabeledBoxWidget button = destinationCost;
-                button.getToolTip()
-                        .add(Component.translatable("creatingspace.gui.rocket_controls.destination_cost"));
+            Component tooltipText = Component.translatable("creatingspace.gui.rocket_controls.destination_cost");
+            // Check if the tooltip already contains the desired text
+            if (!button.getToolTip().contains(tooltipText)) {
+                button.getToolTip().add(tooltipText);
+            }
         }
-
-        //if (hasShiftDown()) {
-        //    fillToolTip(validateSetting, "validateSetting");
-        //}
     }
 
     private void fillToolTip(IconButton button, String tooltipKey) {

@@ -1,5 +1,6 @@
 package com.rae.creatingspace;
 
+import com.mojang.logging.LogUtils;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.PacketInit;
@@ -11,6 +12,8 @@ import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.TooltipHelper;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,13 +24,21 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.slf4j.Logger;
 
 @Mod(CreatingSpace.MODID)
 
 public class CreatingSpace {
-    public static final String MODID = "creatingspace" ;
+    public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static final String MODID = "creatingspace" ;
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
+
+    static {
+        REGISTRATE.setTooltipModifierFactory(item -> {
+            return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE);
+        });
+    }
 
     public CreatingSpace() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

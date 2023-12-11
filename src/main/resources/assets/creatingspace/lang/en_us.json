@@ -6,6 +6,8 @@
   "block.creatingspace.rocket_generator": "Rocket Generator",
   "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
+  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split water into oxygen and methane at a rate of speed mb/tick",
+
   "block.creatingspace.flow_meter": "Flowmeter",
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
   "block.creatingspace.air_liquefier": "Air Liquefier",
@@ -110,21 +112,34 @@
 
   "creatingspace.gui.rocket_controls.launch": "Launch",
   "creatingspace.gui.rocket_controls.send_setting": "Validate",
+  "creatingspace.gui.rocket_controls.destination_cost": "deltaV needed",
+  "creatingspace.gui.rocket_controls.pos_selection": "Pos ?",
   "creatingspace.gui.sealer.try_seal": "Try Sealing",
   "creatingspace.gui.sealer.isSealed": "Is Sealed ?",
   "creatingspace.gui.sealer.settings": "Settings",
   "creatingspace.gui.sealer.range": "Range",
   "creatingspace.gui.sealer.automatic_retry": "Automatic Retry ?",
+
+  "creatingspace.overlay.flight_recorder.title": "last flight :",
+  "creatingspace.overlay.flight_recorder.no_failure": "no failure",
+  "creatingspace.overlay.flight_recorder.no_flight": "N/A",
+  "creatingspace.overlay.flight_recorder.propellant_status.not_enough_propellant": "not enough propellant",
+  "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "wrong ratio of propellant",
+  "creatingspace.overlay.flight_recorder.not_enough_thrust": "not enough thrust",
+  "creatingspace.overlay.flight_recorder.thrust1": "thrust",
+  "creatingspace.overlay.flight_recorder.thrust2": "weight",
+
   "creatingspace:earth_orbit": "Earth Orbit",
   "creatingspace:moon_orbit": "Moon Orbit",
   "creatingspace:the_moon": "The Moon",
   "minecraft:overworld": "The Earth",
 
   "death.attack.no_oxygen": "%1$s didn't found oxygen in space",
-  "creatingspace.gui.rocket_controls.destination_cost": "deltaV needed",
-  "creatingspace.gui.rocket_controls.pos_selection": "Pos ?",
-  "creatingspace.science.trust": "Trust",
+
+  "creatingspace.science.thrust": "Thrust",
   "creatingspace.science.unit.newton": "N",
+  "creatingspace.science.unit.kilo_gramme": "kg",
+  "creatingspace.science.unit.metric_ton": "t",
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t"

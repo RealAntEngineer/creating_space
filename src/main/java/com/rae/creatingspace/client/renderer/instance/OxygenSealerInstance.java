@@ -57,12 +57,16 @@ public class OxygenSealerInstance extends KineticBlockEntityInstance<SealerBlock
                 .getModel(AllPartialModels.ENCASED_FAN_INNER, blockState, opposite)
                 .createInstance();
         localAxis = direction.getAxis();
+        //might be redundant
         fan.setRotationalSpeed(getFanSpeed())
                 .setRotationOffset(getRotationOffset(localAxis)).setColor(blockEntity)
                 .setPosition(getInstancePosition())
                 .setBlockLight(blockLight)
                 .setSkyLight(skyLight);
 
+        setup(firstShaft);
+        setup(oppositeShaft);
+        setup(fan,localAxis);
     }
     private float getFanSpeed() {
         float speed = blockEntity.getSpeed() * 5;

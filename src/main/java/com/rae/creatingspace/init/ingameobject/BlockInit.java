@@ -1,5 +1,6 @@
 package com.rae.creatingspace.init.ingameobject;
 
+import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlock;
 import com.rae.creatingspace.server.blocks.*;
@@ -287,6 +288,14 @@ public class BlockInit {
             .transform(pickaxeOnly())
             .item(CryogenicTankItem::new)
             .build()
+            .register();
+    public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
+                    "flight_recorder", FlightRecorderBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .transform(axeOrPickaxe())
+            .item()
+            .transform(customItemModel())
             .register();
 
 

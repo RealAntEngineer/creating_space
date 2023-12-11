@@ -28,7 +28,7 @@ public class CustomTeleporter implements ITeleporter {
     @Override
     public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
         double height;
-        if (DimensionInit.gravity(destWorld.dimensionTypeId())==0f){
+        if (CSDimensionUtil.gravity(destWorld.dimensionTypeId())==0f){
             height = CSConfigs.COMMON.spaceSpawnHeight.get();
         }else{
             height = CSConfigs.COMMON.planetSpawnHeight.get();
