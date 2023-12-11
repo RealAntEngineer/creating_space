@@ -13,7 +13,7 @@ public class CSRocketEngine extends CSConfigBase{
     private static class Comments {
         static String ISPModifier = " reduction coefficient on the consumption";
         static String methaloxISP = " base ISP of rocket engines";
-        static String bigRocketEngineTrust ="the trust in Newtons of the big engine";
-        static String smallRocketEngineTrust = "the trust in Newtons of the small engine";
+        static String bigRocketEngineThrust ="the trust in Newtons of the big engine";
+        static String smallRocketEngineThrust = "the trust in Newtons of the small engine";
     }
 }
