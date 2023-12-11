@@ -17,7 +17,6 @@ public class CSUtil {
 
     public static String scientificNbrFormatting(Float toRound, int digit) {
         return scientificNbrFormatting(BigDecimal.valueOf(toRound),digit);
-
     }
 
     public static String scientificNbrFormatting(Integer toRound, int digit) {

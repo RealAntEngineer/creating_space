@@ -57,6 +57,7 @@ public class OxygenSealerInstance extends KineticBlockEntityInstance<SealerBlock
                 .getModel(AllPartialModels.ENCASED_FAN_INNER, blockState, opposite)
                 .createInstance();
         localAxis = direction.getAxis();
+        //might be redundant
         fan.setRotationalSpeed(getFanSpeed())
                 .setRotationOffset(getRotationOffset(localAxis)).setColor(blockEntity)
                 .setPosition(getInstancePosition())

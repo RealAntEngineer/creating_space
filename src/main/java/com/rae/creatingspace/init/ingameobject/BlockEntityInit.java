@@ -68,11 +68,10 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<AirLiquefierBlockEntity> AIR_LIQUEFIER =
             REGISTRATE.blockEntity(
                             "air_liquefier", AirLiquefierBlockEntity::new)
-                    .instance(()-> AirLiquefierInstance::new,false)
+                    .instance(()-> AirLiquefierInstance::new)
                     .validBlocks( BlockInit.AIR_LIQUEFIER)
                     .renderer(()-> AirLiquefierBlockRenderer::new)
                     .register();
-
     public static final BlockEntityEntry<FlowGaugeBlockEntity> FLOW_METER =
             REGISTRATE.blockEntity(
                             "flow_meter", FlowGaugeBlockEntity::new)
@@ -81,18 +80,17 @@ public class BlockEntityInit {
                     .register();
     public static final BlockEntityEntry<OxygenBlockEntity> OXYGEN =
             REGISTRATE.blockEntity(
-            "oxygen", OxygenBlockEntity::new)
-            .validBlocks(BlockInit.OXYGEN)
-            .register();
+                            "oxygen", OxygenBlockEntity::new)
+                    .validBlocks(BlockInit.OXYGEN)
+                    .register();
 
     public static final BlockEntityEntry<SealerBlockEntity> OXYGEN_SEALER =
             REGISTRATE.blockEntity(
-                    "oxygen_sealer", SealerBlockEntity::new)
-                    .instance(()-> OxygenSealerInstance::new,false)
+                            "oxygen_sealer", SealerBlockEntity::new)
+                    .instance(()-> OxygenSealerInstance::new)
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> OxygenSealerRenderer::new)
                     .register();
-
     public static final BlockEntityEntry<FlightRecorderBlockEntity> FLIGHT_RECORDER =
             REGISTRATE.blockEntity(
                             "flight_recorder", FlightRecorderBlockEntity::new)
