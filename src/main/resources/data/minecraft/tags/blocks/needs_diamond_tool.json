@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "creatingspace:moon_cobalt_ore",
+    "creatingspace:raw_cobalt_block"
+  ]
 }

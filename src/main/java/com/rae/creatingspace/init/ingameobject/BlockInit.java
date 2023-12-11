@@ -58,14 +58,14 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f))
+            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
             .item()
             .transform(customItemModel())
             .register();
 
     public static final BlockEntry<Block> MOON_SURFACE_REGOLITH = REGISTRATE
             .block("moon_surface_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f))
+            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
             .item()
             .transform(customItemModel())
             .register();
