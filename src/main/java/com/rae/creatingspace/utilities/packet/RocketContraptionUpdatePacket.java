@@ -11,25 +11,25 @@ public class RocketContraptionUpdatePacket  extends SimplePacketBase {
 
     public int entityID;
     public double coord;
-    public double motion;
+    public double speed;
 
-    public RocketContraptionUpdatePacket(int entityID, double coord, double motion) {
+    public RocketContraptionUpdatePacket(int entityID, double coord, double speed) {
         this.entityID = entityID;
         this.coord = coord;
-        this.motion = motion;
+        this.speed = speed;
     }
 
     public RocketContraptionUpdatePacket(FriendlyByteBuf buffer) {
         entityID = buffer.readInt();
         coord = buffer.readFloat();
-        motion = buffer.readFloat();
+        speed = buffer.readFloat();
     }
 
     @Override
     public void write(FriendlyByteBuf buffer) {
         buffer.writeInt(entityID);
         buffer.writeFloat((float) coord);
-        buffer.writeFloat((float) motion);
+        buffer.writeFloat((float) speed);
     }
 
     @Override
