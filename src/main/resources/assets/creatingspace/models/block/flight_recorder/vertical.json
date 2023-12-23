@@ -138,7 +138,6 @@
 			"to": [14, 2, 16],
 			"faces": {
 				"north": {"uv": [2, 14, 14, 16], "texture": "#2"},
-				"east": {"uv": [0, 0, 0, 0], "rotation": 90, "texture": "#2"},
 				"south": {"uv": [2, 14, 14, 16], "texture": "#2"},
 				"up": {"uv": [14, 16, 2, 0], "texture": "#2"},
 				"down": {"uv": [14, 16, 2, 0], "texture": "#2", "cullface": "down"}

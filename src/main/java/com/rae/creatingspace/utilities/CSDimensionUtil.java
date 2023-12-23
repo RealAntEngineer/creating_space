@@ -2,7 +2,7 @@ package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
-import com.rae.creatingspace.utilities.data.NoO2AtmosphereReader;
+import com.rae.creatingspace.utilities.data.DimensionTagsReader;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -73,7 +73,7 @@ public class CSDimensionUtil {
 
 
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
-        NoO2AtmosphereReader.PartialDimensionList data =  NoO2AtmosphereReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
+        DimensionTagsReader.PartialDimensionList data =  DimensionTagsReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
         boolean no_02 = false;
         if (data!=null) {
             List<String> dimensions = data.dimensions();
