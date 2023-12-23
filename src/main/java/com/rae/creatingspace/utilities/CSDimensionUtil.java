@@ -3,9 +3,13 @@ package com.rae.creatingspace.utilities;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.DimensionTagsReader;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -86,16 +90,22 @@ public class CSDimensionUtil {
         return gravity(dimensionType) == 0;
     }
 
-    public static ResourceKey<Level> planetUnder(ResourceKey<Level> dimension){
-        ResourceKey<Level> underDimension = null;
-        //make a map of dimension -> dimension
-        if (dimension == MOON_ORBIT_KEY){
-            underDimension = MOON_KEY;
+    public static @Nullable ResourceKey<Level> planetUnder(ResourceKey<Level> dimension){
+        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
+
+        if (dimensionMapData!=null) {
+            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter =
+                    dimensionMapData.dimensionParameterMap()
+                            .get(dimension.location().toString());
+            if (dimensionParameter!=null){
+                //TODO better protection against bad resource location
+                if (dimensionParameter.planetUnder() != "") {
+                    return ResourceKey.create(Registries.DIMENSION, new ResourceLocation(dimensionParameter.planetUnder()));
+                }
+            }
         }
-        if (dimension == EARTH_ORBIT_KEY){
-            underDimension = Level.OVERWORLD;
-        }
-        return underDimension;
+        return null;
     }
 
 
