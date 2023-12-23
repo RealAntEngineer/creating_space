@@ -11,13 +11,18 @@ import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
+import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
+import com.rae.creatingspace.utilities.data.DimensionTagsReader;
+import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -41,10 +46,12 @@ public class CreatingSpace {
     }
 
     public CreatingSpace() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
 
-        REGISTRATE.registerEventListeners(bus);
+        REGISTRATE.registerEventListeners(modEventBus);
 
         TagsInit.init();
 
@@ -53,23 +60,25 @@ public class CreatingSpace {
         BlockEntityInit.register();
         EntityInit.register();
         FluidInit.register();
-        CreativeModeTabsInit.register(bus);
-        ParticleTypeInit.register(bus);
+        CreativeModeTabsInit.register(modEventBus);
+        ParticleTypeInit.register(modEventBus);
 
-        DimensionInit.register(bus);
+        DimensionInit.register(modEventBus);
 
-        PaintingInit.register(bus);
+        PaintingInit.register(modEventBus);
 
-        CarverInit.register(bus);
+        CarverInit.register(modEventBus);
 
         CSContraptionType.prepare();
 
         CSConfigs.registerConfigs(modLoadingContext);
 
-        bus.addListener(CreatingSpace::init);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(bus));
+        modEventBus.addListener(CreatingSpace::init);
+        forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
 
-        bus.register(DimensionEffectInit.class);
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
+
+        modEventBus.register(DimensionEffectInit.class);
     }
     public static void init(final FMLCommonSetupEvent event) {
         PacketInit.registerPackets();
@@ -80,16 +89,12 @@ public class CreatingSpace {
             FluidInit.registerOpenEndedEffect();
         });
     }
-
-    public static void gatherData(GatherDataEvent event) {
-        //TagGen.datagen();
-        DataGenerator gen = event.getGenerator();
-
-        if (event.includeServer()) {
-
-        }
+    public static void onAddReloadListeners(AddReloadListenerEvent event)
+    {
+        event.addListener(DimensionParameterMapReader.DIMENSION_MAP_HOLDER);
+        event.addListener(DimensionTagsReader.DIMENSION_TAGS_HOLDER);
+        event.addListener(MassOfBlockReader.MASS_HOLDER);
     }
-
 
 
 

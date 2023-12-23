@@ -45,7 +45,7 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
 
         @Override
         public int getThrust() {
-            return  CSConfigs.SERVER.rocketEngine.bigRocketEngineTrust.get();
+            return  CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get();
         }
         @Override
         public TagKey<Fluid> getOxidizerTag() {
@@ -74,7 +74,7 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
 
         @Override
         public int getThrust() {
-            return  CSConfigs.SERVER.rocketEngine.smallRocketEngineTrust.get();
+            return  CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get();
         }
         @Override
         public TagKey<Fluid> getOxidizerTag() {
