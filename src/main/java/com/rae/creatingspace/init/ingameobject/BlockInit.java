@@ -36,6 +36,8 @@ import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
 
 public class BlockInit {
+    //TODO setup correctly the no occlusion and dynamic shape to avoid lighting issues ?
+    // + test if it's really the issue ( see QuadLighter )
 
     //just blocks
     public static final BlockEntry<Block> CLAMPS = REGISTRATE

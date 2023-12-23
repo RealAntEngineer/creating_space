@@ -37,6 +37,7 @@ public class DimensionParameterMapReader {
                             ADJACENT_DIMENSIONS_CODEC.fieldOf("adjacentDimensions").forGetter(i -> i.adjacentDimensions),
                             Codec.INT.fieldOf("arrivalHeight").forGetter(i->i.arrivalHeight),
                             Codec.FLOAT.fieldOf("gravity").forGetter(i->i.gravity),
+                            Codec.STRING.optionalFieldOf("planetUnder","").forGetter(i->i.planetUnder),
                             DIMENSION_EFFECT_ELEMENT_CODEC.fieldOf("orbitingPlanet").forGetter(i->i.orbitingPlanet),
                             Codec.list(DIMENSION_EFFECT_ELEMENT_CODEC).fieldOf("suns").forGetter(i->i.suns)
 
@@ -85,7 +86,7 @@ public class DimensionParameterMapReader {
 
     }
 
-    public record CustomDimensionParameter(Map<String, AccessibilityParameter> adjacentDimensions, Integer arrivalHeight, Float gravity, DimensionEffectElement orbitingPlanet, List<DimensionEffectElement> suns){
+    public record CustomDimensionParameter(Map<String, AccessibilityParameter> adjacentDimensions, Integer arrivalHeight, Float gravity, String planetUnder, DimensionEffectElement orbitingPlanet, List<DimensionEffectElement> suns){
 
     }
 

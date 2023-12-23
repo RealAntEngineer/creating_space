@@ -2,14 +2,18 @@ package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
-import com.rae.creatingspace.utilities.data.NoO2AtmosphereReader;
+import com.rae.creatingspace.utilities.data.DimensionTagsReader;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.rae.creatingspace.init.worldgen.DimensionInit.*;
 import static com.rae.creatingspace.utilities.data.DimensionParameterMapReader.translator;
@@ -21,7 +25,9 @@ public class CSDimensionUtil {
                 DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
 
         if (dimensionMapData!=null) {
-            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter = dimensionMapData.dimensionParameterMap().get(dimensionType.location().toString());
+            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter =
+                    dimensionMapData.dimensionParameterMap()
+                            .get(dimensionType.location().toString());
             if (dimensionParameter!=null){
                 Float gravity = dimensionParameter.gravity();
                 if (gravity!=null){
@@ -33,7 +39,8 @@ public class CSDimensionUtil {
     }
 
     //to optimise
-    public static HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
+    public static HashMap<ResourceKey<Level>,
+            DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
 
         DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
                 DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
@@ -73,7 +80,7 @@ public class CSDimensionUtil {
 
 
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
-        NoO2AtmosphereReader.PartialDimensionList data =  NoO2AtmosphereReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
+        DimensionTagsReader.PartialDimensionList data =  DimensionTagsReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
         boolean no_02 = false;
         if (data!=null) {
             List<String> dimensions = data.dimensions();
@@ -86,16 +93,22 @@ public class CSDimensionUtil {
         return gravity(dimensionType) == 0;
     }
 
-    public static ResourceKey<Level> planetUnder(ResourceKey<Level> dimension){
-        ResourceKey<Level> underDimension = null;
-        //make a map of dimension -> dimension
-        if (dimension == MOON_ORBIT_KEY){
-            underDimension = MOON_KEY;
+    public static @Nullable ResourceKey<Level> planetUnder(ResourceKey<Level> dimension){
+        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
+
+        if (dimensionMapData!=null) {
+            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter =
+                    dimensionMapData.dimensionParameterMap()
+                            .get(dimension.location().toString());
+            if (dimensionParameter!=null){
+                //TODO better protection against bad resource location
+                if (dimensionParameter.planetUnder() != "") {
+                    return ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dimensionParameter.planetUnder()));
+                }
+            }
         }
-        if (dimension == EARTH_ORBIT_KEY){
-            underDimension = Level.OVERWORLD;
-        }
-        return underDimension;
+        return null;
     }
 
 

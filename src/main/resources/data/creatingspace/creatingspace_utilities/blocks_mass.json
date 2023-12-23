@@ -1,6 +1,9 @@
 {
   "values": {
-    "#minecraft:stone": 3000,
+    "#forge:stone": 3000,
+    "#minecraft:ores": 4000,
+    "minecraft:gold_block": 19000,
+    "minecraft:iron_block": 78000,
     "create:fluid_tank": 40,
     "creatingspace:small_engine_structure": 0,
     "creatingspace:big_engine_structure" : 0

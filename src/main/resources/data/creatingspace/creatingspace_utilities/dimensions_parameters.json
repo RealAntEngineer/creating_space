@@ -29,6 +29,7 @@
         }
       },
         "arrivalHeight": 64,
+        "planetUnder" : "minecraft:overworld",
         "gravity": 0,
         "orbitingPlanet":{
           "fileName": "name",
@@ -50,6 +51,7 @@
         }
       },
       "arrivalHeight": 64,
+      "planetUnder" : "creatingspace:the_moon",
       "gravity": 0,
       "orbitingPlanet":{
         "fileName": "name",

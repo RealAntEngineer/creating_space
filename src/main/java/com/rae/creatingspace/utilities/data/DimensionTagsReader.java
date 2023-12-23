@@ -7,9 +7,8 @@ import java.util.List;
 
 import static com.rae.creatingspace.CreatingSpace.LOGGER;
 
-public class NoO2AtmosphereReader {
-
-    //here to manage the reading of data and translation of matrix
+public class DimensionTagsReader {
+    //TODO the clean way should be with tags -> need to work on adding support for dimension tags
     public static final Codec<List<String>> DIMENSION_TAGS_CODEC =
             Codec.list(Codec.STRING);
 
@@ -21,8 +20,6 @@ public class NoO2AtmosphereReader {
 
 
     public static final CodecJsonDataManager<PartialDimensionList> DIMENSION_TAGS_HOLDER = new CodecJsonDataManager<>("creatingspace_utilities/dimension_tags", PARTIAL_DIMENSION_TAGS_CODEC, LOGGER);
-
-
     public record PartialDimensionList(boolean replace, List<String> dimensions){
 
     }

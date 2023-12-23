@@ -57,12 +57,13 @@ import java.util.List;
 import java.util.Map;
 
 public class RocketContraptionEntity extends AbstractContraptionEntity {
+    //TODO make a way to automate rockets ( an special menu in the rocket controler + a path and actions
+    // (spaceport block ? to define where the rocket will go)
+    // for a normal rocket a path an action will be generated without the player knowing ?
     private static final Logger LOGGER = LogUtils.getLogger();
     double clientOffsetDiff;
-    double axisMotion;
-    //float totalConsumedAmount;
+    double speed;
     float totalTickTime;
-    //float partialConsumedAmount = 0;
     HashMap<Couple<TagKey<Fluid>>, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<Couple<TagKey<Fluid>>, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
 
@@ -106,6 +107,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     //put that in a rocket assembly helper class ?
+    //TODO put every static methode into a helper class ( make an api ?)
     private static void handelTrajectoryCalculation(RocketContraptionEntity rocketContraptionEntity){
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
@@ -384,7 +386,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         }
 
-        double prevAxisMotion = axisMotion;
+        //double prevAxisMotion = axisMotion;
         if (level.isClientSide) {
             clientOffsetDiff *= .75f;
             updateClientMotion();
@@ -407,8 +409,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
             move(movementVec.x, movementVec.y, movementVec.z);
         }
-        if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
-            contraption.stop(level);
+        /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
+            contraption.stop(level);*/
         if (!level.isClientSide)
             sendPacket();
     }
@@ -465,7 +467,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float speed = getPerTickSpeed(acceleration);
         movementVec = new Vec3(0,speed,0);
 
-        axisMotion = speed;
+        this.speed = speed;
         setContraptionMotion(movementVec);
     }
 
@@ -644,7 +646,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     public void updateClientMotion() {
 
-        Vec3 motion = new Vec3(0,(axisMotion + clientOffsetDiff/2f) * ServerSpeedProvider.get(),0);
+        Vec3 motion = new Vec3(0,(speed + clientOffsetDiff/2f) * ServerSpeedProvider.get(),0);
 
         motion = VecHelper.clampComponentWise(motion, 1);
         setContraptionMotion(motion);
@@ -661,7 +663,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public void sendPacket() {
         PacketInit.getChannel()
                 .send(PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                        new RocketContraptionUpdatePacket(getId(),getAxisCoord(), axisMotion));
+                        new RocketContraptionUpdatePacket(getId(),getAxisCoord(), speed));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -669,7 +671,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         Entity entity = Minecraft.getInstance().level.getEntity(packet.entityID);
         if (!(entity instanceof RocketContraptionEntity ce))
             return;
-        ce.axisMotion = packet.motion;
+        ce.speed = packet.speed;
         ce.clientOffsetDiff = packet.coord - ce.getAxisCoord();
     }
 }
