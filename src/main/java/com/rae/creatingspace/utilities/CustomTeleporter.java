@@ -42,14 +42,11 @@ public class CustomTeleporter implements ITeleporter {
                     rocketContraptionEntity.rocketEntryCoordinate.getZ());
 
         }
-        else if (entity instanceof Player player){
-            position = new Vec3(
-                    player.getX(),
-                    height,
-                    player.getZ());
-        }
         else {
-            position = entity.position();
+            position = new Vec3(
+                    entity.getX(),
+                    height,
+                    entity.getZ());
         }
         return new PortalInfo(position, Vec3.ZERO, entity.getYRot(), entity.getXRot());
     }

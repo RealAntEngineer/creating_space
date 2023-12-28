@@ -119,7 +119,7 @@
   "death.attack.no_oxygen": "%1$s не знайшов кисень у космосі",
   "creatingspace.gui.rocket_controls.destination_cost": "потрібна deltaV",
   "creatingspace.gui.rocket_controls.pos_selection": " місцезнаходження?",
-  "creatingspace.science.trust": "Тяга",
+  "creatingspace.science.thrust": "Тяга",
   "creatingspace.science.unit.newton": "Н",
   "creatingspace.science.isp": "Імпульс",
   "creatingspace.science.unit.second": "сек.",

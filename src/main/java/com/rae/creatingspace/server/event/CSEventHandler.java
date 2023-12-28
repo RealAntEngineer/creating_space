@@ -11,6 +11,7 @@ import com.rae.creatingspace.utilities.CustomTeleporter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -41,11 +42,21 @@ public class CSEventHandler {
                     if (player.getY() < level.dimensionType().minY()+10) {
                         ResourceKey<Level> dimensionToTeleport = CSDimensionUtil.planetUnder(dimension);
 
-                        if (dimensionToTeleport != null) {
+                        if (dimensionToTeleport!=null) {
                             ServerLevel destServerLevel = Objects.requireNonNull(level.getServer()).getLevel(dimensionToTeleport);
 
                             assert destServerLevel != null;
-                            player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                            if (player.isPassenger()) {
+                                Entity vehicle = player.getVehicle();
+                                assert vehicle != null;
+                                vehicle.ejectPassengers();
+                                vehicle.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                player.startRiding(vehicle,true);
+                            } else {
+                                player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+
+                            }
                         }
                     }
                 }

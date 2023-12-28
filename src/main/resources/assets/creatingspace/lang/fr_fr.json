@@ -5,6 +5,7 @@
   "block.creatingspace.rocket_controls": "Controleur de fusée",
   "block.creatingspace.chemical_synthesizer": "Synthetiseur chimique",
   "block.creatingspace.mechanical_electrolyzer": "Électrolyseur méchanique",
+  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Sépare l'eau en oxygène et hydrogène at a une vitesse de RPM mb/tick",
   "block.creatingspace.flow_meter": "Débitmètre",
   "block.creatingspace.oxygen_sealer": "Pressurisateur à oxygène",
   "block.creatingspace.air_liquefier": "Liquéfacteur d'air",
@@ -124,12 +125,33 @@
 
   "death.attack.no_oxygen": "%1$s n'a pas trouvé d'oxygène dans l'espace",
 
-  "creatingspace.science.trust": "Poussé",
+  "creatingspace.science.thrust": "Poussé",
   "creatingspace.science.unit.newton": "N",
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "ms/t",
-  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split water into oxygen and methane at a rate of speed mb/tick"
+  "block.creatingspace.rocket_controls.tooltip.summary": "Le cerveau de la fusée, lui dit où aller",
+  "block.creatingspace.rocket_generator.tooltip.summary": "Une machine qui brule du méthane et de l'oxygen pour produire de grande quantité de S.U.",
+  "block.creatingspace.chemical_synthesizer.tooltip.summary": "Utilisé pour produire du méthane",
+  "block.creatingspace.flight_recorder": "enregistreur de vol",
+  "block.creatingspace.flow_meter.tooltip.summary": "Mesure la quantité de fluid qui passe dans un tuyau",
+  "block.creatingspace.oxygen_sealer.tooltip.summary": "Rempli une piece d'oxygen, ouvrez l'interface pour avoir plus d'information",
+  "block.creatingspace.air_liquefier.tooltip.summary": "Extrait de l'oxygène de l'air, marche uniquement sur terre",
+  "block.creatingspace.clamps.tooltip.summary": "Empèche les contraptions de bouger, peut être bougé par un piston",
+  "block.creatingspace.cryogenic_tank.tooltip.summary": "Un réservoir utilisable uniquement pour les liquides très froid, conserve son contenu après avoir été brisé",
+
+  "item.creatingspace.starter_charge.tooltip.summary": "Une charge explosive nécessaire pour démarrer le Générateur MethaLox",
+  "creatingspace.overlay.flight_recorder.title": "dernier vol :",
+  "creatingspace.overlay.flight_recorder.no_failure": "pas de problème",
+  "creatingspace.overlay.flight_recorder.no_flight": "N/A",
+  "creatingspace.overlay.flight_recorder.propellant_status.not_enough_propellant": "pas suffisament de propergol",
+  "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "mauvais ratio de propergol",
+  "creatingspace.overlay.flight_recorder.not_enough_thrust": "pas suffisament de poussée",
+  "creatingspace.overlay.flight_recorder.thrust1": "poussée",
+  "creatingspace.overlay.flight_recorder.thrust2": "poid",
+  "creatingspace.science.unit.kilo_gramme": "kg",
+  "creatingspace.science.unit.metric_ton": "t",
+  "block.creatingspace.flight_recorder.tooltip.summary": "Montre des information sur le dernier vol d'une fusée, à condition d'avoir des lunettes"
 
 
 

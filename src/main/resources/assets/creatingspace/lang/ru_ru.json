@@ -118,7 +118,7 @@
   "death.attack.no_oxygen": "%1$s кислород не обнаружен",
   "creatingspace.gui.rocket_controls.destination_cost": "Необзодимая deltaV",
   "creatingspace.gui.rocket_controls.pos_selection": "Позиция?",
-  "creatingspace.science.trust": "Ускорение",
+  "creatingspace.science.thrust": "Ускорение",
   "creatingspace.science.unit.newton": "N",
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
