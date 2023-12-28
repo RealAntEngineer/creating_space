@@ -131,7 +131,7 @@
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "ms/t",
   "block.creatingspace.rocket_controls.tooltip.summary": "Le cerveau de la fusée, lui dit où aller",
-  "block.creatingspace.rocket_generator.tooltip.summary": "Une machine qui brule du méthane et de l'oxygen pour produire de grande quantité de S.U.",
+  "block.creatingspace.rocket_generator.tooltip.summary": "Une machine qui brule du méthane et de l'oxygen pour produire de grande quantité de S.U, démarre avec un signal de redstone si a une charge de démarreur",
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "Utilisé pour produire du méthane",
   "block.creatingspace.flight_recorder": "enregistreur de vol",
   "block.creatingspace.flow_meter.tooltip.summary": "Mesure la quantité de fluid qui passe dans un tuyau",
