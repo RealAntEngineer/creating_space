@@ -99,7 +99,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         entity.realPerTagFluidConsumption = new HashMap<>();
         entity.consumableFluids = new HashMap<>(
                 Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
-        handelTrajectoryCalculation(entity);
         entity.totalThrust = contraption.getThrust();
         entity.localPosOfFlightRecorders = contraption.getLocalPosOfFlightRecorders();
         LOGGER.info("finishing setting up parameters");
@@ -372,6 +371,18 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putString("destination:path",this.destination.location().getPath());
         super.writeAdditional(compound, spawnPacket);
     }
+
+    @Override
+    public void tick() {
+        if (!initialized){
+            if (!level().isClientSide()) {
+                //so the pos is initialized
+                handelTrajectoryCalculation(this);
+            }
+        }
+        super.tick();
+    }
+
     @Override
     protected void tickContraption() {
         if (!(contraption instanceof RocketContraption))
@@ -474,42 +485,46 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             RocketContraption.ConsumptionInfo info = realPerTagFluidConsumption.get(combination);
             Couple<Float> prevPartialDrainValue = partialDrainAmountPerFluid.get(combination);
 
-            Fluid oxFluid = consumableFluids.get("ox").get(combination.get(true)).get(0);
-            Fluid fuelFluid = consumableFluids.get("fuel").get(combination.get(false)).get(0);
+            //temporary fix : don't consume if the list is empty. It should never happen though
+            ArrayList<Fluid> oxFluids = consumableFluids.get("ox").get(combination.get(true));
+            ArrayList<Fluid> fuelFluids = consumableFluids.get("fuel").get(combination.get(false));
+            if (!(oxFluids == null || oxFluids.isEmpty() || fuelFluids == null || fuelFluids.isEmpty())) {
 
-            FluidType oxFluidType = oxFluid.getFluidType();
-            float oxRo = (float) oxFluidType.getDensity() /1000;
-            FluidType fuelFluidType = fuelFluid.getFluidType();
-            float fuelRo = (float) fuelFluidType.getDensity() /1000;
+                Fluid oxFluid = oxFluids.get(0);
+                Fluid fuelFluid = fuelFluids.get(0);
 
-            float oxAmount = info.oxConsumption()/oxRo; // oxConsumption in kg, oxRo in kg/mb
-            float fuelAmount = info.fuelConsumption()/fuelRo;
-            if (prevPartialDrainValue == null){
-                prevPartialDrainValue = Couple.create(0f,0f);
-            }
-            float partialOxConsumedAmount = prevPartialDrainValue.get(true);
-            partialOxConsumedAmount = partialOxConsumedAmount +  oxAmount - ((int)oxAmount);
-            float partialFuelConsumedAmount = prevPartialDrainValue.get(false);
-            partialFuelConsumedAmount = partialFuelConsumedAmount +  fuelAmount - ((int)fuelAmount);
+                FluidType oxFluidType = oxFluid.getFluidType();
+                float oxRo = (float) oxFluidType.getDensity() /1000;
+                FluidType fuelFluidType = fuelFluid.getFluidType();
+                float fuelRo = (float) fuelFluidType.getDensity() /1000;
 
-            if (partialOxConsumedAmount>=1){
-                oxAmount = oxAmount + 1;
-                partialOxConsumedAmount = partialOxConsumedAmount -1;
-            }
-            if (partialFuelConsumedAmount>=1){
-                fuelAmount = fuelAmount + 1;
-                partialFuelConsumedAmount = partialFuelConsumedAmount -1;
-            }
-            partialDrainAmountPerFluid.put(combination,Couple.create(partialOxConsumedAmount,partialFuelConsumedAmount));
+                float oxAmount = info.oxConsumption()/oxRo; // oxConsumption in kg, oxRo in kg/mb
+                float fuelAmount = info.fuelConsumption()/fuelRo;
+                if (prevPartialDrainValue == null){
+                    prevPartialDrainValue = Couple.create(0f,0f);
+                }
+                float partialOxConsumedAmount = prevPartialDrainValue.get(true);
+                partialOxConsumedAmount = partialOxConsumedAmount +  oxAmount - ((int)oxAmount);
+                float partialFuelConsumedAmount = prevPartialDrainValue.get(false);
+                partialFuelConsumedAmount = partialFuelConsumedAmount +  fuelAmount - ((int)fuelAmount);
 
+                if (partialOxConsumedAmount>=1){
+                    oxAmount = oxAmount + 1;
+                    partialOxConsumedAmount = partialOxConsumedAmount -1;
+                }
+                if (partialFuelConsumedAmount>=1){
+                    fuelAmount = fuelAmount + 1;
+                    partialFuelConsumedAmount = partialFuelConsumedAmount -1;
+                }
+                partialDrainAmountPerFluid.put(combination,Couple.create(partialOxConsumedAmount,partialFuelConsumedAmount));
 
-            int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
-            int consumedFuel = fluidHandler.drain(new FluidStack(fuelFluid, (int) fuelAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain fuel
+                int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
+                int consumedFuel = fluidHandler.drain(new FluidStack(fuelFluid, (int) fuelAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain fuel
 
-            if (consumedFuel == 0 || consumedOx == 0) {
-                RocketContraptionEntity.addToConsumableFluids(this,combination.get(true),true);
-                RocketContraptionEntity.addToConsumableFluids(this,combination.get(false),false);
-
+                if (consumedFuel == 0 || consumedOx == 0) {
+                    RocketContraptionEntity.addToConsumableFluids(this,combination.get(true),true);
+                    RocketContraptionEntity.addToConsumableFluids(this,combination.get(false),false);
+                }
             }
         }
     }
