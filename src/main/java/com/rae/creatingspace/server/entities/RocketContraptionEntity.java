@@ -48,6 +48,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -57,9 +58,11 @@ import java.util.List;
 import java.util.Map;
 
 public class RocketContraptionEntity extends AbstractContraptionEntity {
-    //TODO make a way to automate rockets ( an special menu in the rocket controler + a path and actions
+    //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
     // (spaceport block ? to define where the rocket will go)
     // for a normal rocket a path an action will be generated without the player knowing ?
+
+    //TODO prevent the rocket from consuming fuel when world is loading
     private static final Logger LOGGER = LogUtils.getLogger();
     double clientOffsetDiff;
     double speed;
@@ -79,6 +82,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     public FlightDataHelper.RocketAssemblyData assemblyData;
 
+    //TODO make a record
     public HashMap<String,HashMap<TagKey<Fluid>, ArrayList<Fluid>>> consumableFluids = new HashMap<>(
                     Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
 
@@ -98,7 +102,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         entity.realPerTagFluidConsumption = new HashMap<>();
         entity.consumableFluids = new HashMap<>(
                 Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
-        handelTrajectoryCalculation(entity);
         entity.totalThrust = contraption.getThrust();
         entity.localPosOfFlightRecorders = contraption.getLocalPosOfFlightRecorders();
         LOGGER.info("finishing setting up parameters");
@@ -108,7 +111,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     //put that in a rocket assembly helper class ?
     //TODO put every static methode into a helper class ( make an api ?)
-    private static void handelTrajectoryCalculation(RocketContraptionEntity rocketContraptionEntity){
+    private static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity){
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
         float deltaVNeeded = CSDimensionUtil.accessibleFrom(rocketContraptionEntity.originDimension)
@@ -172,6 +175,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         rocketContraptionEntity.initialMass = emptyMass+initialPropellantMass;
 
         int distance = (int) (300 - rocketContraptionEntity.position().y());
+        System.out.println("distance : " + distance);
+        System.out.println("y : " + rocketContraptionEntity.position().y());
 
         float gravity = CSDimensionUtil.gravity(rocketContraptionEntity.level.dimensionTypeId());
 
@@ -373,6 +378,18 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putString("destination:path",this.destination.location().getPath());
         super.writeAdditional(compound, spawnPacket);
     }
+
+    @Override
+    public void tick() {
+        if (!initialized){
+            if (!level.isClientSide()) {
+                //so the pos is initialized
+                handelTrajectoryCalculation(this);
+            }
+        }
+        super.tick();
+    }
+
     @Override
     protected void tickContraption() {
         if (!(contraption instanceof RocketContraption))
@@ -478,51 +495,55 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         RocketContraption rocketContraption = (RocketContraption) rocketContraptionEntity.contraption;
         IFluidHandler fluidHandler = rocketContraption.getSharedFluidTanks();
         //need to construct a map of drainAmount and partial drain -> map of couple/record(int,float)
-
         //make in a loop so it look for every one ?
         for (Couple<TagKey<Fluid>> combination:realPerTagFluidConsumption.keySet()) {
             RocketContraption.ConsumptionInfo info = realPerTagFluidConsumption.get(combination);
             Couple<Float> prevPartialDrainValue = partialDrainAmountPerFluid.get(combination);
 
-            Fluid oxFluid = consumableFluids.get("ox").get(combination.get(true)).get(0);
-            Fluid fuelFluid = consumableFluids.get("fuel").get(combination.get(false)).get(0);
+            //temporary fix : don't consume if the list is empty. It should never happen though
+            ArrayList<Fluid> oxFluids = consumableFluids.get("ox").get(combination.get(true));
+            ArrayList<Fluid> fuelFluids = consumableFluids.get("fuel").get(combination.get(false));
+            if (!(oxFluids == null || oxFluids.isEmpty() || fuelFluids == null || fuelFluids.isEmpty())) {
 
-            FluidType oxFluidType = oxFluid.getFluidType();
-            float oxRo = (float) oxFluidType.getDensity() /1000;
-            FluidType fuelFluidType = fuelFluid.getFluidType();
-            float fuelRo = (float) fuelFluidType.getDensity() /1000;
+                Fluid oxFluid = oxFluids.get(0);
+                Fluid fuelFluid = fuelFluids.get(0);
 
-            float oxAmount = info.oxConsumption()/oxRo; // oxConsumption in kg, oxRo in kg/mb
-            float fuelAmount = info.fuelConsumption()/fuelRo;
-            if (prevPartialDrainValue == null){
-                prevPartialDrainValue = Couple.create(0f,0f);
-            }
-            float partialOxConsumedAmount = prevPartialDrainValue.get(true);
-            partialOxConsumedAmount = partialOxConsumedAmount +  oxAmount - ((int)oxAmount);
-            float partialFuelConsumedAmount = prevPartialDrainValue.get(false);
-            partialFuelConsumedAmount = partialFuelConsumedAmount +  fuelAmount - ((int)fuelAmount);
+                FluidType oxFluidType = oxFluid.getFluidType();
+                float oxRo = (float) oxFluidType.getDensity() / 1000;
+                FluidType fuelFluidType = fuelFluid.getFluidType();
+                float fuelRo = (float) fuelFluidType.getDensity() / 1000;
 
-            if (partialOxConsumedAmount>=1){
-                oxAmount = oxAmount + 1;
-                partialOxConsumedAmount = partialOxConsumedAmount -1;
-            }
-            if (partialFuelConsumedAmount>=1){
-                fuelAmount = fuelAmount + 1;
-                partialFuelConsumedAmount = partialFuelConsumedAmount -1;
-            }
-            partialDrainAmountPerFluid.put(combination,Couple.create(partialOxConsumedAmount,partialFuelConsumedAmount));
+                float oxAmount = info.oxConsumption() / oxRo; // oxConsumption in kg, oxRo in kg/mb
+                float fuelAmount = info.fuelConsumption() / fuelRo;
+                if (prevPartialDrainValue == null) {
+                    prevPartialDrainValue = Couple.create(0f, 0f);
+                }
+                float partialOxConsumedAmount = prevPartialDrainValue.get(true);
+                partialOxConsumedAmount = partialOxConsumedAmount + oxAmount - ((int) oxAmount);
+                float partialFuelConsumedAmount = prevPartialDrainValue.get(false);
+                partialFuelConsumedAmount = partialFuelConsumedAmount + fuelAmount - ((int) fuelAmount);
+
+                if (partialOxConsumedAmount >= 1) {
+                    oxAmount = oxAmount + 1;
+                    partialOxConsumedAmount = partialOxConsumedAmount - 1;
+                }
+                if (partialFuelConsumedAmount >= 1) {
+                    fuelAmount = fuelAmount + 1;
+                    partialFuelConsumedAmount = partialFuelConsumedAmount - 1;
+                }
+                partialDrainAmountPerFluid.put(combination, Couple.create(partialOxConsumedAmount, partialFuelConsumedAmount));
 
 
-            int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
-            int consumedFuel = fluidHandler.drain(new FluidStack(fuelFluid, (int) fuelAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain fuel
+                int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
+                int consumedFuel = fluidHandler.drain(new FluidStack(fuelFluid, (int) fuelAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain fuel
 
-            if (consumedFuel == 0 || consumedOx == 0) {
-                RocketContraptionEntity.addToConsumableFluids(this,combination.get(true),true);
-                RocketContraptionEntity.addToConsumableFluids(this,combination.get(false),false);
+                if (consumedFuel == 0 || consumedOx == 0) {
+                    RocketContraptionEntity.addToConsumableFluids(this, combination.get(true), true);
+                    RocketContraptionEntity.addToConsumableFluids(this, combination.get(false), false);
 
+                }
             }
         }
-
     }
     //merge that with the static method ?
 
