@@ -96,6 +96,11 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	}
 
 	@Override
+	public boolean useShapeForLightOcclusion(BlockState p_60576_) {
+		return true;
+	}
+
+	@Override
 	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(worldIn, pos, state, placer, stack);
 		if (worldIn.isClientSide)
@@ -147,7 +152,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 		Optional<OxygenBacktankBlockEntity> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
 
 		int air = blockEntityOptional.map(OxygenBacktankBlockEntity::getOxygenLevel)
-			.orElse(0);
+			.orElse(10);
 		CompoundTag tag = stack.getOrCreateTag();
 		tag.putFloat("Oxygen", air);
 		tag.putFloat("prevOxygen",air);
