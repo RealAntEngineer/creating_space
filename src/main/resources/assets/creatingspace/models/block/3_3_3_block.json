@@ -1,5 +1,6 @@
 {   "gui_light": "side",
     "render_type": "cutout",
+    "ambientocclusion": false,
 	"display": {
         "gui": {
             "rotation": [ 30, 315, 0 ],
