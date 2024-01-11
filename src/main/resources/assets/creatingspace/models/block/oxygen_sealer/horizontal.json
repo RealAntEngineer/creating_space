@@ -13,7 +13,6 @@
 		{
 			"from": [0, 0, 0],
 			"to": [16, 16, 16],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 5.4875]},
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#3"},
 				"east": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#3"},
@@ -24,9 +23,8 @@
 			}
 		},
 		{
-			"from": [1.95, 1.95, 16],
-			"to": [14.05, 14.05, 0],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 5.4875]},
+			"from": [2, 2, 16],
+			"to": [14, 14, 0],
 			"faces": {
 				"east": {"uv": [2, 0, 14, 16], "rotation": 270, "texture": "#fan_side"},
 				"west": {"uv": [2, 0, 14, 16], "rotation": 90, "texture": "#fan_side"},
@@ -35,36 +33,32 @@
 			}
 		},
 		{
-			"from": [1.95, 1.95, 4.95],
-			"to": [14.05, 14.05, 15.05],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 5.4875]},
+			"from": [2, 2, 5],
+			"to": [14, 14, 15],
 			"faces": {
 				"north": {"uv": [2, 2, 14, 14], "texture": "#gearbox"},
 				"south": {"uv": [2, 2, 14, 14], "rotation": 180, "texture": "#gearbox"}
 			}
 		},
 		{
-			"from": [2, 2, 0.9],
-			"to": [14, 14, 1.05],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 5.4875]},
+			"from": [2, 2, 1],
+			"to": [14, 14, 1],
 			"faces": {
 				"north": {"uv": [2, 2, 14, 14], "texture": "#fan_casing"},
 				"south": {"uv": [2, 2, 14, 14], "rotation": 180, "texture": "#fan_casing"}
 			}
 		},
 		{
-			"from": [0.95, 1.95, 1.95],
-			"to": [15.05, 14.05, 14.05],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 5.4875]},
+			"from": [1, 2, 2],
+			"to": [15, 14, 14],
 			"faces": {
 				"east": {"uv": [2, 2, 14, 14], "texture": "#gearbox"},
 				"west": {"uv": [2, 2, 14, 14], "rotation": 180, "texture": "#gearbox"}
 			}
 		},
 		{
-			"from": [16, 1.95, 1.95],
-			"to": [14, 14.05, 14.05],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 5.4875]},
+			"from": [16, 2, 2],
+			"to": [14, 14, 14],
 			"faces": {
 				"north": {"uv": [14, 16, 2, 14], "rotation": 270, "texture": "#fan_side"},
 				"south": {"uv": [2, 16, 14, 14], "rotation": 90, "texture": "#fan_side"},
@@ -73,9 +67,8 @@
 			}
 		},
 		{
-			"from": [2, 1.95, 1.95],
-			"to": [0, 14.05, 14.05],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 8, 5.4875]},
+			"from": [2, 2, 2],
+			"to": [0, 14, 14],
 			"faces": {
 				"north": {"uv": [2, 2, 14, 0], "rotation": 270, "texture": "#fan_side"},
 				"south": {"uv": [2, 2, 14, 0], "rotation": 90, "texture": "#fan_side"},
