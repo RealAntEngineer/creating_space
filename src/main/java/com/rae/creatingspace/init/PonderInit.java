@@ -25,6 +25,7 @@ public class PonderInit {
                 .addStoryBoard("chemical_synthesizer/chemical_synthesizer", FluidScene::chemicalSynthesizer);//AllPonderTags.FLUIDS);
 
         HELPER.forComponents(BlockInit.SMALL_ROCKET_ENGINE,BlockInit.BIG_ROCKET_ENGINE,BlockInit.ROCKET_CONTROLS)
-                .addStoryBoard("rocket/rocket_building", RocketScene::rocketBuild);
+                .addStoryBoard("rocket/rocket_building", RocketScene::rocketBuild)
+                .addStoryBoard("rocket/rocket_building",RocketScene::rocketDebug);
     }
 }

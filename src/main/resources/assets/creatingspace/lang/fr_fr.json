@@ -135,7 +135,7 @@
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "Utilisé pour produire du méthane",
   "block.creatingspace.flight_recorder": "enregistreur de vol",
   "block.creatingspace.flow_meter.tooltip.summary": "Mesure la quantité de fluid qui passe dans un tuyau",
-  "block.creatingspace.oxygen_sealer.tooltip.summary": "Rempli une piece d'oxygen, ouvrez l'interface pour avoir plus d'information",
+  "block.creatingspace.oxygen_sealer.tooltip.summary": "Rempli une piece d'oxygène, ouvrez l'interface pour avoir plus d'information",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extrait de l'oxygène de l'air, marche uniquement sur terre",
   "block.creatingspace.clamps.tooltip.summary": "Empèche les contraptions de bouger, peut être bougé par un piston",
   "block.creatingspace.cryogenic_tank.tooltip.summary": "Un réservoir utilisable uniquement pour les liquides très froid, conserve son contenu après avoir été brisé",
@@ -151,7 +151,7 @@
   "creatingspace.overlay.flight_recorder.thrust2": "poid",
   "creatingspace.science.unit.kilo_gramme": "kg",
   "creatingspace.science.unit.metric_ton": "t",
-  "block.creatingspace.flight_recorder.tooltip.summary": "Montre des information sur le dernier vol d'une fusée, à condition d'avoir des lunettes"
+  "block.creatingspace.flight_recorder.tooltip.summary": "Montre des information lorsque une fusée ne marche pas, à condition d'avoir des lunettes"
 
 
 

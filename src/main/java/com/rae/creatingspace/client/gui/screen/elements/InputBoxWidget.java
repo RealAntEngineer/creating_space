@@ -42,13 +42,11 @@ public class InputBoxWidget extends BoxWidget {
 
     @Override
     public boolean keyPressed(int p_94745_, int p_94746_, int p_94747_) {
-        System.out.println("keyPressed");
         return editBox.keyPressed(p_94745_, p_94746_, p_94747_);
     }
 
     @Override
     public boolean charTyped(char p_94732_, int p_94733_) {
-        System.out.println("charTyped");
         return editBox.charTyped(p_94732_, p_94733_);
     }
 

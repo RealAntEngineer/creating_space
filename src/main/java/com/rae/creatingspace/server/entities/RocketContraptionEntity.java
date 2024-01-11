@@ -104,8 +104,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
         entity.totalThrust = contraption.getThrust();
         entity.localPosOfFlightRecorders = contraption.getLocalPosOfFlightRecorders();
-        LOGGER.info("finishing setting up parameters");
         entity.noPhysics = false;
+        LOGGER.info("finishing setting up parameters");
         return entity;
     }
 
@@ -140,6 +140,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             addToConsumableFluids(rocketContraptionEntity, consumedOx,true);
             addToConsumableFluids(rocketContraptionEntity, consumedFuel,false);
         }
+
         float meanVe = totalThrust/totalTheoreticalConsumption;
         // massForEachPropellant is just to determine if there is enough fluid,
         // need to be called after the consumedFluids map is build
@@ -175,8 +176,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         rocketContraptionEntity.initialMass = emptyMass+initialPropellantMass;
 
         int distance = (int) (300 - rocketContraptionEntity.position().y());
-        System.out.println("distance : " + distance);
-        System.out.println("y : " + rocketContraptionEntity.position().y());
 
         float gravity = CSDimensionUtil.gravity(rocketContraptionEntity.level.dimensionTypeId());
 
@@ -231,6 +230,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         rocketContraptionEntity.assemblyData = assemblyData;
         rocketContraptionEntity.disassembleOnFirstTick = assemblyData.hasFailed();//just for the fluids
 
+        System.out.println("assemblyData : "+assemblyData);
         //may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
         if (acceleration <=0 ){
             rocketContraptionEntity.disassembleOnFirstTick = true;
@@ -302,12 +302,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     @Override
     public void disassemble() {
+        //doesn't work with create_interactive
         for (BlockPos localPos:this.localPosOfFlightRecorders){
             StructureTemplate.StructureBlockInfo oldStructureInfo = this.contraption.getBlocks().get(localPos);
             CompoundTag nbt = oldStructureInfo.nbt;
             nbt.put("lastAssemblyData",FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
-            System.out.println("lastAssemblyData : "+assemblyData);
-            System.out.println("nbt : "+nbt);
             StructureTemplate.StructureBlockInfo newStructureInfo =
                     new StructureTemplate.StructureBlockInfo(oldStructureInfo.pos,oldStructureInfo.state,nbt);
             this.contraption.getBlocks().put(localPos,newStructureInfo);
@@ -403,7 +402,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         }
 
-        //double prevAxisMotion = axisMotion;
         if (level.isClientSide) {
             clientOffsetDiff *= .75f;
             updateClientMotion();

@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.armor;
 
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.AllSoundEvents;
@@ -49,7 +50,7 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 
 		@Override
 		public boolean isFluidValid(FluidStack stack) {
-			return stack.getFluid() == FluidInit.LIQUID_OXYGEN.get();
+			return TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(stack.getFluid());
 		}
 
 		@Override
@@ -163,8 +164,10 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	}
 
 	public void setOxygenLevel(int oxygenLevel) {
-		this.prevOxygenLevel = this.oxygenLevel;
+		System.out.println("oxygen : "+oxygenLevel);
+		//this.prevOxygenLevel = this.oxygenLevel;
 		this.oxygenLevel = oxygenLevel;
+		OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),oxygenLevel));
 		setChanged();
 		sendData();
 	}

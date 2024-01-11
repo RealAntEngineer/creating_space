@@ -2,7 +2,6 @@ package com.rae.creatingspace.server.blocks;
 
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.server.blockentities.ChemicalSynthesizerBlockEntity;
 import com.rae.creatingspace.server.blockentities.CryogenicTankBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
@@ -37,7 +36,6 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
     public BlockEntityType<? extends CryogenicTankBlockEntity> getBlockEntityType() {
         return BlockEntityInit.CRYOGENIC_TANK.get();
     }
-
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, entity, stack);

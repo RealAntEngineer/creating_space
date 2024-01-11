@@ -53,9 +53,11 @@ public class RocketContraption extends TranslatingContraption {
         Block blockAdded = pair.getLeft().state.getBlock();
         BlockEntity blockEntityAdded = pair.getRight();
         BlockPos localPos = pos.subtract(anchor);
+
         if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity){
 
             this.thrust += engineBlockEntity.getThrust();
+
             float totalPropellantConsumption = (float) (engineBlockEntity.getThrust()/(
                     engineBlockEntity.getIsp()* CSConfigs.SERVER.rocketEngine.ISPModifier.get() *9.81));
             float ratio = engineBlockEntity.getOxFuelRatio();

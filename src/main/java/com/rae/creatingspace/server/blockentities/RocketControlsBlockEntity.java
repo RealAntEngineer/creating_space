@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.HashMap;
 import java.util.List;
 
-public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions/*implements MenuProvider*/ {
+public class RocketControlsBlockEntity extends SmartBlockEntity implements Nameable, IDisplayAssemblyExceptions/*implements MenuProvider*/ {
     private final Component defaultName;
     private Component customName;
     protected AssemblyException lastException;
@@ -40,6 +41,11 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisp
 
         return BlockInit.ROCKET_CONTROLS.get().getName();
     }
+    @Override
+    public Component getName() {
+        return this.customName != null ? this.customName
+                : defaultName;
+    }
 
     public void setCustomName(Component customName) {
         this.customName = customName;
@@ -56,13 +62,13 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements IDisp
         registerAwardables(behaviours, AllAdvancements.CONTRAPTION_ACTORS);
 
     }
-    @Override
+    /*@Override
     public void initialize() {
         super.initialize();
         if (!getBlockState().canSurvive(level, worldPosition))
             level.destroyBlock(worldPosition, true);
 
-    }
+    }*/
 
 
     @Override

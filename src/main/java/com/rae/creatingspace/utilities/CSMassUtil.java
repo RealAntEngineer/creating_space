@@ -1,6 +1,5 @@
 package com.rae.creatingspace.utilities;
 
-import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

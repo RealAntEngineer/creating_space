@@ -42,7 +42,7 @@ public class BlockInit {
     //just blocks
     public static final BlockEntry<Block> CLAMPS = REGISTRATE
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p -> p.strength(1.0f).noOcclusion())
+            .properties(p -> p.strength(1.0f))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
@@ -276,7 +276,7 @@ public class BlockInit {
             .register();
     public static final BlockEntry<SealerBlock> OXYGEN_SEALER = REGISTRATE
             .block("oxygen_sealer", SealerBlock::new)
-            .properties(p->p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .properties(p->p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .item()
             .properties(p ->p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
@@ -284,7 +284,7 @@ public class BlockInit {
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .properties(p-> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .transform(BlockStressDefaults.setImpact(500))
             .transform(axeOrPickaxe())
             .item()
@@ -299,14 +299,14 @@ public class BlockInit {
     public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
             .block("copper_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p->p.noOcclusion().dynamicShape())
+            .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
             .register();
 
     public static final BlockEntry<OxygenBacktankBlock> NETHERITE_OXYGEN_BACKTANK = REGISTRATE
             .block("netherite_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p->p.noOcclusion().dynamicShape())
+            .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
             .register();
 
@@ -322,7 +322,7 @@ public class BlockInit {
     public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
                     "flight_recorder", FlightRecorderBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .properties(p-> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))

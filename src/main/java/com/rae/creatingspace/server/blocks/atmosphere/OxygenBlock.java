@@ -31,6 +31,8 @@ import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 
 import java.util.function.Consumer;
 
+import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
+
 public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
     public static final BooleanProperty BREATHABLE = BooleanProperty.create("breathable");
 
@@ -129,7 +131,6 @@ public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
         @Override
         public Vector3d getFogColor(BlockState state, LevelReader level, BlockPos pos, Entity entity, Vector3d originalColor, float partialTick) {
             if (state.getMaterial() == Material.AIR){
-                System.out.println("in O2");
                 return new Vector3d(0,0.1F,0.6F);
             }
             return IClientBlockExtensions.super.getFogColor(state, level, pos, entity, originalColor, partialTick);

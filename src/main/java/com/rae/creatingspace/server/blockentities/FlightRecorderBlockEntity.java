@@ -27,10 +27,6 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
     }
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-    }
-
-    @Override
     public void sendData() {
         if (syncCooldown > 0) {
             queuedSync = true;
@@ -44,9 +40,6 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
     private static final int SYNC_RATE = 8;
     protected int syncCooldown;
     protected boolean queuedSync;
-
-    //oxygen
-
 
     public void setLastAssemblyData(FlightDataHelper.RocketAssemblyData lastAssemblyData) {
         this.lastAssemblyData = lastAssemblyData;
@@ -64,7 +57,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
     }
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
-        lastAssemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(nbt.getCompound("lastAssemblyData"));
+        setLastAssemblyData(FlightDataHelper.RocketAssemblyData.fromNBT(nbt.getCompound("lastAssemblyData")));
         super.read(nbt, clientPacket);
 
     }
@@ -82,7 +75,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
         Lang.builder()
                 .add(Component.translatable(tradKey+"title"))
                 .forGoggles(tooltip, 1);
-
+        //TODO : making the flight recorder show every info even when no failure ? or making a GUI for the flight info like speed and other stuff
         if (lastAssemblyData!=null) {
             if (lastAssemblyData.hasFailed()) {
                 if (lastAssemblyData.propellantStatusData().status().isFailReason) {
