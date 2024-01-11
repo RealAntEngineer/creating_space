@@ -1,11 +1,9 @@
 package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.ITeleporter;

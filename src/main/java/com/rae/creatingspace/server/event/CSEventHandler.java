@@ -3,7 +3,6 @@ package com.rae.creatingspace.server.event;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.utilities.CSDimensionUtil;

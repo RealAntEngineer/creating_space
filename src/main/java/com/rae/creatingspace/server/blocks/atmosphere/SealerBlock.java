@@ -26,6 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.Nullable;
 
+
 public class SealerBlock extends DirectionalAxisKineticBlock implements IBE<SealerBlockEntity> {
     public SealerBlock(Properties properties) {
         super(properties);
@@ -37,25 +38,6 @@ public class SealerBlock extends DirectionalAxisKineticBlock implements IBE<Seal
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AXIS_ALONG_FIRST_COORDINATE).add(FACING);
     }
-    @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-
-        if (!level.isClientSide) {
-            if (level.hasNeighborSignal(pos)) {
-                BlockEntity be = this.getBlockEntity(level,pos);
-                if (be instanceof SealerBlockEntity sealerBlockEntity){
-                    sealerBlockEntity.resetRemainingTries();
-                }
-            }
-
-        }
-    }
-
-    @Override
-    public boolean useShapeForLightOcclusion(BlockState p_60576_) {
-        return true;
-    }
-
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack held = player.getMainHandItem();

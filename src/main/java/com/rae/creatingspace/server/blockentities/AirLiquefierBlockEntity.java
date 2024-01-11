@@ -2,7 +2,6 @@ package com.rae.creatingspace.server.blockentities;
 
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.blocks.AirLiquefierBlock;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;

@@ -34,14 +34,12 @@ public class MassOfBlockReader {
         HashMap<TagKey<Block>, Integer> finalMap = new HashMap<>();
         for (String key : rawMap.keySet()){
             if (key.contains("#")){
-                key = key.replace("#","");
-                ResourceLocation tagLocation = new ResourceLocation(key);
+                String location = key.replace("#","");
+                ResourceLocation tagLocation = new ResourceLocation(location);
                 TagKey<Block> blockTag = BlockTags.create(tagLocation);
                 finalMap.put(blockTag,rawMap.get(key));
             }
         }
-
-
         return finalMap;
     }
 

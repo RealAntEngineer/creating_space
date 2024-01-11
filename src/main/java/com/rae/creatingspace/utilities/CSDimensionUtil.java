@@ -3,7 +3,6 @@ package com.rae.creatingspace.utilities;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.DimensionTagsReader;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.rae.creatingspace.init.worldgen.DimensionInit.*;
 import static com.rae.creatingspace.utilities.data.DimensionParameterMapReader.translator;
 
 public class CSDimensionUtil {

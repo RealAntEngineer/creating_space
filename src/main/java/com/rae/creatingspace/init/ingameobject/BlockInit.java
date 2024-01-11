@@ -1,6 +1,5 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlock;
 import com.rae.creatingspace.server.blocks.*;
