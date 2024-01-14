@@ -82,11 +82,6 @@
   "container.creatingspace.rocket_controls": "Керування ракетою",
   "container.creatingspace.synthesizer": "Синтез",
 
-  "creatingspace.ponder.rocket.header": "Ракети",
-  "creatingspace.ponder.rocket.text_1": "Керувач ракетою",
-  "creatingspace.ponder.rocket.text_2": "Не забудь поставити сидіння інакше ти впадеш",
-  "creatingspace.ponder.rocket.text_3": "Заповни Резервуари і рушай!",
-
   "creatingspace.ponder.synthesizer.header": "Створюємо метан",
   "creatingspace.ponder.synthesizer.text_1": "Ти повинен покласти водень сюди...",
   "creatingspace.ponder.synthesizer.text_2": "...Та покласти вугільний пил,потім, зачекай поки метан створится",

@@ -33,10 +33,7 @@
   "creatingspace.gui.sealer.range": "Range",
   "creatingspace.gui.sealer.settings": "Settings",
   "creatingspace.gui.sealer.try_seal": "Try Sealing",
-  "creatingspace.ponder.rocket.header": "Ракети",
-  "creatingspace.ponder.rocket.text_1": "Ракетни контроли",
-  "creatingspace.ponder.rocket.text_2": "Не забравяй мястото си, иначе ще бъдеш изоставен!",
-  "creatingspace.ponder.rocket.text_3": "Напълни резервоарите и си готов!",
+
   "creatingspace.ponder.synthesizer.header": "Създаване на метан",
   "creatingspace.ponder.synthesizer.text_1": "Трябва да вкараш водород...",
   "creatingspace.ponder.synthesizer.text_2": "...и сложи прах от въглен, тогава чакай да се създаде метан.",

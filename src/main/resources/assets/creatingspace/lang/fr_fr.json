@@ -97,12 +97,6 @@
 
   "container.creatingspace.rocket_controls": "Rocket Controls",
   "container.creatingspace.synthesizer": "Synthesizer",
-
-  "creatingspace.ponder.rocket.header": "Fusée",
-    "creatingspace.ponder.rocket.text_1": "Controleur de fusée",
-  "creatingspace.ponder.rocket.text_2": "N'oubliez pas les sièges où vous serrer laisser derrière",
-  "creatingspace.ponder.rocket.text_3": "Remplissez les réservoirs et vous pouvez partir",
-
   "creatingspace.ponder.synthesizer.header": "Fabriquer du Méthane",
 
   "creatingspace.gui.sealer.try_seal": "Démarrer",
@@ -151,7 +145,26 @@
   "creatingspace.overlay.flight_recorder.thrust2": "poid",
   "creatingspace.science.unit.kilo_gramme": "kg",
   "creatingspace.science.unit.metric_ton": "t",
-  "block.creatingspace.flight_recorder.tooltip.summary": "Montre des information lorsque une fusée ne marche pas, à condition d'avoir des lunettes"
+  "block.creatingspace.flight_recorder.tooltip.summary": "Montre des information lorsque une fusée ne marche pas, à condition d'avoir des lunettes",
+  "creatingspace.ponder.rocket_building.header": "Construire une fusée",
+  "creatingspace.ponder.rocket_building.text_1": "Pour commencer vous avez besion d'un controleur de fusée",
+  "creatingspace.ponder.rocket_building.text_2": "sufisament de propergol",
+  "creatingspace.ponder.rocket_building.text_3": "et suffisament de poussée pour soulever votre fusée",
+  "creatingspace.ponder.rocket_building.text_4": "N'oubliez pas le siege ou vous serez laissé derrière",
+  "creatingspace.ponder.rocket_building.text_5": "Si il n'y a pas suffisament de propergol ou si la fusée est trop lourde elle refusera de partir",
+  "creatingspace.ponder.rocket_building.text_6": "l'enregistreur de vol est très pratique dans ces cas là",
+  "creatingspace.ponder.rocket_debugging.header": "Résoudre les problème une fusée",
+  "creatingspace.ponder.rocket_debugging.text_1": "L'enregistreur de vol donne des info sur le dernier vol ou N/A si il vient just d'être placé,",
+  "creatingspace.ponder.rocket_debugging.text_2": "N/A",
+  "creatingspace.ponder.rocket_debugging.text_3": "Si il n'y a pas suffisament de propergol vous aurez ce message :",
+  "creatingspace.ponder.rocket_debugging.text_4": "pas suffisament de propergol",
+  "creatingspace.ponder.rocket_debugging.text_5": "ajouter plus du carburant manquant pour résoudre le problème:",
+  "creatingspace.ponder.rocket_debugging.text_6": "si il y a suffisament de propergol en mass mais pas dans les bonnes proportion :",
+  "creatingspace.ponder.rocket_debugging.text_7": "mauvais ratio de propergol",
+  "creatingspace.ponder.rocket_debugging.text_8": "équilibrer les différents propergols pour résoudre le problème",
+  "creatingspace.ponder.rocket_debugging.text_9": "si la fusée est trop lourde :",
+  "creatingspace.ponder.rocket_debugging.text_10": "pas suffisament de poussée",
+  "creatingspace.ponder.rocket_debugging.text_11": "ajouter plus de moteur pour résoudre le problème"
 
 
 
