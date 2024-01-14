@@ -158,10 +158,10 @@ public class RocketScene {
         scene.idleSeconds(3);
         scene.addKeyframe();
 
-        Selection additional_engines = util.select.fromTo(0,1,2,2,1,2);
+        Selection additional_engines = util.select.fromTo(0,0,2,2,1,2);
+        scene.world.showSection(additional_engines,Direction.UP);
         scene.overlay.showSelectionWithText(additional_engines,40).text("add more engines to solve the issue");
         scene.idleSeconds(3);
         scene.markAsFinished();
-
     }
 }
