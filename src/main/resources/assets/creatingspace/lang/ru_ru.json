@@ -82,11 +82,6 @@
   "container.creatingspace.rocket_controls": "Контроллер ракеты",
   "container.creatingspace.synthesizer": "Синтезатор метана",
 
-  "creatingspace.ponder.rocket.header": "Ракеты",
-  "creatingspace.ponder.rocket.text_1": "Контроллер ракеты",
-  "creatingspace.ponder.rocket.text_2": "Поставь сидение, иначе ракета улетит без тебя!",
-  "creatingspace.ponder.rocket.text_3": "Проверь баки, и поехали!",
-
   "creatingspace.ponder.synthesizer.header": "Создаем метан",
   "creatingspace.ponder.synthesizer.text_1": "Подведи водород сюда...",
   "creatingspace.ponder.synthesizer.text_2": "...Добавь угольную пыль, подожди пока метан создасться",

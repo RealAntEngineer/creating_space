@@ -123,7 +123,7 @@
   "creatingspace.ponder.rocket_debugging.text_2": "N/A",
   "creatingspace.ponder.rocket_debugging.text_3": "If there is not enough propellant mass, you will get this :",
   "creatingspace.ponder.rocket_debugging.text_4": "not enough propellants",
-  "creatingspace.ponder.rocket_debugging.text_5": "add the more of the missing propellant to solve the issue :",
+  "creatingspace.ponder.rocket_debugging.text_5": "add more of the missing propellant to solve the issue :",
   "creatingspace.ponder.rocket_debugging.text_6": "If there is enough propellant mass but the proportion are wrong, you will get this :",
   "creatingspace.ponder.rocket_debugging.text_7": "wrong propellant ratio",
   "creatingspace.ponder.rocket_debugging.text_8": "equilibrate the propellants to solve the issue",

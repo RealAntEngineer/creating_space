@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '1.6.1'
+version = '1.6.2'
 group = 'com.rae.creatingspace' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'creatingspace'
 
@@ -139,7 +139,7 @@ jar {
         attributes([
                 "Specification-Title"     : "creating space",
                 "Specification-Vendor"    : "Real Ant Engineer",
-                "Specification-Version"   : "1.6.1", // We are version 1.6.1 of ourselves
+                "Specification-Version"   : "1.6.2", // We are version 1.6.1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Real Ant Engineer",
