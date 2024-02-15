@@ -1,0 +1,176 @@
+{
+  "block.creatingspace.small_rocket_engine": "小型火箭发动机",
+  "block.creatingspace.big_rocket_engine": "大型火箭发动机",
+
+  "block.creatingspace.rocket_controls": "火箭控制器",
+  "block.creatingspace.rocket_controls.tooltip.summary": "这个方块会告诉火箭去哪。",
+  "block.creatingspace.rocket_generator": "火箭内燃机",
+  "block.creatingspace.rocket_generator.tooltip.summary": "一种燃烧甲烷和氧气产生应力的机器，如果装配了引燃器，则能够以红石信号启动",
+  "block.creatingspace.chemical_synthesizer": "化学合成器",
+  "block.creatingspace.chemical_synthesizer.tooltip.summary": "生产甲烷所需",
+  "block.creatingspace.mechanical_electrolyzer": "动力电解器",
+  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "以mb/tick的速度将水分解为氧气和氢气",
+  "block.creatingspace.flight_recorder": "飞行记录仪",
+  "block.creatingspace.flight_recorder.tooltip.summary": "当火箭不工作时显示信息, 需要工程师护目镜才能工作",
+  "block.creatingspace.flow_meter": "流量计",
+  "block.creatingspace.flow_meter.tooltip.summary": "显示通过管道的流体量",
+  "block.creatingspace.oxygen_sealer": "充氧机",
+  "block.creatingspace.oxygen_sealer.tooltip.summary": "一台给房间充氧气的机器，打开它的gui看看你需要什么",
+  "block.creatingspace.air_liquefier": "空气液化器",
+  "block.creatingspace.air_liquefier.tooltip.summary": "从空气中提取氧气，只能在地球上工作",
+
+
+  "block.creatingspace.clamps": "阻拦器",
+  "block.creatingspace.clamps.tooltip.summary": "一种防止装置移动的物品，可通过活塞推动",
+  "block.creatingspace.rocket_casing": "火箭外壳",
+
+  "block.creatingspace.cryogenic_tank": "低温储罐",
+  "block.creatingspace.cryogenic_tank.tooltip.summary": "一个低温液体专用罐，挖掉后保存其内容物",
+
+  "block.creatingspace.moon_stone": "月岩",
+  "block.creatingspace.moon_regolith": "月壤",
+  "block.creatingspace.moon_surface_regolith": "月表壤",
+
+  "block.creatingspace.nickel_ore": "镍矿",
+  "block.creatingspace.deepslate_nickel_ore": "深板岩镍矿",
+  "block.creatingspace.moon_nickel_ore": "月球镍矿",
+  "block.creatingspace.moon_cobalt_ore": "月球钴矿石",
+  "block.creatingspace.moon_aluminum_ore": "月球铝矿石",
+
+  "block.creatingspace.raw_nickel_block": "粗镍块",
+  "block.creatingspace.raw_cobalt_block": "粗钴块",
+  "block.creatingspace.raw_aluminum_block": "粗铝块",
+
+  "item.creatingspace.basic_spacesuit_helmet": "基础太空服头盔",
+  "item.creatingspace.copper_oxygen_backtank": "铜氧气罐",
+  "item.creatingspace.basic_spacesuit_leggings": "基础太空服护腿",
+  "item.creatingspace.basic_spacesuit_boots": "基础太空服靴子",
+
+  "item.creatingspace.advanced_spacesuit_helmet": "高级太空服头盔",
+  "item.creatingspace.netherite_oxygen_backtank": "下界合金氧气罐",
+  "item.creatingspace.advanced_spacesuit_leggings": "高级太空服护腿",
+  "item.creatingspace.advanced_spacesuit_boots": "高级太空服靴子",
+
+  "item.creatingspace.basic_spacesuit_fabric": "基本太空服面料",
+  "item.creatingspace.advanced_spacesuit_fabric": "高级太空服面料",
+
+
+  "item.creatingspace.injector": "喷嘴",
+  "item.creatingspace.reinforced_injector": "加强型喷嘴",
+
+  "item.creatingspace.incomplete_injector": "喷嘴（半成品）",
+  "item.creatingspace.injector_grid": "喷嘴网",
+  "item.creatingspace.reinforced_injector_grid": "加强喷嘴网",
+
+  "item.creatingspace.incomplete_injector_grid": "喷嘴网（半成品）",
+  "item.creatingspace.starter_charge": "引燃器",
+  "item.creatingspace.starter_charge.tooltip.summary": "用于启动火箭内燃机的爆炸性引燃物品",
+  "item.creatingspace.sturdy_propeller": "坚固的扇叶",
+  "item.creatingspace.combustion_chamber": "燃烧室",
+  "item.creatingspace.bell_nozzle": "钟形喷口",
+  "item.creatingspace.copper_coil": "铜线圈",
+  "item.creatingspace.basic_catalyst": "碱性催化剂",
+
+
+  "item.creatingspace.nickel_ingot": "镍锭",
+  "item.creatingspace.nickel_nugget": "镍粒",
+  "item.creatingspace.nickel_sheet": "镍板",
+  "item.creatingspace.crushed_nickel_ore": "粉碎镍矿石",
+  "item.creatingspace.raw_nickel": "粗镍",
+  "item.creatingspace.nickel_dust": "镍粉",
+
+  "item.creatingspace.coal_dust": "煤粉",
+
+  "item.creatingspace.cobalt_ingot": "钴锭",
+  "item.creatingspace.cobalt_nugget": "钴粒",
+  "item.creatingspace.cobalt_sheet": "钴板",
+  "item.creatingspace.crushed_cobalt_ore": "粉碎钴矿石",
+  "item.creatingspace.raw_cobalt": "粗钴",
+
+  "item.creatingspace.aluminum_ingot": "铝锭",
+  "item.creatingspace.aluminum_nugget": "铝粒",
+  "item.creatingspace.aluminum_sheet": "铝板",
+  "item.creatingspace.crushed_aluminum_ore": "粉碎铝矿石",
+  "item.creatingspace.raw_aluminum": "粗铝",
+
+  "item.creatingspace.liquid_methane_bucket": "液态甲烷桶",
+  "item.creatingspace.liquid_oxygen_bucket": "液氧桶",
+  "item.creatingspace.liquid_hydrogen_bucket": "液氢桶",
+
+  "fluid.creatingspace.liquid_methane": "液态甲烷",
+  "fluid.creatingspace.liquid_oxygen": "液态氧气",
+  "fluid.creatingspace.liquid_hydrogen": "液态氢气",
+
+  "item.creatingspace.space_food": "太空食品",
+
+  "itemGroup.creatingspace.machine_tab": "机器选项卡",
+  "itemGroup.creatingspace.component_tab": "组件标签页",
+  "itemGroup.creatingspace.minerals_tab": "矿物标签页",
+
+  "container.creatingspace.rocket_controls": "火箭控制系统",
+  "container.creatingspace.synthesizer": "合成器",
+
+  "creatingspace.ponder.rocket_building.header": "火箭建造",
+  "creatingspace.ponder.rocket_building.text_1": "要建造一枚火箭，你需要火箭控制系统,",
+  "creatingspace.ponder.rocket_building.text_2": "足够的推进剂",
+  "creatingspace.ponder.rocket_building.text_3": "和足够的推力来发射火箭",
+  "creatingspace.ponder.rocket_building.text_4": "别忘记座椅,否则你会被扔下",
+  "creatingspace.ponder.rocket_building.text_5": "如果推力或推进剂不足，火箭将无法起飞",
+  "creatingspace.ponder.rocket_building.text_6": "在这些时刻,飞行记录仪可以提供帮助",
+
+  "creatingspace.ponder.rocket_debugging.header": "解决火箭错误",
+  "creatingspace.ponder.rocket_debugging.text_1": "飞行记录仪提供关于其上一次飞行的信息,或者如果它刚刚放置,则显示:N/A 。",
+  "creatingspace.ponder.rocket_debugging.text_2": "N/A",
+  "creatingspace.ponder.rocket_debugging.text_3": "如果推进剂不足，你会得到这个提示 :",
+  "creatingspace.ponder.rocket_debugging.text_4": "推进剂不足",
+  "creatingspace.ponder.rocket_debugging.text_5": "添加更多的推进剂以解决这个问题 :",
+  "creatingspace.ponder.rocket_debugging.text_6": "如果推进剂质量足够但比例不正确，你会得到这个提示 :",
+  "creatingspace.ponder.rocket_debugging.text_7": "错误的推进剂比例",
+  "creatingspace.ponder.rocket_debugging.text_8": "平衡推进剂比例以解决这个问题",
+  "creatingspace.ponder.rocket_debugging.text_9": "如果火箭太重，你会得到这个提示 :",
+  "creatingspace.ponder.rocket_debugging.text_10": "推力不足",
+  "creatingspace.ponder.rocket_debugging.text_11": "添加更多发动机以解决这个问题",
+
+
+
+
+  "creatingspace.ponder.synthesizer.header": "制造甲烷",
+  "creatingspace.ponder.synthesizer.text_1": "你需要向其中加入氢气...",
+  "creatingspace.ponder.synthesizer.text_2": "...然后放入煤粉,等待甲烷产生.",
+  "creatingspace.ponder.synthesizer.text_3": "它每4秒会产生320千克甲烷.",
+
+  "creatingspace.gui.rocket_controls.launch": "发射",
+  "creatingspace.gui.rocket_controls.send_setting": "确认",
+  "creatingspace.gui.rocket_controls.destination_cost": "所需要的速度",
+  "creatingspace.gui.rocket_controls.pos_selection": "位置 ?",
+  "creatingspace.gui.sealer.try_seal": "尝试密封",
+  "creatingspace.gui.sealer.isSealed": "已密封 ?",
+  "creatingspace.gui.sealer.settings": "设置",
+  "creatingspace.gui.sealer.range": "范围",
+  "creatingspace.gui.sealer.automatic_retry": "自动重试 ?",
+
+  "creatingspace.overlay.flight_recorder.title": "最后一次飞行 :",
+  "creatingspace.overlay.flight_recorder.no_failure": "无故障",
+  "creatingspace.overlay.flight_recorder.no_flight": "N/A",
+  "creatingspace.overlay.flight_recorder.propellant_status.not_enough_propellant": "推进剂不足",
+  "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "推进剂配比错误",
+  "creatingspace.overlay.flight_recorder.not_enough_thrust": "推力不足",
+  "creatingspace.overlay.flight_recorder.thrust1": "推力",
+  "creatingspace.overlay.flight_recorder.thrust2": "重量",
+
+  "creatingspace:earth_orbit": "地球轨道",
+  "creatingspace:moon_orbit": "月球轨道",
+  "creatingspace:the_moon": "月球",
+  "minecraft:overworld": "地球",
+
+  "death.attack.no_oxygen": "%1$s 没有在太空中发现氧气",
+
+  "creatingspace.science.thrust": "推力",
+  "creatingspace.science.unit.newton": "N",
+  "creatingspace.science.unit.kilo_gramme": "kg",
+  "creatingspace.science.unit.metric_ton": "t",
+  "creatingspace.science.isp": "ISP",
+  "creatingspace.science.unit.second": "s",
+  "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t"
+
+}
