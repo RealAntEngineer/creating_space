@@ -1,0 +1,24 @@
+{
+  "type": "creatingspace:chemical_synthesis",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "amount": 100,
+      "fluid": "creatingspace:liquid_co2"
+    },
+    {
+      "amount": 286,
+      "fluid": "creatingspace:liquid_hydrogen"
+    }
+  ],
+  "results": [
+    {
+      "amount": 80,
+      "fluid": "creatingspace:liquid_methane"
+    },
+    {
+      "amount": 90,
+      "fluid": "minecraft:water"
+    }
+  ]
+}

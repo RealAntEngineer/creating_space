@@ -1,9 +1,7 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.client.renderer.blockentity.*;
-import com.rae.creatingspace.client.renderer.instance.AirLiquefierInstance;
-import com.rae.creatingspace.client.renderer.instance.FlightRecorderInstance;
-import com.rae.creatingspace.client.renderer.instance.OxygenSealerInstance;
+import com.rae.creatingspace.client.renderer.instance.*;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.server.blockentities.*;
 import com.rae.creatingspace.server.blockentities.atmosphere.OxygenBlockEntity;
@@ -46,6 +44,12 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.CHEMICAL_SYNTHESIZER)
                     .register();
 
+    public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
+            REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
+                    .instance(() -> CatalystCarrierInstance::new)
+                    .validBlocks(BlockInit.CATALYST_CARRIER)
+                    .renderer(() -> CatalystCarrierRenderer::new)
+                    .register();
     public static final BlockEntityEntry<RocketEngineBlockEntity.BigEngine> BIG_ENGINE =
             REGISTRATE.blockEntity(
                     "big_engine", RocketEngineBlockEntity.BigEngine::new)
@@ -58,10 +62,17 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.SMALL_ROCKET_ENGINE)
                     .register();
 
+    public static final BlockEntityEntry<LegacyMechanicalElectrolyzerBlockEntity> LEGACY_ELECTROLIZER =
+            REGISTRATE.blockEntity(
+                            "legacy_electrolyzer", LegacyMechanicalElectrolyzerBlockEntity::new)
+                    .instance(() -> ShaftInstance::new, false)
+                    .validBlocks(BlockInit.LEGACY_MECHANICAL_ELECTROLYZER)
+                    .renderer(() -> LegacyMechanicalElectrolyserBlockRenderer::new)
+                    .register();
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(
-                    "electrolizer", MechanicalElectrolyzerBlockEntity::new)
-                    .instance(()-> ShaftInstance::new,false)
+                            "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
+                    .instance(() -> ElectrolyzerInstance::new, false)
                     .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
                     .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
                     .register();

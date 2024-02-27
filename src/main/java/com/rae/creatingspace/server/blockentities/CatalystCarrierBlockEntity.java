@@ -36,7 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.List;
 import java.util.Optional;
 
-public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity {
+public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
     private static final Object shapelessOrMixingRecipesKey = new Object();
 
@@ -44,7 +44,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     public int processingTicks;
     public boolean running;
 
-    public MechanicalElectrolyzerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public CatalystCarrierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
@@ -208,7 +208,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
 
     @Override
     protected <C extends Container> boolean matchStaticFilters(Recipe<C> r) {
-        return r.getType() == RecipeInit.MECHANICAL_ELECTROLYSIS.getType();
+        return r.getType() == RecipeInit.CHEMICAL_SYNTHESIS.getType();
     }
 
     @Override

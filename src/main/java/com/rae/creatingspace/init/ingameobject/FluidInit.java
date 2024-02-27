@@ -27,7 +27,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidInteractionRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -67,7 +66,7 @@ public class FluidInit {
 
     public static final FluidEntry<VirtualFluid> LIQUID_METHANE =
             registrateCustomVirtualLiquid("liquid_methane")
-                    .properties(p -> p.viscosity(1000).temperature(90).density(423)
+                    .properties(p -> p.viscosity(1000).temperature(90).density(500)
                             .canExtinguish(true))
                     .tag(TagsInit.CustomFluidTags.LIQUID_METHANE.tag)
                     .register();
@@ -77,13 +76,10 @@ public class FluidInit {
                     p-> new BucketItem(LIQUID_METHANE.get(),p))
                     .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
                     .register();
-
-
-
                           /*fogColor(0.75f,0.21f,0.5f))*/
     public static final FluidEntry<VirtualFluid> LIQUID_OXYGEN =
             registrateCustomVirtualLiquid("liquid_oxygen")
-                    .properties(p -> p.viscosity(1000).temperature(90).density(1141))
+                    .properties(p -> p.viscosity(1000).temperature(90).density(1000))
                     .tag(TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag)
                     .register();
     public static final ItemEntry<BucketItem> CREATIVE_BUCKET_OXYGEN =
@@ -103,6 +99,18 @@ public class FluidInit {
     public static final ItemEntry<BucketItem> CREATIVE_BUCKET_HYDROGEN =
             CreatingSpace.REGISTRATE.item("liquid_hydrogen_bucket",
                             p-> new BucketItem(LIQUID_HYDROGEN.get(),p))
+                    .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
+                    .register();
+
+    public static final FluidEntry<VirtualFluid> LIQUID_CO2 =
+            registrateCustomVirtualLiquid("liquid_co2")
+                    .properties(p -> p.viscosity(1000).temperature(180).density(1100))
+                    .tag(TagsInit.CustomFluidTags.LIQUID_CO2.tag)
+                    .register();
+
+    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_CO2 =
+            CreatingSpace.REGISTRATE.item("liquid_co2_bucket",
+                            p -> new BucketItem(LIQUID_CO2.get(), p))
                     .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
                     .register();
 

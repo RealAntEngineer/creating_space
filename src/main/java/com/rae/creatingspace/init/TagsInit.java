@@ -186,7 +186,7 @@ public class TagsInit extends AllTags {
         LIQUID_METHANE(),
         LIQUID_HYDROGEN(),
         LIQUID_OXYGEN(),
-        DISSIPATE_IN_SPACE();
+        DISSIPATE_IN_SPACE(), LIQUID_CO2();
 
         public final TagKey<Fluid> tag;
         public final boolean alwaysDatagen;

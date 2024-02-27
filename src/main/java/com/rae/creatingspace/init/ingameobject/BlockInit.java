@@ -11,16 +11,15 @@ import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock
 import com.rae.creatingspace.server.blocks.multiblock.engines.BigEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.rae.creatingspace.server.contraption.movementbehaviour.EngineMovementBehaviour;
-import com.rae.creatingspace.server.contraption.movementbehaviour.FlightRecorderMovementBehaviour;
 import com.rae.creatingspace.server.items.BigEngineItem;
 import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.SmallEngineItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
+import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import jdk.jfr.FlightRecorder;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
@@ -244,24 +243,35 @@ public class BlockInit {
 
 
     public static final BlockEntry<ChemicalSynthesizerBlock> CHEMICAL_SYNTHESIZER = REGISTRATE.block(
-            "chemical_synthesizer", ChemicalSynthesizerBlock::new)
+                    "old_chemical_synthesizer", ChemicalSynthesizerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
             .item()
-            .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            //.properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
 
 
-    public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
-            "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
+    public static final BlockEntry<LegacyMechanicalElectrolyzerBlock> LEGACY_MECHANICAL_ELECTROLYZER = REGISTRATE.block(
+                    "legacy_mechanical_electrolyzer", LegacyMechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .transform(BlockStressDefaults.setImpact(10000))
             .transform(axeOrPickaxe())
             .item()
-            .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            //.properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .transform(customItemModel())
+            .onRegisterAfter(Registry.ITEM_REGISTRY, i -> ItemDescription.useKey(i, "block.creatingspace.legacy_mechanical_electrolyzer"))
+            .register();
+    public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
+                    "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .transform(BlockStressDefaults.setImpact(10000))
+            .transform(axeOrPickaxe())
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .onRegisterAfter(Registry.ITEM_REGISTRY, i -> ItemDescription.useKey(i, "block.creatingspace.mechanical_electrolyzer"))
             .register();
@@ -328,6 +338,18 @@ public class BlockInit {
             .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
+    public static final BlockEntry<CatalystCarrierBlock> CATALYST_CARRIER = REGISTRATE.block(
+                    "catalyst_carrier", CatalystCarrierBlock::new)
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.noOcclusion().color(MaterialColor.PODZOL))
+            .transform(axeOrPickaxe())
+            .blockstate(BlockStateGen.horizontalBlockProvider(true))
+            .transform(BlockStressDefaults.setImpact(8.0))
+            .item(AssemblyOperatorBlockItem::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .transform(customItemModel())
+            .register();
+
 
     public static void register() {}
 

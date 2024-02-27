@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "hfacing=north": {
+      "model": "creatingspace:block/legacy_mechanical_electrolyzer/block"
+    },
+    "hfacing=south": {
+      "model": "creatingspace:block/legacy_mechanical_electrolyzer/block",
+      "y": 180
+    },
+    "hfacing=west": {
+      "model": "creatingspace:block/legacy_mechanical_electrolyzer/block",
+      "y": 270
+    },
+    "hfacing=east": {
+      "model": "creatingspace:block/legacy_mechanical_electrolyzer/block",
+      "y": 90
+    }
+  }
+}

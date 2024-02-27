@@ -3,6 +3,7 @@ package com.rae.creatingspace;
 import com.mojang.logging.LogUtils;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.PacketInit;
+import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.graphics.DimensionEffectInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
@@ -11,8 +12,8 @@ import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
-import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.rae.creatingspace.utilities.data.DimensionTagsReader;
+import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.TooltipHelper;
@@ -56,6 +57,7 @@ public class CreatingSpace {
         EntityInit.register();
         FluidInit.register();
 
+        RecipeInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
 
         DimensionInit.register(modEventBus);
