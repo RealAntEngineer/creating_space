@@ -13,13 +13,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import static com.rae.creatingspace.init.worldgen.DimensionInit.*;
 import static com.rae.creatingspace.utilities.data.DimensionParameterMapReader.translator;
 
 public class CSDimensionUtil {
-
+    //TODO change resource key to resource location
     public static float gravity(ResourceKey<DimensionType> dimensionType) {
         DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
                 DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
@@ -38,6 +36,12 @@ public class CSDimensionUtil {
         return 9.81f;
     }
 
+    public static int arrivalHeight(ResourceKey<DimensionType> dimensionType) {
+        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
+        assert dimensionMapData != null;
+        return dimensionMapData.dimensionParameterMap().get(dimensionType.location().toString()).arrivalHeight();
+    }
     //to optimise
     public static HashMap<ResourceKey<Level>,
             DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
