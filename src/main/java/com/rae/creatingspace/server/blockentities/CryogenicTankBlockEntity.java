@@ -26,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack.FLUID_NBT_KEY;
+
 public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameable, IHaveGoggleInformation {
     private final Component defaultName;
     private Component customName;
@@ -85,14 +87,14 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
     @Override
     protected void write(CompoundTag tag, boolean clientPacket) {
         CompoundTag tankTag = new CompoundTag();
-        tag.put("Tank", TANK.writeToNBT(tankTag));
+        tag.put(FLUID_NBT_KEY, TANK.writeToNBT(tankTag));
         super.write(tag, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag tag, boolean clientPacket) {
         super.read(tag, clientPacket);
-        TANK.readFromNBT((CompoundTag) tag.get("Tank"));
+        TANK.readFromNBT((CompoundTag) tag.get(FLUID_NBT_KEY));
     }
 
 

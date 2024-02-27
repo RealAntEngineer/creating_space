@@ -12,12 +12,16 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack.FLUID_NBT_KEY;
 
 public class CryogenicTankItem extends BlockItem {
     public CryogenicTankItem(Block block, Properties properties) {
@@ -26,7 +30,7 @@ public class CryogenicTankItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
-        CompoundTag tank = stack.getOrCreateTag().getCompound("Tank");
+        CompoundTag tank = stack.getOrCreateTag().getCompound(FLUID_NBT_KEY);
         FluidStack fluid = FluidStack.loadFluidStackFromNBT(tank);
 
         if (!fluid.isEmpty()){
@@ -59,11 +63,16 @@ public class CryogenicTankItem extends BlockItem {
                     ItemStack itemStack = this.getDefaultInstance();
                     CompoundTag tag = itemStack.getOrCreateTag();
                     FluidStack fluidStack = new FluidStack(fluid, 4000);
-                    tag.put("Tank", fluidStack.writeToNBT(new CompoundTag()));
+                    tag.put(FLUID_NBT_KEY, fluidStack.writeToNBT(new CompoundTag()));
                     itemStack.setTag(tag);
                     itemStacks.add(itemStack);
                 }
             }
         }
+    }
+
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return new FluidHandlerItemStack(stack, 4000);
     }
 }
