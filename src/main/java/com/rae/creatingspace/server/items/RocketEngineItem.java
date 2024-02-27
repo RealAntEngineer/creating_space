@@ -12,12 +12,12 @@ public abstract class RocketEngineItem extends BlockItem {
         super(p_40565_, p_40566_);
     }
 
-    public void appendEngineDependentText(List<Component> components,int ISP,int Trust){
+    public void appendEngineDependentText(List<Component> components, int ISP, int thrust) {
         components.add(Component.translatable("creatingspace.science.isp")
                 .append(Component.literal(" : " + ISP))
                 .append(Component.translatable("creatingspace.science.unit.second")));
         components.add(Component.translatable("creatingspace.science.thrust")
-                .append(Component.literal(" : "+ CSUtil.scientificNbrFormatting(Trust,10)))
+                .append(Component.literal(" : " + CSUtil.scientificNbrFormatting(thrust, 10)))
                 .append(Component.translatable("creatingspace.science.unit.newton")));
 
     }
