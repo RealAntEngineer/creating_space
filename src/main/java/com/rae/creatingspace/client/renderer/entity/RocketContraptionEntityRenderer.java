@@ -11,9 +11,6 @@ public class RocketContraptionEntityRenderer extends ContraptionEntityRenderer<R
         super(context);
     }
 
-    /*public ResourceLocation getTextureLocation(RocketContraptionEntity entity) {
-        return null;
-    }*/
 
     @Override
     public boolean shouldRender(RocketContraptionEntity entity, Frustum clippingHelper, double cameraX, double cameraY,

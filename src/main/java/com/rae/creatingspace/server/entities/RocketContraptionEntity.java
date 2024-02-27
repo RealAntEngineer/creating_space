@@ -6,9 +6,9 @@ import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
+import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.rae.creatingspace.utilities.data.FlightDataHelper;
-import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ContraptionCollider;
@@ -230,7 +230,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         rocketContraptionEntity.assemblyData = assemblyData;
         rocketContraptionEntity.disassembleOnFirstTick = assemblyData.hasFailed();//just for the fluids
 
-        System.out.println("assemblyData : "+assemblyData);
+        //System.out.println("assemblyData : "+assemblyData);
         //may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
         if (acceleration <=0 ){
             rocketContraptionEntity.disassembleOnFirstTick = true;
