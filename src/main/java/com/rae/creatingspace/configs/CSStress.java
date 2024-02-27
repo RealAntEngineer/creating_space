@@ -3,6 +3,7 @@ package com.rae.creatingspace.configs;
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.kinetics.BlockStressValues;
+import com.simibubi.create.foundation.config.ConfigBase;
 import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class CSStress extends CSConfigBase implements BlockStressValues.IStressValueProvider {
+public class CSStress extends ConfigBase implements BlockStressValues.IStressValueProvider {
 
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> capacities = new HashMap<>();
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> impacts = new HashMap<>();
