@@ -2,6 +2,7 @@ package com.rae.creatingspace.compat.jei;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.compat.jei.category.ChemicalSynthesisCategory;
+import com.rae.creatingspace.compat.jei.category.GasExtractionCategory;
 import com.rae.creatingspace.compat.jei.category.MechanicalElectrolysisCategory;
 import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
@@ -57,6 +58,7 @@ public class CSJei implements IModPlugin {
                         .doubleItemIcon(BlockInit.CATALYST_CARRIER.get(), AllBlocks.BASIN.get())
                         .emptyBackground(177, 103)
                         .build("chemical", ChemicalSynthesisCategory::standard);
+
         CreateRecipeCategory<?> electrolysis =
                 builder(BasinRecipe.class)
                         .addTypedRecipes(RecipeInit.MECHANICAL_ELECTROLYSIS)
@@ -65,6 +67,16 @@ public class CSJei implements IModPlugin {
                         .doubleItemIcon(BlockInit.MECHANICAL_ELECTROLYZER.get(), AllBlocks.BASIN.get())
                         .emptyBackground(177, 103)
                         .build("electrolysis", MechanicalElectrolysisCategory::standard);
+
+        CreateRecipeCategory<?> gasExtraction =
+                builder(BasinRecipe.class)
+                        .addTypedRecipes(RecipeInit.MECHANICAL_ELECTROLYSIS)
+                        .catalyst(BlockInit.AIR_LIQUEFIER::get)
+                        .itemIcon(BlockInit.AIR_LIQUEFIER.get())
+                        .emptyBackground(177, 103)
+                        .build("gas_extraction", GasExtractionCategory::standard);
+
+
     }
 
     private <T extends Recipe<?>> CategoryBuilder<T> builder(Class<? extends T> recipeClass) {
