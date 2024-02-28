@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "creatingspace:chemical_synthesizer"
+          "name": "creatingspace:catalyst_carrier"
         }
       ],
       "conditions": [
