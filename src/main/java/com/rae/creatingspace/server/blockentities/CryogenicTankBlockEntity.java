@@ -110,8 +110,6 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
     protected boolean queuedSync;
 
     public void  tick(Level level, BlockPos pos, BlockState state, CryogenicTankBlockEntity cryogenicTankBlockEntity) {
-        //verifying the recipe then craft methane
-
         super.tick();
         if (!level.isClientSide()) {
             if (syncCooldown > 0) {
