@@ -109,7 +109,7 @@ repositories {
 }
 
 dependencies {
-    	minecraft 'net.minecraftforge:forge:1.19.2-43.2.8'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.2.8'
 
 	// modApi "mezz.jei:jei-1.19.2:11.6.0.1015" ?
 
@@ -129,8 +129,6 @@ dependencies {
 
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
-	
-
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
