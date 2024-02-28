@@ -1,7 +1,7 @@
 package com.rae.creatingspace.server.blocks;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.server.blockentities.CatalystCarrierBlockEntity;
+import com.rae.creatingspace.server.blockentities.MechanicalElectrolyzerBlockEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class MechanicalElectrolyzerBlock extends HorizontalKineticBlock implements IBE<CatalystCarrierBlockEntity> {
+public class MechanicalElectrolyzerBlock extends HorizontalKineticBlock implements IBE<MechanicalElectrolyzerBlockEntity> {
 
 	public MechanicalElectrolyzerBlock(Properties properties) {
 		super(properties);
@@ -61,13 +61,13 @@ public class MechanicalElectrolyzerBlock extends HorizontalKineticBlock implemen
 	}
 
 	@Override
-	public Class<CatalystCarrierBlockEntity> getBlockEntityClass() {
-		return CatalystCarrierBlockEntity.class;
+    public Class<MechanicalElectrolyzerBlockEntity> getBlockEntityClass() {
+        return MechanicalElectrolyzerBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends CatalystCarrierBlockEntity> getBlockEntityType() {
-		return BlockEntityInit.CATALYST_CARRIER.get();
+    public BlockEntityType<? extends MechanicalElectrolyzerBlockEntity> getBlockEntityType() {
+        return BlockEntityInit.ELECTROLIZER.get();
 	}
 
 	@Override

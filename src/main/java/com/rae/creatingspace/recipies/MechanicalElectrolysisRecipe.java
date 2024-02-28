@@ -6,6 +6,6 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.Pro
 
 public class MechanicalElectrolysisRecipe extends BasinRecipe {
     public MechanicalElectrolysisRecipe(ProcessingRecipeParams params) {
-        super(RecipeInit.CHEMICAL_SYNTHESIS, params);
+        super(RecipeInit.MECHANICAL_ELECTROLYSIS, params);
     }
 }

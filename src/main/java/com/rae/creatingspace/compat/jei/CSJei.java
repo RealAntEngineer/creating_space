@@ -2,6 +2,7 @@ package com.rae.creatingspace.compat.jei;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.compat.jei.category.ChemicalSynthesisCategory;
+import com.rae.creatingspace.compat.jei.category.MechanicalElectrolysisCategory;
 import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.simibubi.create.AllBlocks;
@@ -56,6 +57,14 @@ public class CSJei implements IModPlugin {
                         .doubleItemIcon(BlockInit.CATALYST_CARRIER.get(), AllBlocks.BASIN.get())
                         .emptyBackground(177, 103)
                         .build("chemical", ChemicalSynthesisCategory::standard);
+        CreateRecipeCategory<?> electrolysis =
+                builder(BasinRecipe.class)
+                        .addTypedRecipes(RecipeInit.MECHANICAL_ELECTROLYSIS)
+                        .catalyst(BlockInit.MECHANICAL_ELECTROLYZER::get)
+                        .catalyst(AllBlocks.BASIN::get)
+                        .doubleItemIcon(BlockInit.MECHANICAL_ELECTROLYZER.get(), AllBlocks.BASIN.get())
+                        .emptyBackground(177, 103)
+                        .build("electrolysis", MechanicalElectrolysisCategory::standard);
     }
 
     private <T extends Recipe<?>> CategoryBuilder<T> builder(Class<? extends T> recipeClass) {
