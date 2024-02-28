@@ -1,4 +1,4 @@
-package com.rae.creatingspace.recipies;
+package com.rae.creatingspace.recipes;
 
 import com.rae.creatingspace.init.RecipeInit;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
