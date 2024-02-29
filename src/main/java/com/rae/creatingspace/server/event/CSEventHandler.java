@@ -79,6 +79,15 @@ public class CSEventHandler {
                 }
             }
         }
+        if (entityLiving.tickCount % 20 == 0 && !isInO2(entityLiving) && entityLiving.isAttackable()) {
+            if (entityLiving instanceof ServerPlayer player) {
+                if (playerNeedEquipment(player) && player.getLevel().dimension().location().toString().equals("creatingspace:venus") && !checkPlayerO2Equipment(player)) {
+                    player.hurt(DamageSourceInit.OVERHEAT, 0.5F);
+                }
+            } else if (!TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving)) {
+                entityLiving.hurt(DamageSourceInit.OVERHEAT, 0.5F);
+            }
+        }
     }
 
     public static boolean checkPlayerO2Equipment(ServerPlayer player){
@@ -104,6 +113,8 @@ public class CSEventHandler {
 
     public static boolean isInO2(LivingEntity entity){
         Level level = entity.getLevel();
+        //TODO use this instead, with tags for the biome
+        //  level.getBiome(entity.getOnPos()).getTagKeys().toList();
         if (CSDimensionUtil.hasO2Atmosphere(level.dimension())){
             return true;
         }
@@ -128,35 +139,8 @@ public class CSEventHandler {
         }
     }
 
-
-
     private static boolean isStateBreathable(BlockState state) {
         return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
     }
 
-    /*@SubscribeEvent
-    public static void onFluidUpdate(BlockEvent.NeighborNotifyEvent neighborNotifyEvent){
-        Level level = (Level) neighborNotifyEvent.getLevel();
-        BlockPos pos = neighborNotifyEvent.getPos();
-        if (!level.isClientSide()) {
-            if (!DimensionInit.hasO2Atmosphere(level.dimension())) {
-                FluidState fluidState = level.getFluidState(pos);
-                if (!fluidState.isEmpty()) {
-                    if (TagsInit.CustomFluidTags.DISSIPATE_IN_SPACE.matches(fluidState)) {
-                        boolean needToDissipate = true;
-                        for (Direction direction : neighborNotifyEvent.getNotifiedSides()) {
-                            if (level.isStateAtPosition(pos.relative(direction), CSEventHandler::isStateBreathable)) {
-                                needToDissipate = false;
-                                break;
-                            }
-                        }
-                        if (needToDissipate) {
-                            level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                        }
-                    }
-                }
-            }
-        }
-    }
-   */
 }

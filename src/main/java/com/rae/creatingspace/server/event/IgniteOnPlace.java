@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.event;
 
+import com.rae.creatingspace.CreatingSpace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,11 +17,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-@Mod.EventBusSubscriber(
-        modid = "creatingspace",
-        bus = Mod.EventBusSubscriber.Bus.FORGE
-)
-
+@Mod.EventBusSubscriber(modid = CreatingSpace.MODID)
 public class IgniteOnPlace {
     static Set<Block> dirtLikeBlocks = new HashSet<>(Arrays.asList(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.PODZOL, Blocks.MYCELIUM, Blocks.ROOTED_DIRT, Blocks.COARSE_DIRT));
 
@@ -31,6 +28,7 @@ public class IgniteOnPlace {
     public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() instanceof LivingEntity player) {
             BlockState blockState = event.getState();
+            System.out.println(player.getLevel().dimension().location());
             if (!CSEventHandler.isInO2(player) && player.getLevel().dimension().location().toString().equals("creatingspace:venus")) {
                 Level world = (Level) event.getLevel();
                 BlockPos pos = event.getPos();

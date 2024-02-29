@@ -82,17 +82,16 @@ public class CSDimensionUtil {
         return new HashMap<>();
     }
 
-
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
         DimensionTagsReader.PartialDimensionList data =  DimensionTagsReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
         boolean no_02 = false;
         if (data!=null) {
             List<String> dimensions = data.dimensions();
              no_02 = dimensions.contains(dimension.location().toString());
-            //System.out.println(no_02);
         }
         return !no_02;
     }
+
     public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
         return gravity(dimensionType) == 0;
     }

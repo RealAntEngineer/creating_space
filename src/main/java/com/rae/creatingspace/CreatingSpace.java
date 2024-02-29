@@ -9,8 +9,8 @@ import com.rae.creatingspace.init.graphics.DimensionEffectInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
+import com.rae.creatingspace.server.event.IgniteOnPlace;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.DimensionTagsReader;
 import com.rae.creatingspace.utilities.data.MassOfBlockReader;
@@ -60,7 +60,8 @@ public class CreatingSpace {
         RecipeInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
 
-        DimensionInit.register(modEventBus);
+        //DimensionInit.register(modEventBus);
+        IgniteOnPlace.register();
 
         PaintingInit.register(modEventBus);
 
