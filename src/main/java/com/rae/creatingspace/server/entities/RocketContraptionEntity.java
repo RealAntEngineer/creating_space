@@ -396,6 +396,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //TODO new logic : the player assemble the rocket, then the deltaV
         // is calculated and the player make is choice and the rocket goes up
         //  better because the rocket can be refuelled on flight
+        //TODO after that make schedule for rocket
         if (disassembleOnFirstTick){
             if (!level.isClientSide){
                 setContraptionMotion(Vec3.ZERO);//otherwise the player take damage
