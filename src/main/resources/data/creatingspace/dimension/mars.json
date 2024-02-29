@@ -1,0 +1,11 @@
+{
+  "type": "creatingspace:mars",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "creatingspace:mars_noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "creatingspace:mars_plains"
+    }
+  }
+}

@@ -81,6 +81,27 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
+    public static final BlockEntry<Block> MARS_STONE = REGISTRATE
+            .block("mars_stone", Block::new).initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
+    public static final BlockEntry<Block> MARS_REGOLITH = REGISTRATE
+            .block("mars_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
+            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
+    public static final BlockEntry<Block> MARS_SURFACE_REGOLITH = REGISTRATE
+            .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
+            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
 
     //ores
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
