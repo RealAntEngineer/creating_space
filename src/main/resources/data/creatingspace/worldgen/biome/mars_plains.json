@@ -34,9 +34,7 @@
   },
   "features": [
     [
-      "creatingspace:moon_aluminum_ore",
-      "creatingspace:moon_cobalt_ore",
-      "creatingspace:moon_nickel_ore"
+      "creatingspace:crystal_geode"
     ]
   ]
 }

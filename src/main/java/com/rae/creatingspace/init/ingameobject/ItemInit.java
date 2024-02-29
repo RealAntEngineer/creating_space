@@ -115,7 +115,10 @@ public class ItemInit {
             .register();
 
     //minerals
-
+    public static final ItemEntry<Item> CRYSTAL_SHARD = CreatingSpace.REGISTRATE.item(
+                    "crystal_shard", Item::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .register();
     //nickel
     public static final ItemEntry<Item> RAW_NICKEL = CreatingSpace.REGISTRATE.item(
             "raw_nickel",Item::new)

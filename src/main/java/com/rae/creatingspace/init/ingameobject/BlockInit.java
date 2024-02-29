@@ -22,9 +22,7 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
@@ -39,6 +37,7 @@ public class BlockInit {
     // + test if it's really the issue ( see QuadLighter )
 
     //just blocks
+    //TODO add geode's blocks
     public static final BlockEntry<Block> CLAMPS = REGISTRATE
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p -> p.strength(1.0f))
@@ -371,7 +370,64 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-
+    public static final BlockEntry<AmethystBlock> CRYSTAL_BLOCK = REGISTRATE.block(
+                    "crystal_block", AmethystBlock::new)
+            .initialProperties(() -> Blocks.AMETHYST_BLOCK)
+            .properties(p -> p.strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<BuddingAmethystBlock> BUDDING_CRYSTAL = REGISTRATE.block(
+                    "budding_crystal", BuddingAmethystBlock::new)
+            .initialProperties(() -> Blocks.BUDDING_AMETHYST)
+            .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> CRYSTAL_CLUSTER = REGISTRATE.block(
+                    "crystal_cluster", p -> new AmethystClusterBlock(7, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.AMETHYST_CLUSTER)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 5))
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> LARGE_CRYSTAL_BUD = REGISTRATE.block(
+                    "large_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.LARGE_AMETHYST_BUD)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 4))
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> MEDIUM_CRYSTAL_BUD = REGISTRATE.block(
+                    "medium_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.MEDIUM_AMETHYST_BUD)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 2))
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> SMALL_CRYSTAL_BUD = REGISTRATE.block(
+                    "small_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.SMALL_AMETHYST_BUD)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 1))
+            .item()
+            .build()
+            .register();
     public static void register() {}
 
 }
