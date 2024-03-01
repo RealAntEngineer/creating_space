@@ -3,7 +3,6 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
@@ -12,14 +11,12 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.utility.Color;
 import com.tterrag.registrate.builders.FluidBuilder;
 import com.tterrag.registrate.util.entry.FluidEntry;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -71,7 +68,7 @@ public class FluidInit {
                     .tag(TagsInit.CustomFluidTags.LIQUID_METHANE.tag)
                     .register();
 
-    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_METHANE =
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_METHANE =
             CreatingSpace.REGISTRATE.item("liquid_methane_bucket",
                     p-> new BucketItem(LIQUID_METHANE.get(),p))
                     .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
@@ -82,7 +79,7 @@ public class FluidInit {
                     .properties(p -> p.viscosity(1000).temperature(90).density(1000))
                     .tag(TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag)
                     .register();
-    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_OXYGEN =
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_OXYGEN =
             CreatingSpace.REGISTRATE.item("liquid_oxygen_bucket",
                     p-> new BucketItem(LIQUID_OXYGEN.get(),p))
                     .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
@@ -96,11 +93,11 @@ public class FluidInit {
                     .tag(TagsInit.CustomFluidTags.LIQUID_HYDROGEN.tag)
                     .register();
 
-    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_HYDROGEN =
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_HYDROGEN =
             CreatingSpace.REGISTRATE.item("liquid_hydrogen_bucket",
                             p-> new BucketItem(LIQUID_HYDROGEN.get(),p))
                     .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
-                    .register();
+                    .register();*/
 
     public static final FluidEntry<VirtualFluid> LIQUID_CO2 =
             registrateCustomVirtualLiquid("liquid_co2")
@@ -108,11 +105,11 @@ public class FluidInit {
                     .tag(TagsInit.CustomFluidTags.LIQUID_CO2.tag)
                     .register();
 
-    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_CO2 =
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_CO2 =
             CreatingSpace.REGISTRATE.item("liquid_co2_bucket",
                             p -> new BucketItem(LIQUID_CO2.get(), p))
                     .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
-                    .register();
+                    .register();*/
 
 
     /*fogColor(0.69f,0.34f,0.96f))*/
