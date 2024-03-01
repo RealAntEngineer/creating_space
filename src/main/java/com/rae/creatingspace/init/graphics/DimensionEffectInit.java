@@ -29,7 +29,7 @@ public class DimensionEffectInit {
                 new CustomDimensionEffects.MarsOrbitEffects(), true);
         registerDimensionEffects(event,
                 DimensionInit.MARS_TYPE.location(),
-                new CustomDimensionEffects.MoonEffect(), true);
+                new CustomDimensionEffects.MarsEffect(), true);
     }
 
     private static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event, ResourceLocation location, CustomDimensionEffects.GenericCelestialOrbitEffect effects, boolean renderSun) {

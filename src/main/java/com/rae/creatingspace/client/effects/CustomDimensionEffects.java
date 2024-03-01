@@ -14,6 +14,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -111,6 +112,19 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     }
 
     @OnlyIn(Dist.CLIENT)
+    public static class MarsEffect extends GenericCelestialOrbitEffect {
+        public MarsEffect() {
+            super();
+        }
+
+        @Override
+        protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
+            super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            //renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public static class MoonOrbitEffect extends GenericCelestialOrbitEffect {
         public MoonOrbitEffect() {
             super();
@@ -119,8 +133,12 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         @Override
         protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
             super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
-            renderAstralBody(poseStack, bufferbuilder, MOON_LOCATION, 180F, 150.0F, 60F);
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F);
+            BlockPos pos = camera.getEntity().getOnPos();
+            int height = pos.getY();
+            int minHeight = -64;
+            int maxHeight = 384;
+            renderAstralBody(poseStack, bufferbuilder, MOON_LOCATION, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 18.0F, 100F);
         }
     }
 
@@ -133,7 +151,11 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         @Override
         protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
             super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
-            renderAstralBody(poseStack, bufferbuilder, MARS_LOCATION, 180F, 150.0F, 60F);
+            BlockPos pos = camera.getEntity().getOnPos();
+            int height = pos.getY();
+            int minHeight = -64;
+            int maxHeight = 384;
+            renderAstralBody(poseStack, bufferbuilder, MARS_LOCATION, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
@@ -154,7 +176,11 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             float f15 = (float) (l + 1) / 4.0F;
             float f16 = (float) (i1 + 1) / 2.0F;
             renderAstralBody(poseStack, bufferbuilder, MOON_PHASES_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F, f15, f13, f16, f14);
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, 180F, 150.0F, 60F);
+            BlockPos pos = camera.getEntity().getOnPos();
+            int height = pos.getY();
+            int minHeight = -64;
+            int maxHeight = 384;
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
