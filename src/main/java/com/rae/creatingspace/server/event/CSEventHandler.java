@@ -94,7 +94,7 @@ public class CSEventHandler {
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
         for (ServerLevel serverlevel : sleepFinishedEvent.getLevel().getServer().getAllLevels()) {
-            serverlevel.setDayTime(24000L);
+            serverlevel.setDayTime(sleepFinishedEvent.getNewTime());
         }
     }
 
