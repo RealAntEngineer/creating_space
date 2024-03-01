@@ -297,7 +297,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         return perTickSpeed;
     }
 
+    // used to know if the rocket is going up or down
     public static final EntityDataAccessor<Boolean> REENTRY_ENTITY_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
+    //used to now if the rocket need to move or not ( just assemble or finished the list of instruction)
+    public static final EntityDataAccessor<Boolean> RUNNING_ENTITY_DATA_ACCESSOR =
             SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
 
     @Override
