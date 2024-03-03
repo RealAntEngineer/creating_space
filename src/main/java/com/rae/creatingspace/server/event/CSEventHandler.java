@@ -93,9 +93,10 @@ public class CSEventHandler {
 
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
-        for (ServerLevel serverlevel : sleepFinishedEvent.getLevel().getServer().getAllLevels()) {
+        sleepFinishedEvent.getLevel().getServer().getLevel(Level.OVERWORLD).setDayTime(sleepFinishedEvent.getNewTime());
+        /*for (ServerLevel serverlevel : sleepFinishedEvent.getLevel().getServer().getAllLevels()) {
             serverlevel.setDayTime(sleepFinishedEvent.getNewTime());
-        }
+        }*/
     }
 
     public static boolean checkPlayerO2Equipment(ServerPlayer player){
