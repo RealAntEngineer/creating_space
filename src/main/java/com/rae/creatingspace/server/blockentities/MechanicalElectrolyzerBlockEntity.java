@@ -1,8 +1,6 @@
 package com.rae.creatingspace.server.blockentities;
 
 import com.rae.creatingspace.init.RecipeInit;
-import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
@@ -10,26 +8,18 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Couple;
-import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -68,20 +58,6 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
             }
         }
         return offset;
-    }
-
-    public float getRenderedHeadRotationSpeed(float partialTicks) {
-        float speed = getSpeed();
-        if (running) {
-            if (runningTicks < 15) {
-                return speed;
-            }
-            if (runningTicks <= 20) {
-                return speed * 2;
-            }
-            return speed;
-        }
-        return speed / 2;
     }
 
     @Override
@@ -126,7 +102,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         float speed = Math.abs(getSpeed());
         if (running && level != null) {
             if (level.isClientSide && runningTicks == 20)
-                renderParticles();
+                renderVisualEffects();
 
             if ((!level.isClientSide || isVirtual()) && runningTicks == 20) {
                 if (processingTicks < 0) {
@@ -147,8 +123,8 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
                                 .isEmpty()
                                 || !tanks.getSecond()
                                 .isEmpty())
-                            level.playSound(null, worldPosition, SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT,
-                                    SoundSource.BLOCKS, .75f, speed < 65 ? .75f : 1.5f);
+                            level.playSound(null, worldPosition, SoundEvents.LIGHTNING_BOLT_THUNDER,
+                                    SoundSource.BLOCKS, .25f, speed < 65 ? .75f : 1.5f);
                     }
 
                 } else {
@@ -167,43 +143,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         }
     }
 
-    public void renderParticles() {
-        Optional<BasinBlockEntity> basin = getBasin();
-        if (!basin.isPresent() || level == null)
-            return;
-
-        for (SmartInventory inv : basin.get()
-                .getInvs()) {
-            for (int slot = 0; slot < inv.getSlots(); slot++) {
-                ItemStack stackInSlot = inv.getItem(slot);
-                if (stackInSlot.isEmpty())
-                    continue;
-                ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, stackInSlot);
-                spillParticle(data);
-            }
-        }
-
-        for (SmartFluidTankBehaviour behaviour : basin.get()
-                .getTanks()) {
-            if (behaviour == null)
-                continue;
-            for (SmartFluidTankBehaviour.TankSegment tankSegment : behaviour.getTanks()) {
-                if (tankSegment.isEmpty(0))
-                    continue;
-                spillParticle(FluidFX.getFluidParticle(tankSegment.getRenderedFluid()));
-            }
-        }
-    }
-
-    protected void spillParticle(ParticleOptions data) {
-        float angle = level.random.nextFloat() * 360;
-        Vec3 offset = new Vec3(0, 0, 0.25f);
-        offset = VecHelper.rotate(offset, angle, Direction.Axis.Y);
-        Vec3 target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Direction.Axis.Y)
-                .add(0, .25f, 0);
-        Vec3 center = offset.add(VecHelper.getCenterOf(worldPosition));
-        target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
-        level.addParticle(data, center.x, center.y - 1.75f, center.z, target.x, target.y, target.z);
+    public void renderVisualEffects() {
     }
 
     @Override
@@ -258,8 +198,10 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         boolean slow = Math.abs(getSpeed()) < 65;
         if (slow && AnimationTickHolder.getTicks() % 2 == 0)
             return;
-        if (runningTicks == 20)
-            AllSoundEvents.MIXING.playAt(level, worldPosition, .75f, 1, true);
+        //replace with an electric sound
+        /*if (runningTicks == 20)
+            AllSoundEvents.SANDING_SHORT.playAt(level, worldPosition, .75f, 1, true);
+    */
     }
 
 }

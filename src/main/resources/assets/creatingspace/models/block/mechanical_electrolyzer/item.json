@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-  "parent": "block/block",
+  "parent": "create:block/large_wheels",
 	"textures": {
       "0": "create:block/axis",
       "1": "create:block/axis_top",

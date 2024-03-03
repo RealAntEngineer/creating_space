@@ -156,7 +156,7 @@ public class BlockInit {
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(10000))
+            .transform(BlockStressDefaults.setImpact(2000))
             .transform(axeOrPickaxe())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))

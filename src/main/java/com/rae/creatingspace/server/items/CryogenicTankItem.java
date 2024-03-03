@@ -73,6 +73,16 @@ public class CryogenicTankItem extends BlockItem {
 
     @Override
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new FluidHandlerItemStack(stack, 4000);
+        return new FluidHandlerItemStack(stack, 4000) {
+            @Override
+            public boolean canDrainFluidType(FluidStack fluid) {
+                return fluid.getFluid().getFluidType().getTemperature() < 200;
+            }
+
+            @Override
+            public boolean canFillFluidType(FluidStack fluid) {
+                return fluid.getFluid().getFluidType().getTemperature() < 200;
+            }
+        };
     }
 }

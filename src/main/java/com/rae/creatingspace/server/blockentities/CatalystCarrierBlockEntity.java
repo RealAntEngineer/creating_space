@@ -1,8 +1,6 @@
 package com.rae.creatingspace.server.blockentities;
 
 import com.rae.creatingspace.init.RecipeInit;
-import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
@@ -10,21 +8,17 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,21 +63,6 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         }
         return offset;
     }
-
-    public float getRenderedHeadRotationSpeed(float partialTicks) {
-        float speed = getSpeed();
-        if (running) {
-            if (runningTicks < 15) {
-                return speed;
-            }
-            if (runningTicks <= 20) {
-                return speed * 2;
-            }
-            return speed;
-        }
-        return speed / 2;
-    }
-
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
@@ -168,31 +147,6 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
     }
 
     public void renderParticles() {
-        Optional<BasinBlockEntity> basin = getBasin();
-        if (!basin.isPresent() || level == null)
-            return;
-
-        for (SmartInventory inv : basin.get()
-                .getInvs()) {
-            for (int slot = 0; slot < inv.getSlots(); slot++) {
-                ItemStack stackInSlot = inv.getItem(slot);
-                if (stackInSlot.isEmpty())
-                    continue;
-                ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, stackInSlot);
-                spillParticle(data);
-            }
-        }
-
-        for (SmartFluidTankBehaviour behaviour : basin.get()
-                .getTanks()) {
-            if (behaviour == null)
-                continue;
-            for (SmartFluidTankBehaviour.TankSegment tankSegment : behaviour.getTanks()) {
-                if (tankSegment.isEmpty(0))
-                    continue;
-                spillParticle(FluidFX.getFluidParticle(tankSegment.getRenderedFluid()));
-            }
-        }
     }
 
     protected void spillParticle(ParticleOptions data) {
@@ -258,8 +212,9 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         boolean slow = Math.abs(getSpeed()) < 65;
         if (slow && AnimationTickHolder.getTicks() % 2 == 0)
             return;
-        if (runningTicks == 20)
+        /*if (runningTicks == 20)
             AllSoundEvents.MIXING.playAt(level, worldPosition, .75f, 1, true);
+         */
     }
 
 }
