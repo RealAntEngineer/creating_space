@@ -133,12 +133,12 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         @Override
         protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
             super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 18.0F, 100F);
             BlockPos pos = camera.getEntity().getOnPos();
             int height = pos.getY();
             int minHeight = -64;
             int maxHeight = 384;
-            renderAstralBody(poseStack, bufferbuilder, MOON_LOCATION, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 18.0F, 100F);
+            renderAstralBody(poseStack, bufferbuilder, MOON_LOCATION, 180F, 150.0F, 60.0F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
@@ -180,7 +180,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             int height = pos.getY();
             int minHeight = -64;
             int maxHeight = 384;
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, 180F, 150.0F, 60F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
