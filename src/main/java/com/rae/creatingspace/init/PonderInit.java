@@ -1,7 +1,6 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.client.ponders.CustomProcessingScene;
 import com.rae.creatingspace.client.ponders.FluidScene;
 import com.rae.creatingspace.client.ponders.RocketScene;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
@@ -29,10 +28,10 @@ public class PonderInit {
                 .addStoryBoard("rocket/rocket_building", RocketScene::rocketBuild)
                 .addStoryBoard("rocket/rocket_building",RocketScene::rocketDebug);
 
-        HELPER.forComponents(BlockInit.MECHANICAL_ELECTROLYZER)
+        /*HELPER.forComponents(BlockInit.MECHANICAL_ELECTROLYZER)
                 .addStoryBoard("mechanical_electrolyzer/electrolysis", CustomProcessingScene::electrolysis);
         HELPER.forComponents(BlockInit.CATALYST_CARRIER)
                 .addStoryBoard("catalyst_carrier/chemical", CustomProcessingScene::chemical);
-
+*/
     }
 }

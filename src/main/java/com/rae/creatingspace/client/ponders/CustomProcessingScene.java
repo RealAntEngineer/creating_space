@@ -102,7 +102,7 @@ public class CustomProcessingScene {
     }
 
     public static void chemical(SceneBuilder scene, SceneBuildingUtil util) {
-        scene.title("catalyst_carrier", "Processing Fluids with the Mechanical Electrolyzer");
+        scene.title("catalyst_carrier", "Processing Fluids with the Catalyst Carrier");
         scene.configureBasePlate(0, 0, 5);
         scene.world.setBlock(util.grid.at(1, 1, 2), AllBlocks.ANDESITE_CASING.getDefaultState(), false);
         scene.world.showSection(util.select.layer(0), Direction.UP);
