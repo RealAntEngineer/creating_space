@@ -30,7 +30,7 @@ public class PonderInit {
                 .addStoryBoard("rocket/rocket_building",RocketScene::rocketDebug);
 
         HELPER.forComponents(BlockInit.MECHANICAL_ELECTROLYZER)
-                .addStoryBoard("mechanical_electroyzer/electrolysis", CustomProcessingScene::electrolysis);
+                .addStoryBoard("mechanical_electrolyzer/electrolysis", CustomProcessingScene::electrolysis);
         HELPER.forComponents(BlockInit.CATALYST_CARRIER)
                 .addStoryBoard("catalyst_carrier/chemical", CustomProcessingScene::chemical);
 
