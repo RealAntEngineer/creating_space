@@ -2,6 +2,9 @@
   "values": [
     "creatingspace:earth_orbit",
     "creatingspace:moon_orbit",
-    "creatingspace:the_moon"
+    "creatingspace:the_moon",
+    "creatingspace:mars",
+    "creatingspace:mars_orbit",
+    "creatingspace:venus"
   ]
 }

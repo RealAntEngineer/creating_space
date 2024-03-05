@@ -21,8 +21,8 @@
               "ops": [
                 {
                   "op": "replace",
-                  "source": "Tank",
-                  "target": "Tank"
+                  "source": "Fluid",
+                  "target": "Fluid"
                 }
               ],
               "source": "block_entity"

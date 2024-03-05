@@ -1,0 +1,19 @@
+{
+  "type": "creatingspace:mechanical_electrolysis",
+  "ingredients": [
+    {
+      "amount": 100,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "amount": 80,
+      "fluid": "creatingspace:liquid_oxygen"
+    },
+    {
+      "amount": 160,
+      "fluid": "creatingspace:liquid_hydrogen"
+    }
+  ]
+}

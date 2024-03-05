@@ -8,7 +8,6 @@ public class PartialModelInit {
             CATALYST_CARRIER_HEAD = block("catalyst_carrier/head"),
             ELECTROLYZER_HEAD = block("mechanical_electrolyzer/head");
 
-
     private static PartialModel block(String path) {
         return new PartialModel(CreatingSpace.resource("block/" + path));
     }

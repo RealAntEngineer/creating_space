@@ -20,7 +20,6 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
     public abstract TagKey<Fluid> getFuelTag();
     public abstract float getOxFuelRatio();
 
-
     public RocketEngineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type,pos, state);
 
@@ -76,6 +75,7 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         public int getThrust() {
             return  CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get();
         }
+
         @Override
         public TagKey<Fluid> getOxidizerTag() {
             return TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag;

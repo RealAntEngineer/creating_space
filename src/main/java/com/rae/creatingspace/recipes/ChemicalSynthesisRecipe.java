@@ -12,6 +12,7 @@ public class ChemicalSynthesisRecipe extends BasinRecipe {
     public ChemicalSynthesisRecipe(ProcessingRecipeParams params) {
         super(RecipeInit.CHEMICAL_SYNTHESIS, params);
     }
+
     @Override
     public void readAdditional(JsonObject json) {
         super.readAdditional(json);

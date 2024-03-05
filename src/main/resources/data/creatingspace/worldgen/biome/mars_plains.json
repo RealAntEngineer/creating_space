@@ -1,0 +1,40 @@
+{
+  "temperature": 2.5,
+  "downfall": 0,
+  "has_precipitation": false,
+  "temperature_modifier": "none",
+  "effects": {
+    "sky_color": 13267456,
+    "fog_color": 9788481,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "grass_color_modifier": "none",
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:ash"
+      },
+      "probability": 0.118093334
+    }
+  },
+  "spawners": {},
+  "spawn_costs": {
+    "minecraft:skeleton": {
+      "energy_budget": 10,
+      "charge": 1
+    }
+  },
+  "carvers": {
+    "air": "creatingspace:mars_cave"
+  },
+  "features": [
+    [
+      "creatingspace:crystal_geode"
+    ]
+  ]
+}

@@ -80,6 +80,7 @@ public class SealerBlockEntity extends KineticBlockEntity {
         public boolean isFluidValid(FluidStack stack) {
             //System.out.println("got a fluid : " + stack.getFluid().getFluidType().getDescriptionId()+ "  " + stack.getAmount());
             return TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(stack.getFluid());
+
         }
     };
     public LazyOptional<IFluidHandler> fluidOptional = LazyOptional.of(()-> this.OXYGEN_TANK);

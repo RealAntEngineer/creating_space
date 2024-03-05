@@ -15,10 +15,9 @@ public class ShapesInit {
                     .add(2,3,5,6,11,9)
                     .add(10,3,5,14,11,9)
             .forHorizontal(Direction.NORTH),
-    EXPLOSIVE_STARTER = shape(0,0,0,1,1,1).forHorizontalAxis(),
-    EXPLOSIVE_STARTER_FLOOR = shape(0,0,0,1,1,1).forHorizontalAxis(),
-    EXPLOSIVE_STARTER_WALL = shape(0,0,0,1,1,1).forHorizontal(Direction.NORTH);
-    ;
+    AIR_LIQUEFIER = shape(0,0,0,16,16,16)
+            .erase(2,11,2,14,16,14)
+            .forDirectional();
 
     private static AllShapes.Builder shape(VoxelShape shape) {
         return new AllShapes.Builder(shape);

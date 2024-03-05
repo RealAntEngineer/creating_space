@@ -46,7 +46,7 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.SMALL_ROCKET_ENGINE);
                         output.accept(BlockInit.BIG_ROCKET_ENGINE);
                         output.accept(BlockInit.ROCKET_CONTROLS);
-                        output.accept(BlockInit.CHEMICAL_SYNTHESIZER);
+                        output.accept(BlockInit.CATALYST_CARRIER);
                         output.accept(BlockInit.MECHANICAL_ELECTROLYZER);
                         output.accept(BlockInit.ROCKET_GENERATOR);
                         output.accept(BlockInit.FLOW_METER);
@@ -123,9 +123,9 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.RAW_COBALT_BLOCK);
                         output.accept(BlockInit.MOON_ALUMINUM_ORE);
                         output.accept(BlockInit.RAW_ALUMINUM_BLOCK);
-                        output.accept(FluidInit.CREATIVE_BUCKET_HYDROGEN);
-                        output.accept(FluidInit.CREATIVE_BUCKET_OXYGEN);
-                        output.accept(FluidInit.CREATIVE_BUCKET_METHANE);
+                        //output.accept(FluidInit.CREATIVE_BUCKET_HYDROGEN);
+                        //output.accept(FluidInit.CREATIVE_BUCKET_OXYGEN);
+                        //output.accept(FluidInit.CREATIVE_BUCKET_METHANE);
                     })
                     .build());
 

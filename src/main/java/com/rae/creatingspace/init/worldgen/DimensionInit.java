@@ -31,12 +31,13 @@ public class DimensionInit {
 
     public static final ResourceKey<DimensionType> MOON_TYPE =
             ResourceKey.create(Registries.DIMENSION_TYPE,
-                    new ResourceLocation(CreatingSpace.MODID,"the_moon"));
-
-    public static void register(IEventBus bus) {
-        System.out.println("Registering Dimension for : "+ CreatingSpace.MODID);
-    }
-
+                    CreatingSpace.resource("the_moon"));
+    public static final ResourceKey<DimensionType> MARS_ORBIT_TYPE =
+            ResourceKey.create(Registries.DIMENSION_TYPE,
+                    CreatingSpace.resource("mars_orbit"));
+    public static final ResourceKey<DimensionType> MARS_TYPE =
+            ResourceKey.create(Registries.DIMENSION_TYPE,
+                    CreatingSpace.resource("mars"));
 }
 
 

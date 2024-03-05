@@ -1,6 +1,7 @@
 package com.rae.creatingspace.client.gui.screen.elements;
 
 import com.simibubi.create.foundation.gui.widget.BoxWidget;
+import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.utility.Color;
 import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Minecraft;
@@ -12,34 +13,21 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class DimSelectBoxWidget extends BoxWidget {
-    private ResourceKey<Level> dim;
-    private Component text;
+    private final ResourceKey<Level> dim;
+    private final Label label;
     protected int color;
     protected Font font;
-
-    @Override
-    public <T extends BoxWidget> T withBorderColors(Couple<Color> colors) {
-        return super.withBorderColors(colors);
-    }
 
     public DimSelectBoxWidget(int x, int y, int width, int height, Component text, ResourceKey<Level> dim){
         super(x, y, width,height);
         font = Minecraft.getInstance().font;
         this.dim = dim;
-        this.text = text;
+        this.label = new Label(x+3,y+(height-10)/2,text);
+        label.setTextAndTrim(text,true,112);
         color = 0xFFFFFF;
     }
 
 
-    @Override
-    public Component getMessage() {
-        return super.getMessage();
-    }
-    @Override
-    public void onClick(double x, double y) {
-        super.onClick(x, y);
-
-    }
 
     public ResourceKey<Level> getDim() {
         return dim;
@@ -48,8 +36,10 @@ public class DimSelectBoxWidget extends BoxWidget {
     @Override
     public void doRender(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.doRender(graphics, mouseX, mouseY, partialTicks);
-        if (text == null || text.getString().isEmpty())
+        if (label == null || label.text.getString().isEmpty())
             return;
-        graphics.drawString(font,text.getString(),getX()+3, (int) (height/2f -4 + getY()),color);
+
+        label.render(graphics,mouseX,mouseY,partialTicks
+        );
     }
 }

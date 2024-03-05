@@ -23,6 +23,7 @@ public class EntityInit {
                     .register();
 
 
+
     private static <T extends Entity> CreateEntityBuilder<T, ?> contraption(String name, EntityType.EntityFactory<T> factory,
                                                                             NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer, int range,
                                                                             int updateFrequency, boolean sendVelocity) {

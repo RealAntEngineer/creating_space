@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Vector;
 
 public class DestinationScreen extends AbstractSimiScreen {
-
     private boolean destinationChanged;
     private Button launchButton;
     private final HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
@@ -45,7 +44,6 @@ public class DestinationScreen extends AbstractSimiScreen {
     private final Vector<DimSelectBoxWidget> buttonVector;
     private LabeledBoxWidget destinationCost;
     private EditBox Xinput;
-    private EditBox Yinput;
     private EditBox Zinput;
     Couple<Color> red = Theme.p(Theme.Key.BUTTON_FAIL);
     Couple<Color> green = Theme.p(Theme.Key.BUTTON_SUCCESS);
@@ -58,7 +56,9 @@ public class DestinationScreen extends AbstractSimiScreen {
         this.initialPosMap = new HashMap<>(be.initialPosMap);
         this.background = GuiTexturesInit.ROCKET_CONTROLS;
         this.currentDimension = be.getLevel().dimension();
-        this.mapOfAccessibleDimensionAndV = CSDimensionUtil.accessibleFrom(this.currentDimension);
+        //initialise the map in the server side blockEntity to avoid issues
+        this.mapOfAccessibleDimensionAndV = be.mapOfAccessibleDimensionAndV == null ? new HashMap<>() : be.mapOfAccessibleDimensionAndV;
+
         this.buttonVector = new Vector<>(this.mapOfAccessibleDimensionAndV.size());
         this.destinationChanged = false;
     }
@@ -210,8 +210,6 @@ public class DestinationScreen extends AbstractSimiScreen {
 
         destinationChanged = false;
     }
-
-
 
     @Override
     public void tick() {

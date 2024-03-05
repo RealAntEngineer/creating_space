@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": {
+      "item": "creatingspace:nickel_ingot"
+    },
+    "G": {
+      "item": "create:golden_sheet"
+    },
+    "S": {
+      "item": "create:shaft"
+    },
+    "P": {
+      "item": "create:mechanical_press"
+    }
+  },
+  "pattern": [
+    " P ",
+    "NNN",
+    "GTG"
+  ],
+  "result": {
+    "item": "creatingspace:catalyst_carrier"
+  }
+}

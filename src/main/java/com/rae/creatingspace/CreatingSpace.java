@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.PacketInit;
+import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.graphics.DimensionEffectInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
@@ -35,8 +36,8 @@ public class CreatingSpace {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final String MODID = "creatingspace" ;
-    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
 
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
             return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE);
@@ -46,7 +47,6 @@ public class CreatingSpace {
     public CreatingSpace() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
-
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
 
         REGISTRATE.registerEventListeners(modEventBus);
@@ -58,10 +58,9 @@ public class CreatingSpace {
         BlockEntityInit.register();
         EntityInit.register();
         FluidInit.register();
-        CreativeModeTabsInit.register(modEventBus);
-        ParticleTypeInit.register(modEventBus);
 
-        DimensionInit.register(modEventBus);
+        RecipeInit.register(modEventBus);
+        ParticleTypeInit.register(modEventBus);
 
         PaintingInit.register(modEventBus);
 
@@ -70,10 +69,8 @@ public class CreatingSpace {
         CSContraptionType.prepare();
 
         CSConfigs.registerConfigs(modLoadingContext);
-
         modEventBus.addListener(CreatingSpace::init);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
-
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 
         modEventBus.register(DimensionEffectInit.class);
@@ -93,8 +90,6 @@ public class CreatingSpace {
         event.addListener(DimensionTagsReader.DIMENSION_TAGS_HOLDER);
         event.addListener(MassOfBlockReader.MASS_HOLDER);
     }
-
-
 
     public static ResourceLocation resource(String path){
         return new ResourceLocation(MODID,path);

@@ -3,7 +3,7 @@ package com.rae.creatingspace.client.effects;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-import com.rae.creatingspace.CreatingSpace;
+import org.joml.Matrix4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
@@ -14,14 +14,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix4f;
 
 public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
-
-    private static final ResourceLocation SPACE_SKY_LOCATION = new ResourceLocation(CreatingSpace.MODID,"textures/environment/space_sky.png");
-    private static final ResourceLocation EARTH_LOCATION = new ResourceLocation(CreatingSpace.MODID,"textures/environment/earth.png");
-    private static final ResourceLocation MOON_LOCATION = new ResourceLocation(CreatingSpace.MODID,"textures/environment/moon.png");
-
+    private static final ResourceLocation SPACE_SKY_LOCATION = new ResourceLocation("creatingspace", "textures/environment/space_sky.png");
+    private static final ResourceLocation EARTH_LOCATION = new ResourceLocation("creatingspace", "textures/environment/earth.png");
+    private static final ResourceLocation MOON_LOCATION = new ResourceLocation("creatingspace", "textures/environment/moon.png");
+    private static final ResourceLocation MARS_LOCATION = new ResourceLocation("creatingspace", "textures/environment/mars.png");
+    private static final ResourceLocation SATURN_LOCATION = new ResourceLocation("creatingspace", "textures/environment/saturn.png");
     private static final ResourceLocation SUN_LOCATION = new ResourceLocation("textures/environment/sun.png");
     private static final ResourceLocation MOON_PHASES_LOCATION = new ResourceLocation("textures/environment/moon_phases.png");
 
@@ -37,246 +36,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         return false;
     }
 
-
-    @OnlyIn(Dist.CLIENT)
-    public static class EarthOrbitEffects extends CustomDimensionEffects{
-
-        public EarthOrbitEffects() {
-            super(Float.NaN, false, DimensionSpecialEffects.SkyType.NONE, false, false);
-        }
-
-        @Override
-        public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f projectionMatrix) {
-            return true;
-        }
-
-        @Override
-        public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
-            return true;
-        }
-
-        @Override
-        public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
-            return true;
-        }
-
-        @Override
-        public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-
-            BufferBuilder bufferbuilder = renderSpaceSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
-
-            //render sun and moon
-            poseStack.pushPose();
-            float size = 30.0F;
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-            poseStack.mulPose(Axis.XP.rotationDegrees(camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F));
-
-            Matrix4f matrix4f = poseStack.last().pose();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, SUN_LOCATION);
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, 100.0F, -size).uv(0.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 100.0F, -size).uv(1.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 100.0F, size).uv(1.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, -size, 100.0F, size).uv(0.0F, 1.0F).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
-
-            size = 20.0F;
-
-            RenderSystem.setShaderTexture(0, MOON_PHASES_LOCATION);
-            int k = camera.getEntity().level().getMoonPhase();
-            int l = k % 4;
-            int i1 = k / 4 % 2;
-            float f13 = (float)(l + 0) / 4.0F;
-            float f14 = (float)(i1 + 0) / 2.0F;
-            float f15 = (float)(l + 1) / 4.0F;
-            float f16 = (float)(i1 + 1) / 2.0F;
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, -100.0F, size).uv(f15, f16).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -100.0F, size).uv(f13, f16).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -100.0F, -size).uv(f13, f14).endVertex();
-            bufferbuilder.vertex(matrix4f, -size, -100.0F, -size).uv(f15, f14).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            poseStack.popPose();
-
-            poseStack.pushPose();
-            poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-            matrix4f = poseStack.last().pose();
-            RenderSystem.setShaderTexture(0, EARTH_LOCATION);
-
-            BlockPos pos = camera.getEntity().getOnPos();
-            int height = pos.getY();
-            int minHeight = -64;
-            int maxHeight = 384;
-
-            size = 150;
-            float distance = ( (float) (height- minHeight)/(maxHeight-minHeight) )*40;
-
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, 60.0F + distance, -size).uv(0.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 60.0F + distance, -size).uv(1.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 60.0F + distance, size).uv(1.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, -size, 60.0F + distance, size).uv(0.0F, 1.0F).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            poseStack.popPose();
-
-            RenderSystem.depthMask(true);
-            //RenderSystem.enableTexture();
-            RenderSystem.disableBlend();
-
-            return true;
-        }
-
-
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static class MoonOrbitEffect extends CustomDimensionEffects {
-        public MoonOrbitEffect() {
-            super(Float.NaN, false, DimensionSpecialEffects.SkyType.NONE, false, false);
-        }
-
-        @Override
-        public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f projectionMatrix) {
-            return true;
-        }
-
-        @Override
-        public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
-            return true;
-        }
-
-        @Override
-        public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
-            return true;
-        }
-        @Override
-        public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-
-            BufferBuilder bufferbuilder = renderSpaceSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
-
-            //render sun and moon
-            poseStack.pushPose();
-            float size = 30.0F;
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-            poseStack.mulPose(Axis.XP.rotationDegrees(camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F));
-
-            Matrix4f matrix4f = poseStack.last().pose();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, SUN_LOCATION);
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, 100.0F, -size).uv(0.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 100.0F, -size).uv(1.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 100.0F, size).uv(1.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, -size, 100.0F, size).uv(0.0F, 1.0F).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
-
-            size = 18.0F;
-
-            RenderSystem.setShaderTexture(0, EARTH_LOCATION);
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, -100.0F, size).uv(0.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -100.0F, size).uv(1.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -100.0F, -size).uv(1.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, -size,-100.0F , -size).uv(0.0F, 0.0F).endVertex();
-
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            poseStack.popPose();
-
-            poseStack.pushPose();
-
-            poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-            matrix4f = poseStack.last().pose();
-            RenderSystem.setShaderTexture(0, MOON_LOCATION);
-
-            BlockPos pos = camera.getEntity().getOnPos();
-            int height = pos.getY();
-            int minHeight = -64;
-            int maxHeight = 384;
-
-            size = 150;
-            float distance = ( (float) (height- minHeight)/(maxHeight-minHeight) )*40;
-
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, 60.0F + distance, -size).uv(0.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 60.0F + distance, -size).uv(1.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 60.0F + distance, size).uv(1.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, -size, 60.0F + distance, size).uv(0.0F, 1.0F).endVertex();
-
-
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            poseStack.popPose();
-
-            RenderSystem.depthMask(true);
-            //RenderSystem.enableTexture();
-            RenderSystem.disableBlend();
-
-            return true;
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static class MoonEffect extends CustomDimensionEffects {
-        public MoonEffect() {
-            super(Float.NaN, true, DimensionSpecialEffects.SkyType.NONE, false, false);
-        }
-
-        @Override
-        public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f projectionMatrix) {
-            return true;
-        }
-
-        @Override
-        public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
-            return true;
-        }
-
-        @Override
-        public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
-            return true;
-        }
-        @Override
-        public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-
-            BufferBuilder bufferbuilder = renderSpaceSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
-
-            //render sun and moon
-            poseStack.pushPose();
-            float size = 30.0F;
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-            poseStack.mulPose(Axis.XP.rotationDegrees(camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F));
-
-            Matrix4f matrix4f = poseStack.last().pose();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, SUN_LOCATION);
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, 100.0F, -size).uv(0.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 100.0F, -size).uv(1.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, 100.0F, size).uv(1.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, -size, 100.0F, size).uv(0.0F, 1.0F).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
-
-            size = 18.0F;
-
-            RenderSystem.setShaderTexture(0, EARTH_LOCATION);
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -size, -100.0F, size).uv(0.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -100.0F, size).uv(1.0F, 1.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -100.0F, -size).uv(1.0F, 0.0F).endVertex();
-            bufferbuilder.vertex(matrix4f, -size,-100.0F , -size).uv(0.0F, 0.0F).endVertex();
-
-            BufferUploader.drawWithShader(bufferbuilder.end());
-            poseStack.popPose();
-
-            RenderSystem.depthMask(true);
-            //RenderSystem.enableTexture();
-            RenderSystem.disableBlend();
-
-            return true;
-        }
-    }
-
-    private static BufferBuilder renderSpaceSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+    private static BufferBuilder renderSpaceSky(PoseStack poseStack) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.depthMask(false);
@@ -311,8 +71,8 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
             int l = i % 3;
             int i1 = i / 4 % 2;
-            float col_begin = (float)(l + 0) / 3.0F;
-            float l_begin = (float)(i1 + 0) / 2.0F;
+            float col_begin = (float)(l) / 3.0F;
+            float l_begin = (float)(i1) / 2.0F;
             float col_end = (float)(l + 1) / 3.0F;
             float l_end = (float)(i1 + 1) / 2.0F;
 
@@ -331,5 +91,153 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
 
         return bufferbuilder;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class MoonEffect extends GenericCelestialOrbitEffect {
+        public MoonEffect() {
+            super();
+        }
+
+        @Override
+        protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
+            super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class MarsEffect extends GenericCelestialOrbitEffect {
+        public MarsEffect() {
+            super();
+        }
+
+        @Override
+        protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
+            super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            //renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class MoonOrbitEffect extends GenericCelestialOrbitEffect {
+        public MoonOrbitEffect() {
+            super();
+        }
+
+        @Override
+        protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
+            super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 18.0F, 100F);
+            BlockPos pos = camera.getEntity().getOnPos();
+            int height = pos.getY();
+            int minHeight = -64;
+            int maxHeight = 384;
+            renderAstralBody(poseStack, bufferbuilder, MOON_LOCATION, 180F, 150.0F, 60.0F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class MarsOrbitEffects extends GenericCelestialOrbitEffect {
+        public MarsOrbitEffects() {
+            super();
+        }
+
+        @Override
+        protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
+            super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            BlockPos pos = camera.getEntity().getOnPos();
+            int height = pos.getY();
+            int minHeight = -64;
+            int maxHeight = 384;
+            renderAstralBody(poseStack, bufferbuilder, MARS_LOCATION, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class EarthOrbitEffects extends GenericCelestialOrbitEffect {
+        public EarthOrbitEffects() {
+            super();
+        }
+
+        @Override
+        protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
+            super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            int k = camera.getEntity().level().getMoonPhase();
+            int l = k % 4;
+            int i1 = k / 4 % 2;
+            float f13 = (float) (l) / 4.0F;
+            float f14 = (float) (i1) / 2.0F;
+            float f15 = (float) (l + 1) / 4.0F;
+            float f16 = (float) (i1 + 1) / 2.0F;
+            renderAstralBody(poseStack, bufferbuilder, MOON_PHASES_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F, f15, f13, f16, f14);
+            BlockPos pos = camera.getEntity().getOnPos();
+            int height = pos.getY();
+            int minHeight = -64;
+            int maxHeight = 384;
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, 180F, 150.0F, 60F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class GenericCelestialOrbitEffect extends CustomDimensionEffects {
+        private boolean renderSun = true;
+
+        public GenericCelestialOrbitEffect() {
+            super(Float.NaN, false, SkyType.NONE, false, false);
+        }
+
+        public void setRenderSun(boolean renderSun) {
+            this.renderSun = renderSun;
+        }
+
+        public boolean renderClouds(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, double camX, double camY, double camZ, Matrix4f projectionMatrix) {
+            return true;
+        }
+
+        public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
+            return true;
+        }
+
+        public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
+            return true;
+        }
+
+        public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+            BufferBuilder bufferbuilder = renderSpaceSky(poseStack);
+            renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+
+
+            RenderSystem.depthMask(true);
+            RenderSystem.disableBlend();
+            return true;
+        }
+
+        protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
+            if (this.renderSun) {
+                renderAstralBody(poseStack, bufferbuilder, SUN_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F, 30.0F, 100.0F);
+                //replace camera with an angle ?
+            }
+        }
+
+        protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, float rotationAngle, float bodySize, float bodyDistance) {
+            renderAstralBody(poseStack, bufferbuilder, bodyTexture, rotationAngle, bodySize, bodyDistance, 0, 1, 1, 0);
+        }
+
+        protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, float rotationAngle, float bodySize, float bodyDistance, float f15, float f13, float f16, float f14) {
+            poseStack.pushPose();
+            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+            poseStack.mulPose(Axis.XP.rotationDegrees(rotationAngle));
+            Matrix4f matrix4f = poseStack.last().pose();
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, bodyTexture);
+            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+            bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, -bodySize).uv(f15, f14).endVertex();
+            bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, -bodySize).uv(f13, f14).endVertex();
+            bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, bodySize).uv(f13, f16).endVertex();
+            bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, bodySize).uv(f15, f16).endVertex();
+            BufferUploader.drawWithShader(bufferbuilder.end());
+            poseStack.popPose();
+        }
     }
 }

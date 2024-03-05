@@ -80,7 +80,6 @@ public class SealerScreen extends AbstractSimiScreen {
                 .calling(
                 value -> {
                     rangeSetting = value;
-                    System.out.println(value);
                     sendSettings(blockEntity.getBlockPos());
                 })
                 .setState(rangeSetting);
@@ -96,7 +95,6 @@ public class SealerScreen extends AbstractSimiScreen {
         setRetryButton.withCallback(
                 () -> {
                     retrySetting = !retrySetting;
-                    System.out.println(retrySetting);
                     sendSettings(blockEntity.getBlockPos());
                 }
         );

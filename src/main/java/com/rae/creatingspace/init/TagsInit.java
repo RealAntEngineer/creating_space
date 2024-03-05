@@ -137,7 +137,8 @@ public class TagsInit extends AllTags {
             return stack.is(tag);
         }
 
-        private static void init() {}
+        private static void init() {
+        }
 
     }
     public enum CustomEntityTag {
@@ -186,7 +187,7 @@ public class TagsInit extends AllTags {
         LIQUID_METHANE(),
         LIQUID_HYDROGEN(),
         LIQUID_OXYGEN(),
-        DISSIPATE_IN_SPACE();
+        DISSIPATE_IN_SPACE(), LIQUID_CO2();
 
         public final TagKey<Fluid> tag;
         public final boolean alwaysDatagen;

@@ -36,7 +36,6 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
     public BlockEntityType<? extends CryogenicTankBlockEntity> getBlockEntityType() {
         return BlockEntityInit.CRYOGENIC_TANK.get();
     }
-
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, entity, stack);
@@ -47,7 +46,7 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
             return;
         withBlockEntityDo(worldIn, pos, be -> {
             be.setTank(stack.getOrCreateTag()
-                    .getCompound("Tank"));
+                    .getCompound("Fluid"));
             if (stack.hasCustomHoverName())
                 be.setCustomName(stack.getHoverName());
         });
@@ -64,7 +63,7 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
         FluidTank tank = blockEntityOptional.map(CryogenicTankBlockEntity::getTank).orElse(null);
         if(tank!= null){
             CompoundTag fluidTank = new CompoundTag();
-            tag.put("Tank",tank.writeToNBT(fluidTank));
+            tag.put("Fluid", tank.writeToNBT(fluidTank));
         }
         Component customName = blockEntityOptional.map(CryogenicTankBlockEntity::getCustomName)
                 .orElse(null);

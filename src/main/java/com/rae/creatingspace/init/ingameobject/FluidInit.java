@@ -49,25 +49,22 @@ public class FluidInit {
 
     public static final FluidEntry<VirtualFluid> LIQUID_METHANE =
             registrateCustomVirtualLiquid("liquid_methane")
-                    .properties(p -> p.viscosity(1000).temperature(90).density(423)
+                    .properties(p -> p.viscosity(1000).temperature(90).density(500)
                             .canExtinguish(true))
                     .tag(TagsInit.CustomFluidTags.LIQUID_METHANE.tag)
                     .register();
 
-    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_METHANE =
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_METHANE =
             CreatingSpace.REGISTRATE.item("liquid_methane_bucket",
                     p-> new BucketItem(LIQUID_METHANE.get(),p))
                     .register();
-
-
-
                           /*fogColor(0.75f,0.21f,0.5f))*/
     public static final FluidEntry<VirtualFluid> LIQUID_OXYGEN =
             registrateCustomVirtualLiquid("liquid_oxygen")
                     .properties(p -> p.viscosity(1000).temperature(90).density(1141))
                     .tag(TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag)
                     .register();
-    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_OXYGEN =
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_OXYGEN =
             CreatingSpace.REGISTRATE.item("liquid_oxygen_bucket",
                     p-> new BucketItem(LIQUID_OXYGEN.get(),p))
                     .register();
@@ -80,10 +77,23 @@ public class FluidInit {
                     .tag(TagsInit.CustomFluidTags.LIQUID_HYDROGEN.tag)
                     .register();
 
-    public static final ItemEntry<BucketItem> CREATIVE_BUCKET_HYDROGEN =
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_HYDROGEN =
             CreatingSpace.REGISTRATE.item("liquid_hydrogen_bucket",
                             p-> new BucketItem(LIQUID_HYDROGEN.get(),p))
+                    .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
+                    .register();*/
+
+    public static final FluidEntry<VirtualFluid> LIQUID_CO2 =
+            registrateCustomVirtualLiquid("liquid_co2")
+                    .properties(p -> p.viscosity(1000).temperature(180).density(1100))
+                    .tag(TagsInit.CustomFluidTags.LIQUID_CO2.tag)
                     .register();
+
+    /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_CO2 =
+            CreatingSpace.REGISTRATE.item("liquid_co2_bucket",
+                            p -> new BucketItem(LIQUID_CO2.get(), p))
+                    .tab(() -> CreativeModeTabsInit.MINERALS_TAB)
+                    .register();*/
 
 
     /*fogColor(0.69f,0.34f,0.96f))*/
