@@ -79,14 +79,14 @@ public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof OxygenBlockEntity oxygenBlockEntity){
             BlockPos masterPos = oxygenBlockEntity.getMasterPos();
-            if (level.getBlockEntity(masterPos) instanceof SealerBlockEntity sealerBlockEntity){
+            if (level.getBlockEntity(masterPos) instanceof SealerBlockEntity sealerBlockEntity ){
                 /*sealerBlockEntity.unSealRoom();//be aware this can cause issue -> verifying every 40 ticks the room might be enough
                 sealerBlockEntity.resetRemainingTries();
                 sealerBlockEntity.setTrying(true);*/
                 sealerBlockEntity.oxygenBlockChanged();
             }
             else {
-                level.destroyBlock(pos,false);
+                level.destroyBlock(pos,true);
             }
         }
     }
@@ -102,7 +102,7 @@ public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
     }
     @OnlyIn(Dist.CLIENT)
     public void initializeClient(Consumer<IClientBlockExtensions> consumer) {
-        consumer.accept(new RenderProperties());
+        consumer.accept(new OxygenBlock.RenderProperties());
     }
 
     @Override

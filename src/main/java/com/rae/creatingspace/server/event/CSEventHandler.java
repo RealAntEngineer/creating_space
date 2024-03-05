@@ -18,6 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -26,19 +28,18 @@ import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = CreatingSpace.MODID)
 public class CSEventHandler {
-
     public CSEventHandler() {
-
     }
+
     @SubscribeEvent
     public static void entityLivingEvent(LivingEvent.LivingTickEvent livingTickEvent){
         final LivingEntity entityLiving = livingTickEvent.getEntity();
         Level level = entityLiving.level();
         ResourceKey<Level> dimension = level.dimension();
-        if (entityLiving instanceof ServerPlayer player){
-            if (CSDimensionUtil.isOrbit(level.dimensionTypeId())){
-                if (!level.isClientSide){
-                    if (player.getY() < level.dimensionType().minY()+10) {
+        if (CSDimensionUtil.isOrbit(level.dimensionTypeId())){
+            if (!level.isClientSide){
+                if (entityLiving instanceof ServerPlayer player){
+                    if (player.getY() < level.dimensionType().minY()+10){
                         ResourceKey<Level> dimensionToTeleport = CSDimensionUtil.planetUnder(dimension);
 
                         if (dimensionToTeleport!=null) {
@@ -81,6 +82,14 @@ public class CSEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
+        sleepFinishedEvent.getLevel().getServer().getLevel(Level.OVERWORLD).setDayTime(sleepFinishedEvent.getNewTime());
+        /*for (ServerLevel serverlevel : sleepFinishedEvent.getLevel().getServer().getAllLevels()) {
+            serverlevel.setDayTime(sleepFinishedEvent.getNewTime());
+        }*/
+    }
+
     public static boolean checkPlayerO2Equipment(ServerPlayer player){
 
         ItemStack chestPlate = player.getItemBySlot(EquipmentSlot.CHEST);
@@ -104,17 +113,24 @@ public class CSEventHandler {
 
     public static boolean isInO2(LivingEntity entity){
         Level level = entity.level();
+        //TODO use this instead, with tags for the biome
+        //  level.getBiome(entity.getOnPos()).getTagKeys().toList();
         if (CSDimensionUtil.hasO2Atmosphere(level.dimension())){
             return true;
         }
         AABB colBox = entity.getBoundingBox();
         Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
         for (BlockState state : blockStateStream.toList()) {
-            if (state.getBlock() instanceof OxygenBlock){
-                //System.out.println("player is in o2 : " + state.getValue(OxygenBlock.BREATHABLE));
-                return state.getValue(OxygenBlock.BREATHABLE);
+            if (isStateBreathable(state)){
+                return true;
             }
         }
         return false;
     }
+
+
+    private static boolean isStateBreathable(BlockState state) {
+        return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
+    }
+
 }

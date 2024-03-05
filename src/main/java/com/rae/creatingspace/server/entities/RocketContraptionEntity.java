@@ -296,11 +296,16 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         return perTickSpeed;
     }
 
+    // used to know if the rocket is going up or down
     public static final EntityDataAccessor<Boolean> REENTRY_ENTITY_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
+    //used to now if the rocket need to move or not ( just assemble or finished the list of instruction)
+    public static final EntityDataAccessor<Boolean> RUNNING_ENTITY_DATA_ACCESSOR =
             SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
 
     @Override
     public void disassemble() {
+        //doesn't work with create_interactive
         for (BlockPos localPos:this.localPosOfFlightRecorders){
             StructureTemplate.StructureBlockInfo oldStructureInfo = this.contraption.getBlocks().get(localPos);
             CompoundTag nbt = oldStructureInfo.nbt();
@@ -391,7 +396,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     protected void tickContraption() {
         if (!(contraption instanceof RocketContraption))
             return;
-
+        //TODO new logic : the player assemble the rocket, then the deltaV
+        // is calculated and the player make is choice and the rocket goes up
+        //  better because the rocket can be refuelled on flight
+        //TODO after that make schedule for rocket
         if (disassembleOnFirstTick){
             if (!level().isClientSide) {
                 setContraptionMotion(Vec3.ZERO);//is present in 1.19 but not in 1.20 in GantryContraptionEntity found out why
@@ -400,7 +408,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         }
 
-        //double prevAxisMotion = axisMotion;
         if (level().isClientSide) {
             clientOffsetDiff *= .75f;
             updateClientMotion();
@@ -410,6 +417,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         tickActors();
         Vec3 movementVec = getDeltaMovement();
         if (!level().isClientSide)tickDimensionChangeLogic();
+
+
         if (ContraptionCollider.collideBlocks(this)) {
             if (!level().isClientSide) {
                 setContraptionMotion(Vec3.ZERO);//is present in 1.19 but not in 1.20 in GantryContraptionEntity found out why
@@ -551,8 +560,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             this.level().getProfiler().push("changeDimension");
 
             List<Entity> passengers = this.getPassengers();
-
+            List<Entity> collidingEntities = level().getEntities(this, this.getBoundingBox());
+            collidingEntities.removeAll(passengers);
             this.unRide();
+            BlockPos previousRocketPos = this.getOnPos();
             this.level().getProfiler().push("reposition");
             PortalInfo portalinfo = teleporter.getPortalInfo(this, destLevel, this::findDimensionEntryPoint);
             if (portalinfo == null) {
@@ -570,10 +581,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                 entity.restoreFrom(this);//copy the contraption first
                                 entity.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, portalinfo.yRot, entity.getXRot());
                                 entity.setDeltaMovement(portalinfo.speed);
-                                //adding previously riding passengers
+                                //adding previously riding passengers and collidingEntities ( separated, so they keep riding when arriving)
                                 for (int i = 0; i < passengers.size(); i++) {
                                     Entity passenger = passengers.get(i);
-                                    passenger.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, portalinfo.yRot, passenger.getXRot());
+                                    passenger.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, passenger.getYRot(), passenger.getXRot());
 
                                     if (passenger instanceof ServerPlayer player) {
                                         player.changeDimension(destLevel, new CustomTeleporter(destLevel));
@@ -585,7 +596,19 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                         }
                                     }
                                 }
+                                for (int i = 0; i < collidingEntities.size(); i++) {
+                                    Entity movedEntity = collidingEntities.get(i);
+                                    BlockPos posDif = movedEntity.getOnPos().subtract(previousRocketPos);
+                                    movedEntity.moveTo(portalinfo.pos.x + posDif.getX(), portalinfo.pos.y + posDif.getY(), portalinfo.pos.z + posDif.getZ(), movedEntity.getYRot(), movedEntity.getXRot());
 
+                                    if (movedEntity instanceof ServerPlayer player) {
+                                        player.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                    } else {
+                                        if (!(movedEntity instanceof Player)) {
+                                            movedEntity.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                        }
+                                    }
+                                }
 
                                 destLevel.addDuringTeleport(entity);
                                 if (CSDimensionUtil.gravity(destLevel.dimensionTypeId()) == 0f){

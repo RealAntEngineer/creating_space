@@ -79,7 +79,7 @@ public class BigEngineBlock extends RocketEngineBlock implements IBE<BigEngine> 
 									.setValue(BigRocketStructuralBlock.FACING, ghostFacing);
 
 							if (isRightState(ghostState,level.getBlockState(pos)))
-								level.setBlock(pos,ghostState,11);
+							level.setBlock(pos,ghostState,11);
 						}
 					}
 				}

@@ -45,8 +45,7 @@ public class FlowGaugeBlockEntity extends GaugeBlockEntity {
         PipeConnection reverseConnection = behavior
                 .getConnection(state.getValue(FlowGaugeBlock.FACING).getCounterClockWise());
 
-        float calutatedFlow = getCalculatedFlow(connection, reverseConnection);
-        flowGaugeBlockEntity.flow = calutatedFlow;
+        flowGaugeBlockEntity.flow = getCalculatedFlow(connection, reverseConnection);
         flowGaugeBlockEntity.dialTarget = min(flowGaugeBlockEntity.flow/1000,1);
 
         flowGaugeBlockEntity.setChanged();

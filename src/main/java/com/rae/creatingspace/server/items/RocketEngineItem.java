@@ -17,7 +17,7 @@ public abstract class RocketEngineItem extends BlockItem {
                 .append(Component.literal(" : " + ISP))
                 .append(Component.translatable("creatingspace.science.unit.second")));
         components.add(Component.translatable("creatingspace.science.thrust")
-                .append(Component.literal(" : " + CSUtil.scientificNbrFormatting(thrust, 10)))
+                .append(Component.literal(" : " + CSUtil.scientificNbrFormatting((float) thrust, 10)))
                 .append(Component.translatable("creatingspace.science.unit.newton")));
 
     }

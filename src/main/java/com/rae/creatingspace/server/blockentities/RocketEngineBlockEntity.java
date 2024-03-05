@@ -46,6 +46,7 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         public int getThrust() {
             return  CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get();
         }
+
         @Override
         public TagKey<Fluid> getOxidizerTag() {
             return TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag;

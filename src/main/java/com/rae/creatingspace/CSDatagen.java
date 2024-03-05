@@ -27,7 +27,7 @@ public class CSDatagen {
 		if (event.includeServer()) {
 			//generator.addProvider(true, new CreateRecipeSerializerTagsProvider(generator, existingFileHelper));
 
-			generator.addProvider(true, new AllAdvancements(generator));
+			//generator.addProvider(true, new AllAdvancements(generator));
 
 			//generator.addProvider(true, new StandardRecipeGen(generator));
 			//generator.addProvider(true, new MechanicalCraftingRecipeGen(generator));

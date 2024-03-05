@@ -44,7 +44,7 @@ public class RocketContraption extends TranslatingContraption {
             return false;
         }
         startMoving(level);
-
+        expandBoundsAroundAxis(Direction.Axis.Y);
         return true;
     }
 

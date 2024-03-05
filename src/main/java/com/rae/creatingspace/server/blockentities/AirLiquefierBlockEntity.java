@@ -6,6 +6,9 @@ import com.rae.creatingspace.server.blocks.AirLiquefierBlock;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import net.minecraft.ChatFormatting;
@@ -14,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -50,6 +54,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     protected boolean queuedSync;
 
     float residualFloatO2Amount = 0;
+    float residualFloatCO2Amount = 0;
 
     //oxygen
     private final LazyOptional<IFluidHandler> oxygenFluidOptional = LazyOptional.of(()-> this.OXYGEN_TANK);
@@ -65,6 +70,25 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
             return TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(stack.getFluid());
         }
     };
+    //test with smart fluidtank (copied from basin)
+
+    protected LazyOptional<IFluidHandler> fluidCapability;
+    private boolean contentsChanged;
+    protected SmartFluidTankBehaviour outputTank;
+
+    @Override
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+        outputTank = new SmartFluidTankBehaviour(SmartFluidTankBehaviour.OUTPUT, this, 2, 1000, true)
+                .whenFluidUpdates(() -> contentsChanged = true)
+                .forbidInsertion();
+        behaviours.add(outputTank);
+
+        fluidCapability = LazyOptional.of(() -> {
+            LazyOptional<? extends IFluidHandler> outputCap = outputTank.getCapability();
+            return new CombinedTankWrapper(outputCap.orElse(null));
+        });
+    }
+
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -72,7 +96,8 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
             Direction localDir = this.getBlockState().getValue(AirLiquefierBlock.FACING);
 
             if (side ==  localDir.getOpposite()){
-                return this.oxygenFluidOptional.cast();
+                //return this.oxygenFluidOptional.cast();
+                return this.fluidCapability.cast();
             }
         }
         return super.getCapability(cap, side);
@@ -86,25 +111,44 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 if (syncCooldown == 0 && queuedSync)
                     sendData();
             }
+            blockEntity.outputTank.allowInsertion();
             //setChanged();
-            if (hasRecipe(blockEntity)) {
+            if (hasCO2Recipe(blockEntity)) {
                 float rot_speed = this.getSpeed();
-                float O2Amount = (oxygenProduction(rot_speed) /FluidInit.LIQUID_OXYGEN.getType().getDensity()*1000f);
+                float CO2Amount = (co2Production(rot_speed) / FluidInit.LIQUID_CO2.getType().getDensity() * 1000f);
+
+                residualFloatCO2Amount += CO2Amount - (int) CO2Amount;
+                fluidCapability.orElse(new FluidTank(0))
+                        .fill(new FluidStack(FluidInit.LIQUID_CO2.get(),
+                                (int) CO2Amount + (int) residualFloatCO2Amount), IFluidHandler.FluidAction.EXECUTE);
+                residualFloatCO2Amount -= (int) residualFloatCO2Amount;
+            } else if (hasO2Recipe(blockEntity)) {
+                float rot_speed = this.getSpeed();
+                float O2Amount = (oxygenProduction(rot_speed) / FluidInit.LIQUID_OXYGEN.getType().getDensity() * 1000f);
 
                 residualFloatO2Amount += O2Amount - (int) O2Amount;
-
-                blockEntity.OXYGEN_TANK.fill(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),
+                fluidCapability.orElse(new FluidTank(0))
+                        .fill(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),
                         (int) O2Amount + (int) residualFloatO2Amount), IFluidHandler.FluidAction.EXECUTE);
                 residualFloatO2Amount -= (int) residualFloatO2Amount;
             }
+            blockEntity.outputTank.forbidInsertion();
+            }
         }
-    }
-    private boolean hasRecipe(AirLiquefierBlockEntity blockEntity) {
-        float rot_speed = this.getSpeed();
+
+
+    private boolean hasO2Recipe(AirLiquefierBlockEntity blockEntity) {
         boolean isRunning = !blockEntity.isOverStressed();
-        boolean enoughSpaceInOTank = blockEntity.OXYGEN_TANK.getSpace()>oxygenProduction(rot_speed)/FluidInit.LIQUID_OXYGEN.getType().getDensity()*1000f;
         boolean isInO2 = CSDimensionUtil.hasO2Atmosphere(blockEntity.level.dimension());
-        return enoughSpaceInOTank && isRunning && isInO2;
+        return isRunning && isInO2;
+    }
+
+    private boolean hasCO2Recipe(AirLiquefierBlockEntity blockEntity) {
+        boolean isRunning = !blockEntity.isOverStressed();
+        BlockState state = blockEntity.getBlockState();
+        BlockState targetedState = level.getBlockState(blockEntity.getBlockPos().relative(state.getValue(AirLiquefierBlock.FACING)));
+        boolean isInCO2 = (targetedState.is(Blocks.CAMPFIRE) || targetedState.is(Blocks.SOUL_CAMPFIRE)) && state.getValue(AirLiquefierBlock.FACING) != Direction.UP;
+        return isRunning && isInCO2;
     }
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
@@ -126,11 +170,11 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         LangBuilder mbs = Lang.translate("generic.unit.fluidflow");
         Lang.translate("gui.goggles.fluid_container")
                 .forGoggles(tooltip);
+        IFluidHandler fluids = fluidCapability.orElse(new FluidTank(0));
+        for (int i = 0; i < fluids.getTanks(); i++) {
 
-            FluidTank tank = OXYGEN_TANK;
-            String fluidName = FluidInit.LIQUID_OXYGEN.getType().getDescriptionId();
-
-            FluidStack fluidStack = tank.getFluidInTank(0);
+            FluidStack fluidStack = fluids.getFluidInTank(i);
+            String fluidName = fluidStack.getTranslationKey();
 
             Lang.builder().add(Component.translatable(fluidName))
                     .style(ChatFormatting.GRAY)
@@ -141,14 +185,19 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                             .add(mb)
                             .style(ChatFormatting.GOLD))
                     .text(ChatFormatting.GRAY, " / ")
-                    .add(Lang.number(tank.getTankCapacity(0))
+                    .add(Lang.number(fluids.getTankCapacity(i))
                             .add(mb)
                             .style(ChatFormatting.DARK_GRAY))
                     .forGoggles(tooltip, 1);
+        }
         return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
 
     private float oxygenProduction(float speed){
+        return (abs(speed));
+    }
+
+    private float co2Production(float speed) {
         return (abs(speed));
     }
 

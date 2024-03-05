@@ -4,7 +4,9 @@ import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.AirLiquefierBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -12,7 +14,11 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
 
 public class AirLiquefierBlock extends DirectionalAxisKineticBlock implements IBE<AirLiquefierBlockEntity> {
     public AirLiquefierBlock(Properties properties) {
@@ -27,10 +33,9 @@ public class AirLiquefierBlock extends DirectionalAxisKineticBlock implements IB
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState p_60576_) {
-        return true;
+    public VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+        return AIR_LIQUEFIER.get(state.getValue(FACING));
     }
-
 
     @Override
     public Class<AirLiquefierBlockEntity> getBlockEntityClass() {

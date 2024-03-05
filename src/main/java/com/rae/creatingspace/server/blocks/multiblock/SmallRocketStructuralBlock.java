@@ -97,6 +97,7 @@ public class SmallRocketStructuralBlock extends DirectionalBlock implements IWre
         return IWrenchable.super.onSneakWrenched(state, context);
     }
 
+
     /*@Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (stillValid(pLevel, pPos, pState)) {
