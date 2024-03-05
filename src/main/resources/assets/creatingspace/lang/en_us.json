@@ -20,7 +20,7 @@
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
   "block.creatingspace.oxygen_sealer.tooltip.summary": "A machine that fill a room with oxygen",
   "block.creatingspace.oxygen_sealer.tooltip.condition1": "when R-Clicked with empty hand",
-  "block.creatingspace.oxygen_sealer.tooltip.behavior1": "open the GUI",
+  "block.creatingspace.oxygen_sealer.tooltip.behaviour1": "open the GUI",
   "block.creatingspace.air_liquefier": "Air Liquefier",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 form campfires, only work on earth",
 

@@ -29,6 +29,13 @@ public class CryogenicTankItem extends BlockItem {
     }
 
     @Override
+    public Component getName(ItemStack itemStack) {
+        return Component.empty().append(super.getName(itemStack)).append(" (").append(
+                FluidStack.loadFluidStackFromNBT(itemStack.getOrCreateTagElement(FLUID_NBT_KEY))
+                        .getDisplayName()).append(")");
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         CompoundTag tank = stack.getOrCreateTag().getCompound(FLUID_NBT_KEY);
         FluidStack fluid = FluidStack.loadFluidStackFromNBT(tank);
