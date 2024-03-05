@@ -7,17 +7,14 @@
     "G": {
       "item": "create:golden_sheet"
     },
-    "S": {
-      "item": "create:shaft"
-    },
     "P": {
       "item": "create:mechanical_press"
     }
   },
   "pattern": [
-    " P ",
-    "NNN",
-    "GTG"
+    " G ",
+    "NPN",
+    " G "
   ],
   "result": {
     "item": "creatingspace:catalyst_carrier"
