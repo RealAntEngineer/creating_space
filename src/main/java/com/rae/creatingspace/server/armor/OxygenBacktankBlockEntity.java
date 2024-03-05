@@ -164,8 +164,6 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	}
 
 	public void setOxygenLevel(int oxygenLevel) {
-		System.out.println("oxygen : "+oxygenLevel);
-		//this.prevOxygenLevel = this.oxygenLevel;
 		this.oxygenLevel = oxygenLevel;
 		OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),oxygenLevel));
 		setChanged();

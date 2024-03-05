@@ -152,7 +152,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 		Optional<OxygenBacktankBlockEntity> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
 
 		int air = blockEntityOptional.map(OxygenBacktankBlockEntity::getOxygenLevel)
-			.orElse(10);
+                .orElse(0);
 		CompoundTag tag = stack.getOrCreateTag();
 		tag.putFloat("Oxygen", air);
 		tag.putFloat("prevOxygen",air);

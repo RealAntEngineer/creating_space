@@ -229,7 +229,6 @@ public class DestinationScreen extends AbstractSimiScreen {
         }
     }
 
-
     private void fillToolTip(IconButton button, String tooltipKey) {
         if (!button.isHoveredOrFocused())
             return;

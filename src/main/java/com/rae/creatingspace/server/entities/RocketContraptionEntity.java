@@ -230,7 +230,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         rocketContraptionEntity.assemblyData = assemblyData;
         rocketContraptionEntity.disassembleOnFirstTick = assemblyData.hasFailed();//just for the fluids
 
-        //System.out.println("assemblyData : "+assemblyData);
         //may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
         if (acceleration <=0 ){
             rocketContraptionEntity.disassembleOnFirstTick = true;

@@ -94,10 +94,11 @@ public class SealerScreen extends AbstractSimiScreen {
         setRetryButton.withCallback(
                 () -> {
                     retrySetting = !retrySetting;
-                    System.out.println(retrySetting);
                     sendSettings(blockEntity.getBlockPos());
                 }
         );
+        setRetryButton.setToolTip(Component.translatable("creatingspace.gui.sealer.automatic_retry"));
+
         setRetryButton.visible = false;
 
         addRenderableWidget(settingButton);

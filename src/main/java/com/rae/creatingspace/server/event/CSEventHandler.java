@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -137,16 +136,6 @@ public class CSEventHandler {
         return false;
     }
 
-
-    @SubscribeEvent
-    public static void onWaterSourceCreated(BlockEvent.CreateFluidSourceEvent fluidSourceEvent){
-        Level level = (Level) fluidSourceEvent.getLevel();
-        if (!level.isClientSide()){
-            if (!CSDimensionUtil.hasO2Atmosphere(level.dimension())){
-                fluidSourceEvent.setCanceled(true);
-            }
-        }
-    }
 
     private static boolean isStateBreathable(BlockState state) {
         return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
