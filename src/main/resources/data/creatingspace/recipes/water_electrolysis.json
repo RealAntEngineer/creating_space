@@ -1,6 +1,5 @@
 {
   "type": "creatingspace:mechanical_electrolysis",
-  "heatRequirement": "heated",
   "ingredients": [
     {
       "amount": 100,
