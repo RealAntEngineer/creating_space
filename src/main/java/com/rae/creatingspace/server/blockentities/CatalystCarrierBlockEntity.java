@@ -10,7 +10,10 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import com.simibubi.create.foundation.utility.Couple;
+import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,13 +23,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.Optional;
 
-public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity {
+public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
     private static final Object shapelessOrMixingRecipesKey = new Object();
 
@@ -34,7 +38,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     public int processingTicks;
     public boolean running;
 
-    public MechanicalElectrolyzerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public CatalystCarrierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
@@ -59,7 +63,6 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         }
         return offset;
     }
-
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
@@ -102,7 +105,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         float speed = Math.abs(getSpeed());
         if (running && level != null) {
             if (level.isClientSide && runningTicks == 20)
-                renderVisualEffects();
+                renderParticles();
 
             if ((!level.isClientSide || isVirtual()) && runningTicks == 20) {
                 if (processingTicks < 0) {
@@ -123,8 +126,8 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
                                 .isEmpty()
                                 || !tanks.getSecond()
                                 .isEmpty())
-                            level.playSound(null, worldPosition, SoundEvents.LIGHTNING_BOLT_THUNDER,
-                                    SoundSource.BLOCKS, .25f, speed < 65 ? .75f : 1.5f);
+                            level.playSound(null, worldPosition, SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT,
+                                    SoundSource.BLOCKS, .75f, speed < 65 ? .75f : 1.5f);
                     }
 
                 } else {
@@ -143,12 +146,23 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         }
     }
 
-    public void renderVisualEffects() {
+    public void renderParticles() {
+    }
+
+    protected void spillParticle(ParticleOptions data) {
+        float angle = level.random.nextFloat() * 360;
+        Vec3 offset = new Vec3(0, 0, 0.25f);
+        offset = VecHelper.rotate(offset, angle, Direction.Axis.Y);
+        Vec3 target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Direction.Axis.Y)
+                .add(0, .25f, 0);
+        Vec3 center = offset.add(VecHelper.getCenterOf(worldPosition));
+        target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
+        level.addParticle(data, center.x, center.y - 1.75f, center.z, target.x, target.y, target.z);
     }
 
     @Override
     protected <C extends Container> boolean matchStaticFilters(Recipe<C> r) {
-        return r.getType() == RecipeInit.MECHANICAL_ELECTROLYSIS.getType();
+        return r.getType() == RecipeInit.CHEMICAL_SYNTHESIS.getType();
     }
 
     @Override
@@ -198,10 +212,9 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         boolean slow = Math.abs(getSpeed()) < 65;
         if (slow && AnimationTickHolder.getTicks() % 2 == 0)
             return;
-        //replace with an electric sound
         /*if (runningTicks == 20)
-            AllSoundEvents.SANDING_SHORT.playAt(level, worldPosition, .75f, 1, true);
-    */
+            AllSoundEvents.MIXING.playAt(level, worldPosition, .75f, 1, true);
+         */
     }
 
 }
