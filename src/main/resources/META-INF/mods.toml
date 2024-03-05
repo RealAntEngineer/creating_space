@@ -6,9 +6,9 @@ license="MIT"
 
 [[mods]]
 modId="creatingspace"
-version="1.6.2"
+version = "1.7.0"
 displayName="Creating Space"
-logoFile="logo.jpg"
+logoFile = "logo.png"
 credits='''
 Translation :
 RealAntEngineer -> English and French
