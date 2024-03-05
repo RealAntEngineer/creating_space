@@ -14,7 +14,7 @@
     "create:fluid_tank": 40,
     "creatingspace:small_engine_structure": 0,
     "creatingspace:big_engine_structure": 0,
-    "creatingspace:small_engine_block": 1500,
-    "creatingspace:big_engine_block": 3000
+    "creatingspace:small_rocket_engine": 1500,
+    "creatingspace:big_rocket_engine": 3000
   }
 }
