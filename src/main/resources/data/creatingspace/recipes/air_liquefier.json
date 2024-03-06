@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "P": {
-      "item": "create:propeller"
+      "item": "create:encased_fan"
     },
     "T" : {
       "item": "create:fluid_tank"
@@ -10,14 +10,14 @@
     "C": {
       "item": "create:brass_casing"
     },
-    "N": {
-      "item": "creatingspace:cobalt_sheet"
+    "S": {
+      "item": "create:brass_sheet"
     }
   },
   "pattern": [
-    "NPN",
-    "CTC",
-    "CCC"
+    " S ",
+    "CPC",
+    " T "
   ],
   "result": {
     "item": "creatingspace:air_liquefier"
