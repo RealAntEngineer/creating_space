@@ -1,18 +1,12 @@
 package com.rae.creatingspace.client.ponders;
 
-import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
-import com.rae.creatingspace.server.blocks.multiblock.engines.RocketEngineBlock;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.Selection;
-import com.simibubi.create.foundation.ponder.element.TextWindowElement;
-import com.simibubi.create.foundation.ponder.instruction.TextInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
@@ -64,7 +58,7 @@ public class RocketScene {
         scene.addKeyframe();
 
         scene.world.showSection(seat,Direction.DOWN);
-        scene.overlay.showText(40).text("Don't forget the seat or you will be left Behind");
+        scene.overlay.showText(40).text("A seat can prevent falling from the rocket");
         scene.idleSeconds(3);
         scene.addKeyframe();
 

@@ -22,7 +22,7 @@
   "block.creatingspace.oxygen_sealer.tooltip.condition1": "when R-Clicked with empty hand",
   "block.creatingspace.oxygen_sealer.tooltip.behaviour1": "open the GUI",
   "block.creatingspace.air_liquefier": "Air Liquefier",
-  "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 form campfires, only work on earth",
+  "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only work on earth",
 
 
   "block.creatingspace.clamps": "Clamps",
@@ -30,7 +30,7 @@
   "block.creatingspace.rocket_casing": "Rocket Casing",
 
   "block.creatingspace.cryogenic_tank": "Cryogenic Tank",
-  "block.creatingspace.cryogenic_tank.tooltip.summary": "A cold liquid exclusive tank, keep it's content after breaking",
+  "block.creatingspace.cryogenic_tank.tooltip.summary": "A cold liquid exclusive tank, keep it's content after breaking. Can be use in a filter",
 
   "block.creatingspace.moon_stone": "Moon Stone",
   "block.creatingspace.moon_regolith": "Moon Regolith",
@@ -119,15 +119,15 @@
 
   "creatingspace.ponder.rocket_building.header": "Rockets building",
   "creatingspace.ponder.rocket_building.text_1": "To build a rocket you need rocket controls,",
-  "creatingspace.ponder.rocket_building.text_2": "enough propellant",
+  "creatingspace.ponder.rocket_building.text_2": "enough propellant, here methane and oxygen in equal quantities",
   "creatingspace.ponder.rocket_building.text_3": "and enough thrust to lift the rocket",
-  "creatingspace.ponder.rocket_building.text_4": "Don't forget the seat or you will be left Behind",
+  "creatingspace.ponder.rocket_building.text_4": "A seat can prevent falling from the rocket",
   "creatingspace.ponder.rocket_building.text_5": "If the there isn't enough thrust or propellant the rocket will refuse to go",
   "creatingspace.ponder.rocket_building.text_6": "the flight recorder can help in those moments",
 
   "creatingspace.ponder.rocket_debugging.header": "Rockets debugging",
-  "creatingspace.ponder.rocket_debugging.text_1": "The flight recorder give info about it's last flight or N/A if it's just placed,",
-  "creatingspace.ponder.rocket_debugging.text_2": "N/A",
+  "creatingspace.ponder.rocket_debugging.text_1": "The flight recorder give info about it's last flight or no past flight if it's just placed,",
+  "creatingspace.ponder.rocket_debugging.text_2": "no past flight",
   "creatingspace.ponder.rocket_debugging.text_3": "If there is not enough propellant mass, you will get this :",
   "creatingspace.ponder.rocket_debugging.text_4": "not enough propellants",
   "creatingspace.ponder.rocket_debugging.text_5": "add more of the missing propellant to solve the issue :",
