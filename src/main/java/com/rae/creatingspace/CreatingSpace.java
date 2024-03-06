@@ -60,6 +60,7 @@ public class CreatingSpace {
         FluidInit.register();
 
         RecipeInit.register(modEventBus);
+        CreativeModeTabsInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
 
         PaintingInit.register(modEventBus);

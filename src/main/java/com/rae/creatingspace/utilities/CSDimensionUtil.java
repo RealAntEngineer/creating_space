@@ -17,13 +17,15 @@ import java.util.Map;
 import static com.rae.creatingspace.utilities.data.DimensionParameterMapReader.translator;
 
 public class CSDimensionUtil {
-
+    //TODO change resource key to resource location
     public static float gravity(ResourceKey<DimensionType> dimensionType) {
         DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
                 DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
 
         if (dimensionMapData!=null) {
-            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter = dimensionMapData.dimensionParameterMap().get(dimensionType.location().toString());
+            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter =
+                    dimensionMapData.dimensionParameterMap()
+                            .get(dimensionType.location().toString());
             if (dimensionParameter!=null){
                 Float gravity = dimensionParameter.gravity();
                 if (gravity!=null){
@@ -34,8 +36,15 @@ public class CSDimensionUtil {
         return 9.81f;
     }
 
+    public static int arrivalHeight(ResourceKey<DimensionType> dimensionType) {
+        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
+                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
+        assert dimensionMapData != null;
+        return dimensionMapData.dimensionParameterMap().get(dimensionType.location().toString()).arrivalHeight();
+    }
     //to optimise
-    public static HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
+    public static HashMap<ResourceKey<Level>,
+            DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
 
         DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
                 DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
@@ -73,17 +82,16 @@ public class CSDimensionUtil {
         return new HashMap<>();
     }
 
-
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
         DimensionTagsReader.PartialDimensionList data =  DimensionTagsReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
         boolean no_02 = false;
         if (data!=null) {
             List<String> dimensions = data.dimensions();
              no_02 = dimensions.contains(dimension.location().toString());
-            //System.out.println(no_02);
         }
         return !no_02;
     }
+
     public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
         return gravity(dimensionType) == 0;
     }
