@@ -9,7 +9,7 @@ public class CSCfgServer  extends CSConfigBase {
     public final CSRocketEngine rocketEngine = nested(0,CSRocketEngine::new,Comments.rocketEngine);
     @Override
     public String getName() {
-        return CreatingSpace.MODID + ".server";
+        return CreatingSpace.MODID + ".server.V" + 2;
     }
 
     private static class Comments {
