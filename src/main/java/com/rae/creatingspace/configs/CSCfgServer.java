@@ -2,14 +2,14 @@ package com.rae.creatingspace.configs;
 
 import com.rae.creatingspace.CreatingSpace;
 
-public class CSCfgServer  extends CSConfigBase {
+public class CSCfgServer extends CSConfigBase {
 
     public final CSKinetics kinetics = nested(0, CSKinetics::new, Comments.kinetics);
 
-    public final CSRocketEngine rocketEngine = nested(0,CSRocketEngine::new,Comments.rocketEngine);
+    public final CSRocketEngine rocketEngine = nested(0,CSRocketEngine::new, Comments.rocketEngine);
     @Override
     public String getName() {
-        return CreatingSpace.MODID + ".server";
+        return CreatingSpace.MODID + ".server.V"+2;
     }
 
     private static class Comments {
