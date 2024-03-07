@@ -90,7 +90,7 @@ public class DestinationScreen extends AbstractSimiScreen {
         validateSetting.withCallback(() -> {
                     BlockPos pos =  initialPosMap.get(String.valueOf(destination));
                     if (pos == null) {
-                        pos = BlockPos.ZERO;
+                        pos =  this.blockEntity.getBlockPos();
                     }
                     String X = Xinput.getValue().replace(" ",""),/*Y = Yinput.getValue().replace(" ",""),*/Z = Zinput.getValue().replace(" ","");
                     if (CSUtil.isInteger(X)){
@@ -160,7 +160,7 @@ public class DestinationScreen extends AbstractSimiScreen {
             if (destinationChanged) {
                 BlockPos pos = initialPosMap.get(String.valueOf(destination));
                 if (pos == null) {
-                    pos = BlockPos.ZERO;
+                    pos =  this.blockEntity.getBlockPos();
                 }
                 Xinput.setValue(String.valueOf(pos.getX()));
                 //Yinput.setValue(String.valueOf(pos.getY()));

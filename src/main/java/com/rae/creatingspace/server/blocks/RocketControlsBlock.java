@@ -133,9 +133,7 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         HashMap<String, BlockPos> blockPosHashMap = blockEntityOptional.map(RocketControlsBlockEntity::getInitialPosMap).orElse(null);
         if(blockPosHashMap!= null){
             CompoundTag compoundTag = new CompoundTag();
-
-            RocketControlsBlockEntity.putPosMap(blockPosHashMap,compoundTag);
-            tag.put("initialPosMap",compoundTag);
+            tag.put("initialPosMap", RocketControlsBlockEntity.putPosMap(blockPosHashMap,compoundTag));
         }
         Component customName = blockEntityOptional.map(RocketControlsBlockEntity::getCustomName).orElse(null);
         if (customName != null)
