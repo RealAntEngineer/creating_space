@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 
+import static net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack.FLUID_NBT_KEY;
+
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CreativeModeTabsInit {
     private static final DeferredRegister<CreativeModeTab> TAB_REGISTER =
@@ -176,7 +178,7 @@ public class CreativeModeTabsInit {
                             ItemStack itemStack = item.getDefaultInstance();
                             CompoundTag tag = itemStack.getOrCreateTag();
                             FluidStack fluidStack = new FluidStack(fluid, 4000);
-                            tag.put("Tank", fluidStack.writeToNBT(new CompoundTag()));
+                            tag.put(FLUID_NBT_KEY, fluidStack.writeToNBT(new CompoundTag()));
                             itemStack.setTag(tag);
                             itemStacks.add(itemStack);
                         }

@@ -27,12 +27,10 @@ public class AnimatedMechanicalElectrolyzer extends AnimatedKinetics {
 
         blockElement(shaft(Direction.Axis.Z))
                 .rotateBlock(0, 0, getCurrentAngle())
-                .atLocal(0, 0, 0)
                 .scale(scale)
                 .render(graphics);
 
         blockElement(BlockInit.MECHANICAL_ELECTROLYZER.getDefaultState())
-                .rotateBlock(0, 0, getCurrentAngle())
                 .scale(scale)
                 .render(graphics);
 
@@ -40,13 +38,11 @@ public class AnimatedMechanicalElectrolyzer extends AnimatedKinetics {
 
         blockElement(PartialModelInit.ELECTROLYZER_HEAD)
                 .atLocal(0, animation, 0)
-                .rotateBlock(0, 0, getCurrentAngle())
                 .scale(scale)
                 .render(graphics);
 
         blockElement(AllBlocks.BASIN.getDefaultState())
                 .atLocal(0, 1.65, 0)
-                .rotateBlock(0, 0, getCurrentAngle())
                 .scale(scale)
                 .render(graphics);
 
