@@ -17,6 +17,7 @@
     "creatingspace:rocket_controls",
     "creatingspace:rocket_generator",
     "creatingspace:chemical_synthesizer",
+    "creatingspace:catalyst_carrier",
     "creatingspace:mechanical_electrolyzer",
     "creatingspace:flow_meter",
     "creatingspace:oxygen_sealer",
