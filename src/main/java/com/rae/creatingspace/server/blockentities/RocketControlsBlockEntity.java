@@ -122,9 +122,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
                 RocketContraptionEntity.create(level, contraption, destination);
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
-        if(initialPosMap.containsKey(destination.toString())){
-            rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.get(destination.toString());
-        }
+        rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination.toString(), this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);
 
         AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(level, worldPosition);

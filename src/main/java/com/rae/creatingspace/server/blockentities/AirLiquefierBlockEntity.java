@@ -1,6 +1,5 @@
 package com.rae.creatingspace.server.blockentities;
 
-import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.server.blocks.AirLiquefierBlock;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
@@ -56,22 +55,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     //TODO replace that with a more flexible system
     float residualFloatO2Amount = 0;
     float residualFloatCO2Amount = 0;
-
-    //oxygen
-    private final LazyOptional<IFluidHandler> oxygenFluidOptional = LazyOptional.of(()-> this.OXYGEN_TANK);
-    private final FluidTank OXYGEN_TANK = new FluidTank(4000){
-        @Override
-        protected void onContentsChanged() {
-            sendData();
-            super.onContentsChanged();
-        }
-
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return TagsInit.CustomFluidTags.LIQUID_OXYGEN.matches(stack.getFluid());
-        }
-    };
-    //test with smart fluidtank (copied from basin)
 
     protected LazyOptional<IFluidHandler> fluidCapability;
     private boolean contentsChanged;
@@ -154,14 +137,15 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
         super.read(nbt, clientPacket);
-        OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(), nbt.getInt("oxygenAmount")));
+        outputTank.read(nbt, clientPacket);
+        //OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(), nbt.getInt("oxygenAmount")));
 
     }
 
     @Override
     protected void write(CompoundTag nbt, boolean clientPacket) {
-        nbt.putInt("oxygenAmount",OXYGEN_TANK.getFluidAmount());
-
+        //nbt.putInt("oxygenAmount",OXYGEN_TANK.getFluidAmount());
+        outputTank.write(nbt, clientPacket);
         super.write(nbt, clientPacket);
     }
 
