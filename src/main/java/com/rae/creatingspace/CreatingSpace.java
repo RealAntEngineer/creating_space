@@ -74,7 +74,6 @@ public class CreatingSpace {
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 
-        modEventBus.register(DimensionEffectInit.class);
     }
     public static void init(final FMLCommonSetupEvent event) {
         PacketInit.registerPackets();

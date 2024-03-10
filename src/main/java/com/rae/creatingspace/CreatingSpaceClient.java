@@ -6,8 +6,9 @@ import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 public class CreatingSpaceClient {
-    public static void clientRegister(IEventBus eventBus){
-        eventBus.addListener(ParticleTypeInit::registerFactories);
+    public static void clientRegister(IEventBus modEventBus){
+        modEventBus.addListener(ParticleTypeInit::registerFactories);
+        modEventBus.register(DimensionEffectInit.class);
         PartialModelInit.init();
         PonderInit.register();
     }
