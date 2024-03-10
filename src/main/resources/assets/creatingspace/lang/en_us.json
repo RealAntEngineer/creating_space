@@ -6,16 +6,21 @@
   "block.creatingspace.rocket_controls.tooltip.summary" : "The block that tells a rocket where to go.",
   "block.creatingspace.rocket_generator": "Rocket Generator",
   "block.creatingspace.rocket_generator.tooltip.summary": "A machine that burns methane and oxygen to produce SU, start with a signal of redstone if loaded with a starter charge",
+  "block.creatingspace.catalyst_carrier": "Catalyst Carrier",
+  "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin ",
+
   "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
-  "block.creatingspace.chemical_synthesizer.tooltip.summary": "Needed for producing methane",
+  "block.creatingspace.chemical_synthesizer.tooltip.summary": "Needed for producing methane, deprecated !!",
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
-  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split water into oxygen and hydrogen at a rate of speed mb/tick",
+  "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split liquids in a basin",
   "block.creatingspace.flight_recorder": "flight recorder",
   "block.creatingspace.flight_recorder.tooltip.summary": "show information when the rocket doesn't work, need engineer googles to work",
   "block.creatingspace.flow_meter": "Flowmeter",
   "block.creatingspace.flow_meter.tooltip.summary": "Show the amount of fluid passing through a pipe",
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
-  "block.creatingspace.oxygen_sealer.tooltip.summary": "A machine that fill a room with oxygen, open it's gui to see what you need",
+  "block.creatingspace.oxygen_sealer.tooltip.summary": "A machine that fill a room with oxygen",
+  "block.creatingspace.oxygen_sealer.tooltip.condition1": "when R-Clicked with empty hand",
+  "block.creatingspace.oxygen_sealer.tooltip.behaviour1": "open the GUI",
   "block.creatingspace.air_liquefier": "Air Liquefier",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only work on earth",
 
@@ -100,6 +105,8 @@
   "fluid.creatingspace.liquid_methane" : "Liquid Methane",
   "fluid.creatingspace.liquid_oxygen" : "Liquid Oxygen",
   "fluid.creatingspace.liquid_hydrogen" : "Liquid Hydrogen",
+  "fluid.creatingspace.liquid_co2": "Liquid CO2",
+
 
   "item.creatingspace.space_food": "Space Food",
 
@@ -119,8 +126,8 @@
   "creatingspace.ponder.rocket_building.text_6": "the flight recorder can help in those moments",
 
   "creatingspace.ponder.rocket_debugging.header": "Rockets debugging",
-  "creatingspace.ponder.rocket_debugging.text_1": "The flight recorder give info about it's last flight or N/A if it's just placed,",
-  "creatingspace.ponder.rocket_debugging.text_2": "N/A",
+  "creatingspace.ponder.rocket_debugging.text_1": "The flight recorder give info about it's last flight or no past flight if it's just placed,",
+  "creatingspace.ponder.rocket_debugging.text_2": "no past flight",
   "creatingspace.ponder.rocket_debugging.text_3": "If there is not enough propellant mass, you will get this :",
   "creatingspace.ponder.rocket_debugging.text_4": "not enough propellants",
   "creatingspace.ponder.rocket_debugging.text_5": "add more of the missing propellant to solve the issue :",
@@ -151,7 +158,7 @@
 
   "creatingspace.overlay.flight_recorder.title": "last flight :",
   "creatingspace.overlay.flight_recorder.no_failure": "no failure",
-  "creatingspace.overlay.flight_recorder.no_flight": "N/A",
+  "creatingspace.overlay.flight_recorder.no_flight": "no past flight",
   "creatingspace.overlay.flight_recorder.propellant_status.not_enough_propellant": "not enough propellant",
   "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "wrong ratio of propellant",
   "creatingspace.overlay.flight_recorder.not_enough_thrust": "not enough thrust",
@@ -171,6 +178,7 @@
   "creatingspace.science.unit.metric_ton": "t",
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
-  "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t"
-
+  "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
+  "creatingspace.recipe.chemical": "chemical",
+  "creatingspace.recipe.electrolysis": "electrolysis"
 }
