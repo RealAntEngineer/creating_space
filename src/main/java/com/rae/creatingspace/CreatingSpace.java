@@ -5,7 +5,6 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.init.graphics.DimensionEffectInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
@@ -74,7 +73,6 @@ public class CreatingSpace {
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 
-        modEventBus.register(DimensionEffectInit.class);
     }
     public static void init(final FMLCommonSetupEvent event) {
         PacketInit.registerPackets();

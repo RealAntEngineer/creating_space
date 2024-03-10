@@ -185,6 +185,4 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     private float co2Production(float speed) {
         return (abs(speed));
     }
-
-
 }
