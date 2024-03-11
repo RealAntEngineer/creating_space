@@ -663,10 +663,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         return ContraptionRotationState.NONE;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
     }
-
 
 
     public boolean isReentry(){
