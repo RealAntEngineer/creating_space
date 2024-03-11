@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 public class CSEventHandler {
     public CSEventHandler() {
     }
-
     @SubscribeEvent
     public static void entityLivingEvent(LivingEvent.LivingTickEvent livingTickEvent){
         final LivingEntity entityLiving = livingTickEvent.getEntity();
