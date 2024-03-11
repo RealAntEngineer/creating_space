@@ -31,8 +31,6 @@ import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 
 import java.util.function.Consumer;
 
-import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
-
 public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
     public static final BooleanProperty BREATHABLE = BooleanProperty.create("breathable");
 
@@ -69,13 +67,7 @@ public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
                                 boolean pIsMoving) {
         BlockState neighborState = level.getBlockState(neighborPos);
         if (state.getValue(OxygenBlock.BREATHABLE)) {
-            //System.out.println(neighborState);
             notifyMaster(level, pos);
-
-            /*if (!(neighborState.getBlock() instanceof OxygenBlock)){
-
-                //if neighbor is O2 don't send message ? -> it may work without test a 2 sealer room
-            }*/
 
         }
 

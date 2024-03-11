@@ -62,8 +62,6 @@ public class SliderWidget extends AbstractSimiWidget {
             GuiTexturesInit slider = GuiTexturesInit.O2_GAUGE_SLIDER;
             slider.renderNotStandardSheetSize(ms,x,y, Color.WHITE);
             ms.popPose();
-            //put numbers
-            //System.out.println("progress : "+ prevValue + value + progress);
 
             float scale = 0.5f;
             for (int i = -3; i <= 3; i++) {
