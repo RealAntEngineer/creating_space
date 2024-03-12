@@ -5,6 +5,7 @@
   "package": "com.rae.creatingspace.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ContraptionMixin",
     "kinetics.BacktankBlockEntityMixin"
   ],
   "client": [
