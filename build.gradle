@@ -1,18 +1,9 @@
-buildscript {
-    repositories {
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
-    }
-    dependencies {
-        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
-    }
-}
-
 plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
-apply plugin: 'org.spongepowered.mixin'
+
 
 version = '1.7.0c'
 group = 'com.rae.creatingspace' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -30,7 +21,6 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
 
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
@@ -46,7 +36,6 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
 
             property 'forge.enabledGameTestNamespaces',archivesBaseName
 
@@ -61,7 +50,6 @@ minecraft {
         }
         gameTestServer {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
             mods {
@@ -73,7 +61,6 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
@@ -158,7 +145,6 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Real Ant Engineer",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs'            : 'create.mixins.json'
         ])
     }
 }
