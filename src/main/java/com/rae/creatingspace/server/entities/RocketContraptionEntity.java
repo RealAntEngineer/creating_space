@@ -662,7 +662,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public ContraptionRotationState getRotationState() {
         return ContraptionRotationState.NONE;
     }
-
     @Override
     public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
     }
