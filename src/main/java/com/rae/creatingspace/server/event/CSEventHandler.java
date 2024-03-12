@@ -133,4 +133,4 @@ public class CSEventHandler {
         return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
     }
 
-} .
+}
