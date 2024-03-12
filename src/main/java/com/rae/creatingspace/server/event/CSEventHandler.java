@@ -107,14 +107,12 @@ public class CSEventHandler {
             entity.setNoGravity(false);
         }
         if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creating_space_gravity_addon:deleted_mod_element")))) {
-            entity.setNoGravity(true);
-        } else {
-            entity.setNoGravity(false);
+            if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
+                _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 19, false, false));
         }
         if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creating_space_gravity_addon:deleted_mod_element")))) {
-            entity.setNoGravity(true);
-        } else {
-            entity.setNoGravity(false);
+            if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
+                _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 19, false, false));
         }
         if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creating_space_gravity_addon:deleted_mod_element")))) {
             if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
