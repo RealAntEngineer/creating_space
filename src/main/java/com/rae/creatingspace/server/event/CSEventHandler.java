@@ -106,15 +106,15 @@ public class CSEventHandler {
         if ((entity.level().dimension()) == Level.OVERWORLD) {
             entity.setNoGravity(false);
         }
-        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creating_space_gravity_addon:deleted_mod_element")))) {
+        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creatingspace:earth_orbit")))) {
             if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
-                _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 19, false, false));
+                _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 9, false, false));
         }
-        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creating_space_gravity_addon:deleted_mod_element")))) {
+        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creatingspace:moon_orbit")))) {
             if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
-                _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 19, false, false));
+                _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 9, false, false));
         }
-        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creating_space_gravity_addon:deleted_mod_element")))) {
+        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creatingspace:the_moon")))) {
             if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
                 _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 1, false, false));
             if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
