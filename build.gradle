@@ -130,10 +130,6 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
 }
 
-mixin {
-    add sourceSets.main, 'create.refmap.json'
-}
-
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
