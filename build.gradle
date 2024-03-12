@@ -30,7 +30,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
+            arg '-mixin.config=creatingspace.mixins.json'
 
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
@@ -46,7 +46,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
+            arg '-mixin.config=creatingspace.mixins.json'
 
             property 'forge.enabledGameTestNamespaces',archivesBaseName
 
@@ -61,7 +61,7 @@ minecraft {
         }
         gameTestServer {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
+            arg '-mixin.config=creatingspace.mixins.json'
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
             mods {
@@ -73,7 +73,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-            arg '-mixin.config=create.mixins.json'
+            arg '-mixin.config=creatingspace.mixins.json'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
@@ -144,7 +144,7 @@ dependencies {
 }
 
 mixin {
-    add sourceSets.main, 'create.refmap.json'
+    add sourceSets.main, 'creatingspace.refmap.json'
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
