@@ -129,7 +129,6 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
                 }
             }
             heightMap.put(coor,y);
-            //System.out.println("coor"+coor+"y"+y);
         }
         return y;
     }

@@ -94,7 +94,6 @@ public class SpacesuitHelmetItem extends BaseArmorItem {
 			return;
 
 		List<ItemStack> O2Backtanks = OxygenBacktankUtil.getAllWithOxygen(entity);
-		System.out.println(O2Backtanks);
 		if (O2Backtanks.isEmpty())
 			return;
 

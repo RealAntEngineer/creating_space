@@ -14,7 +14,7 @@ plugins {
 }
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.7.0b'
+version = '1.7.0c'
 group = 'com.rae.creatingspace' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'creatingspace'
 
