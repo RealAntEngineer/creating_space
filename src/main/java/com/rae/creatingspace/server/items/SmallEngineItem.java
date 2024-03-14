@@ -4,7 +4,6 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.RocketEngineBlock;
-import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -43,10 +42,6 @@ public class SmallEngineItem extends RocketEngineItem {
                 .setValue(SmallRocketStructuralBlock.FACING, Direction.UP);
         lvl.setBlock(mainPos,pState,11);
         lvl.setBlock(mainPos.below(),ghostState,11);
-        SuperGlueEntity entity = new SuperGlueEntity(lvl, SuperGlueEntity.span(mainPos, mainPos.below()));
-        if (!lvl.isClientSide) {
-            lvl.addFreshEntity(entity);
-        }
 
         return true;
     }

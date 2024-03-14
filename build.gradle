@@ -158,7 +158,7 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Real Ant Engineer",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs'            : 'create.mixins.json'
+                'MixinConfigs': 'creatingspace.mixins.json'
         ])
     }
 }
