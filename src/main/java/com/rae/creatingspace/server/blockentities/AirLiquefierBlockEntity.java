@@ -61,10 +61,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     protected int syncCooldown;
     protected boolean queuedSync;
 
-    //TODO replace that with a more flexible system
-    float residualFloatO2Amount = 0;
-    float residualFloatCO2Amount = 0;
-
     protected LazyOptional<IFluidHandler> fluidCapability;
     private boolean contentsChanged;
     protected SmartFluidTankBehaviour outputTank;
@@ -105,6 +101,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                     sendData();
             }
         }
+        float speed = Math.abs(getSpeed());
         if ((!level.isClientSide || isVirtual())) {
             if (processingTicks < 0) {
                 float recipeSpeed = 1;
@@ -115,7 +112,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 }
 
                 processingTicks = Mth.clamp((Mth.log2((int) (512 / speed))) * Mth.ceil(recipeSpeed * 15) + 1, 1, 512);
-
             } else {
                 processingTicks--;
                 if (processingTicks == 0) {
@@ -125,29 +121,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 }
             }
         }
-        /*blockEntity.outputTank.allowInsertion();
-            //setChanged();
-            if (hasCO2Recipe(blockEntity)) {
-                float rot_speed = this.getSpeed();
-                float CO2Amount = (co2Production(rot_speed) / FluidInit.LIQUID_CO2.getType().getDensity() * 1000f);
-
-                residualFloatCO2Amount += CO2Amount - (int) CO2Amount;
-                fluidCapability.orElse(new FluidTank(0))
-                        .fill(new FluidStack(FluidInit.LIQUID_CO2.get(),
-                                (int) CO2Amount + (int) residualFloatCO2Amount), IFluidHandler.FluidAction.EXECUTE);
-                residualFloatCO2Amount -= (int) residualFloatCO2Amount;
-            } else if (hasO2Recipe(blockEntity)) {
-                float rot_speed = this.getSpeed();
-                float O2Amount = (oxygenProduction(rot_speed) / FluidInit.LIQUID_OXYGEN.getType().getDensity() * 1000f);
-
-                residualFloatO2Amount += O2Amount - (int) O2Amount;
-                fluidCapability.orElse(new FluidTank(0))
-                        .fill(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),
-                        (int) O2Amount + (int) residualFloatO2Amount), IFluidHandler.FluidAction.EXECUTE);
-                residualFloatO2Amount -= (int) residualFloatO2Amount;
-            }
-            blockEntity.outputTank.forbidInsertion();
-            }*/
     }
 
     @Override
@@ -166,19 +139,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         }
     }
 
-    /* private boolean hasO2Recipe(AirLiquefierBlockEntity blockEntity) {
-            boolean isRunning = !blockEntity.isOverStressed();
-            boolean isInO2 = CSDimensionUtil.hasO2Atmosphere(blockEntity.level.dimension());
-            return isRunning && isInO2;
-        }
-
-        private boolean hasCO2Recipe(AirLiquefierBlockEntity blockEntity) {
-            boolean isRunning = !blockEntity.isOverStressed();
-            BlockState state = blockEntity.getBlockState();
-            BlockState targetedState = level.getBlockState(blockEntity.getBlockPos().relative(state.getValue(AirLiquefierBlock.FACING)));
-            boolean isInCO2 = (targetedState.is(Blocks.CAMPFIRE) || targetedState.is(Blocks.SOUL_CAMPFIRE)) && state.getValue(AirLiquefierBlock.FACING) != Direction.UP;
-            return isRunning && isInCO2;
-        }*/
     protected <C extends Container> boolean matchRecipe(Recipe<C> recipe) {
         if (recipe == null)
             return false;
@@ -273,14 +233,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         }
         return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
-
-    /*private float oxygenProduction(float speed){
-        return (abs(speed));
-    }
-
-    private float co2Production(float speed) {
-        return (abs(speed));
-    }*/
 
     public boolean acceptOutputs(List<FluidStack> outputFluids, boolean simulate) {
         outputTank.allowInsertion();
