@@ -1,13 +1,17 @@
 package com.rae.creatingspace.server.blockentities;
 
-import com.rae.creatingspace.init.ingameobject.FluidInit;
+import com.rae.creatingspace.init.RecipeInit;
+import com.rae.creatingspace.recipes.AirLiquefyingRecipe;
 import com.rae.creatingspace.server.blocks.AirLiquefierBlock;
-import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
+import com.simibubi.create.foundation.advancement.AllAdvancements;
+import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
+import com.simibubi.create.foundation.recipe.RecipeFinder;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import net.minecraft.ChatFormatting;
@@ -15,8 +19,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -29,10 +35,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static java.lang.Math.abs;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHaveGoggleInformation {
+    protected Recipe<?> currentRecipe;
+    private int processingTicks;
+    private Object shapelessOrMixingRecipesKey;
 
     public AirLiquefierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type,pos, state);
@@ -95,7 +104,28 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 if (syncCooldown == 0 && queuedSync)
                     sendData();
             }
-            blockEntity.outputTank.allowInsertion();
+        }
+        if ((!level.isClientSide || isVirtual())) {
+            if (processingTicks < 0) {
+                float recipeSpeed = 1;
+                if (currentRecipe instanceof ProcessingRecipe) {
+                    int t = ((ProcessingRecipe<?>) currentRecipe).getProcessingDuration();
+                    if (t != 0)
+                        recipeSpeed = t / 100f;
+                }
+
+                processingTicks = Mth.clamp((Mth.log2((int) (512 / speed))) * Mth.ceil(recipeSpeed * 15) + 1, 1, 512);
+
+            } else {
+                processingTicks--;
+                if (processingTicks == 0) {
+                    processingTicks = -1;
+                    applyRecipe();
+                    sendData();
+                }
+            }
+        }
+        /*blockEntity.outputTank.allowInsertion();
             //setChanged();
             if (hasCO2Recipe(blockEntity)) {
                 float rot_speed = this.getSpeed();
@@ -117,22 +147,89 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 residualFloatO2Amount -= (int) residualFloatO2Amount;
             }
             blockEntity.outputTank.forbidInsertion();
-            }
-        }
-
-
-    private boolean hasO2Recipe(AirLiquefierBlockEntity blockEntity) {
-        boolean isRunning = !blockEntity.isOverStressed();
-        boolean isInO2 = CSDimensionUtil.hasO2Atmosphere(blockEntity.level.dimension());
-        return isRunning && isInO2;
+            }*/
     }
 
-    private boolean hasCO2Recipe(AirLiquefierBlockEntity blockEntity) {
-        boolean isRunning = !blockEntity.isOverStressed();
-        BlockState state = blockEntity.getBlockState();
-        BlockState targetedState = level.getBlockState(blockEntity.getBlockPos().relative(state.getValue(AirLiquefierBlock.FACING)));
-        boolean isInCO2 = (targetedState.is(Blocks.CAMPFIRE) || targetedState.is(Blocks.SOUL_CAMPFIRE)) && state.getValue(AirLiquefierBlock.FACING) != Direction.UP;
-        return isRunning && isInCO2;
+    @Override
+    public void lazyTick() {
+        super.lazyTick();
+        if (isSpeedRequirementFulfilled()) {
+            if (getSpeed() != 0) {
+                if (level != null && !level.isClientSide) {
+                    List<Recipe<?>> recipes = getMatchingRecipes();
+                    System.out.println(recipes);
+                    if (!recipes.isEmpty()) {
+                        currentRecipe = recipes.get(0);
+                        sendData();
+                    }
+                }
+            }
+        }
+    }
+
+    /* private boolean hasO2Recipe(AirLiquefierBlockEntity blockEntity) {
+            boolean isRunning = !blockEntity.isOverStressed();
+            boolean isInO2 = CSDimensionUtil.hasO2Atmosphere(blockEntity.level.dimension());
+            return isRunning && isInO2;
+        }
+
+        private boolean hasCO2Recipe(AirLiquefierBlockEntity blockEntity) {
+            boolean isRunning = !blockEntity.isOverStressed();
+            BlockState state = blockEntity.getBlockState();
+            BlockState targetedState = level.getBlockState(blockEntity.getBlockPos().relative(state.getValue(AirLiquefierBlock.FACING)));
+            boolean isInCO2 = (targetedState.is(Blocks.CAMPFIRE) || targetedState.is(Blocks.SOUL_CAMPFIRE)) && state.getValue(AirLiquefierBlock.FACING) != Direction.UP;
+            return isRunning && isInCO2;
+        }*/
+    protected <C extends Container> boolean matchRecipe(Recipe<C> recipe) {
+        if (recipe == null)
+            return false;
+        return AirLiquefyingRecipe.match(this, recipe);
+    }
+
+    protected Optional<CreateAdvancement> getProcessedRecipeTrigger() {
+        return Optional.of(AllAdvancements.MIXER);
+    }
+
+    public void continueWithPreviousRecipe() {
+    }
+
+    public void notifyChangeOfContents() {
+        contentsChanged = true;
+    }
+
+    protected <C extends Container> boolean matchStaticFilters(Recipe<C> r) {
+        return r.getType() == RecipeInit.AIR_LIQUEFYING.getType();
+    }
+
+    protected List<Recipe<?>> getMatchingRecipes() {
+
+        List<Recipe<?>> list = RecipeFinder.get(getRecipeCacheKey(), level, this::matchStaticFilters);
+        return list.stream()
+                .filter(this::matchRecipe)
+                .sorted((r1, r2) -> r2.getIngredients()
+                        .size()
+                        - r1.getIngredients()
+                        .size())
+                .collect(Collectors.toList());
+    }
+
+    protected Object getRecipeCacheKey() {
+        return shapelessOrMixingRecipesKey;
+    }
+
+    protected void applyRecipe() {
+        if (currentRecipe == null)
+            return;
+        if (!AirLiquefyingRecipe.apply(this, currentRecipe))
+            return;
+        getProcessedRecipeTrigger().ifPresent(this::award);
+        // Continue mixing
+
+        if (matchRecipe(currentRecipe)) {
+            continueWithPreviousRecipe();
+            sendData();
+        }
+        this.notifyChangeOfContents();
     }
     @Override
     protected void read(CompoundTag nbt, boolean clientPacket) {
@@ -178,11 +275,34 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
 
-    private float oxygenProduction(float speed){
+    /*private float oxygenProduction(float speed){
         return (abs(speed));
     }
 
     private float co2Production(float speed) {
         return (abs(speed));
+    }*/
+
+    public boolean acceptOutputs(List<FluidStack> outputFluids, boolean simulate) {
+        outputTank.allowInsertion();
+        boolean acceptOutputsInner = acceptOutputsInner(outputFluids, simulate);
+        outputTank.forbidInsertion();
+        return acceptOutputsInner;
     }
+
+    private boolean acceptOutputsInner(List<FluidStack> outputFluids, boolean simulate) {
+
+        for (FluidStack fluid : outputFluids) {
+            float amount = fluidCapability.orElse(new FluidTank(0))
+                    .fill(fluid,
+                            simulate ?
+                                    IFluidHandler.FluidAction.SIMULATE :
+                                    IFluidHandler.FluidAction.EXECUTE);
+            if (amount == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
