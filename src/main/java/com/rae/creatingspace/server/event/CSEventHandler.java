@@ -9,9 +9,9 @@ import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -97,31 +98,35 @@ public class CSEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            execute(event.player);
+            giveGravityEffects(event.player);
         }
     }
 
-    public static void execute(Entity entity) {
-        if (entity == null)
-            return;
-        ResourceKey<Level> dimensionKey = entity.level.dimension();
+    public static void giveGravityEffects(Entity entity) {
 
-        if (dimensionKey.equals(Level.OVERWORLD)) {
-            entity.setNoGravity(false);
-        } else if (dimensionKey.equals(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("creatingspace", "earth_orbit")))) {
+        double gravityFactor = 0;
+        if (getGravityFactor((LivingEntity) entity) == 0) {
             applyEffects(entity, MobEffects.SLOW_FALLING, 60, 9);
-        } else if (dimensionKey.equals(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("creatingspace", "moon_orbit")))) {
-            applyEffects(entity, MobEffects.SLOW_FALLING, 60, 9);
-        } else if (dimensionKey.equals(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation("creatingspace", "the_moon")))) {
-            applyEffects(entity, MobEffects.SLOW_FALLING, 60, 0);
-            applyEffects(entity, MobEffects.MOVEMENT_SPEED, 60, 1);
-            applyEffects(entity, MobEffects.JUMP, 60, 5);
-        } else {
-            entity.setNoGravity(false);
+
         }
     }
+     private static double getGravityFactor(LivingEntity entity) {
+         ResourceKey<DimensionType> dimensionTypeKey = ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, entity.level.dimension().location());
+         float gravityValue = CSDimensionUtil.gravity(dimensionTypeKey);
+         double gravityFactor = (double) gravityValue / 9.81;
+         return Math.round(gravityFactor * 1000.0) / 1000.0;
+     }
+     // Calculate jump boost strength based on gravity factor
+     private int calculateJumpBoostStrength(double gravityFactor) {
+         return (int) Math.round((1.0 - gravityFactor) * 10);
+     }
 
-    private static void applyEffects(Entity entity, net.minecraft.world.effect.MobEffect effect, int duration, int amplifier) {
+
+
+
+
+
+    private static void applyEffects(Entity entity, MobEffect effect, int duration, int amplifier) {
         if (entity instanceof LivingEntity livingEntity && !entity.level.isClientSide()) {
             livingEntity.addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
         }
