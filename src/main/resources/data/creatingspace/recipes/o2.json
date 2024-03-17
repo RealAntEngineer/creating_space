@@ -1,0 +1,13 @@
+{
+  "type": "creatingspace:air_liquefying",
+  "blockInFront": "minecraft:air",
+  "dimension": "minecraft:overworld",
+  "ingredients": [
+  ],
+  "results": [
+    {
+      "amount": 100,
+      "fluid": "creatingspace:liquid_oxygen"
+    }
+  ]
+}

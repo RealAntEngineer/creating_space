@@ -25,6 +25,7 @@ import java.util.List;
 public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 
 	private ResourceLocation blockInFront;
+	private ResourceLocation dimension;
 
 	public static boolean match(AirLiquefierBlockEntity airLiquefierBlockEntity, Recipe<?> recipe) {
 		return apply(airLiquefierBlockEntity, recipe, true);
@@ -40,9 +41,15 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 			BlockState state = airLiquefierBlockEntity.getBlockState();
 			BlockState targetedState = airLiquefierBlockEntity.getLevel().getBlockState(airLiquefierBlockEntity.getBlockPos().relative(state.getValue(AirLiquefierBlock.FACING)));
 			Block block = Registry.BLOCK.getOptional(airLiquefyingRecipe.getBlockInFront()).orElse(null);
-			if (block == null || !targetedState.is(block)) {
+			if (block != null && !targetedState.is(block)) {
 				return false;
 			}
+			ResourceLocation currentDimension = airLiquefierBlockEntity.getLevel().dimension().location();
+			if (airLiquefyingRecipe.getDimension() != null && !currentDimension.equals(airLiquefyingRecipe.getDimension())) {
+				return false;
+			}
+		} else {
+			return false;
 		}
 
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
@@ -54,11 +61,9 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 
 
 			if (simulate) {
-				if (recipe instanceof AirLiquefyingRecipe basinRecipe) {
-					recipeOutputFluids.addAll(basinRecipe.getFluidResults());
-				}
+				AirLiquefyingRecipe basinRecipe = (AirLiquefyingRecipe) recipe;
+				recipeOutputFluids.addAll(basinRecipe.getFluidResults());
 			}
-
 			if (!airLiquefierBlockEntity.acceptOutputs(recipeOutputFluids, simulate))
 				return false;
 		}
@@ -72,6 +77,10 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 
 	public ResourceLocation getBlockInFront() {
 		return blockInFront;
+	}
+
+	public ResourceLocation getDimension() {
+		return dimension;
 	}
 
 	@Override
@@ -112,6 +121,13 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 		} else {
 			blockInFront = null;
 		}
+		if (json.get("dimension") != null) {
+			System.out.println(String.valueOf(json.get("dimension")));
+			dimension = new ResourceLocation(String.valueOf(json.get("dimension")).replaceAll(String.valueOf('"'), ""));
+		} else {
+			dimension = null;
+		}
+
 	}
 
 	@Override
@@ -121,6 +137,10 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 		if (blockInFront == new ResourceLocation("minecraft:_")) {
 			blockInFront = null;
 		}
+		dimension = buffer.readResourceLocation();
+		if (dimension == new ResourceLocation("minecraft:_")) {
+			dimension = null;
+		}
 	}
 
 	@Override
@@ -128,6 +148,9 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 		super.writeAdditional(json);
 		if (blockInFront != null)
 			json.addProperty("blockInFront", blockInFront.toString());
+		if (dimension != null)
+			json.addProperty("dimension", dimension.toString());
+
 	}
 
 	@Override
@@ -135,6 +158,11 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 		super.writeAdditional(buffer);
 		if (blockInFront != null)
 			buffer.writeResourceLocation(blockInFront);
+		else {
+			buffer.writeResourceLocation(new ResourceLocation("minecraft:_"));
+		}
+		if (dimension != null)
+			buffer.writeResourceLocation(dimension);
 		else {
 			buffer.writeResourceLocation(new ResourceLocation("minecraft:_"));
 		}

@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHaveGoggleInformation {
     protected Recipe<?> currentRecipe;
     private int processingTicks;
-    private Object shapelessOrMixingRecipesKey;
+    private Object airLiquefyingRecipesKey;
 
     public AirLiquefierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type,pos, state);
@@ -157,7 +157,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
             if (getSpeed() != 0) {
                 if (level != null && !level.isClientSide) {
                     List<Recipe<?>> recipes = getMatchingRecipes();
-                    System.out.println(recipes);
                     if (!recipes.isEmpty()) {
                         currentRecipe = recipes.get(0);
                         sendData();
@@ -214,7 +213,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     }
 
     protected Object getRecipeCacheKey() {
-        return shapelessOrMixingRecipesKey;
+        return airLiquefyingRecipesKey;
     }
 
     protected void applyRecipe() {
