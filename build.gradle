@@ -5,7 +5,7 @@ plugins {
 }
 
 
-version = '1.7.0c'
+version = '1.7.0b'
 group = 'com.rae.creatingspace' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'creatingspace'
 
@@ -21,6 +21,8 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=creatingspace.mixins.json'
+
 
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
@@ -36,6 +38,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg '-mixin.config=creatingspace.mixins.json'
 
             property 'forge.enabledGameTestNamespaces',archivesBaseName
 
@@ -50,6 +53,8 @@ minecraft {
         }
         gameTestServer {
             workingDirectory project.file('run')
+            arg '-mixin.config=creatingspace.mixins.json'
+
             property 'forge.enabledGameTestNamespaces', archivesBaseName
 
             mods {
@@ -61,6 +66,8 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+            arg '-mixin.config=creatingspace.mixins.json'
+
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
@@ -130,6 +137,9 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
 }
 
+mixin {
+    add sourceSets.main, 'creatingspace.refmap.json'
+}
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
@@ -141,6 +151,8 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Real Ant Engineer",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'MixinConfigs': 'creatingspace.mixins.json'
+
         ])
     }
 }
