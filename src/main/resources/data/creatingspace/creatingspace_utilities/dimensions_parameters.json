@@ -8,11 +8,11 @@
       },
       "arrivalHeight": 200,
       "gravity": 9.81,
-      "orbitingPlanet":{
+      "orbitingPlanet": {
         "fileName": "name",
         "size": 20
       },
-      "suns":[
+      "suns": [
         {
           "fileName": "name",
           "size": 20
@@ -28,19 +28,20 @@
           "deltaV": 200
         }
       },
-        "arrivalHeight": 64,
-        "planetUnder" : "minecraft:overworld",
-        "gravity": 0,
-        "orbitingPlanet":{
+      "arrivalHeight": 64,
+      "planetUnder": "minecraft:overworld",
+      "gravity": 0,
+      "orbitingPlanet": {
+        "fileName": "name",
+        "size": 20
+      },
+      "suns": [
+        {
           "fileName": "name",
           "size": 20
-        },
-        "suns":[
-          { "fileName": "name",
-            "size": 20
-          }
-        ]
-      },
+        }
+      ]
+    },
     "creatingspace:moon_orbit": {
       "adjacentDimensions": {
         "creatingspace:the_moon": {
@@ -51,14 +52,15 @@
         }
       },
       "arrivalHeight": 64,
-      "planetUnder" : "creatingspace:the_moon",
+      "planetUnder": "creatingspace:the_moon",
       "gravity": 0,
-      "orbitingPlanet":{
+      "orbitingPlanet": {
         "fileName": "name",
         "size": 20
       },
-      "suns":[
-        { "fileName": "name",
+      "suns": [
+        {
+          "fileName": "name",
           "size": 20
         }
       ]
@@ -71,12 +73,45 @@
       },
       "arrivalHeight": 200,
       "gravity": 1.6,
-      "orbitingPlanet":{
+      "orbitingPlanet": {
         "fileName": "name",
         "size": 20
       },
-      "suns":[
-        { "fileName": "name",
+      "suns": [
+        {
+          "fileName": "name",
+          "size": 20
+        }
+      ]
+    },
+    "creatingspace:mars": {
+      "adjacentDimensions": {
+      },
+      "arrivalHeight": 200,
+      "gravity": 3.71,
+      "orbitingPlanet": {
+        "fileName": "name",
+        "size": 20
+      },
+      "suns": [
+        {
+          "fileName": "name",
+          "size": 20
+        }
+      ]
+    },
+    "creatingspace:venus": {
+      "adjacentDimensions": {
+      },
+      "arrivalHeight": 200,
+      "gravity": 8.87,
+      "orbitingPlanet": {
+        "fileName": "name",
+        "size": 20
+      },
+      "suns": [
+        {
+          "fileName": "name",
           "size": 20
         }
       ]
