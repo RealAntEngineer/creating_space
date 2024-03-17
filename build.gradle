@@ -1,3 +1,11 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
+    }
+    dependencies {
+        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
+    }
+}
 plugins {
     id 'eclipse'
     id 'maven-publish'
@@ -5,7 +13,7 @@ plugins {
 }
 
 
-version = '1.7.0b'
+version = '1.7.0c'
 group = 'com.rae.creatingspace' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'creatingspace'
 
