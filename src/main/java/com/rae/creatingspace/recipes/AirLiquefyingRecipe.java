@@ -116,13 +116,11 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 	public void readAdditional(JsonObject json) {
 		super.readAdditional(json);
 		if (json.get("blockInFront") != null) {
-			System.out.println(String.valueOf(json.get("blockInFront")));
 			blockInFront = new ResourceLocation(String.valueOf(json.get("blockInFront")).replaceAll(String.valueOf('"'), ""));
 		} else {
 			blockInFront = null;
 		}
 		if (json.get("dimension") != null) {
-			System.out.println(String.valueOf(json.get("dimension")));
 			dimension = new ResourceLocation(String.valueOf(json.get("dimension")).replaceAll(String.valueOf('"'), ""));
 		} else {
 			dimension = null;

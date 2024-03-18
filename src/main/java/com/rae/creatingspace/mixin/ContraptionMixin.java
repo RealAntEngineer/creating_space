@@ -29,7 +29,6 @@ public class ContraptionMixin {
     @Inject(method = "moveBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;below()Lnet/minecraft/core/BlockPos;", shift = At.Shift.BEFORE))
     protected void onMoveBlock(Level world, Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir) {
         BlockState state = world.getBlockState(local$Pos);
-        System.out.println(state);
         if (state.is(BlockInit.BIG_ROCKET_ENGINE.get())) {
             moveBigRocketEngine(local$Pos, frontier, visited, state);
         } else if (state.is(BlockInit.BIG_ENGINE_STRUCTURAL.get())) {
