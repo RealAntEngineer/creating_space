@@ -4,6 +4,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.server.fluids.CustomVirtualFluid;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
 import com.simibubi.create.content.fluids.VirtualFluid;
@@ -42,7 +43,7 @@ public class FluidInit {
                 customStill(name),
                 customFlowing(name),
                 CreateRegistrate::defaultFluidType,
-                VirtualFluid::new);
+                CustomVirtualFluid::new);
     }
 
     /*public static final FluidEntry<ForgeFlowingFluid.Flowing> HOT_LAVA  =
