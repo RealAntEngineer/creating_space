@@ -362,4 +362,4 @@ public class SealerBlockEntity extends KineticBlockEntity {
     public int getRange() {
         return this.range;
     }
-}.
+}

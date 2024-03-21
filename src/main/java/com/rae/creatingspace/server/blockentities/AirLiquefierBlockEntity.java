@@ -257,4 +257,4 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         return true;
     }
 
-}.
+}
