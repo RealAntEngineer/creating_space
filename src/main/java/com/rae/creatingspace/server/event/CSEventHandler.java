@@ -95,42 +95,6 @@ public class CSEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            giveGravityEffects(event.player);
-        }
-    }
-
-    public static void giveGravityEffects(Entity entity) {
-
-        double gravityFactor = 0;
-        if (getGravityFactor((LivingEntity) entity) == 0) {
-            applyEffects(entity, MobEffects.SLOW_FALLING, 60, 9);
-
-        }
-    }
-     private static double getGravityFactor(LivingEntity entity) {
-         ResourceKey<DimensionType> dimensionTypeKey = ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, entity.level.dimension().location());
-         float gravityValue = CSDimensionUtil.gravity(dimensionTypeKey);
-         double gravityFactor = (double) gravityValue / 9.81;
-         return Math.round(gravityFactor * 1000.0) / 1000.0;
-     }
-     // Calculate jump boost strength based on gravity factor
-     private int calculateJumpBoostStrength(double gravityFactor) {
-         return (int) Math.round((1.0 - gravityFactor) * 10);
-     }
-
-
-
-
-
-
-    private static void applyEffects(Entity entity, MobEffect effect, int duration, int amplifier) {
-        if (entity instanceof LivingEntity livingEntity && !entity.level.isClientSide()) {
-            livingEntity.addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
-        }
-    }
 
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
