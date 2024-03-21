@@ -95,6 +95,50 @@ public class CSEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            giveGravityEffects(event.player);
+        }
+    }
+
+    private static int calculateMovementSpeedStrength(double gravityFactor) {
+        return (int) Math.round((1.0 - gravityFactor) * 3);
+    }
+
+    private static int calculateSlowFallingStrength(double gravityFactor) {
+        return (int) Math.round((1.0 - gravityFactor) * 2);
+    }
+
+    private static int calculateJumpBoostStrength(double gravityFactor) {
+        return (int) Math.round((1.0 - gravityFactor) * 10);
+    }
+    public static void giveGravityEffects(Entity entity) {
+        double gravityFactor = getGravityFactor((LivingEntity) entity);
+        if (gravityFactor == 0) {
+            applyEffects(entity, MobEffects.SLOW_FALLING, 10, 9);
+        } else if (gravityFactor != 1) {
+            applyEffects(entity, MobEffects.SLOW_FALLING, 10, calculateSlowFallingStrength(gravityFactor));
+            applyEffects(entity, MobEffects.MOVEMENT_SPEED, 10, calculateMovementSpeedStrength(gravityFactor));
+            applyEffects(entity, MobEffects.JUMP, 10, calculateJumpBoostStrength(gravityFactor));
+        }
+    }
+     private static double getGravityFactor(LivingEntity entity) {
+         ResourceKey<DimensionType> dimensionTypeKey = ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, entity.level.dimension().location());
+         float gravityValue = CSDimensionUtil.gravity(dimensionTypeKey);
+         double gravityFactor = (double) gravityValue / 9.81;
+         return Math.round(gravityFactor * 1000.0) / 1000.0;
+     }
+     // Calculate jump boost strength based on gravity factor
+
+
+
+
+    private static void applyEffects(Entity entity, MobEffect effect, int duration, int amplifier) {
+        if (entity instanceof LivingEntity livingEntity && !entity.level.isClientSide()) {
+            livingEntity.addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
+        }
+    }
 
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {

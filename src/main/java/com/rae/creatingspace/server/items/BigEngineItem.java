@@ -4,7 +4,6 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.RocketEngineBlock;
-import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -73,10 +72,6 @@ public class BigEngineItem extends RocketEngineItem{
                     }
                 }
             }
-        }
-        SuperGlueEntity entity = new SuperGlueEntity(lvl, SuperGlueEntity.span(place.offset(-1, -1, -1), place.offset(1, 1, 1)));
-        if (!lvl.isClientSide) {
-            lvl.addFreshEntity(entity);
         }
         return true;
     }
