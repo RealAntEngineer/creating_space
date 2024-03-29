@@ -33,7 +33,9 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity {
     protected void read(CompoundTag compound, boolean clientPacket) {
         super.read(compound, clientPacket);
         int id = compound.getInt("room");
-        room = id == Integer.MIN_VALUE ? null : (RoomAtmosphere) level.getEntity(id);
+        if (level != null) {
+            room = id == Integer.MIN_VALUE ? null : (RoomAtmosphere) level.getEntity(id);
+        }
     }
 
     @Override

@@ -12,12 +12,12 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
     }
 
     @Override
-    public boolean shouldRender(RoomAtmosphere p_114491_, Frustum p_114492_, double p_114493_, double p_114494_, double p_114495_) {
+    public boolean shouldRender(RoomAtmosphere atmosphere, Frustum frustum, double p_114493_, double p_114494_, double p_114495_) {
         return false;
     }
 
     @Override
-    public ResourceLocation getTextureLocation(RoomAtmosphere p_114482_) {
+    public ResourceLocation getTextureLocation(RoomAtmosphere atmosphere) {
         return null;
     }
 }

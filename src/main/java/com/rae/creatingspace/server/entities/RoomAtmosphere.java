@@ -53,6 +53,7 @@ public class RoomAtmosphere extends Entity {
     public void regenerateRoom(BlockPos firstPos) {
 
         shape = new RoomShape(searchTopology(firstPos));
+        System.out.println(shape.getVolume());
     }
 
     private List<AABB> searchTopology(BlockPos start) {
@@ -71,12 +72,12 @@ public class RoomAtmosphere extends Entity {
                 AABB tempAabb = new AABB(tempPos);
 
                 boolean canContinue = true;
-                while (canContinue && tempAabb.getSize() < 1000) {
+                //make it possible to compute in batch
+                while (canContinue && tempAabb.getSize() < 10) {
                     canContinue = false;
                     for (Direction dir : Direction.values()) {
                         //make a condition here to avoid looping when no walls
                         //verify that it's in the range of a room pressurizer ? or just size
-                        //TODO change the place of the while
                         //verify for positive dir and negative ones
                         AABB expansion = tempAabb.expandTowards(dir.getNormal().getX(), dir.getNormal().getY(), dir.getNormal().getZ());
 
@@ -193,87 +194,8 @@ public class RoomAtmosphere extends Entity {
         return false;
     }
 
-    private class RoomShape {
-        ArrayList<AABB> listOfBox;//should be a list of points that define a frontier
-
-        float xRot;
-        float yRot;
-        float zRot;
-
-        RoomShape(List<AABB> listOfBox) {
-            this.listOfBox = new ArrayList<>(listOfBox);
-        }
-
-        public void add(BlockPos pos) {
-            AABB firstBlock = new AABB(pos);
-            //expand the AABB to the frontier ? ( optimise will merge AABB)
-            add(firstBlock);
-        }
-
-        public AABB getEncapsulatingBox() {
-            Double minX = null;
-            Double minY = null;
-            Double minZ = null;
-            Double maxX = null;
-            Double maxY = null;
-            Double maxZ = null;
-            for (AABB aabb : listOfBox) {
-                if (minX == null || minX > aabb.minX) {
-                    minX = aabb.minX;
-                }
-                if (minY == null || minY > aabb.minY) {
-                    minY = aabb.minY;
-                }
-                if (minZ == null || minZ > aabb.minZ) {
-                    minZ = aabb.minZ;
-                }
-                if (maxX == null || maxX > aabb.maxX) {
-                    maxX = aabb.maxX;
-                }
-                if (maxY == null || maxY > aabb.maxY) {
-                    maxY = aabb.maxY;
-                }
-                if (maxZ == null || maxZ > aabb.maxZ) {
-                    maxZ = aabb.maxZ;
-                }
-            }
-            if (listOfBox.isEmpty()) {
-                return null;
-            }
-            return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
-        }
-
-        //TODO optimise
-        public void addAll(List<BlockPos> posList) {
-            for (BlockPos pos :
-                    posList) {
-                add(pos);
-            }
-        }
-
-        private void add(AABB aabbs) {
-            add(List.of(aabbs));
-        }
-
-        private void add(List<AABB> aabbs) {
-            listOfBox.addAll(aabbs);
-        }
-
-        /**
-         * optimise the frontier to delete any unused part
-         */
-        public void optimise() {
-
-        }
-
-        public List<Entity> getEntitiesInside(RoomAtmosphere parent, Level level) {
-            ArrayList<Entity> entities = new ArrayList<>();
-            for (AABB box :
-                    listOfBox) {
-                entities.addAll(level.getEntities(parent, box));
-            }
-            return entities;
-        }
-
+    public RoomShape getShape() {
+        return shape;
     }
+
 }
