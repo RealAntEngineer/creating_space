@@ -5,19 +5,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class RoomAtmosphere extends Entity {
 
@@ -46,6 +45,7 @@ public class RoomAtmosphere extends Entity {
     //TODO making special behavior for blocks and be inside an oxygen room.
     // plants will filter (absorbing C02 and releasing 02, living will consume 02 and release C02)
     ArrayList<BlockPos> roomSealers = new ArrayList<>();
+    HashMap<ResourceLocation, AtmosphereFilterData> passiveFilters = new HashMap<>();
     Queue<BlockPos> toVist = new ArrayDeque<>();
     ArrayList<BlockPos> visited = new ArrayList<>();
 
@@ -53,8 +53,27 @@ public class RoomAtmosphere extends Entity {
     public void regenerateRoom(BlockPos firstPos) {
 
         shape = new RoomShape(searchTopology(firstPos));
-        System.out.println(shape.getVolume());
+        /*for (AABB aabb:
+             shape.listOfBox) {
+            level.addFreshEntity(new SuperGlueEntity(level,aabb));
+        }*/
     }
+
+
+    private boolean contains(List<AABB> tempRoom, BlockPos tempPos) {
+        boolean contain = false;
+        for (AABB aabb : tempRoom) {
+            if (aabb.contains(Vec3.atCenterOf(tempPos))) {
+                contain = true;
+            }
+        }
+        return contain;
+    }
+
+    /**
+     * @param start the first pos of the room
+     * @return a list of non-intersecting AABB covering the entirety of the room
+     */
 
     private List<AABB> searchTopology(BlockPos start) {
         Queue<BlockPos> toVist = new ArrayDeque<>();
@@ -62,13 +81,8 @@ public class RoomAtmosphere extends Entity {
         ArrayList<AABB> tempRoom = new ArrayList<>();
         while (!toVist.isEmpty() && size(tempRoom) < 1000) {
             BlockPos tempPos = toVist.poll();
-            boolean contain = false;
-            for (AABB aabb : tempRoom) {
-                if (aabb.contains(Vec3.atCenterOf(tempPos))) {
-                    contain = true;
-                }
-            }
-            if (!contain) {
+
+            if (!contains(tempRoom, tempPos)) {
                 AABB tempAabb = new AABB(tempPos);
 
                 boolean canContinue = true;
@@ -88,8 +102,9 @@ public class RoomAtmosphere extends Entity {
                                 }
                         );
                         boolean canBeExpandedToward = true;
+                        //ensure that there is no intersecting boxs
                         for (BlockPos pos : collectedPos) {
-                            if (!tempAabb.contains(Vec3.atCenterOf(pos)) && !canGoThrough(level.getBlockState(pos), dir)) {
+                            if (!tempAabb.contains(Vec3.atCenterOf(pos)) && (!canGoThrough(level.getBlockState(pos), dir) || contains(tempRoom, pos))) {
                                 canBeExpandedToward = false;
                             }
                         }
@@ -100,12 +115,10 @@ public class RoomAtmosphere extends Entity {
                             canContinue = true;
                         } else {
                             for (BlockPos pos : collectedPos) {
-                                if (!tempAabb.contains(Vec3.atCenterOf(pos)) && canGoThrough(level.getBlockState(pos), dir)) {
+                                if (!tempAabb.contains(Vec3.atCenterOf(pos)) && canGoThrough(level.getBlockState(pos), dir) && !contains(tempRoom, pos)) {
                                     toVist.add(pos);
-                                } else if (!tempAabb.contains(Vec3.atCenterOf(pos))) {
-                                    if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
-                                        roomSealers.add(pos);
-                                    }
+                                } else if (!tempAabb.contains(Vec3.atCenterOf(pos)) && !contains(tempRoom, pos)) {
+                                    applyOnSolidBlock(pos);
                                 }
                             }
                         }
@@ -114,8 +127,23 @@ public class RoomAtmosphere extends Entity {
                 tempRoom.add(tempAabb);
             }
         }
-        System.out.println(tempRoom);
         return tempRoom;
+    }
+
+    private void applyOnSolidBlock(BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
+            roomSealers.add(pos);
+        }
+        if (state.getBlock() instanceof LeavesBlock) {
+            ResourceLocation location = state.getBlock().builtInRegistryHolder().key().location();
+            if (passiveFilters.containsKey(location)) {
+                passiveFilters.get(location).add(pos);
+                System.out.println(passiveFilters.get(location).getPositions());
+            } else {
+                passiveFilters.put(location, new AtmosphereFilterData(new ArrayList<>(List.of(pos)), 1));
+            }
+        }
     }
 
     private int size(List<AABB> aabbs) {
@@ -134,12 +162,12 @@ public class RoomAtmosphere extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
-
+        shape = RoomShape.fromNbt((CompoundTag) nbt.get("shape"));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag nbt) {
-
+        nbt.put("shape", shape.toNbt());
     }
 
     @Override
@@ -198,4 +226,36 @@ public class RoomAtmosphere extends Entity {
         return shape;
     }
 
+    private static class AtmosphereFilterData {
+
+        ArrayList<BlockPos> positions;
+        float individualImpact;
+        float globalImpact;
+
+        AtmosphereFilterData(float individualImpact) {
+            this(new ArrayList<>(), individualImpact);
+        }
+
+        AtmosphereFilterData(ArrayList<BlockPos> positions, float individualImpact) {
+            this.positions = positions;
+            this.individualImpact = individualImpact;
+            this.globalImpact = individualImpact * positions.size();
+        }
+
+        public void add(BlockPos pos) {
+            if (!positions.contains(pos)) {
+                positions.add(pos);
+            }
+            globalImpact += individualImpact;
+        }
+
+        public void remove(BlockPos pos) {
+            positions.remove(pos);
+            globalImpact -= individualImpact;
+        }
+
+        public ArrayList<BlockPos> getPositions() {
+            return positions;
+        }
+    }
 }
