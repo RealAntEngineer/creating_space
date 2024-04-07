@@ -190,7 +190,7 @@ public class RoomAtmosphere extends Entity {
         super.tick();
 
         if (!level.isClientSide()) {
-            if (hasFrontier()) {
+            if (hasShape()) {
                 List<Entity> entitiesInside = shape.getEntitiesInside(this, level);
                 for (Entity entity :
                         entitiesInside) {
@@ -210,7 +210,7 @@ public class RoomAtmosphere extends Entity {
         }
     }
 
-    public boolean hasFrontier() {
+    public boolean hasShape() {
         return !shape.listOfBox.isEmpty();
     }
 
