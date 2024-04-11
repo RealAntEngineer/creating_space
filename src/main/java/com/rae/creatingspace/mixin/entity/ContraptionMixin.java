@@ -1,4 +1,4 @@
-package com.rae.creatingspace.mixin;
+package com.rae.creatingspace.mixin.entity;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;

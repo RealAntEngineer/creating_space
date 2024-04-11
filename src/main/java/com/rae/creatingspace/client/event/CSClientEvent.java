@@ -38,6 +38,7 @@ public class CSClientEvent {
         Player player = event.getPlayer();
         Entity vehicle = player.getVehicle();
         if (vehicle instanceof RocketContraptionEntity rocket) {
+            //TODO take the size of the rocket into account
             CameraType cameraType = Minecraft.getInstance().options.getCameraType();
             if (!cameraType.isFirstPerson() && !cameraType.isMirrored()) {
                 event.setNewFovModifier(event.getFovModifier() * 10);

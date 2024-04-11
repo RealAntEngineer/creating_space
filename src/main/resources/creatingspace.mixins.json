@@ -6,7 +6,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "creatingspace.refmap.json",
   "mixins": [
-    "ContraptionMixin",
+    "entity.ContraptionMixin",
+    "entity.LivingEntityMixin",
     "kinetics.BacktankBlockEntityMixin"
   ],
   "client": [
