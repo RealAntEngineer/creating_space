@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -17,6 +16,7 @@ import java.util.List;
 import static net.minecraft.util.Mth.clamp;
 
 public class PlumeParticle extends SimpleAnimatedParticle {
+    public static final float SIZE_FACTOR = .6f;
     private float drag;
     private Vec3 speed;
     public PlumeParticle(ClientLevel world, RocketPlumeParticleData data,
@@ -25,7 +25,6 @@ public class PlumeParticle extends SimpleAnimatedParticle {
                          SpriteSet sprite)
         {
         super(world, x, y, z, sprite, world.random.nextFloat() * .5f);
-        this.quadSize *= 0.75F;
         this.lifetime = (int) (200*world.random.nextFloat());
         hasPhysics = true;
         selectSprite(0);
@@ -36,13 +35,15 @@ public class PlumeParticle extends SimpleAnimatedParticle {
         this.zo = z;
 
         this.speed = new Vec3(xSpeed,ySpeed,zSpeed);
+            quadSize = (float) speed.length() * SIZE_FACTOR;
+
         this.morphColor();
         //setAlpha(.25f);
     }
 
     @Nonnull
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
     @Override
@@ -57,16 +58,18 @@ public class PlumeParticle extends SimpleAnimatedParticle {
         }
 
         // Scaling and size adjustments based on speed
-        if (speed.length() > 1) {
-            scale(1.2f); // Adjust the scale for higher speeds
-            this.quadSize *= 1.1; // Increase the size to simulate cone spread
-        } else if (speed.length() < 1) {
-            selectSprite(1);
+        if (speed.length() < 0.2) {
+            selectSprite(2 + age / 200);
             if (this.quadSize < 2) {
                 scale(drag * 3 + 1);
             }
+            if (speed.length() < 0.05f) {
+                this.remove();
+                return;
+            }
+        } else {
+            quadSize = (float) speed.length() * SIZE_FACTOR;
         }
-
         if (speed.length() < 0.05f) {
             this.remove();
             return;
@@ -143,7 +146,9 @@ public class PlumeParticle extends SimpleAnimatedParticle {
         Color yellow = new Color(0xFFFF00);
         Color red = new Color(0xFF0000);
         Color color = mixColors(yellow, red, speedFactor);
-
+        if (speed.length() < 1D) {
+            color = color.mixWith(Color.WHITE, (float) (1 - speed.length() / 3f));
+        }
         Vec3 colorVec = color.asVector();
         setColor((float) colorVec.x, (float) colorVec.y, (float) colorVec.z);
         setAlpha((float) clamp(speed.length()*2, 0.2, 1));
@@ -162,7 +167,7 @@ public class PlumeParticle extends SimpleAnimatedParticle {
     }
 
     private void selectSprite(int index) {
-        setSprite(sprites.get(index, 1));
+        setSprite(sprites.get(index, 10));
     }
 
     public static class Factory implements ParticleProvider<RocketPlumeParticleData> {
