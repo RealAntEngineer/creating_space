@@ -1,9 +1,13 @@
 package com.rae.creatingspace.server.entities;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.codecs.UnboundedMapCodec;
 import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -29,34 +33,21 @@ public class RoomAtmosphere extends Entity {
         shape = new RoomShape(new ArrayList<>());
     }
 
-    //the tick method will be called by the sealer be
-    static int searchPerTick = 100;
-    static int maxSearch = 10;
-    int nbrOfSearch = 0;
-    // schedule a search for maximum 10 ticks and 200 block search every tick
-
     //TODO first test with only 1 sealer then try with several the system to merge and separate rooms
 
     //TODO compatibility with contraptions
     //TODO make a search for every sealer inside -> list of sealer
 
-    boolean shouldContinueSearch = false;
-    boolean hasSearchThisTick = false;
     //TODO making special behavior for blocks and be inside an oxygen room.
     // plants will filter (absorbing C02 and releasing 02, living will consume 02 and release C02)
     ArrayList<BlockPos> roomSealers = new ArrayList<>();
     HashMap<ResourceLocation, AtmosphereFilterData> passiveFilters = new HashMap<>();
-    Queue<BlockPos> toVist = new ArrayDeque<>();
-    ArrayList<BlockPos> visited = new ArrayList<>();
 
     //TODO make a regenerateRoom and a searchFrontier methode (regenerateRoom will only initiate the call, searchFrontier will be private)
     public void regenerateRoom(BlockPos firstPos) {
-
+        passiveFilters = new HashMap<>();
         shape = new RoomShape(searchTopology(firstPos));
-        /*for (AABB aabb:
-             shape.listOfBox) {
-            level.addFreshEntity(new SuperGlueEntity(level,aabb));
-        }*/
+        setBoundingBox(shape.getEncapsulatingBox());
     }
 
 
@@ -81,7 +72,7 @@ public class RoomAtmosphere extends Entity {
         ArrayList<AABB> tempRoom = new ArrayList<>();
         while (!toVist.isEmpty() && size(tempRoom) < 1000) {
             BlockPos tempPos = toVist.poll();
-
+            assert tempPos != null;
             if (!contains(tempRoom, tempPos)) {
                 AABB tempAabb = new AABB(tempPos);
 
@@ -138,8 +129,7 @@ public class RoomAtmosphere extends Entity {
         if (state.getBlock() instanceof LeavesBlock) {
             ResourceLocation location = state.getBlock().builtInRegistryHolder().key().location();
             if (passiveFilters.containsKey(location)) {
-                passiveFilters.get(location).add(pos);
-                System.out.println(passiveFilters.get(location).getPositions());
+                passiveFilters.put(location, passiveFilters.get(location).add(pos));
             } else {
                 passiveFilters.put(location, new AtmosphereFilterData(new ArrayList<>(List.of(pos)), 1));
             }
@@ -162,11 +152,20 @@ public class RoomAtmosphere extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag nbt) {
+        passiveFilters = new HashMap<>(
+                PASSIVE_FILTER_CODEC.parse(NbtOps.INSTANCE, nbt.get("passiveFilters"))
+                        .result().orElse(new HashMap<>())
+        );
+        o2amount = nbt.getInt("o2amount");
         shape = RoomShape.fromNbt((CompoundTag) nbt.get("shape"));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag nbt) {
+        nbt.put("passiveFilters",
+                PASSIVE_FILTER_CODEC.encodeStart(NbtOps.INSTANCE, passiveFilters).result()
+                        .orElse(new CompoundTag()));
+        nbt.putInt("o2amount", o2amount);
         nbt.put("shape", shape.toNbt());
     }
 
@@ -183,30 +182,27 @@ public class RoomAtmosphere extends Entity {
         @SuppressWarnings("unchecked")
         EntityType.Builder<RoomAtmosphere> entityBuilder =
                 (EntityType.Builder<RoomAtmosphere>) builder;
-        return entityBuilder;
+        return entityBuilder.sized(1, 1);
     }
+
     @Override
     public void tick() {
         super.tick();
 
         if (!level.isClientSide()) {
             if (hasShape()) {
-                List<Entity> entitiesInside = shape.getEntitiesInside(this, level);
+                List<Entity> entitiesInside = shape.getEntitiesInside(level);
                 for (Entity entity :
                         entitiesInside) {
-                    if (entity instanceof LivingEntity living) {
+                    if (entity instanceof LivingEntity living && breathable()) {
                         consumeO2();
-                        //cancel Oxygen suffocation event if present ??
-
                     }
                 }
-                /*if (shouldContinueSearch) {
-                    regenerateRoom();
-                }*/
-            } else {
-                //regenerateRoom();
+                for (AtmosphereFilterData data : passiveFilters.values()) {
+                    //System.out.println("globalImpact of "+this.getId()+ ": "+data.globalImpact);
+                    o2amount += data.globalImpact;
+                }
             }
-            hasSearchThisTick = false;
         }
     }
 
@@ -215,47 +211,44 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void consumeO2() {
-
+        if (o2amount >= 10) {
+            o2amount -= 10;
+        }
     }
 
-    public boolean isRoomBreathable() {
-        return false;
+    public boolean breathable() {
+        return (float) o2amount / shape.getVolume() > 10;
     }
 
     public RoomShape getShape() {
         return shape;
     }
 
-    private static class AtmosphereFilterData {
+    private static final UnboundedMapCodec<ResourceLocation, AtmosphereFilterData> PASSIVE_FILTER_CODEC =
+            Codec.unboundedMap(
+                    ResourceLocation.CODEC, AtmosphereFilterData.CODEC);
 
-        ArrayList<BlockPos> positions;
-        float individualImpact;
-        float globalImpact;
+    public record AtmosphereFilterData(ArrayList<BlockPos> positions, Integer individualImpact, int globalImpact) {
 
-        AtmosphereFilterData(float individualImpact) {
-            this(new ArrayList<>(), individualImpact);
+        public static Codec<AtmosphereFilterData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.list(BlockPos.CODEC).fieldOf("positions").forGetter(i -> i.positions),
+                Codec.INT.fieldOf("individualImpact").forGetter(i -> i.individualImpact)
+        ).apply(instance, AtmosphereFilterData::new));
+
+        AtmosphereFilterData(List<BlockPos> positions, int individualImpact) {
+            this(new ArrayList<>(positions), individualImpact, individualImpact * positions.size());
         }
 
-        AtmosphereFilterData(ArrayList<BlockPos> positions, float individualImpact) {
-            this.positions = positions;
-            this.individualImpact = individualImpact;
-            this.globalImpact = individualImpact * positions.size();
-        }
-
-        public void add(BlockPos pos) {
+        public AtmosphereFilterData add(BlockPos pos) {
             if (!positions.contains(pos)) {
                 positions.add(pos);
             }
-            globalImpact += individualImpact;
+            return new AtmosphereFilterData(positions, individualImpact, globalImpact + individualImpact);
         }
 
-        public void remove(BlockPos pos) {
-            positions.remove(pos);
-            globalImpact -= individualImpact;
-        }
-
-        public ArrayList<BlockPos> getPositions() {
-            return positions;
+        public AtmosphereFilterData remove(BlockPos pos) {
+            boolean flag = positions.remove(pos);
+            return new AtmosphereFilterData(positions, individualImpact, flag ? globalImpact - individualImpact : globalImpact);
         }
     }
 }

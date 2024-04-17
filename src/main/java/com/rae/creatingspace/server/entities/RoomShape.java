@@ -69,13 +69,13 @@ public class RoomShape {
             if (minZ == null || minZ > aabb.minZ) {
                 minZ = aabb.minZ;
             }
-            if (maxX == null || maxX > aabb.maxX) {
+            if (maxX == null || maxX < aabb.maxX) {
                 maxX = aabb.maxX;
             }
-            if (maxY == null || maxY > aabb.maxY) {
+            if (maxY == null || maxY < aabb.maxY) {
                 maxY = aabb.maxY;
             }
-            if (maxZ == null || maxZ > aabb.maxZ) {
+            if (maxZ == null || maxZ < aabb.maxZ) {
                 maxZ = aabb.maxZ;
             }
         }
@@ -108,13 +108,13 @@ public class RoomShape {
 
     }
 
-    public List<Entity> getEntitiesInside(RoomAtmosphere parent, Level level) {
+    public List<Entity> getEntitiesInside(Level level) {
         ArrayList<Entity> entities = new ArrayList<>();
         for (AABB box :
                 listOfBox) {
-            entities.addAll(level.getEntities(parent, box));
+            entities.addAll(level.getEntities(null, box));
         }
-        return entities;
+        return entities.stream().distinct().toList();
     }
 
     public double getVolume(AABB aabb) {
@@ -132,4 +132,10 @@ public class RoomShape {
     }
 
 
+    public boolean inside(AABB colBox) {
+        for (AABB box : listOfBox) {
+            if (box.intersects(colBox)) return true;
+        }
+        return false;
+    }
 }

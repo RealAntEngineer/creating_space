@@ -5,9 +5,9 @@ import com.rae.creatingspace.server.blocks.atmosphere.RoomPressuriserBlock;
 import com.rae.creatingspace.server.entities.RoomAtmosphere;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class RoomPressuriserBlockEntity extends KineticBlockEntity {
@@ -15,32 +15,39 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity {
         super(typeIn, pos, state);
     }
 
-    RoomAtmosphere room;
 
     public void tryRoom() {
-        if (room != null && room.isAlive()) {
-            room.regenerateRoom(getBlockPos().relative(getBlockState().getValue(RoomPressuriserBlock.FACING)));
-        } else {
-            room = new RoomAtmosphere(EntityInit.ATMOSPHERE_ENTITY.get(), getLevel());
-            room.setPos(Vec3.atCenterOf(this.getBlockPos()));
-            if (level != null) {
-                level.addFreshEntity(room);
+        assert level != null;
+        if (!level.isClientSide) {
+            boolean initialized = false;
+            for (RoomAtmosphere room : level.getEntitiesOfClass(RoomAtmosphere.class,
+                    new AABB(getBlockPos().relative(getBlockState()
+                            .getValue(RoomPressuriserBlock.FACING))))) {
+                if (room != null) {
+                    initialized = true;
+                    room.regenerateRoom(getBlockPos().relative(getBlockState().getValue(RoomPressuriserBlock.FACING)));
+                }
+            }
+            if (!initialized) {
+                RoomAtmosphere room = new RoomAtmosphere(EntityInit.ATMOSPHERE_ENTITY.get(), getLevel());
+                room.setPos(Vec3.atCenterOf(this.getBlockPos()));
+                if (level != null) {
+                    level.addFreshEntity(room);
+                    room.regenerateRoom(getBlockPos().relative(getBlockState().getValue(RoomPressuriserBlock.FACING)));
+                }
             }
         }
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
-        super.read(compound, clientPacket);
-        int id = compound.getInt("room");
+    public void remove() {
         if (level != null) {
-            room = id == Integer.MIN_VALUE ? null : (RoomAtmosphere) level.getEntity(id);
+            for (RoomAtmosphere room : level.getEntitiesOfClass(RoomAtmosphere.class,
+                    new AABB(getBlockPos().relative(getBlockState().getValue(RoomPressuriserBlock.FACING))))) {
+                if (room != null)
+                    room.kill();
+            }
         }
-    }
-
-    @Override
-    protected void write(CompoundTag compound, boolean clientPacket) {
-        compound.putInt("room", room == null ? Integer.MIN_VALUE : room.getId());
-        super.write(compound, clientPacket);
+        super.remove();
     }
 }
