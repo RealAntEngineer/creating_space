@@ -9,6 +9,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -24,13 +26,21 @@ import java.util.*;
 
 public class RoomAtmosphere extends Entity {
 
-    RoomShape shape;
-    private int o2amount;
+    private int o2amount;//equivalent to 1 mb of liquid oxygen ?
+    private static final EntityDataAccessor<RoomShape> SHAPE_DATA_ACCESSOR = SynchedEntityData.defineId(RoomAtmosphere.class, RoomShape.SERIALIZER);
 
+    public float getO2concentration() {
+        return (float) this.o2amount / getShape().volume;
+    }
+
+    public void addO2(int o2amount) {
+        this.o2amount += o2amount;
+        this.o2amount = (int) Math.min(this.o2amount, 100 * getShape().getVolume());
+    }
     public RoomAtmosphere(EntityType<?> entityType, Level level) {
         super(entityType, level);
         noPhysics = true;
-        shape = new RoomShape(new ArrayList<>());
+        //shape = new RoomShape(new ArrayList<>());
     }
 
     //TODO first test with only 1 sealer then try with several the system to merge and separate rooms
@@ -46,8 +56,9 @@ public class RoomAtmosphere extends Entity {
     //TODO make a regenerateRoom and a searchFrontier methode (regenerateRoom will only initiate the call, searchFrontier will be private)
     public void regenerateRoom(BlockPos firstPos) {
         passiveFilters = new HashMap<>();
-        shape = new RoomShape(searchTopology(firstPos));
+        RoomShape shape = searchTopology(firstPos);
         setBoundingBox(shape.getEncapsulatingBox());
+        entityData.set(SHAPE_DATA_ACCESSOR, shape);
     }
 
 
@@ -66,11 +77,11 @@ public class RoomAtmosphere extends Entity {
      * @return a list of non-intersecting AABB covering the entirety of the room
      */
 
-    private List<AABB> searchTopology(BlockPos start) {
+    private RoomShape searchTopology(BlockPos start) {
         Queue<BlockPos> toVist = new ArrayDeque<>();
         toVist.add(start);
         ArrayList<AABB> tempRoom = new ArrayList<>();
-        while (!toVist.isEmpty() && size(tempRoom) < 1000) {
+        while (!toVist.isEmpty() && size(tempRoom) < 1000 * Math.max(roomSealers.size(), 1)) {
             BlockPos tempPos = toVist.poll();
             assert tempPos != null;
             if (!contains(tempRoom, tempPos)) {
@@ -118,7 +129,11 @@ public class RoomAtmosphere extends Entity {
                 tempRoom.add(tempAabb);
             }
         }
-        return tempRoom;
+        RoomShape shape = new RoomShape(tempRoom);
+        if (size(tempRoom) >= 1000 * Math.max(roomSealers.size(), 1)) {
+            shape.setOpen();
+        }
+        return shape;
     }
 
     private void applyOnSolidBlock(BlockPos pos) {
@@ -147,7 +162,7 @@ public class RoomAtmosphere extends Entity {
 
     @Override
     protected void defineSynchedData() {
-
+        this.entityData.define(SHAPE_DATA_ACCESSOR, new RoomShape(new ArrayList<>()));
     }
 
     @Override
@@ -157,7 +172,7 @@ public class RoomAtmosphere extends Entity {
                         .result().orElse(new HashMap<>())
         );
         o2amount = nbt.getInt("o2amount");
-        shape = RoomShape.fromNbt((CompoundTag) nbt.get("shape"));
+        entityData.set(SHAPE_DATA_ACCESSOR, RoomShape.fromNbt((CompoundTag) nbt.get("shape")));
     }
 
     @Override
@@ -166,7 +181,7 @@ public class RoomAtmosphere extends Entity {
                 PASSIVE_FILTER_CODEC.encodeStart(NbtOps.INSTANCE, passiveFilters).result()
                         .orElse(new CompoundTag()));
         nbt.putInt("o2amount", o2amount);
-        nbt.put("shape", shape.toNbt());
+        nbt.put("shape", getShape().toNbt());
     }
 
     @Override
@@ -175,7 +190,9 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void addBlockToFrontier(BlockPos pos) {
+        RoomShape shape = getShape();
         shape.add(pos);
+        this.entityData.set(SHAPE_DATA_ACCESSOR, shape);
     }
 
     public static EntityType.Builder<?> build(EntityType.Builder<?> builder) {
@@ -191,7 +208,7 @@ public class RoomAtmosphere extends Entity {
 
         if (!level.isClientSide()) {
             if (hasShape()) {
-                List<Entity> entitiesInside = shape.getEntitiesInside(level);
+                List<Entity> entitiesInside = getShape().getEntitiesInside(level);
                 for (Entity entity :
                         entitiesInside) {
                     if (entity instanceof LivingEntity living && breathable()) {
@@ -200,14 +217,14 @@ public class RoomAtmosphere extends Entity {
                 }
                 for (AtmosphereFilterData data : passiveFilters.values()) {
                     //System.out.println("globalImpact of "+this.getId()+ ": "+data.globalImpact);
-                    o2amount += data.globalImpact;
+                    addO2(data.globalImpact);
                 }
             }
         }
     }
 
     public boolean hasShape() {
-        return !shape.listOfBox.isEmpty();
+        return !getShape().listOfBox.isEmpty();
     }
 
     public void consumeO2() {
@@ -217,11 +234,11 @@ public class RoomAtmosphere extends Entity {
     }
 
     public boolean breathable() {
-        return (float) o2amount / shape.getVolume() > 10;
+        return (float) o2amount / getShape().getVolume() > 10 && getShape().isClosed();
     }
 
     public RoomShape getShape() {
-        return shape;
+        return this.entityData.get(SHAPE_DATA_ACCESSOR);
     }
 
     private static final UnboundedMapCodec<ResourceLocation, AtmosphereFilterData> PASSIVE_FILTER_CODEC =

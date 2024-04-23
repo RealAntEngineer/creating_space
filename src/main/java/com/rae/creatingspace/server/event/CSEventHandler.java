@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -137,7 +138,6 @@ public class CSEventHandler {
         }
         List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox);
         for (RoomAtmosphere atmosphere : entityStream) {
-            System.out.println(atmosphere.getShape().inside(colBox));
             if (atmosphere.getShape().inside(colBox) && atmosphere.breathable()) {
                 return true;
             }
@@ -145,8 +145,26 @@ public class CSEventHandler {
         return false;
     }
 
+    //for legacy purpose
     private static boolean isStateBreathable(BlockState state) {
         return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
     }
 
+    @SubscribeEvent
+    public static void onBlockPlaced(BlockEvent.NeighborNotifyEvent event) {
+        boolean flag = false;
+        Level level = (Level) event.getLevel();
+        AABB colBox = new AABB(event.getPos());
+        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox);
+        for (RoomAtmosphere atmosphere : entityStream) {
+            if (atmosphere.getShape().inside(colBox)) {
+                flag = true;
+            }
+        }
+        if (flag) {
+            for (RoomAtmosphere atmosphere : entityStream) {
+                atmosphere.regenerateRoom(atmosphere.getOnPos());
+            }
+        }
+    }
 }

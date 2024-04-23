@@ -1,7 +1,10 @@
 package com.rae.creatingspace.server.entities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -9,15 +12,53 @@ import net.minecraft.world.phys.AABB;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomShape {
-    ArrayList<AABB> listOfBox;
+import static net.minecraft.network.syncher.EntityDataSerializers.registerSerializer;
 
+public class RoomShape {
+
+    public static final EntityDataSerializer<RoomShape> SERIALIZER = new EntityDataSerializer.ForValueType<>() {
+        @Override
+        public void write(FriendlyByteBuf byteBuf, RoomShape roomShape) {
+            byteBuf.writeBoolean(roomShape.closed);
+            byteBuf.writeInt(roomShape.volume);
+            byteBuf.writeCollection(roomShape.listOfBox, ((byteBuf1, aabb) -> {
+                byteBuf1.writeBlockPos(new BlockPos(aabb.minX, aabb.minY, aabb.minZ));
+                byteBuf1.writeBlockPos(new BlockPos(aabb.maxX, aabb.maxY, aabb.maxZ));
+            }));
+        }
+
+        @Override
+        public RoomShape read(FriendlyByteBuf byteBuf) {
+            boolean closed = byteBuf.readBoolean();
+            int volume = byteBuf.readInt();
+            List<AABB> aabbList = byteBuf.readCollection(NonNullList::createWithCapacity, byteBuf1 -> new AABB(byteBuf1.readBlockPos(), byteBuf1.readBlockPos()));
+            return new RoomShape(aabbList, volume, closed);
+        }
+    };
+
+    static {
+        registerSerializer(SERIALIZER);
+    }
+    ArrayList<AABB> listOfBox;
+    boolean closed = true;
     float xRot;
     float yRot;
     float zRot;
+    int volume;
 
     RoomShape(List<AABB> listOfBox) {
         this.listOfBox = new ArrayList<>(listOfBox);
+        calculateVolume();
+    }
+
+    RoomShape(List<AABB> listOfBox, int volume) {
+        this.listOfBox = new ArrayList<>(listOfBox);
+        this.volume = volume;
+    }
+
+    RoomShape(List<AABB> listOfBox, int volume, boolean closed) {
+        this(listOfBox, volume);
+        this.closed = closed;
     }
 
     public static RoomShape fromNbt(CompoundTag nbt) {
@@ -26,8 +67,7 @@ public class RoomShape {
         for (int i = 0; i < serialized.length / 2; i++) {
             listOfBox.add(new AABB(BlockPos.of(serialized[i]), BlockPos.of(serialized[i + 1])));
         }
-
-        return new RoomShape(listOfBox);
+        return new RoomShape(listOfBox, nbt.getInt("volume"), nbt.getBoolean("closed"));
     }
 
     public CompoundTag toNbt() {
@@ -39,6 +79,8 @@ public class RoomShape {
 
         }
         tag.putLongArray("listOfBox", listOfPos);
+        tag.putInt("volume", volume);
+        tag.putBoolean("closed", closed);
         return tag;
     }
 
@@ -52,6 +94,7 @@ public class RoomShape {
         add(firstBlock);
     }
 
+    //TODO use AABB::minmax
     public AABB getEncapsulatingBox() {
         Double minX = null;
         Double minY = null;
@@ -95,19 +138,11 @@ public class RoomShape {
 
     private void add(AABB aabbs) {
         add(List.of(aabbs));
+        calculateVolume();
     }
-
     private void add(List<AABB> aabbs) {
         listOfBox.addAll(aabbs);
     }
-
-    /**
-     * optimise the frontier to delete any unused part
-     */
-    public void optimise() {
-
-    }
-
     public List<Entity> getEntitiesInside(Level level) {
         ArrayList<Entity> entities = new ArrayList<>();
         for (AABB box :
@@ -117,25 +152,65 @@ public class RoomShape {
         return entities.stream().distinct().toList();
     }
 
-    public double getVolume(AABB aabb) {
-        return (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
-    }
-
-    public double getVolume() {
+    public void calculateVolume() {
         double volume = 0;
         for (AABB aabb :
                 listOfBox) {
             volume += getVolume(aabb);
 
         }
-        return volume;
+        this.volume = (int) volume;
     }
 
+    public double getVolume(AABB aabb) {
+        return (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
+    }
 
+    public double getVolume() {
+        return volume;
+    }
     public boolean inside(AABB colBox) {
         for (AABB box : listOfBox) {
             if (box.intersects(colBox)) return true;
         }
         return false;
+    }
+
+    public void remove(BlockPos pos) {
+        remove(new AABB(pos));
+    }
+
+    public void remove(AABB toRemove) {
+
+    }
+
+    public void setClosed() {
+        this.closed = true;
+    }
+
+    public void setOpen() {
+        this.closed = false;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    private List<AABB> carve(AABB carver, AABB carved) {
+        if (carved.intersects(carver)) {
+            return List.of(carved);
+        }
+        AABB iCarver = carver.intersect(carved);
+        ArrayList<AABB> aabbs = new ArrayList<>(6);
+        aabbs.add(new AABB(carved.minX, carved.minY, carved.minZ, iCarver.minX, carved.maxY, carved.maxZ));
+        aabbs.add(new AABB(iCarver.maxX, carved.minY, carved.minZ, carver.maxX, carved.maxY, carved.maxZ));
+
+        aabbs.add(new AABB(iCarver.minX, carved.minY, carved.minZ, iCarver.maxX, carved.maxY, iCarver.minZ));
+        aabbs.add(new AABB(iCarver.minX, carved.minY, iCarver.maxZ, iCarver.maxX, carved.maxY, carved.maxZ));
+
+        aabbs.add(new AABB(iCarver.minX, carved.minY, iCarver.minZ, iCarver.maxX, iCarver.minY, iCarver.maxZ));
+        aabbs.add(new AABB(iCarver.minX, iCarver.maxY, iCarver.minZ, iCarver.maxX, carved.maxY, iCarver.maxZ));
+
+        return aabbs.stream().filter(aabb -> aabb.getSize() != 0).toList();
     }
 }
