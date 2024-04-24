@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
 import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
+import com.simibubi.create.AllTags;
+import com.simibubi.create.content.decoration.copycat.CopycatBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +22,8 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 
 import java.util.*;
@@ -98,6 +102,7 @@ public class RoomAtmosphere extends Entity {
                         AABB expansion = tempAabb.expandTowards(dir.getNormal().getX(), dir.getNormal().getY(), dir.getNormal().getZ());
 
                         List<BlockPos> collectedPos = new ArrayList<>();
+                        //TODO filter the collected block directly with the stream
                         BlockPos.betweenClosedStream(expansion.contract(1, 1, 1)).forEach(
                                 (pos) -> {
                                     collectedPos.add(pos.immutable());
@@ -106,7 +111,7 @@ public class RoomAtmosphere extends Entity {
                         boolean canBeExpandedToward = true;
                         //ensure that there is no intersecting boxs
                         for (BlockPos pos : collectedPos) {
-                            if (!tempAabb.contains(Vec3.atCenterOf(pos)) && (!canGoThrough(level.getBlockState(pos), dir) || contains(tempRoom, pos))) {
+                            if (!tempAabb.contains(Vec3.atCenterOf(pos)) && (!canGoThrough(level, pos, dir) || contains(tempRoom, pos))) {
                                 canBeExpandedToward = false;
                             }
                         }
@@ -117,10 +122,15 @@ public class RoomAtmosphere extends Entity {
                             canContinue = true;
                         } else {
                             for (BlockPos pos : collectedPos) {
-                                if (!tempAabb.contains(Vec3.atCenterOf(pos)) && canGoThrough(level.getBlockState(pos), dir) && !contains(tempRoom, pos)) {
-                                    toVist.add(pos);
-                                } else if (!tempAabb.contains(Vec3.atCenterOf(pos)) && !contains(tempRoom, pos)) {
-                                    applyOnSolidBlock(pos);
+                                if (!tempAabb.contains(Vec3.atCenterOf(pos)) && !contains(tempRoom, pos)) {
+                                    if (canGoThrough(level, pos, dir)) {
+                                        toVist.add(pos);
+                                        if (!level.getBlockState(pos).isAir()) {
+                                            applyOnSolidBlock(pos);
+                                        }
+                                    } else {
+                                        applyOnSolidBlock(pos);
+                                    }
                                 }
                             }
                         }
@@ -156,10 +166,72 @@ public class RoomAtmosphere extends Entity {
         if (aabb == null) return 0;
         return (int) (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
     }
-    private boolean canGoThrough(BlockState blockState, Direction dir) {
-        return blockState.isAir();
+
+    private boolean canGoThrough(Level world, BlockPos currentPos, Direction dir) {
+        //copied from AirCurrent
+        BlockState state = world.getBlockState(currentPos);
+        BlockState copycatState = CopycatBlock.getMaterial(world, currentPos);
+        if (shouldAlwaysPass(copycatState.isAir() ? state : copycatState)) {
+            return true;
+        }
+
+        VoxelShape shape = state.getCollisionShape(world, currentPos);
+        if (shape.isEmpty()) {
+            return true;
+        }
+        if (shape == Shapes.block()) {
+            return false;
+        }
+        double shapeDepth = findMaxDepth(shape, dir);
+        return shapeDepth == Double.POSITIVE_INFINITY;
     }
 
+    //credit to Create for this code
+    private static final double[][] DEPTH_TEST_COORDINATES = {
+            {0.25, 0.25},
+            {0.25, 0.75},
+            {0.5, 0.5},
+            {0.75, 0.25},
+            {0.75, 0.75}
+    };
+
+    // Finds the maximum depth of the shape when traveling in the given direction.
+    // The result is always positive.
+    // If there is a hole, the result will be Double.POSITIVE_INFINITY.
+    private static double findMaxDepth(VoxelShape shape, Direction direction) {
+        Direction.Axis axis = direction.getAxis();
+        Direction.AxisDirection axisDirection = direction.getAxisDirection();
+        double maxDepth = 0;
+
+        for (double[] coordinates : DEPTH_TEST_COORDINATES) {
+            double depth;
+            if (axisDirection == Direction.AxisDirection.POSITIVE) {
+                double min = shape.min(axis, coordinates[0], coordinates[1]);
+                if (min == Double.POSITIVE_INFINITY) {
+                    return Double.POSITIVE_INFINITY;
+                }
+                depth = min;
+            } else {
+                double max = shape.max(axis, coordinates[0], coordinates[1]);
+                if (max == Double.NEGATIVE_INFINITY) {
+                    return Double.POSITIVE_INFINITY;
+                }
+                depth = 1 - max;
+            }
+
+            if (depth > maxDepth) {
+                maxDepth = depth;
+            }
+        }
+
+        return maxDepth;
+    }
+
+    private static boolean shouldAlwaysPass(BlockState state) {
+        return AllTags.AllBlockTags.FAN_TRANSPARENT.matches(state);
+    }
+
+    //end of shadowing Create code TODO use mixin ? instead of coping the code ?
     @Override
     protected void defineSynchedData() {
         this.entityData.define(SHAPE_DATA_ACCESSOR, new RoomShape(new ArrayList<>()));
