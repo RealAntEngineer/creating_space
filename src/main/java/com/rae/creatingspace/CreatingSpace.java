@@ -2,6 +2,7 @@ package com.rae.creatingspace;
 
 import com.mojang.logging.LogUtils;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.TagsInit;
@@ -20,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -56,26 +58,27 @@ public class CreatingSpace {
         EntityInit.register();
         FluidInit.register();
 
+        PaintingInit.register(modEventBus);
         RecipeInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
+        CarverInit.register(modEventBus);
+        EntityDataSerializersInit.register(modEventBus);
 
-        //DimensionInit.register(modEventBus);
+        PacketInit.registerPackets();
         IgniteOnPlace.register();
 
-        PaintingInit.register(modEventBus);
-
-        CarverInit.register(modEventBus);
 
         CSContraptionType.prepare();
 
         CSConfigs.registerConfigs(modLoadingContext);
         modEventBus.addListener(CreatingSpace::init);
+        modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 
     }
     public static void init(final FMLCommonSetupEvent event) {
-        PacketInit.registerPackets();
+
 
         event.enqueueWork(() -> {
 
@@ -85,6 +88,7 @@ public class CreatingSpace {
     }
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
+        //datagen, and tag provider
         event.addListener(DimensionParameterMapReader.DIMENSION_MAP_HOLDER);
         event.addListener(DimensionTagsReader.DIMENSION_TAGS_HOLDER);
         event.addListener(MassOfBlockReader.MASS_HOLDER);
