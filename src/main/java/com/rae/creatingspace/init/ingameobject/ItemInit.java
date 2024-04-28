@@ -5,8 +5,8 @@ import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.SpacesuitHelmetItem;
+import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
-import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -238,17 +238,17 @@ public class ItemInit {
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(forgeItemTag("armors/chestplates"))
                     .register();
-    public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_LEGGINGS =
+    public static final ItemEntry<UpgradableEquipment> BASIC_SPACESUIT_LEGGINGS =
             CreatingSpace.REGISTRATE
                     .item("basic_spacesuit_leggings",
-                            p -> new BaseArmorItem(AllArmorMaterials.COPPER, EquipmentSlot.LEGS, p, CreatingSpace.resource("basic_spacesuit")))
+                            p -> new UpgradableEquipment(AllArmorMaterials.COPPER, EquipmentSlot.LEGS, p, CreatingSpace.resource("basic_spacesuit")))
                     .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .tag(forgeItemTag("armors/leggings"))
                     .register();
-    public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_BOOTS =
+    public static final ItemEntry<UpgradableEquipment> BASIC_SPACESUIT_BOOTS =
             CreatingSpace.REGISTRATE
                     .item("basic_spacesuit_boots",
-                            p -> new BaseArmorItem(AllArmorMaterials.COPPER, EquipmentSlot.FEET, p, CreatingSpace.resource("basic_spacesuit")))
+                            p -> new UpgradableEquipment(AllArmorMaterials.COPPER, EquipmentSlot.FEET, p, CreatingSpace.resource("basic_spacesuit")))
                     .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .tag(forgeItemTag("armors/boots"))
                     .register();
@@ -274,17 +274,17 @@ public class ItemInit {
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(forgeItemTag("armors/chestplates"))
                     .register();
-    public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_LEGGINGS =
+    public static final ItemEntry<UpgradableEquipment> ADVANCED_SPACESUIT_LEGGINGS =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_leggings",
-                            p -> new BaseArmorItem(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS, p, CreatingSpace.resource("advanced_spacesuit")))
+                            p -> new UpgradableEquipment(ArmorMaterials.NETHERITE, EquipmentSlot.LEGS, p, CreatingSpace.resource("advanced_spacesuit")))
                     .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .tag(forgeItemTag("armors/leggings"))
                     .register();
-    public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_BOOTS =
+    public static final ItemEntry<UpgradableEquipment> ADVANCED_SPACESUIT_BOOTS =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_boots",
-                            p -> new BaseArmorItem(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, p, CreatingSpace.resource("advanced_spacesuit")))
+                            p -> new UpgradableEquipment(ArmorMaterials.NETHERITE, EquipmentSlot.FEET, p, CreatingSpace.resource("advanced_spacesuit")))
                     .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .tag(forgeItemTag("armors/boots"))
                     .register();

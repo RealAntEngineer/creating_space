@@ -1,6 +1,6 @@
 package com.rae.creatingspace.server.armor;
 
-import com.simibubi.create.content.equipment.armor.BaseArmorItem;
+import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @EventBusSubscriber
-public class SpacesuitHelmetItem extends BaseArmorItem {
+public class SpacesuitHelmetItem extends UpgradableEquipment {
 	public static final EquipmentSlot SLOT = EquipmentSlot.HEAD;
 
 	public SpacesuitHelmetItem(ArmorMaterial material, Properties properties, ResourceLocation textureLoc) {
