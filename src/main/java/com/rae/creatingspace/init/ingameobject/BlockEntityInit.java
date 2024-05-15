@@ -13,6 +13,10 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 
 public class BlockEntityInit {
+    public static final BlockEntityEntry<RocketEngineerTableBlockEntity> ENGINEER_TABLE =
+            REGISTRATE.blockEntity("engineer_table", RocketEngineerTableBlockEntity::new)
+                    .validBlocks(BlockInit.ENGINEER_TABLE)
+                    .register();
     public static final BlockEntityEntry<RocketControlsBlockEntity> CONTROLS =
             REGISTRATE.blockEntity("controls", RocketControlsBlockEntity::new)
             .validBlocks(BlockInit.ROCKET_CONTROLS)

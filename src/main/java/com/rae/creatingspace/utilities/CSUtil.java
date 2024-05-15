@@ -11,6 +11,8 @@ public class CSUtil {
             return false;
         }
     }
+
+    //TODO use String.format()
     public static String scientificNbrFormatting(Float toRound, int digit) {
         return scientificNbrFormatting(BigDecimal.valueOf(toRound),digit);
     }

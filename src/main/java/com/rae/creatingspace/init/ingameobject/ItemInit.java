@@ -5,6 +5,7 @@ import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.SpacesuitHelmetItem;
+import com.rae.creatingspace.server.items.DesignBlueprint;
 import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.foundation.item.CombustibleItem;
@@ -21,6 +22,19 @@ public class ItemInit {
 
 
     //component
+    public static final ItemEntry<Item> BLISK = CreatingSpace.REGISTRATE.item(
+                    "blisk", Item::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+    public static final ItemEntry<Item> THROAT = CreatingSpace.REGISTRATE.item(
+                    "throat", Item::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+
+    public static final ItemEntry<DesignBlueprint> DesignBlueprint =
+            CreatingSpace.REGISTRATE.item("design_blueprint", DesignBlueprint::new)
+                    .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                    .register();
     public static final ItemEntry<Item> INJECTOR = CreatingSpace.REGISTRATE.item(
             "injector",Item::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))

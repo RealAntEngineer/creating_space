@@ -2,13 +2,12 @@ package com.rae.creatingspace;
 
 import com.mojang.logging.LogUtils;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.init.EntityDataSerializersInit;
-import com.rae.creatingspace.init.PacketInit;
-import com.rae.creatingspace.init.RecipeInit;
-import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.*;
+import com.rae.creatingspace.init.graphics.MenuTypesInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
+import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
 import com.rae.creatingspace.server.event.IgniteOnPlace;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
@@ -38,6 +37,7 @@ public class CreatingSpace {
     public static final String MODID = "creatingspace" ;
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
+    public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
             return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE);
@@ -63,7 +63,9 @@ public class CreatingSpace {
         ParticleTypeInit.register(modEventBus);
         CarverInit.register(modEventBus);
         EntityDataSerializersInit.register(modEventBus);
+        MiscInit.register(modEventBus);
 
+        MenuTypesInit.register();
         PacketInit.registerPackets();
         IgniteOnPlace.register();
 

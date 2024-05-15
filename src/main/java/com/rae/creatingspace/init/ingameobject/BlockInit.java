@@ -39,6 +39,11 @@ public class BlockInit {
 
     //just blocks
     //TODO add geode's blocks
+    public static final BlockEntry<RocketEngineerTableBlock> ENGINEER_TABLE = REGISTRATE
+            .block("engineer_table", RocketEngineerTableBlock::new)
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .build().register();
     public static final BlockEntry<SmallEngineBlock> SMALL_ROCKET_ENGINE = REGISTRATE
             .block("small_rocket_engine", SmallEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
