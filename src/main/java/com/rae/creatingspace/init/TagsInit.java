@@ -44,7 +44,7 @@ public class TagsInit extends AllTags {
         }
     }
     public enum CustomBlockTags {
-        MOON_CARVER_REPLACEABLES(),  MOON_STONE_ORE_REPLACEABLES()  ;
+        MOON_CARVER_REPLACEABLES(), MOON_STONE_ORE_REPLACEABLES();
 
         public final TagKey<Block> tag;
         public final boolean alwaysDatagen;

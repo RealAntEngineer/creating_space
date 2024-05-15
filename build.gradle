@@ -10,10 +10,10 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-apply plugin: 'org.spongepowered.mixin'
-version = '1.7.0c'
+version = '1.7.1'
 group = 'com.rae.creatingspace' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'creatingspace'
 
@@ -126,11 +126,11 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.8'
 
 	// modApi "mezz.jei:jei-1.19.2:11.6.0.1015" ?
-
-    	//create
+    //create
 	implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}:slim") { transitive = false }
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+
 
 	//JEI
 	// compile against the JEI API but do not include it at runtime
@@ -143,10 +143,18 @@ dependencies {
 
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
+
+    //if (!Boolean.getBoolean('idea.sync.active')) {
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    //}
 }
 
 mixin {
     add sourceSets.main, 'creatingspace.refmap.json'
+    config 'creatingspace.mixins.json'
+
+    //debug.verbose = true
+    //debug.export = true
 }
 // Example for how to get properties into the manifest for reading at runtime.
 jar {
@@ -154,7 +162,7 @@ jar {
         attributes([
                 "Specification-Title"     : "creating space",
                 "Specification-Vendor"    : "Real Ant Engineer",
-                "Specification-Version": "1.7.0c", // We are version 1.7.0.2 of ourselves
+                "Specification-Version": "1.7.1", // We are version 1.7.1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Real Ant Engineer",

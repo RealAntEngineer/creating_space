@@ -1,4 +1,4 @@
-package com.rae.creatingspace.mixin;
+package com.rae.creatingspace.mixin.entity;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,12 +23,13 @@ public class ContraptionMixin {
     private BlockPos local$Pos;// used for capturing local variable in moveBlock methode
 
     //should be injected at line 388
-    @Inject(method = "moveBlock", at = @At(value = "HEAD"))
-    protected void gettingPos(Level world, Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = {"moveBlock"}, at = @At(value = "HEAD"), remap = false)
+    protected void gettingPos(Level world, Direction forcedDirection, @NotNull Queue<BlockPos> frontier, Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir) {
         local$Pos = frontier.peek();
     }
-    @Inject(method = "moveBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;below()Lnet/minecraft/core/BlockPos;", shift = At.Shift.BEFORE))
-    protected void onMoveBlock(Level world, Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir) {
+
+    @Inject(method = {"moveBlock"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;below()Lnet/minecraft/core/BlockPos;", shift = At.Shift.BEFORE))
+    protected void onMoveBlock(@NotNull Level world, Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir) {
         BlockState state = world.getBlockState(local$Pos);
         if (state.is(BlockInit.BIG_ROCKET_ENGINE.get())) {
             moveBigRocketEngine(local$Pos, frontier, visited, state);

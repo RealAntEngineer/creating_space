@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = BacktankBlockEntity.class, priority = 900)
+@Mixin(value = BacktankBlockEntity.class)
 public abstract class BacktankBlockEntityMixin extends KineticBlockEntity implements Nameable {
     private BacktankBlockEntityMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
     }
 
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true, remap = false)
     public void onTick(CallbackInfo ci) {
         if (!CSDimensionUtil.hasO2Atmosphere(getLevel().dimension())) {
             super.tick();

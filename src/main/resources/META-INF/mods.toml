@@ -6,7 +6,7 @@ license="MIT"
 
 [[mods]]
 modId="creatingspace"
-version = "1.7.0c"
+version = "1.7.1"
 displayName="Creating Space"
 logoFile = "logo.png"
 credits='''

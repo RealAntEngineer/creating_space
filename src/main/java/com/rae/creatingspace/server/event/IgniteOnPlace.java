@@ -28,7 +28,7 @@ public class IgniteOnPlace {
     public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() instanceof LivingEntity player) {
             BlockState blockState = event.getState();
-            if (!CSEventHandler.isInO2(player) && player.getLevel().dimension().location().toString().equals("creatingspace:venus")) {
+            if (!CSEventHandler.inO2(player) && player.getLevel().dimension().location().toString().equals("creatingspace:venus")) {
                 Level world = (Level) event.getLevel();
                 BlockPos pos = event.getPos();
                 if (blockState.isFlammable(event.getLevel(), event.getPos(), Direction.UP)) {

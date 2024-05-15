@@ -5,6 +5,7 @@ import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlock;
 import com.rae.creatingspace.server.blocks.*;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
+import com.rae.creatingspace.server.blocks.atmosphere.RoomPressuriserBlock;
 import com.rae.creatingspace.server.blocks.atmosphere.SealerBlock;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock;
@@ -177,6 +178,13 @@ public class BlockInit {
 
     public static final BlockEntry<SealerBlock> OXYGEN_SEALER = REGISTRATE
             .block("oxygen_sealer", SealerBlock::new)
+            .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .build()
+            .register();
+    public static final BlockEntry<RoomPressuriserBlock> ROOM_PRESSURISER = REGISTRATE
+            .block("room_pressuriser", RoomPressuriserBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
