@@ -2,13 +2,13 @@
   "display": {
     "background": "minecraft:textures/block/black_concrete.png",
     "icon": {
-      "item": "creatingspace:moon_stone."
+      "item": "creatingspace:moon_stone"
     },
     "title": {
-      "text": "Where is the cheese?"
+      "text": "This is so nice there wasn't enough... space down there."
     },
     "description": {
-      "text": "Reach the moon."
+      "text": "Reach earth orbit."
     },
     "frame": "challenge",
     "show_toast": true,
@@ -19,8 +19,8 @@
     "trigger": {
       "trigger": "minecraft:changed_dimension",
       "conditions": {
-        "from": "creatingspace:moon_orbit",
-        "to": "creatingspace:the_moon"
+        "from": "minecraft:overworld",
+        "to": "creatingspace:earth_orbit"
       }
     }
   },

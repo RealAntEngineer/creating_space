@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "creatingspace:moon_stone"
+    },
+    "title": {
+      "text": "Where is the cheese?"
+    },
+    "description": {
+      "text": "Reach the moon."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "parent": "creatingspace:Reach_earth_orbit"
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "from": "creatingspace:moon_orbit",
+        "to": "creatingspace:the_moon"
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  }
+}
