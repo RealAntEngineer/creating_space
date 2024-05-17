@@ -9,14 +9,14 @@
     "description": {
       "text": "Reach the moon."
     },
-    "frame": "goal",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false,
-    "parent": "creatingspace:Reach_earth_orbit"
+    "hidden": false
   },
+  "parent": "creatingspace:reach_earth_orbit",
   "criteria": {
-    "trigger": {
+    "to_the_moon": {
       "trigger": "minecraft:changed_dimension",
       "conditions": {
         "from": "creatingspace:moon_orbit",
@@ -24,6 +24,11 @@
       }
     }
   },
+  "requirements": [
+    [
+      "to_the_moon"
+    ]
+  ],
   "rewards": {
     "experience": 10
   }

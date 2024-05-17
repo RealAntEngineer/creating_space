@@ -16,7 +16,7 @@
     "hidden": false
   },
   "criteria": {
-    "trigger": {
+    "reach_orbit": {
       "trigger": "minecraft:changed_dimension",
       "conditions": {
         "from": "minecraft:overworld",
@@ -24,7 +24,12 @@
       }
     }
   },
+  "requirements": [
+    [
+      "reach_orbit"
+    ]
+  ],
   "rewards": {
-    "experience": 10
+    "experience": 50
   }
 }
