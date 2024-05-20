@@ -1,18 +1,17 @@
 package com.rae.creatingspace.server.items;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.server.design.ExhaustPackType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,8 +20,8 @@ import java.util.List;
 import static com.rae.creatingspace.init.MiscInit.DEFERRED_EXHAUST_PACK_TYPE;
 import static com.rae.creatingspace.init.MiscInit.DEFERRED_POWER_PACK_TYPE;
 
-public class DesignBlueprint extends Item {
-    public DesignBlueprint(Properties properties) {
+public class DesignBlueprintItem extends Item {
+    public DesignBlueprintItem(Properties properties) {
         super(properties);
     }
 
@@ -34,6 +33,7 @@ public class DesignBlueprint extends Item {
         ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                 nbt.get("design")).result().orElse(null);
         if (registry != null) {
+            components.add(Component.literal(registry.toString()));
             components.add(Component.translatable(
                     registry.getPath() + "." +
                             location.getNamespace() + "." + location.getPath()));
@@ -69,16 +69,24 @@ public class DesignBlueprint extends Item {
     }
 
     @Override
-    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+    public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
+        if (entity instanceof Player player) {
+            save(stack, player);
+        }
+    }
+
+    private static void save(ItemStack stack, Player player) {
         CompoundTag nbt = stack.getOrCreateTag();
         ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                 nbt.get("design_type")).result().orElse(null);
         ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                 nbt.get("design")).result().orElse(null);
-        if (registry == DEFERRED_EXHAUST_PACK_TYPE.getRegistryName()) {
-            CreatingSpace.DESIGN_SAVED_DATA.addExhaustForPlayer(context.getPlayer(), ExhaustPackType.fromLocation(location));
-            return InteractionResult.SUCCESS;
+        if (registry.getPath().equals(DEFERRED_EXHAUST_PACK_TYPE.getRegistryName().getPath())) {
+            CreatingSpace.DESIGN_SAVED_DATA.addExhaustForPlayer(player, location);
+
         }
-        return super.onItemUseFirst(stack, context);
+        if (registry.getPath().equals(DEFERRED_POWER_PACK_TYPE.getRegistryName().getPath())) {
+            CreatingSpace.DESIGN_SAVED_DATA.addPowerPackForPlayer(player, location);
+        }
     }
 }

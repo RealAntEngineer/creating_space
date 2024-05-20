@@ -38,9 +38,9 @@ public class MiscInit {
     public static final Supplier<IForgeRegistry<ExhaustPackType>> EXHAUST_PACK_TYPE = DEFERRED_EXHAUST_PACK_TYPE.makeRegistry(
             RegistryBuilder::new);
     public static final RegistryObject<ExhaustPackType> BELL_NOZZLE = DEFERRED_EXHAUST_PACK_TYPE
-            .register("bell_nozzle", () -> new ExhaustPackType(0.7f));
+            .register("bell_nozzle", () -> new ExhaustPackType(0.7f, CreatingSpace.resource("bell_nozzle")));
     public static final RegistryObject<ExhaustPackType> AEROSPIKE = DEFERRED_EXHAUST_PACK_TYPE
-            .register("aerospike", () -> new ExhaustPackType(0.95f));
+            .register("aerospike", () -> new ExhaustPackType(0.95f, CreatingSpace.resource("aerospike")));
     public static final DeferredRegister<PowerPackType> DEFERRED_POWER_PACK_TYPE =
             DeferredRegister.create(Keys.POWER_PACK_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<PowerPackType>> POWER_PACK_TYPE = DEFERRED_POWER_PACK_TYPE.makeRegistry(

@@ -29,4 +29,12 @@ public class PropellantType {
                 ", maxISP=" + maxISP +
                 '}';
     }
+
+    public Map<TagKey<Fluid>, Float> getPropellantConsumptions() {
+        return propellantConsumptions;
+    }
+
+    public Integer getMaxISP() {
+        return maxISP;
+    }
 }
