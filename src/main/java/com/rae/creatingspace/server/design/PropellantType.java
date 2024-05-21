@@ -1,37 +1,43 @@
 package com.rae.creatingspace.server.design;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PropellantType {
-    Map<TagKey<Fluid>, Float> propellantConsumptions;
+    Map<TagKey<Fluid>, Float> propellantRatio;
     Integer maxISP;
+    //for codec use MiscInit.PROPELLANT_TYPE.get().getCodec()
 
-    Codec<PropellantType> DIREC_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.unboundedMap(TagKey.codec(Registry.FLUID_REGISTRY), Codec.FLOAT).fieldOf("propellantConsumptions").forGetter(i -> i.propellantConsumptions),
-            Codec.INT.fieldOf("maxISP").forGetter(i -> i.maxISP)
-    ).apply(instance, PropellantType::new));
-
-    public PropellantType(Map<TagKey<Fluid>, Float> propellantConsumptions, Integer maxISP) {
-        this.propellantConsumptions = propellantConsumptions;
+    public PropellantType(Map<TagKey<Fluid>, Float> propellantRatio, Integer maxISP) {
+        this.propellantRatio = normalise(propellantRatio);
         this.maxISP = maxISP;
     }
 
+    private static Map<TagKey<Fluid>, Float> normalise(Map<TagKey<Fluid>, Float> propellantConsumptions) {
+        Float total = 0f;
+        HashMap<TagKey<Fluid>, Float> newMap = new HashMap<>(propellantConsumptions);
+        for (float value :
+                propellantConsumptions.values()) {
+            total += value;
+        }
+        for (TagKey<Fluid> key : propellantConsumptions.keySet()) {
+            newMap.put(key, propellantConsumptions.get(key) / total);
+        }
+        return newMap;
+    }
     @Override
     public String toString() {
         return "PropellantType{" +
-                "propellantConsumptions=" + propellantConsumptions +
+                "propellantRatio=" + propellantRatio +
                 ", maxISP=" + maxISP +
                 '}';
     }
 
-    public Map<TagKey<Fluid>, Float> getPropellantConsumptions() {
-        return propellantConsumptions;
+    public Map<TagKey<Fluid>, Float> getPropellantRatio() {
+        return propellantRatio;
     }
 
     public Integer getMaxISP() {

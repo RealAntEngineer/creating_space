@@ -57,12 +57,13 @@ public class CreatingSpace {
         BlockEntityInit.register();
         EntityInit.register();
         FluidInit.register();
-
+        PropellantTypeInit.register(modEventBus);
         PaintingInit.register(modEventBus);
         RecipeInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
         CarverInit.register(modEventBus);
         EntityDataSerializersInit.register(modEventBus);
+
         MiscInit.register(modEventBus);
 
         MenuTypesInit.register();

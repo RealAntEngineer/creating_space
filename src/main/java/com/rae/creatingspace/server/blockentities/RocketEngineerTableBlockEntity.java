@@ -70,7 +70,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         nbt.putInt("isp", (int) (type.getMaxISP() * totalEfficiency));
         nbt.putInt("thrust", (int) size);
 
-        Map<TagKey<Fluid>, Float> map = type.getPropellantConsumptions();
+        Map<TagKey<Fluid>, Float> map = type.getPropellantRatio();
         nbt.putFloat("oxFuelRatio", map.values().stream().toList().get(0) / map.values().stream().toList().get(1));
         nbt.putString("fuelTag", map.keySet().stream().toList().get(1).location().toString());
         nbt.putString("oxidizerTag", map.keySet().stream().toList().get(0).location().toString());

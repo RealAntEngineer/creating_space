@@ -1,19 +1,15 @@
 package com.rae.creatingspace.server.design;
 
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
 public class PowerPackType {
     float designEfficiency;
-    List<TagKey<Fluid>> possibleOxidizer;
-    List<TagKey<Fluid>> possibleFuel;
+    List<ResourceLocation> forbiddenPropellant;
 
-
-    public PowerPackType(float designEfficiency, List<TagKey<Fluid>> possibleOxidizer, List<TagKey<Fluid>> possibleFuel) {
+    public PowerPackType(float designEfficiency, List<ResourceLocation> forbiddenPropellant) {
         this.designEfficiency = designEfficiency;
-        this.possibleOxidizer = possibleOxidizer;
-        this.possibleFuel = possibleFuel;
+        this.forbiddenPropellant = forbiddenPropellant;
     }
 }
