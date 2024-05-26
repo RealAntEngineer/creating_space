@@ -22,22 +22,22 @@ public class MiscInit {
     public static final Supplier<IForgeRegistry<ExhaustPackType>> EXHAUST_PACK_TYPE = DEFERRED_EXHAUST_PACK_TYPE.makeRegistry(
             RegistryBuilder::new);
     public static final RegistryObject<ExhaustPackType> BELL_NOZZLE = DEFERRED_EXHAUST_PACK_TYPE
-            .register("bell_nozzle", () -> new ExhaustPackType(0.7f, CreatingSpace.resource("bell_nozzle")));
+            .register("bell_nozzle", () -> new ExhaustPackType(2, 100, CreatingSpace.resource("bell_nozzle")));
     public static final RegistryObject<ExhaustPackType> AEROSPIKE = DEFERRED_EXHAUST_PACK_TYPE
-            .register("aerospike", () -> new ExhaustPackType(0.95f, CreatingSpace.resource("aerospike")));
+            .register("aerospike", () -> new ExhaustPackType(2, 500, CreatingSpace.resource("aerospike")));
     public static final DeferredRegister<PowerPackType> DEFERRED_POWER_PACK_TYPE =
             DeferredRegister.create(Keys.POWER_PACK_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<PowerPackType>> POWER_PACK_TYPE = DEFERRED_POWER_PACK_TYPE.makeRegistry(
             RegistryBuilder::new);
 
     public static final RegistryObject<PowerPackType> OPEN_CYCLES = DEFERRED_POWER_PACK_TYPE
-            .register("open_cycle", () -> new PowerPackType(0.7f, List.of(PropellantTypeInit.MH.getId())));
+            .register("open_cycle", () -> new PowerPackType(0.7f, List.of(PropellantTypeInit.METALIC_HYDROGEN.getId())));
     public static final RegistryObject<PowerPackType> OX_RICH_STAGED_CYCLES = DEFERRED_POWER_PACK_TYPE
-            .register("ox_rich_staged_cycle", () -> new PowerPackType(0.9f, List.of(PropellantTypeInit.MH.getId())));
+            .register("ox_rich_staged_cycle", () -> new PowerPackType(0.9f, List.of(PropellantTypeInit.METALIC_HYDROGEN.getId())));
     public static final RegistryObject<PowerPackType> FUEL_RICH_STAGED_CYCLES = DEFERRED_POWER_PACK_TYPE
-            .register("fuel_rich_staged_cycle", () -> new PowerPackType(0.9f, List.of(PropellantTypeInit.MH.getId())));
+            .register("fuel_rich_staged_cycle", () -> new PowerPackType(0.9f, List.of(PropellantTypeInit.METALIC_HYDROGEN.getId())));
     public static final RegistryObject<PowerPackType> FULL_FLOW_STAGED_CYCLES = DEFERRED_POWER_PACK_TYPE
-            .register("full_flow_staged_cycle", () -> new PowerPackType(0.98f, List.of(PropellantTypeInit.MH.getId())));
+            .register("full_flow_staged_cycle", () -> new PowerPackType(0.98f, List.of(PropellantTypeInit.METALIC_HYDROGEN.getId())));
 
     public static class Keys {
         public static final ResourceKey<Registry<ExhaustPackType>> EXHAUST_PACK_TYPE =

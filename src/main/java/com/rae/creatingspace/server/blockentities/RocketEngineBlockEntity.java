@@ -1,6 +1,7 @@
 package com.rae.creatingspace.server.blockentities;
 
 
+import com.rae.creatingspace.api.IMass;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.server.design.PropellantType;
@@ -43,10 +44,11 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
 
     }
 
-    public static class NbtDependent extends RocketEngineBlockEntity {
+    public static class NbtDependent extends RocketEngineBlockEntity implements IMass {
         int thrust = 1000;
         PropellantType propellantType = PropellantTypeInit.METHALOX.get();
         Float efficiency = 1f;
+        Integer size = 100;
 
         public NbtDependent(BlockEntityType<?> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
@@ -73,6 +75,7 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         @Override
         protected void saveAdditional(CompoundTag nbt) {
             nbt.putInt("thrust", thrust);
+            nbt.putInt("size", size);
             nbt.putFloat("efficiency", efficiency);
             nbt.put("propellantType", PropellantTypeInit.PROPELLANT_TYPE.get()
                     .getCodec().encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
@@ -82,10 +85,22 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         @Override
         public void load(CompoundTag nbt) {
             super.load(nbt);
+            setFromNbt(nbt);
+        }
+
+        public void setFromNbt(CompoundTag nbt) {
             thrust = nbt.getInt("thrust");
             efficiency = nbt.getFloat("efficiency");
             propellantType = PropellantTypeInit.PROPELLANT_TYPE.get()
-                    .getCodec().parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow();
+                    .getCodec().parse(NbtOps.INSTANCE, nbt.get("propellantType"))
+                    .resultOrPartial(s -> {
+                    }).orElse(PropellantTypeInit.METHALOX.get());
+            ;
+        }
+
+        @Override
+        public float getMass() {
+            return 0;
         }
     }
 
@@ -102,10 +117,31 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
 
         @Override
         public PropellantType getPropellantType() {
-            return PropellantTypeInit.LH2LOX.get();
+            return PropellantTypeInit.METHALOX.get();
         }
 
         public BigEngine(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+            super(type, pos, state);
+        }
+    }
+
+    public static class SuperEngine extends RocketEngineBlockEntity {
+        @Override
+        public float getEfficiency() {
+            return 0.9f;
+        }
+
+        @Override
+        public int getThrust() {
+            return CSConfigs.SERVER.rocketEngine.superRocketEngineThrust.get();
+        }
+
+        @Override
+        public PropellantType getPropellantType() {
+            return PropellantTypeInit.METALIC_HYDROGEN.get();
+        }
+
+        public SuperEngine(BlockEntityType<?> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
         }
     }

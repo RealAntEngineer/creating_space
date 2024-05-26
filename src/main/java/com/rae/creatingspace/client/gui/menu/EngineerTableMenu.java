@@ -65,7 +65,7 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
             }
         };
 
-        outputSlot = new SlotItemHandler(contentHolder.inventory, 1, 166, 57) {
+        outputSlot = new SlotItemHandler(contentHolder.inventory, 1, 316, 100) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
@@ -78,18 +78,17 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
         // player Slots
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(player.getInventory(), col + row * 9 + 9, 100 + col * 18, 105 + 41 + row * 18));
+                this.addSlot(new Slot(player.getInventory(), col + row * 9 + 9, 161 + col * 18, 105 + 43 + row * 18));
             }
         }
 
         for (int hotbarSlot = 0; hotbarSlot < 9; ++hotbarSlot) {
-            this.addSlot(new Slot(player.getInventory(), hotbarSlot, 100 + hotbarSlot * 18, 163 + 41));
+            this.addSlot(new Slot(player.getInventory(), hotbarSlot, 161 + hotbarSlot * 18, 163 + 43));
         }
     }
 
     @Override
     protected void saveData(RocketEngineerTableBlockEntity contentHolder) {
-
     }
 
     @Override
@@ -106,4 +105,6 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
 
         return ItemStack.EMPTY;
     }
+
+
 }

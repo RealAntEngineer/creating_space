@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class PropellantTypeInit {
+    //TODO use datapackRegitry(Codec,Codec)
     public static final DeferredRegister<PropellantType> DEFERRED_PROPELLANT_TYPE =
             DeferredRegister.create(Keys.PROPELLANT_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<PropellantType>> PROPELLANT_TYPE = DEFERRED_PROPELLANT_TYPE.makeRegistry(
@@ -24,16 +25,31 @@ public class PropellantTypeInit {
             .register("methalox", () -> new PropellantType(
                     Map.of(
                             TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag, 2f,//should be 3.7f
-                            TagsInit.CustomFluidTags.LIQUID_METHANE.tag, 1f), 460));//real value is 459
+                            TagsInit.CustomFluidTags.LIQUID_METHANE.tag, 1f),
+                    460,
+                    4500f,
+                    1.1f,
+                    18
+            ));//real value is 459
     public static final RegistryObject<PropellantType> LH2LOX = DEFERRED_PROPELLANT_TYPE
             .register("lh2lox", () -> new PropellantType(
                     Map.of(
                             TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag, 6f,
-                            TagsInit.CustomFluidTags.LIQUID_HYDROGEN.tag, 1f), 540));//real value is 532
-    public static final RegistryObject<PropellantType> MH = DEFERRED_PROPELLANT_TYPE
+                            TagsInit.CustomFluidTags.LIQUID_HYDROGEN.tag, 1f),
+                    540,
+                    4000f,
+                    1.2f,
+                    10
+            ));//real value is 532
+    public static final RegistryObject<PropellantType> METALIC_HYDROGEN = DEFERRED_PROPELLANT_TYPE
             .register("metalic_hydrogen", () -> new PropellantType(
                     Map.of(
-                            TagsInit.CustomFluidTags.METALIC_HYDROGEN.tag, 1f), 6000));
+                            TagsInit.CustomFluidTags.METALIC_HYDROGEN.tag, 1f),
+                    6000,
+                    18280f,
+                    1.3f,
+                    2
+            ));
 
     public static void register(IEventBus modEventBus) {
         DEFERRED_PROPELLANT_TYPE.register(modEventBus);

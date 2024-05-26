@@ -12,7 +12,6 @@ import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 import com.simibubi.create.content.contraptions.render.ContraptionLighter;
 import com.simibubi.create.content.contraptions.render.NonStationaryLighter;
-import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -30,8 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class RocketContraption extends TranslatingContraption {
-    //TODO change propellant consumption from ox/fuel to propellant type.
-    //  ArrayList<ConsumptionInfo> -> ConsumptionInfo(PropellantType,efficency,partialThrust)
     private int thrust = 0;
     private int dryMass = 0;
     //private final HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
@@ -61,13 +58,9 @@ public class RocketContraption extends TranslatingContraption {
         if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity){
 
             this.thrust += engineBlockEntity.getThrust();
-            float totalPropellantConsumption = (float) (engineBlockEntity.getThrust()/(
+            float totalPropellantMassFlow = (float) (engineBlockEntity.getThrust() / (
                     engineBlockEntity.getIsp()* CSConfigs.SERVER.rocketEngine.ISPModifier.get() *9.81));
-            float ratio = engineBlockEntity.getOxFuelRatio();
-            TagKey<Fluid> oxidizerTag = engineBlockEntity.getOxidizerTag();
-            TagKey<Fluid> fuelTag = engineBlockEntity.getFuelTag();
             PropellantType propellantType = engineBlockEntity.getPropellantType();
-            Couple<TagKey<Fluid>> combination = Couple.create(oxidizerTag,fuelTag);
             ConsumptionInfo previousCombInfo = new ConsumptionInfo(new HashMap<>(), 0);
 
             if (this.theoreticalPerTagFluidConsumption.containsKey(propellantType)) {
@@ -75,7 +68,7 @@ public class RocketContraption extends TranslatingContraption {
                         .get(propellantType);
             }
             HashMap<TagKey<Fluid>, Float> proportions = new HashMap<>(engineBlockEntity.getPropellantType().getPropellantRatio());
-            multiplyMap(proportions, totalPropellantConsumption);
+            multiplyMap(proportions, totalPropellantMassFlow);
             this.theoreticalPerTagFluidConsumption.put(propellantType, previousCombInfo.add(proportions, engineBlockEntity.getThrust()));
 
 

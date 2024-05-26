@@ -5,11 +5,15 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.List;
 
 public class PowerPackType {
-    float designEfficiency;
+    public float getCombustionEfficiency() {
+        return combustionEfficiency;
+    }
+
+    float combustionEfficiency;
     List<ResourceLocation> forbiddenPropellant;
 
-    public PowerPackType(float designEfficiency, List<ResourceLocation> forbiddenPropellant) {
-        this.designEfficiency = designEfficiency;
+    public PowerPackType(float combustionEfficiency, List<ResourceLocation> forbiddenPropellant) {
+        this.combustionEfficiency = combustionEfficiency;
         this.forbiddenPropellant = forbiddenPropellant;
     }
 }

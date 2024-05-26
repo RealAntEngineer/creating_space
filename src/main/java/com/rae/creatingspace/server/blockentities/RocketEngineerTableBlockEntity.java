@@ -76,4 +76,11 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         nbt.putString("oxidizerTag", map.keySet().stream().toList().get(0).location().toString());
         return nbt;
     }
+
+    public void craftEngine(ItemStack newEngine) {
+        System.out.println(newEngine);
+        if (inventory.isItemValid(1, newEngine)) {
+            inventory.insertItem(1, newEngine, false);
+        }
+    }
 }

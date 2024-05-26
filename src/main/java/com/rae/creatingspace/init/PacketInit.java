@@ -21,6 +21,7 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT;
 import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum PacketInit {
+    CRAFT_ENGINE(EngineerTableCraft.class, EngineerTableCraft::new, PLAY_TO_SERVER),
     ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket::new, PLAY_TO_SERVER),
     ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
     SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),

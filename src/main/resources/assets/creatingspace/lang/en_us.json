@@ -155,6 +155,11 @@
   "creatingspace.gui.sealer.settings": "Settings",
   "creatingspace.gui.sealer.range": "Range",
   "creatingspace.gui.sealer.automatic_retry": "Automatic Retry ?",
+  "gui.engineer_table_screen.available_exhaust": "Available Exhaust",
+  "gui.engineer_table_screen.available_power": "Available Power",
+  "gui.engineer_table_screen.available_propellants": "Available Propellants",
+  "gui.engineer_table_screen.thrust_selection": "Select Thrust",
+  "gui.engineer_table_screen.size_selection": "Select the size",
 
   "creatingspace.overlay.flight_recorder.title": "last flight :",
   "creatingspace.overlay.flight_recorder.no_failure": "no failure",
