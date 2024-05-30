@@ -42,8 +42,9 @@ public class BlockInit {
 
     //just blocks
     //TODO add geode's blocks
-    public static final BlockEntry<RocketEngineerTableBlock> ENGINEER_TABLE = REGISTRATE
-            .block("engineer_table", RocketEngineerTableBlock::new)
+    public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
+            .block("rocket_engineer_table", RocketEngineerTableBlock::new)
+            .properties(p -> p.strength(1.0f).noOcclusion())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build().register();

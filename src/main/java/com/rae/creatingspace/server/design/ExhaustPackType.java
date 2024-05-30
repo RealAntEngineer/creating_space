@@ -2,26 +2,26 @@ package com.rae.creatingspace.server.design;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.resources.ResourceLocation;
+import com.simibubi.create.foundation.utility.Couple;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExhaustPackType {
     float minExpansionRatio;
     float maxExpansionRatio;
-    ResourceLocation id;
-
+    List<Couple<Integer>> slots = new ArrayList<>();
     public static final Codec<ExhaustPackType> DIRECT_CODEC = RecordCodecBuilder.create(
             instance ->
                     instance.group(
                             Codec.FLOAT.fieldOf("minExpansionRatio").forGetter(i -> i.minExpansionRatio),
-                            Codec.FLOAT.fieldOf("maxExpansionRatio").forGetter(i -> i.maxExpansionRatio),
-                            ResourceLocation.CODEC.fieldOf("id").forGetter(i -> i.id)
-                    ).apply(instance, ExhaustPackType::new)
+                            Codec.FLOAT.fieldOf("maxExpansionRatio").forGetter(i -> i.maxExpansionRatio)
+                    ).apply(instance, (Float minExpansionRatio1, Float maxExpansionRatio1) -> new ExhaustPackType(minExpansionRatio1, maxExpansionRatio1))
     );
 
-    public ExhaustPackType(float minExpansionRatio, float maxExpansionRatio, ResourceLocation id) {
+    public ExhaustPackType(float minExpansionRatio, float maxExpansionRatio) {
         this.minExpansionRatio = minExpansionRatio;
         this.maxExpansionRatio = maxExpansionRatio;
-        this.id = id;
     }
 
     public float getMinExpansionRatio() {

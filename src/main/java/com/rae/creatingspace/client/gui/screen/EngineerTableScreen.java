@@ -1,6 +1,7 @@
 package com.rae.creatingspace.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
@@ -24,6 +25,7 @@ import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
@@ -32,8 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.rae.creatingspace.init.MiscInit.DEFERRED_EXHAUST_PACK_TYPE;
-import static com.rae.creatingspace.init.MiscInit.DEFERRED_POWER_PACK_TYPE;
+import static com.rae.creatingspace.init.MiscInit.getSyncedExhaustPackRegistry;
+import static com.rae.creatingspace.init.MiscInit.getSyncedPowerPackRegistry;
 import static com.rae.creatingspace.init.ingameobject.PropellantTypeInit.DEFERRED_PROPELLANT_TYPE;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
@@ -51,6 +53,10 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             Component.translatable("gui.engineer_table_screen.size_selection");
     private List<PowerPackType> powerPackTypes;
     private List<ExhaustPackType> exhaustPackTypes;
+
+    private List<ResourceLocation> powerPackTypeLocations;
+    private List<ResourceLocation> exhaustPackTypeLocations;
+    private List<ResourceLocation> propellantTypeLocations;
     private List<PropellantType> propellantTypes;
     private ScrollInput setPowerPackType;
     private Label powerPackLabel;
@@ -64,8 +70,8 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private ScrollInput engineThrustInput;
     private Label engineThrustLabel;
     private ForgeSlider expansionRatioSlider;
-    private final GuiTexturesInit background;
-    private final GuiTexturesInit input;
+    private GuiTexturesInit background;
+    private GuiTexturesInit input;
     private IconButton confirmButton;
     float engineIsp;
     float engineMass;
@@ -83,21 +89,45 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
         setWindowSize(background.width, (background.height + 4 + AllGuiTextures.PLAYER_INVENTORY.height));
         setWindowOffset(0, -8);
-
         super.init();
-
         int x = leftPos;
         int y = topPos;
 
         exhaustPackLabel = new Label(x + 133, y + 20, Components.immutableEmpty()).withShadow();
         exhaustPackLabel.text = Components.immutableEmpty();
         exhaustPackTypes = new ArrayList<>();
+        exhaustPackTypeLocations = new ArrayList<>();
+        propellantTypeLocations = new ArrayList<>();
+        propellantTypes = new ArrayList<>();
+        propellantLabel = new Label(x + 7, y + 135, Components.immutableEmpty()).withShadow();
+        propellantLabel.text = Components.immutableEmpty();
+        propellantTypes = new ArrayList<>();
+        List<MutableComponent> availablePropellantType = new ArrayList<>();
+        DEFERRED_PROPELLANT_TYPE.getEntries().forEach((ro) -> {
+                    availablePropellantType.add(Component.translatable(
+                            "propellant_type." +
+                                    ro.getId().getNamespace() + "." + ro.getId().getPath()).append(
+                            Component.literal("  max isp : " + ro.get().getMaxISP())));
+                    propellantTypes.add(ro.get());
+                    propellantTypeLocations.add(ro.getId());
+                }
+        );
+        setPropellantType = new SelectionScrollInput(x + 7, y + 135, 100, 18)
+                .forOptions(availablePropellantType)
+                .titled(availablePropellantTypeTitle.plainCopy())
+                .writingTo(propellantLabel)
+                .addHint(Component.literal("using a better propellant will mean using better materials"))
+                .calling(this::updateSelectors);
+        addRenderableWidget(setPropellantType);
+        addRenderableWidget(propellantLabel);
+
         List<MutableComponent> availableExhaustType = new ArrayList<>();
-        DEFERRED_EXHAUST_PACK_TYPE.getEntries().forEach((ro) -> {
+        getSyncedExhaustPackRegistry().entrySet().forEach((ro) -> {
                     availableExhaustType.add(Component.translatable(
                             "exhaust_pack_type." +
-                                    ro.getId().getNamespace() + "." + ro.getId().getPath()));
-                    exhaustPackTypes.add(ro.get());
+                                    ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
+            exhaustPackTypeLocations.add(ro.getKey().location());
+            exhaustPackTypes.add(ro.getValue());
                 }
         );
         setExhaustPackType = new SelectionScrollInput(x + 133, y + 20, 100, 18)
@@ -118,16 +148,16 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         powerPackLabel = new Label(x + 7, y + 20, Components.immutableEmpty()).withShadow();
         powerPackLabel.text = Components.immutableEmpty();
         powerPackTypes = new ArrayList<>();
-
+        powerPackTypeLocations = new ArrayList<>();
         List<MutableComponent> availablePowerType = new ArrayList<>();
-        DEFERRED_POWER_PACK_TYPE.getEntries().forEach((ro) -> {
+        getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {
                     availablePowerType.add(Component.translatable(
                             "power_pack_type." +
-                                    ro.getId().getNamespace() + "." + ro.getId().getPath()));
-                    powerPackTypes.add(ro.get());
+                                    ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
+            powerPackTypeLocations.add(ro.getKey().location());
+            powerPackTypes.add(ro.getValue());
                 }
         );
-
         setPowerPackType = new SelectionScrollInput(x + 7, y + 20, 100, 18)
                 .forOptions(availablePowerType)
                 .titled(availablePowerTypeTitle.plainCopy())
@@ -135,26 +165,9 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         addRenderableWidget(setPowerPackType);
         addRenderableWidget(powerPackLabel);
 
-        propellantLabel = new Label(x + 7, y + 135, Components.immutableEmpty()).withShadow();
-        propellantLabel.text = Components.immutableEmpty();
-        propellantTypes = new ArrayList<>();
 
-        List<MutableComponent> availablePropellantType = new ArrayList<>();
-        DEFERRED_PROPELLANT_TYPE.getEntries().forEach((ro) -> {
-                    availablePropellantType.add(Component.translatable(
-                            "propellant_type." +
-                                    ro.getId().getNamespace() + "." + ro.getId().getPath()).append(
-                            Component.literal("  max isp : " + ro.get().getMaxISP())));
-                    propellantTypes.add(ro.get());
-                }
-        );
-        setPropellantType = new SelectionScrollInput(x + 7, y + 135, 100, 18)
-                .forOptions(availablePropellantType)
-                .titled(availablePropellantTypeTitle.plainCopy())
-                .writingTo(propellantLabel)
-                .addHint(Component.literal("using a better propellant will mean using better materials"));
-        addRenderableWidget(setPropellantType);
-        addRenderableWidget(propellantLabel);
+
+
 
         expansionRatioSlider = new ForgeSlider(x + 10, y + 220, 110, 20,
                 Component.literal("expansion ratio : "),
@@ -169,7 +182,8 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .titled(sizeTitle.plainCopy())
                 .writingTo(engineSizeLabel)
                 .addHint(Component.literal("heavier but decrease material requirement"))
-                .setState(100);
+                .setState(100)
+                .format(i -> Components.literal(i + "liters"));
         engineThrustLabel = new Label(x + 7, y + 178, Components.immutableEmpty()).withShadow();
         engineThrustLabel.text = Components.immutableEmpty();
         engineThrustInput = new ScrollInput(x + 7, y + 178,
@@ -179,7 +193,9 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .writingTo(engineThrustLabel)
                 .addHint(Component.literal("more thrust but increase material requirement"))
                 .withShiftStep(10000)
-                .setState(100000);
+                .withStepFunction((c) -> (c.shift ? 100 : 10) * (c.control ? 100 : 1))
+                .setState(100000)
+                .format(i -> Components.literal(CSUtil.scientificNbrFormatting(Float.valueOf(i), 4) + "N"));
         addRenderableWidget(engineSizeLabel);
         addRenderableWidget(engineThrustLabel);
         addRenderableWidget(engineSizeInput);
@@ -200,31 +216,48 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         int y = topPos;
 
         background.render(ms, x, y, Color.WHITE);
-        input.render(ms, x, y + background.height, Color.WHITE);
-        PropellantType prop = propellantTypes.get(setPropellantType.getState());
-        PowerPackType powerPack = powerPackTypes.get(setPowerPackType.getState());
-        ExhaustPackType exhaustPackType = exhaustPackTypes.get(setExhaustPackType.getState());
-        //replace by labels
-        font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(prop.getChamberPressure(
-                        engineThrustInput.getState(),
-                        (float) engineSizeInput.getState() / 1000,
-                        powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt()) / 100000, 3) + "bar",
-                x + 260, y + 20 + 6,
-                Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
-        engineIsp = prop.getRealIsp(
-                powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt());
-        font.draw(ms, "ISP : " + (int) engineIsp + "s",
-                x + 260, y + 35 + 6,
-                Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
-        font.draw(ms, "T : " + prop.getCombustionTemperature(
-                        powerPack.getCombustionEfficiency()).intValue() + "°C",
-                x + 260, y + 50 + 6,
-                Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
-        engineMass = exhaustPackType.getMass((float) engineSizeInput.getState() / 1000,
-                expansionRatioSlider.getValueInt());
-        font.draw(ms, "M : " + CSUtil.scientificNbrFormatting(engineMass / 1000, 3) + "t",
-                x + 260, y + 65 + 6,
-                Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+        if (setPowerPackType != null && setExhaustPackType != null && !powerPackTypes.isEmpty()
+                && !propellantTypes.isEmpty() && !exhaustPackTypes.isEmpty()) {
+            GuiTexturesInit.render(CreatingSpace.resource(
+                            "textures/gui/rocket_engineer_table/"
+                                    +
+                                    powerPackTypeLocations.get(setPowerPackType.getState()).getPath()
+                                    + ".png"),
+                    ms, x + 5, y + 43, 0, 0, 121,
+                    78, 128, 128, Color.WHITE);
+            GuiTexturesInit.render(CreatingSpace.resource(
+                            "textures/gui/rocket_engineer_table/"
+                                    +
+                                    exhaustPackTypeLocations.get(setExhaustPackType.getState()).getPath()
+                                    + ".png"),
+                    ms, x + 5 + 121, y + 43, 0, 0, 121,
+                    78, 128, 128, Color.WHITE);
+            input.render(ms, x, y + background.height, Color.WHITE);
+            PropellantType prop = propellantTypes.get(setPropellantType.getState());
+            PowerPackType powerPack = powerPackTypes.get(setPowerPackType.getState());
+            ExhaustPackType exhaustPackType = exhaustPackTypes.get(setExhaustPackType.getState());
+            //replace by labels
+            font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(prop.getChamberPressure(
+                            engineThrustInput.getState(),
+                            (float) engineSizeInput.getState() / 1000,
+                            powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt()) / 100000, 3) + "bar",
+                    x + 260, y + 20 + 6,
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+            engineIsp = prop.getRealIsp(
+                    powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt());
+            font.draw(ms, "ISP : " + (int) engineIsp + "s",
+                    x + 260, y + 35 + 6,
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+            font.draw(ms, "T : " + prop.getCombustionTemperature(
+                            powerPack.getCombustionEfficiency()).intValue() + "°C",
+                    x + 260, y + 50 + 6,
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+            engineMass = exhaustPackType.getMass((float) engineSizeInput.getState() / 1000,
+                    expansionRatioSlider.getValueInt());
+            font.draw(ms, "M : " + CSUtil.scientificNbrFormatting(engineMass / 1000, 3) + "t",
+                    x + 260, y + 65 + 6,
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+        }
     }
 
     private void craftEngine(BlockPos blockEntityPos, PropellantType propellantType, float isp, float mass, float thrust) {
@@ -236,5 +269,29 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .sendToServer(
                         EngineerTableCraft
                                 .sendCraft(blockEntityPos, newEngine));
+    }
+
+    private void updateSelectors(int value) {
+        ResourceLocation prop = propellantTypeLocations.get(value);
+        List<MutableComponent> availablePowerType = new ArrayList<>();
+        powerPackTypeLocations = new ArrayList<>();
+        powerPackTypes = new ArrayList<>();
+        getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {
+            if (ro.getValue().getAllowedPropellants().contains(prop)) {
+                availablePowerType.add(Component.translatable(
+                        "power_pack_type." +
+                                ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
+                powerPackTypeLocations.add(ro.getKey().location());
+                powerPackTypes.add(ro.getValue());
+            }
+        });
+        setPowerPackType.setState(0);
+        if (availablePowerType.isEmpty()) {
+            availablePowerType.add(Component.empty());
+        }
+        ((SelectionScrollInput) setPowerPackType).forOptions(availablePowerType);
+        setPowerPackType.visible = !availablePowerType.isEmpty();
+        powerPackLabel.text = setPowerPackType.getMessage();
+        //the srollInput is only synced with the label on scroll
     }
 }

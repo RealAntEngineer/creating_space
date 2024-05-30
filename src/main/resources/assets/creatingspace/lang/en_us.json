@@ -188,6 +188,7 @@
   "creatingspace.recipe.electrolysis": "electrolysis",
   "propellant_type.creatingspace.methalox": "Metha/LOX",
   "propellant_type.creatingspace.lh2lox": "LH2/LOX",
+  "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
   "exhaust_pack_type.creatingspace.bell_nozzle": "bell nozzle",
   "exhaust_pack_type.creatingspace.aerospike": "aerospike",
   "power_pack_type.creatingspace.open_cycle": "open cycle",
