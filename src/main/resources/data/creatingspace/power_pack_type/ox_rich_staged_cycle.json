@@ -3,5 +3,15 @@
   "allowedPropellants": [
     "creatingspace:methalox",
     "creatingspace:lh2lox"
+  ],
+  "slots": [
+    {
+      "x": 34,
+      "y": 31
+    },
+    {
+      "x": 75,
+      "y": 30
+    }
   ]
 }

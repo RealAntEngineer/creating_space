@@ -2,10 +2,11 @@ package com.rae.creatingspace.client.gui.menu;
 
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
 import com.rae.creatingspace.server.blockentities.RocketEngineerTableBlockEntity;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
+import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,23 +16,33 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> {
+    public RocketEngineerTableBlockEntity.SyncData getSyncData() {
+        return syncData;
+    }
 
-    private Slot inputSlot;
+    RocketEngineerTableBlockEntity.SyncData syncData;
+    private List<Slot> exhaustSlots;
+    private List<Slot> powerSlots;
     private Slot outputSlot;
 
     public EngineerTableMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
+        exhaustSlots = new ArrayList<>();
+        powerSlots = new ArrayList<>();
     }
 
     public EngineerTableMenu(MenuType<?> type, int id, Inventory inv, RocketEngineerTableBlockEntity be) {
         super(type, id, inv, be);
+        exhaustSlots = new ArrayList<>();
     }
 
     public boolean canWrite() {
-        return inputSlot.hasItem() && !outputSlot.hasItem();
+        return !outputSlot.hasItem();
     }
 
     public static EngineerTableMenu create(int id, Inventory inv, RocketEngineerTableBlockEntity be) {
@@ -40,6 +51,7 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
 
     @Override
     protected RocketEngineerTableBlockEntity createOnClient(FriendlyByteBuf extraData) {
+        //System.out.println("create on client");
         ClientLevel world = Minecraft.getInstance().level;
         assert world != null;
         BlockEntity blockEntity = world.getBlockEntity(extraData.readBlockPos());
@@ -47,33 +59,51 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
             engineerTable.readClient(Objects.requireNonNull(extraData.readNbt()));
             return engineerTable;
         }
+        //System.out.println("fail");
         return null;
     }
 
     @Override
     protected void initAndReadInventory(RocketEngineerTableBlockEntity contentHolder) {
+        syncData = RocketEngineerTableBlockEntity.SyncData.getCoded()
+                .parse(NbtOps.INSTANCE, contentHolder.saveScreenData()).get().orThrow();
 
     }
 
     @Override
     protected void addSlots() {
-        inputSlot = new SlotItemHandler(contentHolder.inventory, 0, 21, 57) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return AllItems.EMPTY_SCHEMATIC.isIn(stack) || AllItems.SCHEMATIC_AND_QUILL.isIn(stack)
-                        || AllItems.SCHEMATIC.isIn(stack);
-            }
-        };
-
-        outputSlot = new SlotItemHandler(contentHolder.inventory, 1, 316, 100) {
+        outputSlot = new SlotItemHandler(contentHolder.inventory, 0, 316, 100) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
             }
         };
-
-        addSlot(inputSlot);
         addSlot(outputSlot);
+
+        exhaustSlots = new ArrayList<>();
+        int i = 1;
+        for (Couple<Integer> exhaustSlotCoord : syncData.exhaustPackType(Objects.requireNonNull(contentHolder.getLevel()).isClientSide).getSlots()) {
+            exhaustSlots.add(new SlotItemHandler(contentHolder.inventory, i, 127 + exhaustSlotCoord.getFirst(), 43 + exhaustSlotCoord.getSecond()) {
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return true;
+                }
+            });
+            addSlot(exhaustSlots.get(exhaustSlots.size() - 1));
+            i++;
+        }
+        powerSlots = new ArrayList<>();
+        for (Couple<Integer> powerSlotCoord : syncData.powerPackType(Objects.requireNonNull(contentHolder.getLevel()).isClientSide).getSlots()) {
+            powerSlots.add(new SlotItemHandler(contentHolder.inventory, i, 5 + powerSlotCoord.getFirst(), 43 + powerSlotCoord.getSecond()) {
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return true;
+                }
+            });
+            addSlot(powerSlots.get(powerSlots.size() - 1));
+            i++;
+        }
+
 
         // player Slots
         for (int row = 0; row < 3; ++row) {
@@ -86,7 +116,6 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
             this.addSlot(new Slot(player.getInventory(), hotbarSlot, 161 + hotbarSlot * 18, 163 + 43));
         }
     }
-
     @Override
     protected void saveData(RocketEngineerTableBlockEntity contentHolder) {
     }
@@ -105,6 +134,4 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
 
         return ItemStack.EMPTY;
     }
-
-
 }

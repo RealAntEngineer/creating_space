@@ -6,12 +6,14 @@ import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
+import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.server.design.ExhaustPackType;
 import com.rae.creatingspace.server.design.PowerPackType;
 import com.rae.creatingspace.server.design.PropellantType;
 import com.rae.creatingspace.server.items.engine.SuperEngineItem;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.EngineerTableCraft;
+import com.rae.creatingspace.utilities.packet.RocketEngineerTableSync;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.Theme;
@@ -23,6 +25,8 @@ import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
 import com.simibubi.create.foundation.utility.Color;
 import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -86,7 +90,6 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
     @Override
     protected void init() {
-
         setWindowSize(background.width, (background.height + 4 + AllGuiTextures.PLAYER_INVENTORY.height));
         setWindowOffset(0, -8);
         super.init();
@@ -117,7 +120,11 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .titled(availablePropellantTypeTitle.plainCopy())
                 .writingTo(propellantLabel)
                 .addHint(Component.literal("using a better propellant will mean using better materials"))
-                .calling(this::updateSelectors);
+                .setState(propellantTypeLocations.indexOf(getMenu().getSyncData().propellantType()))
+                .calling((i) -> {
+                    this.syncWithBE();
+
+                });
         addRenderableWidget(setPropellantType);
         addRenderableWidget(propellantLabel);
 
@@ -134,13 +141,15 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .forOptions(availableExhaustType)
                 .titled(availableExhaustTypeTitle.plainCopy())
                 .writingTo(exhaustPackLabel)
+                .setState(exhaustPackTypeLocations.indexOf(getMenu().getSyncData().exhaustPackType()))
                 .calling((state) -> {
                     ExhaustPackType type = exhaustPackTypes.get(state);
                     removeWidgets(expansionRatioSlider);
                     expansionRatioSlider = new ForgeSlider(x + 10, y + 220, 110, 20,
                             Component.literal("expansion ratio : "),
-                            Component.empty(), type.getMinExpansionRatio(), type.getMaxExpansionRatio(), 50, true);
+                            Component.empty(), type.getMinExpansionRatio(), type.getMaxExpansionRatio(), (type.getMaxExpansionRatio() + type.getMinExpansionRatio()) / 2, true);
                     addRenderableWidget(expansionRatioSlider);
+                    this.syncWithBE();
                 });
         addRenderableWidget(setExhaustPackType);
         addRenderableWidget(exhaustPackLabel);
@@ -151,27 +160,32 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         powerPackTypeLocations = new ArrayList<>();
         List<MutableComponent> availablePowerType = new ArrayList<>();
         getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {
-                    availablePowerType.add(Component.translatable(
-                            "power_pack_type." +
-                                    ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
-            powerPackTypeLocations.add(ro.getKey().location());
-            powerPackTypes.add(ro.getValue());
-                }
-        );
+            if (!ro.getValue().getAllowedPropellants().isEmpty()) {
+                availablePowerType.add(Component.translatable(
+                        "power_pack_type." +
+                                ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
+                powerPackTypeLocations.add(ro.getKey().location());
+                powerPackTypes.add(ro.getValue());
+            }
+        });
         setPowerPackType = new SelectionScrollInput(x + 7, y + 20, 100, 18)
                 .forOptions(availablePowerType)
                 .titled(availablePowerTypeTitle.plainCopy())
-                .writingTo(powerPackLabel);
+                .writingTo(powerPackLabel)
+                .setState(powerPackTypeLocations.indexOf(getMenu().getSyncData().powerPackType()))
+                .calling(state -> {
+                    this.syncWithBE();
+                    this.updateSelectors(state);
+
+                });
         addRenderableWidget(setPowerPackType);
         addRenderableWidget(powerPackLabel);
 
 
-
-
-
         expansionRatioSlider = new ForgeSlider(x + 10, y + 220, 110, 20,
                 Component.literal("expansion ratio : "),
-                Component.empty(), 2, 100, 50, true);
+                Component.empty(), 2, 100, getMenu().getSyncData().expansionRatio(), true);
+
         addRenderableWidget(expansionRatioSlider);
 
         engineSizeLabel = new Label(x + 7, y + 156, Components.immutableEmpty()).withShadow();
@@ -182,8 +196,9 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .titled(sizeTitle.plainCopy())
                 .writingTo(engineSizeLabel)
                 .addHint(Component.literal("heavier but decrease material requirement"))
-                .setState(100)
-                .format(i -> Components.literal(i + "liters"));
+                .setState(getMenu().getSyncData().size())
+                .format(i -> Components.literal(i + " liters"))
+                .calling(state -> this.syncWithBE());
         engineThrustLabel = new Label(x + 7, y + 178, Components.immutableEmpty()).withShadow();
         engineThrustLabel.text = Components.immutableEmpty();
         engineThrustInput = new ScrollInput(x + 7, y + 178,
@@ -193,9 +208,12 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .writingTo(engineThrustLabel)
                 .addHint(Component.literal("more thrust but increase material requirement"))
                 .withShiftStep(10000)
-                .withStepFunction((c) -> (c.shift ? 100 : 10) * (c.control ? 100 : 1))
-                .setState(100000)
-                .format(i -> Components.literal(CSUtil.scientificNbrFormatting(Float.valueOf(i), 4) + "N"));
+                .withStepFunction((c) -> (c.shift ? 100000 : 1000))
+                .setState(getMenu().contentHolder.thrust)
+                .format(i -> Components.literal(CSUtil.scientificNbrFormatting(Float.valueOf(i), 4) + " N"))
+                .calling(state -> this.syncWithBE());
+        engineThrustInput.onChanged();
+        engineSizeInput.onChanged();
         addRenderableWidget(engineSizeLabel);
         addRenderableWidget(engineThrustLabel);
         addRenderableWidget(engineSizeInput);
@@ -204,6 +222,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .withCallback(() ->
                         craftEngine(getMenu().contentHolder.getBlockPos(), propellantTypes.get(setPropellantType.getState()), engineIsp, engineMass, engineThrustInput.getState()));
         addRenderableWidget(confirmButton);
+        setPowerPackType.onChanged();
     }
 
     @Override
@@ -271,27 +290,52 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                                 .sendCraft(blockEntityPos, newEngine));
     }
 
+    private void syncWithBE() {
+        CompoundTag syncData = new CompoundTag();
+        syncData.putInt("thrust", engineThrustInput.getState());
+        syncData.putInt("size", engineSizeInput.getState());
+        syncData.putInt("expansionRatio", (int) expansionRatioSlider.getValue());
+
+        syncData.put("exhaustPack", ResourceLocation.CODEC
+                .encodeStart(NbtOps.INSTANCE, exhaustPackTypeLocations.get(setExhaustPackType.getState()))
+                .result().orElse(new CompoundTag()));
+        syncData.put("powerPack", ResourceLocation.CODEC
+                .encodeStart(NbtOps.INSTANCE, powerPackTypeLocations.get(setPowerPackType.getState()))
+                .result().orElse(new CompoundTag()));
+        syncData.put("propellantType", ResourceLocation.CODEC
+                .encodeStart(NbtOps.INSTANCE, propellantTypeLocations.get(setPropellantType.getState()))
+                .result().orElse(new CompoundTag()));
+        PacketInit.getChannel()
+                .sendToServer(
+                        RocketEngineerTableSync
+                                .sendSettings(getMenu().contentHolder.getBlockPos(),
+                                        syncData
+                                ));
+    }
+
+    //the other way around...
     private void updateSelectors(int value) {
-        ResourceLocation prop = propellantTypeLocations.get(value);
-        List<MutableComponent> availablePowerType = new ArrayList<>();
-        powerPackTypeLocations = new ArrayList<>();
-        powerPackTypes = new ArrayList<>();
-        getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {
-            if (ro.getValue().getAllowedPropellants().contains(prop)) {
-                availablePowerType.add(Component.translatable(
-                        "power_pack_type." +
-                                ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
-                powerPackTypeLocations.add(ro.getKey().location());
-                powerPackTypes.add(ro.getValue());
-            }
-        });
-        setPowerPackType.setState(0);
-        if (availablePowerType.isEmpty()) {
-            availablePowerType.add(Component.empty());
+        List<ResourceLocation> props = powerPackTypes.get(value).getAllowedPropellants();
+        List<MutableComponent> availablePropellants = new ArrayList<>();
+        propellantTypeLocations = props;
+        propellantTypes = new ArrayList<>();
+        props.forEach(
+                location -> {
+                    availablePropellants.add(Component.translatable(
+                            "propellant_type." +
+                                    location.getNamespace() + "." + location.getPath()));
+                    propellantTypes.add(PropellantTypeInit.PROPELLANT_TYPE.get().getValue(location));
+                }
+        );
+        //getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {
+        setPropellantType.setState(0);
+        //should not be possible
+        if (availablePropellants.isEmpty()) {
+            availablePropellants.add(Component.empty());
         }
-        ((SelectionScrollInput) setPowerPackType).forOptions(availablePowerType);
-        setPowerPackType.visible = !availablePowerType.isEmpty();
-        powerPackLabel.text = setPowerPackType.getMessage();
+        ((SelectionScrollInput) setPropellantType).forOptions(availablePropellants);
+        setPropellantType.visible = !availablePropellants.isEmpty();
+        setPropellantType.onChanged();
         //the srollInput is only synced with the label on scroll
     }
 }

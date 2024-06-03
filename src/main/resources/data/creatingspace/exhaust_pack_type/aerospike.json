@@ -1,4 +1,14 @@
 {
   "minExpansionRatio": 2,
-  "maxExpansionRatio": 500
+  "maxExpansionRatio": 500,
+  "slots": [
+    {
+      "x": 30,
+      "y": 70
+    },
+    {
+      "x": 70,
+      "y": 70
+    }
+  ]
 }

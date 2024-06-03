@@ -3,6 +3,7 @@ package com.rae.creatingspace.init;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.server.design.ExhaustPackType;
 import com.rae.creatingspace.server.design.PowerPackType;
+import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -13,7 +14,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class MiscInit {
@@ -22,12 +25,24 @@ public class MiscInit {
     public static final Supplier<IForgeRegistry<ExhaustPackType>> EXHAUST_PACK_TYPE = DEFERRED_EXHAUST_PACK_TYPE.makeRegistry(
             () -> new RegistryBuilder<ExhaustPackType>().allowModification().disableSaving()
                     .dataPackRegistry(ExhaustPackType.DIRECT_CODEC, ExhaustPackType.DIRECT_CODEC));
+    public static final RegistryObject<ExhaustPackType> BELL_NOZZLE = DEFERRED_EXHAUST_PACK_TYPE.register(
+            "bell_nozzle", () -> new ExhaustPackType(2, 100, List.of(
+                    Couple.create(3, 30)
+            ))
+    );
     public static final DeferredRegister<PowerPackType> DEFERRED_POWER_PACK_TYPE =
             DeferredRegister.create(Keys.POWER_PACK_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<PowerPackType>> POWER_PACK_TYPE = DEFERRED_POWER_PACK_TYPE.makeRegistry(
-            () -> new RegistryBuilder<PowerPackType>().allowModification().disableSaving().dataPackRegistry(
+            () -> new RegistryBuilder<PowerPackType>().allowModification().disableSaving()
+                    .dataPackRegistry(
                     PowerPackType.DIRECT_CODEC, PowerPackType.DIRECT_CODEC));
-
+    public static final RegistryObject<PowerPackType> OPEN_CYCLE = DEFERRED_POWER_PACK_TYPE.register(
+            "open_cycle", () -> new PowerPackType(2,
+                    List.of(CreatingSpace.resource("methalox")),
+                    List.of(
+                            Couple.create(3, 30)
+                    ))
+    );
     /**
      * @return a client side sync version of the DEFERRED_EXHAUST_PACK_TYPE
      */
