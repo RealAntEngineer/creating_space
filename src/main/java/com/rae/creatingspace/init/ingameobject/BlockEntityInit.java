@@ -13,6 +13,10 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 
 public class BlockEntityInit {
+    public static final BlockEntityEntry<RocketEngineerTableBlockEntity> ENGINEER_TABLE =
+            REGISTRATE.blockEntity("engineer_table", RocketEngineerTableBlockEntity::new)
+                    .validBlocks(BlockInit.ROCKET_ENGINEER_TABLE)
+                    .register();
     public static final BlockEntityEntry<RocketControlsBlockEntity> CONTROLS =
             REGISTRATE.blockEntity("controls", RocketControlsBlockEntity::new)
             .validBlocks(BlockInit.ROCKET_CONTROLS)
@@ -61,6 +65,11 @@ public class BlockEntityInit {
             REGISTRATE.blockEntity(
                             "small_engine", RocketEngineBlockEntity.SmallEngine::new)
                     .validBlocks(BlockInit.SMALL_ROCKET_ENGINE)
+                    .register();
+
+    public static final BlockEntityEntry<RocketEngineBlockEntity.NbtDependent> NBT_DEPENDENT_ENGINE =
+            REGISTRATE.blockEntity("rocket_engine", RocketEngineBlockEntity.NbtDependent::new)
+                    .validBlocks(BlockInit.SUPER_ROCKET_ENGINE)
                     .register();
 
     public static final BlockEntityEntry<LegacyMechanicalElectrolyzerBlockEntity> LEGACY_ELECTROLIZER =

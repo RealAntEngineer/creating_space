@@ -3,6 +3,7 @@ package com.rae.creatingspace.server.entities;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
+import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
@@ -31,7 +32,7 @@ import java.util.*;
 public class RoomAtmosphere extends Entity {
 
     private int o2amount;//equivalent to 1 mb of liquid oxygen ?
-    private static final EntityDataAccessor<RoomShape> SHAPE_DATA_ACCESSOR = SynchedEntityData.defineId(RoomAtmosphere.class, RoomShape.SERIALIZER);
+    private static final EntityDataAccessor<RoomShape> SHAPE_DATA_ACCESSOR = SynchedEntityData.defineId(RoomAtmosphere.class, EntityDataSerializersInit.SHAPE_SERIALIZER);
 
     public float getO2concentration() {
         return (float) this.o2amount / getShape().volume;

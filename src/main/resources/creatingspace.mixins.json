@@ -10,6 +10,7 @@
     "entity.FallingBlockEntityEntityMixin",
     "entity.ItemEntityMixin",
     "entity.LivingEntityMixin",
+    "entity.PlayerMixin",
     "kinetics.BacktankBlockEntityMixin"
   ],
   "client": [

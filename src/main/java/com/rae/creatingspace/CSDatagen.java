@@ -2,8 +2,7 @@ package com.rae.creatingspace;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.foundation.advancement.AllAdvancements;
+import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.data.DataGenerator;
@@ -15,7 +14,7 @@ import java.util.function.BiConsumer;
 
 public class CSDatagen {
 	public static void gatherData(GatherDataEvent event) {
-		//addExtraRegistrateData();
+		addExtraRegistrateData();
 
 		DataGenerator generator = event.getGenerator();
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
@@ -23,11 +22,11 @@ public class CSDatagen {
 		if (event.includeClient()) {
 			//generator.addProvider(true, AllSoundEvents.provider(generator));
 		}
-
+		//TODO use this to load the info for dimensions (need to be one file for each dimension)
 		if (event.includeServer()) {
 			//generator.addProvider(true, new CreateRecipeSerializerTagsProvider(generator, existingFileHelper));
 
-			generator.addProvider(true, new AllAdvancements(generator));
+			//generator.addProvider(true, new AllAdvancements(generator));
 
 			//generator.addProvider(true, new StandardRecipeGen(generator));
 			//generator.addProvider(true, new MechanicalCraftingRecipeGen(generator));
@@ -46,14 +45,14 @@ public class CSDatagen {
 
 			provideDefaultLang("interface", langConsumer);
 			provideDefaultLang("tooltips", langConsumer);
-			AllAdvancements.provideLang(langConsumer);
-			AllSoundEvents.provideLang(langConsumer);
+			//AllAdvancements.provideLang(langConsumer);
+			//AllSoundEvents.provideLang(langConsumer);
 			providePonderLang(langConsumer);
 		});
 	}
 
 	private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {
-		String path = "assets/create/lang/default/" + fileName + ".json";
+		String path = "assets/creatingspace/lang/default/" + fileName + ".json";
 		JsonElement jsonElement = FilesHelper.loadJsonResource(path);
 		if (jsonElement == null) {
 			throw new IllegalStateException(String.format("Could not find default lang file: %s", path));
@@ -75,6 +74,6 @@ public class CSDatagen {
 		//PonderLocalization.generateSceneLang();
 
 		//GeneralText.provideLang(consumer);
-		//PonderLocalization.provideLang(CreatingSpace.MODID, consumer);
+		PonderLocalization.provideLang(CreatingSpace.MODID, consumer);
 	}
 }
