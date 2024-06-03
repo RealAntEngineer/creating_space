@@ -27,7 +27,9 @@ public class MiscInit {
                     .dataPackRegistry(ExhaustPackType.DIRECT_CODEC, ExhaustPackType.DIRECT_CODEC));
     public static final RegistryObject<ExhaustPackType> BELL_NOZZLE = DEFERRED_EXHAUST_PACK_TYPE.register(
             "bell_nozzle", () -> new ExhaustPackType(2, 100, List.of(
-                    Couple.create(3, 30)
+                    Couple.create(30, 30),
+                    Couple.create(90, 30)
+
             ))
     );
     public static final DeferredRegister<PowerPackType> DEFERRED_POWER_PACK_TYPE =
@@ -40,7 +42,8 @@ public class MiscInit {
             "open_cycle", () -> new PowerPackType(2,
                     List.of(CreatingSpace.resource("methalox")),
                     List.of(
-                            Couple.create(3, 30)
+                            Couple.create(34, 31),
+                            Couple.create(75, 30)
                     ))
     );
     /**

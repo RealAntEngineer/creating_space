@@ -69,9 +69,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
 
     public RocketEngineerTableBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
         super(p_155228_, p_155229_, p_155230_);
-        System.out.println("defaulting value");
         readScreenData(SyncData.defaultData());
-
         inventory = new TableInventory();
     }
 
@@ -156,7 +154,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         super.read(tag, clientPacket);
         inventory.deserializeNBT((CompoundTag) tag.get("inventory"));
         //seems to be buggy
-        if (clientPacket) {
+        /*if (clientPacket) {
             if (inventory != null) inventory.setSize(
                     getSyncedExhaustPackRegistry().get(exhaustPackType).getSlots().size() +
                             getSyncedPowerPackRegistry().get(powerPackType).getSlots().size() + 1);
@@ -164,11 +162,11 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
             if (inventory != null)
                 inventory.setSize(getSyncedExhaustPackRegistry().get(exhaustPackType).getSlots().size() +
                         getSyncedPowerPackRegistry().get(powerPackType).getSlots().size() + 1);
-        }
+        }*/
         CompoundTag screenInfo = (CompoundTag) tag.get("screenInfo");
-        //System.out.println("reading info"+screenInfo+"client ? "+ clientPacket);
         assert screenInfo != null;
         readScreenData(screenInfo);
+        notifyUpdate();
     }
 
     @Override
