@@ -11,6 +11,7 @@ import com.rae.creatingspace.server.design.PropellantType;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
+import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.FlightDataHelper;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -64,11 +65,12 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     // (spaceport block ? to define where the rocket will go)
     // for a normal rocket a path an action will be generated without the player knowing ?
 
-    //TODO prevent the rocket from consuming fuel when world is loading
+    //TODO prevent the rocket from consuming fuel when world is loading ? correct gestion of client player loading
     private static final Logger LOGGER = LogUtils.getLogger();
     double clientOffsetDiff;
     double speed;
     float totalTickTime;
+    boolean shouldHandleCalculation = false;
     HashMap<PropellantType, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<PropellantType, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
 
@@ -86,9 +88,19 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     //TODO make a record
     public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();
+    private HashMap<String, BlockPos> initialPosMap;
+    private HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
 
+    public HashMap<String, BlockPos> getInitialPosMap() {
+        return initialPosMap;
+    }
+
+    public HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> getMapOfAccessibleDimensionAndV() {
+        return mapOfAccessibleDimensionAndV;
+    }
     //initializing and saving methods
 
+    //make the launch after the assembling of the rocket.
     public RocketContraptionEntity(EntityType<?> type, Level level) {
         super(type, level);
     }
@@ -96,7 +108,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         RocketContraptionEntity entity =
                 new RocketContraptionEntity(EntityInit.ROCKET_CONTRAPTION.get(), level);
         entity.originDimension = level.dimension();
-        entity.destination = destination;
+        entity.destination = destination;//will be set after the
 
         entity.setContraption(contraption);
         entity.theoreticalPerTagFluidConsumption = contraption.getTPTFluidConsumption();
@@ -111,7 +123,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     //put that in a rocket assembly helper class ?
     //TODO put every static methode into a helper class ( make an api ?)
-    private static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity){
+
+    /**
+     * should only be used on the server
+     */
+    public static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity) {
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
         float deltaVNeeded = CSDimensionUtil.accessibleFrom(rocketContraptionEntity.originDimension)
@@ -314,8 +330,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(REENTRY_ENTITY_DATA_ACCESSOR,false);
-   }
-   //adjust those two methode so it write and read the 3 new hashmap
+        this.entityData.define(RUNNING_ENTITY_DATA_ACCESSOR, false);
+    }
+    //adjust those two methode so it write and read the 3 new hashmap
 
     public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(
             PropellantTypeInit.PROPELLANT_TYPE.get().getCodec(),
@@ -328,6 +345,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     protected void readAdditional(CompoundTag compound, boolean spawnData) {
         super.readAdditional(compound, spawnData);
+        this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
+        this.mapOfAccessibleDimensionAndV = getMapOfDim((CompoundTag) compound.get("mapOfDim"));
         this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));
         this.totalThrust = compound.getFloat("thrust");
         this.initialMass = compound.getFloat("initialMass");
@@ -360,7 +379,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     @Override
     protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
-       compound.putLongArray("localPosOfFlightRecorders",CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));
+        compound.put("initialPosMap", putPosMap(this.initialPosMap, new CompoundTag()));
+        compound.put("mapOfDim", putMapOfDim(this.mapOfAccessibleDimensionAndV, new CompoundTag()));
+
+        compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));
         compound.putInt("propellantConsumption", this.propellantConsumption);
         compound.putFloat("initialMass",this.initialMass);
         compound.putFloat("totalTime",this.totalTickTime);
@@ -381,13 +403,66 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putString("destination:path",this.destination.location().getPath());
         super.writeAdditional(compound, spawnPacket);
     }
+    private CompoundTag putMapOfDim(HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV, CompoundTag compoundTag) {
+        if (compoundTag == null) {
+            compoundTag = new CompoundTag();
+        }
+        if (!(mapOfAccessibleDimensionAndV == null)) {
+            for (ResourceKey<Level> key :
+                    mapOfAccessibleDimensionAndV.keySet()) {
+                compoundTag.put(key.location().toString(), DimensionParameterMapReader.ACCESSIBILITY_PARAMETER_CODEC.encodeStart(NbtOps.INSTANCE, mapOfAccessibleDimensionAndV.get(key)).result().orElse(new CompoundTag()));
+            }
+        }
+        return compoundTag;
+    }
+
+    public static CompoundTag putPosMap(HashMap<String, BlockPos> initialPosMap, CompoundTag compound) {
+        if (compound == null) {
+            compound = new CompoundTag();
+        }
+        for (String key : initialPosMap.keySet()) {
+            compound.putLong("dimensionInitialPosOf:" + key, initialPosMap.get(key).asLong());
+        }
+
+        return compound;
+    }
+
+    private HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> getMapOfDim(CompoundTag compound) {
+        HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfDim = new HashMap<>();
+
+        if (compound != null) {
+            for (String key : compound.getAllKeys()) {
+                mapOfDim.put(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(key)),
+                        DimensionParameterMapReader.ACCESSIBILITY_PARAMETER_CODEC.parse(NbtOps.INSTANCE, compound.get(key)).result().orElse(null));
+            }
+        }
+
+        return mapOfDim;
+    }
+
+    public static HashMap<String, BlockPos> getPosMap(CompoundTag compound) {
+        HashMap<String, BlockPos> initialPosMap = new HashMap<>();
+
+        if (compound != null) {
+            for (String key : compound.getAllKeys()) {
+                if (key.contains("dimensionInitialPosOf:")) {
+                    initialPosMap.put(
+                            key.substring(22),
+                            BlockPos.of(compound.getLong(key)));
+                }
+            }
+        }
+
+        return initialPosMap;
+    }
 
     @Override
     public void tick() {
-        if (!initialized){
-            if (!level.isClientSide()) {
+        if (this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR)) {
+            if (!level.isClientSide() && shouldHandleCalculation) {
                 //so the pos is initialized
                 handelTrajectoryCalculation(this);
+                shouldHandleCalculation = false;
             }
         }
         super.tick();
@@ -414,27 +489,33 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             updateClientMotion();
         }
 
-        tickConsumptionAndSpeed();
         tickActors();
-        Vec3 movementVec = getDeltaMovement();
-        if (!level.isClientSide)tickDimensionChangeLogic();
+        if (this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR) && canRun()) {
+            tickConsumptionAndSpeed();
+            Vec3 movementVec = getDeltaMovement();
+            if (!level.isClientSide) tickDimensionChangeLogic();
 
 
-        if (ContraptionCollider.collideBlocks(this)) {
-            if (!level.isClientSide) {
-                setContraptionMotion(Vec3.ZERO);//otherwise the player take damage ? no
-                disassemble();
+            if (ContraptionCollider.collideBlocks(this)) {
+                if (!level.isClientSide) {
+                    setContraptionMotion(Vec3.ZERO);//otherwise the player take damage ? no
+                    disassemble();
+                }
+                return;
             }
-            return;
-        }
-        if (tickCount>2) {
-            movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
-            move(movementVec.x, movementVec.y, movementVec.z);
-        }
+            if (tickCount > 2) {
+                movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
+                move(movementVec.x, movementVec.y, movementVec.z);
+            }
         /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
             contraption.stop(level);*/
+        }
         if (!level.isClientSide)
             sendPacket();
+    }
+
+    private boolean canRun() {
+        return true;
     }
 
     @Override
@@ -716,5 +797,15 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         ce.speed = packet.speed;
         ce.clientOffsetDiff = packet.coord - ce.getAxisCoord();
+    }
+    //@OnlyIn(Dist.CLIENT)
+
+    public void setShouldHandleCalculation(boolean shouldHandleCalculation) {
+        this.shouldHandleCalculation = shouldHandleCalculation;
+    }
+
+    public void setAccessibilityData(HashMap<String, BlockPos> initialPosMap, HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV) {
+        this.initialPosMap = initialPosMap;
+        this.mapOfAccessibleDimensionAndV = mapOfAccessibleDimensionAndV;
     }
 }

@@ -194,6 +194,7 @@
   "power_pack_type.creatingspace.open_cycle": "open cycle",
   "power_pack_type.creatingspace.ox_rich_staged_cycle": "ox rich flow",
   "power_pack_type.creatingspace.fuel_rich_staged_cycle": "fuel rich flow",
-  "power_pack_type.creatingspace.full_flow_staged_cycle": "full flow"
+  "power_pack_type.creatingspace.full_flow_staged_cycle": "full flow",
+  "creatingspace.gui.rocket_controls.assemble": "Assemble"
 
 }

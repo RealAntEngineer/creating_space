@@ -73,11 +73,12 @@ public class CreatingSpace {
 
         CSContraptionType.prepare();
 
-        CSConfigs.registerConfigs(modLoadingContext);
+
         modEventBus.addListener(CreatingSpace::init);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
+        CSConfigs.registerConfigs(modLoadingContext);
 
     }
     public static void init(final FMLCommonSetupEvent event) {

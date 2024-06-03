@@ -5,12 +5,15 @@ import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.RocketEngineBlock;
 import com.rae.creatingspace.server.design.PropellantType;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -48,6 +51,13 @@ public class SuperEngineItem extends RocketEngineItem {
                 .setValue(SmallRocketStructuralBlock.FACING, Direction.UP);
         lvl.setBlock(mainPos, pState, 11);
         lvl.setBlock(mainPos.below(), ghostState, 11);
+        Player player = pContext.getPlayer();
+        ItemStack itemstack = pContext.getItemInHand();
+        BlockState blockstate1 = lvl.getBlockState(mainPos);
+        blockstate1.getBlock().setPlacedBy(lvl, mainPos, blockstate1, player, itemstack);
+        if (player instanceof ServerPlayer) {
+            CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, mainPos, itemstack);
+        }
 
         return true;
     }

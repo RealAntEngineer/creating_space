@@ -18,6 +18,45 @@ public class CSStress extends ConfigBase implements BlockStressValues.IStressVal
 
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> capacities = new HashMap<>();
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> impacts = new HashMap<>();
+
+    /*
+    *@Override
+public void registerAll(ForgeConfigSpec.Builder builder) {
+    builder.comment(".", Comments.su, Comments.impact)
+            .push("impact");
+
+    Iterator<Map.Entry<ResourceLocation, Integer>> impactIterator = BlockStressDefaults.DEFAULT_IMPACTS.entrySet().iterator();
+    while (impactIterator.hasNext()) {
+        Map.Entry<ResourceLocation, Integer> entry = impactIterator.next();
+        ResourceLocation r = entry.getKey();
+        Integer i = entry.getValue();
+        LogUtils.getLogger().info("building impact config for : " + r);
+        if (r.getNamespace().equals(CreatingSpace.MODID)) {
+            getImpacts().put(r, builder.define(r.getPath(), i));
+        } else {
+            LogUtils.getLogger().info("ignoring : " + r);
+        }
+    }
+    builder.pop();
+
+    builder.comment(".", Comments.su, Comments.capacity)
+            .push("capacity");
+
+    Iterator<Map.Entry<ResourceLocation, Integer>> capacityIterator = BlockStressDefaults.DEFAULT_CAPACITIES.entrySet().iterator();
+    while (capacityIterator.hasNext()) {
+        Map.Entry<ResourceLocation, Integer> entry = capacityIterator.next();
+        ResourceLocation r = entry.getKey();
+        Integer i = entry.getValue();
+        LogUtils.getLogger().info("building impact config for : " + r);
+        if (r.getNamespace().equals(CreatingSpace.MODID)) {
+            getCapacities().put(r, builder.define(r.getPath(), i));
+        } else {
+            LogUtils.getLogger().info("ignoring : " + r);
+        }
+    }
+    builder.pop();
+}
+     */
     @Override
     public void registerAll(ForgeConfigSpec.Builder builder) {
         builder.comment(".", Comments.su, Comments.impact)

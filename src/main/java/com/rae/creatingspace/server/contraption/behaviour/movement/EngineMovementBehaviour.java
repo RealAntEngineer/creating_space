@@ -1,4 +1,4 @@
-package com.rae.creatingspace.server.contraption.movementbehaviour;
+package com.rae.creatingspace.server.contraption.behaviour.movement;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.particle.RocketPlumeParticleData;

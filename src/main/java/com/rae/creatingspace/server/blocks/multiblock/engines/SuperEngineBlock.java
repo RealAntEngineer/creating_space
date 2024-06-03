@@ -8,14 +8,19 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 
 public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEngineBlockEntity.NbtDependent> {
@@ -55,9 +60,25 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
 
         if (worldIn.isClientSide)
             return;
+        System.out.println("coucou 2");
         withBlockEntityDo(worldIn, pos, be -> {
             be.setFromNbt(stack.getOrCreateTag().getCompound("blockEntity"));
         });
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos pos, BlockState state) {
+        Item item = asItem();
+
+        ItemStack stack = new ItemStack(item);
+        Optional<RocketEngineBlockEntity.NbtDependent> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
+
+        CompoundTag tag = stack.getOrCreateTag();
+        CompoundTag beData = new CompoundTag();
+        blockEntityOptional.orElse(null).setFromNbt(beData);
+        tag.put("blockEntity", beData);
+        stack.setTag(tag);
+        return stack;
     }
 
     @Override

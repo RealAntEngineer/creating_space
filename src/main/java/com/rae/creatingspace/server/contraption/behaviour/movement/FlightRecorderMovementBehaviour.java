@@ -1,17 +1,9 @@
-package com.rae.creatingspace.server.contraption.movementbehaviour;
+package com.rae.creatingspace.server.contraption.behaviour.movement;
 
-import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import com.rae.creatingspace.server.particle.RocketPlumeParticleData;
-import com.rae.creatingspace.utilities.data.FlightDataHelper;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
-import com.simibubi.create.foundation.utility.VecHelper;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class FlightRecorderMovementBehaviour implements MovementBehaviour {
 

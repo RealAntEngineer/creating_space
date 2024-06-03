@@ -87,6 +87,11 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         this.destination = destination;
     }
 
+    public void queueAssembly() {
+        this.assembleNextTick = true;
+        this.destination = null;
+    }
+
     private void assemble() {
 
         if (!(level.getBlockState(worldPosition)
@@ -122,6 +127,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
                 RocketContraptionEntity.create(level, contraption, destination);
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
+        rocketContraptionEntity.setAccessibilityData(initialPosMap, mapOfAccessibleDimensionAndV);
         rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination.toString(), this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);
 

@@ -13,7 +13,8 @@ import com.rae.creatingspace.server.blocks.multiblock.SuperRocketStructuralBlock
 import com.rae.creatingspace.server.blocks.multiblock.engines.BigEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SuperEngineBlock;
-import com.rae.creatingspace.server.contraption.movementbehaviour.EngineMovementBehaviour;
+import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketControlInteraction;
+import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
 import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.engine.BigEngineItem;
 import com.rae.creatingspace.server.items.engine.SmallEngineItem;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
+import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
@@ -134,6 +136,7 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
+            .onRegister(interactionBehaviour(new RocketControlInteraction()))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
