@@ -2,14 +2,14 @@ package com.rae.creatingspace.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.api.design.ExhaustPackType;
+import com.rae.creatingspace.api.design.PowerPackType;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.rae.creatingspace.server.design.ExhaustPackType;
-import com.rae.creatingspace.server.design.PowerPackType;
-import com.rae.creatingspace.server.design.PropellantType;
 import com.rae.creatingspace.server.items.engine.SuperEngineItem;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.EngineerTableCraft;

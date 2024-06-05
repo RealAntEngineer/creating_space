@@ -1,8 +1,8 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.server.design.ExhaustPackType;
-import com.rae.creatingspace.server.design.PowerPackType;
+import com.rae.creatingspace.api.design.ExhaustPackType;
+import com.rae.creatingspace.api.design.PowerPackType;
 import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -73,7 +73,6 @@ public class MiscInit {
 
 
     }
-
     public static void register(IEventBus modEventBus) {
         DEFERRED_EXHAUST_PACK_TYPE.register(modEventBus);
         DEFERRED_POWER_PACK_TYPE.register(modEventBus);
