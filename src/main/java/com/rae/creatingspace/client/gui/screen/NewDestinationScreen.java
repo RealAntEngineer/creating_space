@@ -1,13 +1,14 @@
 package com.rae.creatingspace.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.rae.creatingspace.client.gui.screen.elements.DimSelectBoxWidget;
+import com.rae.creatingspace.api.gui.Orbit;
+import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.client.gui.screen.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSUtil;
-import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.packet.RocketContraptionLaunchPacket;
 import com.rae.creatingspace.utilities.packet.RocketControlsSettingsPacket;
 import com.simibubi.create.foundation.gui.AbstractSimiScreen;
@@ -22,8 +23,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,14 +32,14 @@ import java.util.Vector;
 public class NewDestinationScreen extends AbstractSimiScreen {
     private boolean destinationChanged;
     private Button launchButton;
-    private final HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
+    private final HashMap<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> mapOfAccessibleDimensionAndV;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
     private final GuiTexturesInit background;
-    private final ResourceKey<Level> currentDimension;
-    private ResourceKey<Level> destination;
+    private final ResourceLocation currentDimension;
+    private ResourceLocation destination;
 
-    private final Vector<DimSelectBoxWidget> buttonVector;
+    private final Vector<Orbit> buttonVector;
     private LabeledBoxWidget destinationCost;
     private EditBox Xinput;
     private EditBox Zinput;
@@ -53,9 +53,9 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         this.rocketContraption = rocket;
         this.initialPosMap = new HashMap<>(rocket.getInitialPosMap());
         this.background = GuiTexturesInit.ROCKET_CONTROLS;
-        this.currentDimension = rocket.getLevel().dimension();
+        this.currentDimension = rocket.getLevel().dimension().location();
         //initialise the map in the server side blockEntity to avoid issues
-        this.mapOfAccessibleDimensionAndV = rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : rocket.getMapOfAccessibleDimensionAndV();
+        this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());//rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : new HashMap<>(rocket.getMapOfAccessibleDimensionAndV());
 
         this.buttonVector = new Vector<>(this.mapOfAccessibleDimensionAndV.size());
         this.destinationChanged = false;
@@ -128,9 +128,9 @@ public class NewDestinationScreen extends AbstractSimiScreen {
 
         Component text;
         for (int row = 0; row < mapOfAccessibleDimensionAndV.size(); row++) {
-            ResourceKey<Level> dim = mapOfAccessibleDimensionAndV.keySet().stream().toList().get(row);
-            text = Component.translatable(dim.location().toString());
-            DimSelectBoxWidget widget = new DimSelectBoxWidget(x + 7, y + 20 + 26 * row, 134, 16, text, dim);
+            ResourceLocation dim = mapOfAccessibleDimensionAndV.keySet().stream().toList().get(row);
+            text = Component.translatable(dim.toString());
+            Orbit widget = new Orbit(x + windowWidth / 2, y + windowHeight / 2, 30 + 20 * row, dim);
             widget.withCallback(
                     () -> {
                         destination = widget.getDim();
@@ -140,9 +140,12 @@ public class NewDestinationScreen extends AbstractSimiScreen {
             buttonVector.add(
                     row,
                     widget);
-            addRenderableWidget(buttonVector.get(row));
-        }
+            addRenderableWidget(widget);
 
+        }
+        if (buttonVector.size() > 1) {
+            buttonVector.get(0).setSatellites(buttonVector.subList(1, buttonVector.size()));
+        }
     }
 
 
@@ -198,7 +201,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         }
 
         for (int row = 0; row < mapOfAccessibleDimensionAndV.size(); row++) {
-            DimSelectBoxWidget widget = buttonVector.get(row);
+            Orbit widget = buttonVector.get(row);
             if (destination == widget.getDim()) {
                 widget.withBorderColors(green);
             } else if (destination != null) {
@@ -208,6 +211,38 @@ public class NewDestinationScreen extends AbstractSimiScreen {
 
         destinationChanged = false;
     }
+
+    private void renderBackground(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+
+    }
+
+    private void renderPlanets(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+    }
+
+
+
+    /*private void drawCircle(PoseStack ms, int x, int y, int radius){
+        //using middle point algorithm
+        float a = 20;
+        float b = 30;
+        int color = 0XEEEEEEEE;
+        int startX = 0;
+        int startY = (int) b;
+        int length = 0;
+        int d = (int) (1 - a);
+        while (startX*b <= startY*a){
+             if (d < 0) {
+                 d += (int) (2 * (startX+length)/a + 3);
+             } else {
+                 drawSymmetricLines(ms, x, y, startX, startY,length, color);
+                 d += (int) (2 * ((startX+length)/a - startY/b) + 5);
+                 startY -= 1;
+                 startX+=length;
+                 length = 0;
+             }
+            length += 1;
+        }
+    }*/
 
     @Override
     public void tick() {

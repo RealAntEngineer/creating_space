@@ -1,6 +1,7 @@
 package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.DimensionTagsReader;
 import net.minecraft.core.Registry;
@@ -17,41 +18,60 @@ import java.util.Map;
 import static com.rae.creatingspace.utilities.data.DimensionParameterMapReader.translator;
 
 public class CSDimensionUtil {
-    //TODO change resource key to resource location
-    public static float gravity(ResourceKey<DimensionType> dimensionType) {
-        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
-                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
+    //should be updated on both server and client load (first on client, then on client join)
+    public static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
 
-        if (dimensionMapData!=null) {
-            DimensionParameterMapReader.CustomDimensionParameter dimensionParameter =
-                    dimensionMapData.dimensionParameterMap()
-                            .get(dimensionType.location().toString());
-            if (dimensionParameter!=null){
-                Float gravity = dimensionParameter.gravity();
-                if (gravity!=null){
-                    return gravity;
+    public static void updateTravelMapFromRegistry(Registry<RocketAccessibleDimension> registry) {
+        Map<ResourceLocation, RocketAccessibleDimension> collector = new HashMap<>();
+        registry.registryKeySet().forEach(resourceKey -> {
+                    collector.put(resourceKey.location(), registry.get(resourceKey.location()));
                 }
+        );
+        travelMap = Map.copyOf(collector);
+        System.out.println(travelMap);
+    }
+
+    //TODO change resource key to resource location
+    @Deprecated(forRemoval = true)
+    public static float gravity(ResourceKey<DimensionType> dimensionType) {
+        return gravity(dimensionType.location());
+    }
+
+    public static float gravity(ResourceLocation location) {
+        if (travelMap != null) {
+            RocketAccessibleDimension dimensionParameter = travelMap.get(location);
+            if (dimensionParameter!=null){
+                return dimensionParameter.gravity();
             }
         }
         return 9.81f;
     }
 
+    @Deprecated(forRemoval = true)
     public static int arrivalHeight(ResourceKey<DimensionType> dimensionType) {
-        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
-                DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
-        assert dimensionMapData != null;
-        return dimensionMapData.dimensionParameterMap().get(dimensionType.location().toString()).arrivalHeight();
+        return arrivalHeight(dimensionType.location());
+    }
+
+    public static int arrivalHeight(ResourceLocation location) {
+        if (travelMap != null) {
+            RocketAccessibleDimension dimensionParameter = travelMap.get(location);
+            if (dimensionParameter != null) {
+                return dimensionParameter.arrivalHeight();
+            }
+        }
+        return 64;
     }
     //to optimise
+    @Deprecated(forRemoval = true)//use  accessibleFrom(ResourceLocation currentDimension) instead
     public static HashMap<ResourceKey<Level>,
             DimensionParameterMapReader.AccessibilityParameter> accessibleFrom(ResourceKey<Level> currentDimension) {
 
-        DimensionParameterMapReader.PartialDimensionParameterMap dimensionMapData =
+        DimensionParameterMapReader.PartialDimensionParameterMap travelMap =
                 DimensionParameterMapReader.DIMENSION_MAP_HOLDER.getData();
         HashMap<String,HashMap<String, DimensionParameterMapReader.AccessibilityParameter>> compressedAccessibilityMatrix = new HashMap<>();
 
-        if (dimensionMapData!=null) {
-            Map<String, DimensionParameterMapReader.CustomDimensionParameter> mapOfDimensionParameters = dimensionMapData.dimensionParameterMap();
+        if (travelMap != null) {
+            Map<String, DimensionParameterMapReader.CustomDimensionParameter> mapOfDimensionParameters = travelMap.dimensionParameterMap();
             for (String originDimension : mapOfDimensionParameters.keySet()) {
                 HashMap<String, DimensionParameterMapReader.AccessibilityParameter> adjacentDimensions = new HashMap<>(mapOfDimensionParameters.get(originDimension).adjacentDimensions());
 
@@ -78,6 +98,15 @@ public class CSDimensionUtil {
 
         if (accessibilityMap.containsKey(currentDimension)){
             return  accessibilityMap.get(currentDimension);
+        }
+        return new HashMap<>();
+    }
+
+    public static Map<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> accessibleFrom(ResourceLocation currentDimension) {
+        if (travelMap != null) {
+            if (travelMap.containsKey(currentDimension)) {
+                return travelMap.get(currentDimension).adjacentDimensions();
+            }
         }
         return new HashMap<>();
     }

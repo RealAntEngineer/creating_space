@@ -1,6 +1,8 @@
 package com.rae.creatingspace.server.event;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
+import com.rae.creatingspace.utilities.CSDimensionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -9,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -29,12 +31,12 @@ public class DataEventHandler {
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
         CreatingSpace.DESIGN_SAVED_DATA.playerLogin(player);
+        CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
     }
-
-
     @SubscribeEvent
-    public static void onServerStarting(ServerStartingEvent event) {
+    public static void onServerStarted(ServerStartedEvent event) {
         registryAccess = event.getServer().registryAccess();
+        CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
     }
 
     /**
@@ -44,7 +46,7 @@ public class DataEventHandler {
      */
     public static <T> Registry<T> getSideAwareRegistry(ResourceKey<Registry<T>> registryKey) {
         if (registryAccess != null) {
-            return registryAccess.ownedRegistry(registryKey).orElseThrow();
+            return registryAccess.registryOrThrow(registryKey);
         } else {
             return Objects.requireNonNull(Minecraft.getInstance().getConnection())
                     .registryAccess().registry(registryKey)

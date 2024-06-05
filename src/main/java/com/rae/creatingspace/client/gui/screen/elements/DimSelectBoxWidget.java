@@ -6,17 +6,16 @@ import com.simibubi.create.foundation.gui.widget.Label;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class DimSelectBoxWidget extends BoxWidget {
-    private final ResourceKey<Level> dim;
+    private final ResourceLocation dim;
     private final Label label;
     protected int color;
     protected Font font;
 
-    public DimSelectBoxWidget(int x, int y, int width, int height, Component text, ResourceKey<Level> dim){
+    public DimSelectBoxWidget(int x, int y, int width, int height, Component text, ResourceLocation dim) {
         super(x, y, width,height);
         font = Minecraft.getInstance().font;
         this.dim = dim;
@@ -26,8 +25,7 @@ public class DimSelectBoxWidget extends BoxWidget {
     }
 
 
-
-    public ResourceKey<Level> getDim() {
+    public ResourceLocation getDim() {
         return dim;
     }
 

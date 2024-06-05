@@ -2,9 +2,9 @@ package com.rae.creatingspace.server.blockentities;
 
 
 import com.rae.creatingspace.api.IMass;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.rae.creatingspace.server.design.PropellantType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;

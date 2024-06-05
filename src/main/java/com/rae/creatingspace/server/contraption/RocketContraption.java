@@ -2,10 +2,10 @@ package com.rae.creatingspace.server.contraption;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.blockentities.RocketEngineBlockEntity;
 import com.rae.creatingspace.server.blocks.FlightRecorderBlock;
-import com.rae.creatingspace.server.design.PropellantType;
 import com.rae.creatingspace.utilities.CSMassUtil;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;

@@ -2,12 +2,10 @@ package com.rae.creatingspace.utilities.packet;
 
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 import static com.rae.creatingspace.server.entities.RocketContraptionEntity.RUNNING_ENTITY_DATA_ACCESSOR;
@@ -15,22 +13,22 @@ import static com.rae.creatingspace.server.entities.RocketContraptionEntity.RUNN
 public class RocketContraptionLaunchPacket extends SimplePacketBase {
 
     public int entityID;
-    public ResourceKey<Level> destination;
+    public ResourceLocation destination;
 
-    public RocketContraptionLaunchPacket(int entityID, ResourceKey<Level> destination) {
+    public RocketContraptionLaunchPacket(int entityID, ResourceLocation destination) {
         this.entityID = entityID;
         this.destination = destination;
     }
 
     public RocketContraptionLaunchPacket(FriendlyByteBuf buffer) {
         entityID = buffer.readInt();
-        destination = buffer.readResourceKey(Registry.DIMENSION_REGISTRY);
+        destination = buffer.readResourceLocation();
     }
 
     @Override
     public void write(FriendlyByteBuf buffer) {
         buffer.writeInt(entityID);
-        buffer.writeResourceKey(destination);
+        buffer.writeResourceLocation(destination);
 
     }
 
