@@ -1,4 +1,4 @@
-package com.rae.creatingspace.server.design;
+package com.rae.creatingspace.api.design;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;

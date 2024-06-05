@@ -1,4 +1,4 @@
-package com.rae.creatingspace.server.design;
+package com.rae.creatingspace.api.design;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
