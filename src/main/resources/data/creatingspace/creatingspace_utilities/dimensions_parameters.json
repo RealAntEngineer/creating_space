@@ -68,7 +68,7 @@
     "creatingspace:the_moon": {
       "adjacentDimensions": {
         "creatingspace:moon_orbit": {
-          "deltaV": 300
+          "deltaV": 2000
         }
       },
       "arrivalHeight": 200,

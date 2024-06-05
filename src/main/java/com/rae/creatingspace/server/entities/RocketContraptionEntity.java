@@ -2,9 +2,12 @@ package com.rae.creatingspace.server.entities;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
+import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.server.contraption.RocketContraption;
+import com.rae.creatingspace.server.design.PropellantType;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
@@ -14,7 +17,6 @@ import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ContraptionCollider;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
-import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.client.Minecraft;
@@ -22,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -55,7 +58,6 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RocketContraptionEntity extends AbstractContraptionEntity {
     //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
@@ -67,10 +69,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     double clientOffsetDiff;
     double speed;
     float totalTickTime;
-    HashMap<Couple<TagKey<Fluid>>, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
-    HashMap<Couple<TagKey<Fluid>>, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
+    HashMap<PropellantType, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
+    HashMap<PropellantType, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
 
-    HashMap<Couple<TagKey<Fluid>>,Couple<Float>> partialDrainAmountPerFluid = new HashMap<>();
+    HashMap<TagKey<Fluid>, Float> partialDrainAmountPerFluid = new HashMap<>();
     public BlockPos rocketEntryCoordinate = new BlockPos(0,0,0);
     public float totalThrust = 0;
     public float initialMass;
@@ -83,8 +85,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public FlightDataHelper.RocketAssemblyData assemblyData;
 
     //TODO make a record
-    public HashMap<String,HashMap<TagKey<Fluid>, ArrayList<Fluid>>> consumableFluids = new HashMap<>(
-                    Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
+    public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();
 
     //initializing and saving methods
 
@@ -100,8 +101,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         entity.setContraption(contraption);
         entity.theoreticalPerTagFluidConsumption = contraption.getTPTFluidConsumption();
         entity.realPerTagFluidConsumption = new HashMap<>();
-        entity.consumableFluids = new HashMap<>(
-                Map.of("ox",new HashMap<>(), "fuel", new HashMap<>()));
+        entity.consumableFluids = new HashMap<>();
         entity.totalThrust = contraption.getThrust();
         entity.localPosOfFlightRecorders = contraption.getLocalPosOfFlightRecorders();
         entity.noPhysics = false;
@@ -124,21 +124,21 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float inertFluidsMass= 0;
         IFluidHandler fluidHandler = contraption.getSharedFluidTanks();
         int nbrOfTank = fluidHandler.getTanks();
-
+        //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
-        for (Couple<TagKey<Fluid>> combination: rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()){
-
-            TagKey<Fluid> consumedOx = combination.get(true);
-            TagKey<Fluid> consumedFuel = combination.get(false);
+        for (PropellantType combination : rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
             RocketContraption.ConsumptionInfo info = rocketContraptionEntity.theoreticalPerTagFluidConsumption.get(combination);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
-
-            totalTheoreticalConsumption += info.fuelConsumption()+info.oxConsumption();
+            for (float consumption :
+                    info.propellantConsumption().values()) {
+                totalTheoreticalConsumption += consumption;
+            }
             totalThrust += info.partialThrust();
             //initialise if not present
-
-            addToConsumableFluids(rocketContraptionEntity, consumedOx,true);
-            addToConsumableFluids(rocketContraptionEntity, consumedFuel,false);
+            for (TagKey<Fluid> fluid :
+                    combination.getPropellantRatio().keySet()) {
+                addToConsumableFluids(rocketContraptionEntity, fluid);
+            }
         }
 
         float meanVe = totalThrust/totalTheoreticalConsumption;
@@ -187,34 +187,31 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //fill the real consumption map and fill the consumedMass map for mass verification
         HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
 
-        for (Couple<TagKey<Fluid>> combination:rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
-            RocketContraption.ConsumptionInfo info = rocketContraptionEntity.theoreticalPerTagFluidConsumption.get(combination);
+        for (PropellantType propellantType : rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
+            RocketContraption.ConsumptionInfo info = rocketContraptionEntity.theoreticalPerTagFluidConsumption.get(propellantType);
 
-            float theoreticalPartialConsumption = info.fuelConsumption()+info.oxConsumption();
+            float theoreticalPartialConsumption = 0;
+            for (float consumption :
+                    info.propellantConsumption().values()) {
+                theoreticalPartialConsumption += consumption;
+            }
+
             float ponderationCoef = theoreticalPartialConsumption/totalTheoreticalConsumption;
             float realPartialConsumption = ponderationCoef*consumedPropellantMass;
             //that's the consumed mass for the ensemble of engine with the same propellant combination
+            HashMap<TagKey<Fluid>, Float> correctedConsumptions = new HashMap<>(info.propellantConsumption());
+            RocketContraption.multiplyMap(correctedConsumptions, realPartialConsumption / theoreticalPartialConsumption / rocketContraptionEntity.totalTickTime);
 
-            //that's should be right
-            float partialOx = realPartialConsumption*info.oxConsumption()/theoreticalPartialConsumption;
-            float partialFuel = realPartialConsumption*info.fuelConsumption()/theoreticalPartialConsumption;
-
-            rocketContraptionEntity.realPerTagFluidConsumption.put(combination,
+            rocketContraptionEntity.realPerTagFluidConsumption.put(propellantType,
                     new RocketContraption.ConsumptionInfo(
-                            partialOx/rocketContraptionEntity.totalTickTime,
-                            partialFuel/rocketContraptionEntity.totalTickTime,
+                            correctedConsumptions,
                             info.partialThrust()));
+            for (TagKey<Fluid> fluid :
+                    correctedConsumptions.keySet()) {
+                Integer prevValue = consumedMassForEachPropellant.getOrDefault(fluid, 0);
+                consumedMassForEachPropellant.put(fluid, (int) (prevValue + correctedConsumptions.get(fluid)));
 
-            Integer prevOxValue = consumedMassForEachPropellant.get(combination.get(true));
-            if (prevOxValue == null){
-                prevOxValue = 0;
             }
-            Integer prevFuelValue = consumedMassForEachPropellant.get(combination.get(false));
-            if (prevFuelValue == null){
-                prevFuelValue = 0;
-            }
-            consumedMassForEachPropellant.put(combination.get(true), (int) (prevOxValue+partialOx));
-            consumedMassForEachPropellant.put(combination.get(false), (int) (prevFuelValue+partialFuel));
 
         }
 
@@ -237,24 +234,21 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         if (distance<=0){
             rocketContraptionEntity.disassembleOnFirstTick = true;
         }
+        System.out.println("consumableFluids : " + rocketContraptionEntity.consumableFluids);
+        System.out.println("theoreticalPerTagFluidConsumption: " + rocketContraptionEntity.theoreticalPerTagFluidConsumption);
+        System.out.println("realPerTagFluidConsumption: " + rocketContraptionEntity.realPerTagFluidConsumption);
     }
 
-    private static void addToConsumableFluids(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> consumedFluid, boolean isOxPhase) {
-
-        HashMap<TagKey<Fluid>, ArrayList<Fluid>> previousValue = rocketContraptionEntity.consumableFluids.get(isOxPhase?"ox":"fuel");
-        if (previousValue ==null ){
-            previousValue = new HashMap<>();
-        }
-        previousValue.put(consumedFluid,new ArrayList<>());
-        rocketContraptionEntity.consumableFluids.put(isOxPhase?"ox":"fuel",previousValue);
+    private static void addToConsumableFluids(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> consumedFluid) {
+        rocketContraptionEntity.consumableFluids.put(consumedFluid, new ArrayList<>());
         IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getSharedFluidTanks();
         int nbrOfTank = fluidHandler.getTanks();
 
         for (int i = 0; i < nbrOfTank; i++) {
             FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
             if (fluidInTank.getFluid().is(consumedFluid)) {
-                if (!rocketContraptionEntity.consumableFluids.get(isOxPhase?"ox":"fuel").get(consumedFluid).contains(fluidInTank.getFluid())) {
-                    rocketContraptionEntity.consumableFluids.get(isOxPhase?"ox":"fuel").get(consumedFluid).add(fluidInTank.getFluid());
+                if (!rocketContraptionEntity.consumableFluids.get(consumedFluid).contains(fluidInTank.getFluid())) {
+                    rocketContraptionEntity.consumableFluids.get(consumedFluid).add(fluidInTank.getFluid());
                 }
             }
         }
@@ -263,9 +257,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         HashMap<TagKey<Fluid>, Integer> massForEachPropellant = new HashMap<>();
         ArrayList<TagKey<Fluid>> allPropellantTags = new ArrayList<>();
-        allPropellantTags.addAll(rocketContraptionEntity.consumableFluids.get("ox").keySet());
-        allPropellantTags.addAll(rocketContraptionEntity.consumableFluids.get("fuel").keySet());
-
+        //remove the string from the consumableFluids
+        allPropellantTags.addAll(rocketContraptionEntity.consumableFluids.keySet());
         IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getSharedFluidTanks();
         int nbrOfTank = fluidHandler.getTanks();
 
@@ -323,6 +316,15 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.entityData.define(REENTRY_ENTITY_DATA_ACCESSOR,false);
    }
    //adjust those two methode so it write and read the 3 new hashmap
+
+    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(
+            PropellantTypeInit.PROPELLANT_TYPE.get().getCodec(),
+            RocketContraption.ConsumptionInfo.CODEC
+    ).xmap(HashMap::new, i -> i);
+    public static Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
+            TagKey.codec(Registry.FLUID_REGISTRY),
+            Codec.FLOAT
+    ).xmap(HashMap::new, i -> i);
     @Override
     protected void readAdditional(CompoundTag compound, boolean spawnData) {
         super.readAdditional(compound, spawnData);
@@ -330,9 +332,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.totalThrust = compound.getFloat("thrust");
         this.initialMass = compound.getFloat("initialMass");
         this.totalTickTime = compound.getFloat("totalTime");
-        this.theoreticalPerTagFluidConsumption = CSNBTUtil.fromNBTtoMapInfo(compound.getCompound("theoreticalPerTagFluidConsumption"));
-        this.realPerTagFluidConsumption = CSNBTUtil.fromNBTtoMapInfo(compound.getCompound("realPerTagFluidConsumption"));
-        this.partialDrainAmountPerFluid = CSNBTUtil.fromNBTtoMapCouple(compound.getCompound("partialDrainAmountPerFluid"));
+        this.theoreticalPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>());
+        this.realPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
+        this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
         this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
 
         this.propellantConsumption = compound.getInt("propellantConsumption");
@@ -347,15 +349,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 new ResourceLocation(
                         compound.getString("origin:nameSpace"),
                         compound.getString("origin:path")));
-        for (Couple<TagKey<Fluid>> combination:realPerTagFluidConsumption.keySet()) {
-            RocketContraptionEntity.addToConsumableFluids(this,combination.get(true),true);
-            RocketContraptionEntity.addToConsumableFluids(this,combination.get(false),false);
+        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
+            for (TagKey<Fluid> fluid :
+                    combination.getPropellantRatio().keySet()) {
+                RocketContraptionEntity.addToConsumableFluids(this, fluid);
+
+            }
         }
-
-
     }
-    //make a codec ? should not be here
-
 
     @Override
     protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
@@ -363,9 +364,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putInt("propellantConsumption", this.propellantConsumption);
         compound.putFloat("initialMass",this.initialMass);
         compound.putFloat("totalTime",this.totalTickTime);
-        compound.put("theoreticalPerTagFluidConsumption", CSNBTUtil.fromMapInfoToNBT(this.theoreticalPerTagFluidConsumption));
-        compound.put("realPerTagFluidConsumption", CSNBTUtil.fromMapInfoToNBT(this.realPerTagFluidConsumption));
-        compound.put("partialDrainAmountPerFluid",CSNBTUtil.fromMapCoupleToNBT(this.partialDrainAmountPerFluid));
+        compound.put("theoreticalPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.theoreticalPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
+        compound.put("realPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
+        compound.put("partialDrainAmountPerFluid", CODEC_MAP_CONSUMPTION.encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).get().left().orElse(new CompoundTag()));
 
         compound.put("assemblyData",FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
         compound.putFloat("thrust",this.totalThrust);
@@ -500,51 +501,55 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         IFluidHandler fluidHandler = rocketContraption.getSharedFluidTanks();
         //need to construct a map of drainAmount and partial drain -> map of couple/record(int,float)
         //make in a loop so it look for every one ?
-        for (Couple<TagKey<Fluid>> combination:realPerTagFluidConsumption.keySet()) {
+        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
             RocketContraption.ConsumptionInfo info = realPerTagFluidConsumption.get(combination);
-            Couple<Float> prevPartialDrainValue = partialDrainAmountPerFluid.get(combination);
+
 
             //temporary fix : don't consume if the list is empty. It should never happen though
-            ArrayList<Fluid> oxFluids = consumableFluids.get("ox").get(combination.get(true));
-            ArrayList<Fluid> fuelFluids = consumableFluids.get("fuel").get(combination.get(false));
-            if (!(oxFluids == null || oxFluids.isEmpty() || fuelFluids == null || fuelFluids.isEmpty())) {
+            for (TagKey<Fluid> fluidTag :
+                    info.propellantConsumption().keySet()) {
+                Float prevPartialDrainValue = partialDrainAmountPerFluid.get(fluidTag);
+                ArrayList<Fluid> fluids = consumableFluids.get(fluidTag);
+                //ArrayList<Fluid> fuelFluids = consumableFluids.get("fuel").get(combination.get(false));
+                if (!(fluids == null || fluids.isEmpty() /*|| fuelFluids == null || fuelFluids.isEmpty())*/)) {
 
-                Fluid oxFluid = oxFluids.get(0);
-                Fluid fuelFluid = fuelFluids.get(0);
+                    Fluid oxFluid = fluids.get(0);
+                    //Fluid fuelFluid = fuelFluids.get(0);
 
-                FluidType oxFluidType = oxFluid.getFluidType();
-                float oxRo = (float) oxFluidType.getDensity() / 1000;
-                FluidType fuelFluidType = fuelFluid.getFluidType();
-                float fuelRo = (float) fuelFluidType.getDensity() / 1000;
+                    FluidType oxFluidType = oxFluid.getFluidType();
+                    float oxRo = (float) oxFluidType.getDensity() / 1000;
+                    //FluidType fuelFluidType = fuelFluid.getFluidType();
+                    //float fuelRo = (float) fuelFluidType.getDensity() / 1000;
 
-                float oxAmount = info.oxConsumption() / oxRo; // oxConsumption in kg, oxRo in kg/mb
-                float fuelAmount = info.fuelConsumption() / fuelRo;
-                if (prevPartialDrainValue == null) {
-                    prevPartialDrainValue = Couple.create(0f, 0f);
-                }
-                float partialOxConsumedAmount = prevPartialDrainValue.get(true);
-                partialOxConsumedAmount = partialOxConsumedAmount + oxAmount - ((int) oxAmount);
-                float partialFuelConsumedAmount = prevPartialDrainValue.get(false);
-                partialFuelConsumedAmount = partialFuelConsumedAmount + fuelAmount - ((int) fuelAmount);
+                    float oxAmount = info.propellantConsumption().get(fluidTag) / oxRo; // oxConsumption in kg, oxRo in kg/mb
+                    //float fuelAmount = info.fuelConsumption() / fuelRo;
+                    if (prevPartialDrainValue == null) {
+                        prevPartialDrainValue = 0f;
+                    }
+                    float partialOxConsumedAmount = prevPartialDrainValue;
+                    partialOxConsumedAmount = partialOxConsumedAmount + oxAmount - ((int) oxAmount);
+                    //float partialFuelConsumedAmount = prevPartialDrainValue.get(false);
+                    //partialFuelConsumedAmount = partialFuelConsumedAmount + fuelAmount - ((int) fuelAmount);
 
-                if (partialOxConsumedAmount >= 1) {
-                    oxAmount = oxAmount + 1;
-                    partialOxConsumedAmount = partialOxConsumedAmount - 1;
-                }
-                if (partialFuelConsumedAmount >= 1) {
-                    fuelAmount = fuelAmount + 1;
-                    partialFuelConsumedAmount = partialFuelConsumedAmount - 1;
-                }
-                partialDrainAmountPerFluid.put(combination, Couple.create(partialOxConsumedAmount, partialFuelConsumedAmount));
+                    if (partialOxConsumedAmount >= 1) {
+                        oxAmount = oxAmount + 1;
+                        partialOxConsumedAmount = partialOxConsumedAmount - 1;
+                    }
+                    /*if (partialFuelConsumedAmount >= 1) {
+                        fuelAmount = fuelAmount + 1;
+                        partialFuelConsumedAmount = partialFuelConsumedAmount - 1;
+                    }*/
+                    partialDrainAmountPerFluid.put(fluidTag, partialOxConsumedAmount);
 
 
-                int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
-                int consumedFuel = fluidHandler.drain(new FluidStack(fuelFluid, (int) fuelAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain fuel
+                    int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
+                    //int consumedFuel = fluidHandler.drain(new FluidStack(fuelFluid, (int) fuelAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain fuel
 
-                if (consumedFuel == 0 || consumedOx == 0) {
-                    RocketContraptionEntity.addToConsumableFluids(this, combination.get(true), true);
-                    RocketContraptionEntity.addToConsumableFluids(this, combination.get(false), false);
+                    if (consumedOx == 0) {
+                        RocketContraptionEntity.addToConsumableFluids(this, fluidTag);
+                        //RocketContraptionEntity.addToConsumableFluids(this, combination.get(false), false);
 
+                    }
                 }
             }
         }

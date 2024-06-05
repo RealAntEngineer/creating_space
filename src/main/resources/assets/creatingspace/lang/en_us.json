@@ -109,7 +109,7 @@
 
 
   "item.creatingspace.space_food": "Space Food",
-
+  "item.creatingspace.design_blueprint": "Design Blueprint",
   "itemGroup.creatingspace.machine_tab": "Machine Tab",
   "itemGroup.creatingspace.component_tab": "Component Tab",
   "itemGroup.creatingspace.minerals_tab": "Minerals Tab",
@@ -155,6 +155,11 @@
   "creatingspace.gui.sealer.settings": "Settings",
   "creatingspace.gui.sealer.range": "Range",
   "creatingspace.gui.sealer.automatic_retry": "Automatic Retry ?",
+  "gui.engineer_table_screen.available_exhaust": "Available Exhaust",
+  "gui.engineer_table_screen.available_power": "Available Power",
+  "gui.engineer_table_screen.available_propellants": "Available Propellants",
+  "gui.engineer_table_screen.thrust_selection": "Select Thrust",
+  "gui.engineer_table_screen.size_selection": "Select the size",
 
   "creatingspace.overlay.flight_recorder.title": "last flight :",
   "creatingspace.overlay.flight_recorder.no_failure": "no failure",
@@ -180,5 +185,15 @@
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
   "creatingspace.recipe.chemical": "chemical",
-  "creatingspace.recipe.electrolysis": "electrolysis"
+  "creatingspace.recipe.electrolysis": "electrolysis",
+  "propellant_type.creatingspace.methalox": "Metha/LOX",
+  "propellant_type.creatingspace.lh2lox": "LH2/LOX",
+  "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
+  "exhaust_pack_type.creatingspace.bell_nozzle": "bell nozzle",
+  "exhaust_pack_type.creatingspace.aerospike": "aerospike",
+  "power_pack_type.creatingspace.open_cycle": "open cycle",
+  "power_pack_type.creatingspace.ox_rich_staged_cycle": "ox rich flow",
+  "power_pack_type.creatingspace.fuel_rich_staged_cycle": "fuel rich flow",
+  "power_pack_type.creatingspace.full_flow_staged_cycle": "full flow"
+
 }
