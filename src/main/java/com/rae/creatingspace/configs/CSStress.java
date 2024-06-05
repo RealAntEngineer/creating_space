@@ -21,7 +21,7 @@ public class CSStress extends ConfigBase implements BlockStressValues.IStressVal
 
     /*
     *@Override
-public void registerAll(ForgeConfigSpec.Builder builder) {
+    public void registerAll(ForgeConfigSpec.Builder builder) {
     builder.comment(".", Comments.su, Comments.impact)
             .push("impact");
 
