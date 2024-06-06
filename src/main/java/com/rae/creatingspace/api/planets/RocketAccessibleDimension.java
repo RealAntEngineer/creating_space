@@ -59,6 +59,10 @@ public class RocketAccessibleDimension {
         return arrivalHeight;
     }
 
+    public ResourceLocation orbitedBody() {
+        return orbitedBody;
+    }
+
     //TODO remove the duplicated arrivalHeight or rename it if it's used
     public record AccessibilityParameter(int deltaV, int arrivalHeight) {
         public static final Codec<AccessibilityParameter> CODEC = RecordCodecBuilder.create(

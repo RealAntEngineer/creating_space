@@ -9,6 +9,7 @@ import com.rae.creatingspace.server.entities.RoomAtmosphere;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -36,7 +37,7 @@ public class CSEventHandler {
     public static void entityLivingEvent(LivingEvent.LivingTickEvent livingTickEvent){
         final LivingEntity entityLiving = livingTickEvent.getEntity();
         Level level = entityLiving.getLevel();
-        ResourceKey<Level> dimension = level.dimension();
+        ResourceLocation dimension = level.dimension().location();
         //fall from orbit
         if (CSDimensionUtil.isOrbit(level.dimensionTypeId())){
             if (!level.isClientSide){

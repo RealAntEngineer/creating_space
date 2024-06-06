@@ -10,8 +10,6 @@ import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
 import com.rae.creatingspace.server.event.IgniteOnPlace;
-import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
-import com.rae.creatingspace.utilities.data.DimensionTagsReader;
 import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
@@ -92,8 +90,6 @@ public class CreatingSpace {
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
         //datagen, and tag provider
-        event.addListener(DimensionParameterMapReader.DIMENSION_MAP_HOLDER);
-        event.addListener(DimensionTagsReader.DIMENSION_TAGS_HOLDER);
         event.addListener(MassOfBlockReader.MASS_HOLDER);
     }
 
