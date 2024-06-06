@@ -63,8 +63,9 @@ public class CreatingSpace {
         ParticleTypeInit.register(modEventBus);
         CarverInit.register(modEventBus);
         EntityDataSerializersInit.register(modEventBus);
-
         MiscInit.register(modEventBus);
+
+        CSConfigs.registerConfigs(modLoadingContext);
 
         MenuTypesInit.register();
         PacketInit.registerPackets();
@@ -73,12 +74,10 @@ public class CreatingSpace {
 
         CSContraptionType.prepare();
 
-
         modEventBus.addListener(CreatingSpace::init);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
-        CSConfigs.registerConfigs(modLoadingContext);
 
     }
     public static void init(final FMLCommonSetupEvent event) {

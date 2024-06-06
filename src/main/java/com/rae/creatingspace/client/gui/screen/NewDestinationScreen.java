@@ -219,31 +219,6 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     private void renderPlanets(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
     }
 
-
-
-    /*private void drawCircle(PoseStack ms, int x, int y, int radius){
-        //using middle point algorithm
-        float a = 20;
-        float b = 30;
-        int color = 0XEEEEEEEE;
-        int startX = 0;
-        int startY = (int) b;
-        int length = 0;
-        int d = (int) (1 - a);
-        while (startX*b <= startY*a){
-             if (d < 0) {
-                 d += (int) (2 * (startX+length)/a + 3);
-             } else {
-                 drawSymmetricLines(ms, x, y, startX, startY,length, color);
-                 d += (int) (2 * ((startX+length)/a - startY/b) + 5);
-                 startY -= 1;
-                 startX+=length;
-                 length = 0;
-             }
-            length += 1;
-        }
-    }*/
-
     @Override
     public void tick() {
         super.tick();
