@@ -2,12 +2,15 @@ package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.data.DimensionTagsReader;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.DimensionType;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,6 +114,7 @@ public class CSDimensionUtil {
         return new HashMap<>();
     }
 
+    @Deprecated
     public static boolean hasO2Atmosphere(ResourceKey<Level> dimension) {
         DimensionTagsReader.PartialDimensionList data =  DimensionTagsReader.DIMENSION_TAGS_HOLDER.getData(CreatingSpace.resource("no_oxygen"));
         boolean no_02 = false;
@@ -121,6 +125,13 @@ public class CSDimensionUtil {
         return !no_02;
     }
 
+    public static boolean hasO2Atmosphere(ResourceLocation biome) {
+        return !TagsInit.CustomBiomeTags.NO_OXYGEN.matches(biome);
+    }
+
+    public static boolean hasO2Atmosphere(Holder<Biome> biome) {
+        return !TagsInit.CustomBiomeTags.NO_OXYGEN.matches(biome);
+    }
     public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
         return gravity(dimensionType) == 0;
     }
@@ -143,5 +154,6 @@ public class CSDimensionUtil {
         return null;
     }
 
-
+    private static class TravelGraph {
+    }
 }

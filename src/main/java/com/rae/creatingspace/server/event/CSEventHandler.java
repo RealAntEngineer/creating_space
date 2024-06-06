@@ -126,7 +126,7 @@ public class CSEventHandler {
         Level level = entity.getLevel();
         //TODO use this instead, with tags for the biome
         //  level.getBiome(entity.getOnPos()).getTagKeys().toList();
-        if (CSDimensionUtil.hasO2Atmosphere(level.dimension())){
+        if (CSDimensionUtil.hasO2Atmosphere(level.getBiome(entity.getOnPos()))) {
             return true;
         }
         AABB colBox = entity.getBoundingBox();
