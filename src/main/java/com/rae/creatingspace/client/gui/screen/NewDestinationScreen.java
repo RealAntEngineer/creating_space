@@ -25,14 +25,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 public class NewDestinationScreen extends AbstractSimiScreen {
     private boolean destinationChanged;
     private Button launchButton;
-    private final HashMap<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> mapOfAccessibleDimensionAndV;
+    //private final HashMap<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> mapOfAccessibleDimensionAndV;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
     private final GuiTexturesInit background;
@@ -55,9 +53,9 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         this.background = GuiTexturesInit.ROCKET_CONTROLS;
         this.currentDimension = rocket.getLevel().dimension().location();
         //initialise the map in the server side blockEntity to avoid issues
-        this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());//rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : new HashMap<>(rocket.getMapOfAccessibleDimensionAndV());
+        //this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());//rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : new HashMap<>(rocket.getMapOfAccessibleDimensionAndV());
 
-        this.buttonVector = new Vector<>(this.mapOfAccessibleDimensionAndV.size());
+        this.buttonVector = new Vector<>(CSDimensionUtil.travelMap.size());
         this.destinationChanged = false;
     }
 
@@ -127,24 +125,35 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         addRenderableWidget(destinationCost);
 
         Component text;
-        for (int row = 0; row < mapOfAccessibleDimensionAndV.size(); row++) {
-            ResourceLocation dim = mapOfAccessibleDimensionAndV.keySet().stream().toList().get(row);
-            text = Component.translatable(dim.toString());
-            Orbit widget = new Orbit(x + windowWidth / 2, y + windowHeight / 2, 30 + 20 * row, dim);
-            widget.withCallback(
-                    () -> {
-                        destination = widget.getDim();
-                        destinationChanged = true;
-                    }
-            );
-            buttonVector.add(
-                    row,
-                    widget);
-            addRenderableWidget(widget);
-
-        }
-        if (buttonVector.size() > 1) {
-            buttonVector.get(0).setSatellites(buttonVector.subList(1, buttonVector.size()));
+        //the sun
+        Orbit sun = new Orbit(x + windowWidth / 2, y + windowHeight / 2, 0, new ResourceLocation("sun"));
+        Map<ResourceLocation, Orbit> temp = new HashMap<>();
+        temp.put(RocketAccessibleDimension.BASE_BODY, sun);
+        //first collect all the planets
+        int row = 0;
+        float zoom = 20f;
+        //TODO add detection of loops
+        ArrayDeque<ResourceLocation> toVisit = new ArrayDeque<>(CSDimensionUtil.travelMap.keySet());
+        while (!toVisit.isEmpty()) {
+            ResourceLocation dim = toVisit.poll();
+            if (temp.containsKey(CSDimensionUtil.travelMap.get(dim).orbitedBody())) {
+                Orbit widget = new Orbit(x + windowWidth / 2, y + windowHeight / 2, (int) (CSDimensionUtil.travelMap.get(dim).distanceToOrbitedBody() / zoom), dim);
+                temp.put(dim, widget);
+                widget.withCallback(
+                        () -> {
+                            destination = widget.getDim();
+                            destinationChanged = true;
+                        }
+                );
+                buttonVector.add(
+                        row,
+                        widget);
+                row++;
+                addRenderableWidget(widget);
+                temp.get(CSDimensionUtil.travelMap.get(dim).orbitedBody()).addSatellite(widget);
+            } else {
+                toVisit.addLast(dim);
+            }
         }
     }
 
@@ -184,7 +193,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
             destinationCost.visible = true;
             destinationCost.setTextAndTrim(
                     Component.literal(
-                            String.valueOf(mapOfAccessibleDimensionAndV.get(destination).deltaV())),
+                            String.valueOf(CSDimensionUtil.cost(currentDimension, destination))),
                     true, 112);
 
         } else {
@@ -200,7 +209,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
             destinationCost.visible = false;
         }
 
-        for (int row = 0; row < mapOfAccessibleDimensionAndV.size(); row++) {
+        for (int row = 0; row < CSDimensionUtil.travelMap.size(); row++) {
             Orbit widget = buttonVector.get(row);
             if (destination == widget.getDim()) {
                 widget.withBorderColors(green);

@@ -9,14 +9,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.DimensionType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class CSDimensionUtil {
     //should be updated on both server and client load (first on client, then on client join)
+    private static final Logger LOGGER = LogManager.getLogger();
     public static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
+    public static Map<ResourceLocation, Map<ResourceLocation, Integer>> costAdjacentMap;//map of (source, target) -> cost
 
     public static void updateTravelMapFromRegistry(Registry<RocketAccessibleDimension> registry) {
         Map<ResourceLocation, RocketAccessibleDimension> collector = new HashMap<>();
@@ -87,6 +93,62 @@ public class CSDimensionUtil {
         return null;
     }
 
-    private static class TravelGraph {
+    //TODO put in api as it's an utility method
+    private static Map<ResourceLocation, Integer> dijkstra(ResourceLocation start) {
+        // Initialize distances map
+        Map<ResourceLocation, Integer> distances = new HashMap<>();
+        Map<ResourceLocation, Boolean> visited = new HashMap<>();
+
+        for (ResourceLocation location : travelMap.keySet()) {
+            distances.put(location, Integer.MAX_VALUE);
+            visited.put(location, false);
+        }
+        distances.put(start, 0);
+
+        // Priority queue for selecting the next node with the smallest distance
+        PriorityQueue<Map.Entry<ResourceLocation, Integer>> priorityQueue = new PriorityQueue<>(Map.Entry.comparingByValue());
+        priorityQueue.add(new AbstractMap.SimpleEntry<>(start, 0));
+
+        while (!priorityQueue.isEmpty()) {
+            Map.Entry<ResourceLocation, Integer> entry = priorityQueue.poll();
+            ResourceLocation current = entry.getKey();
+
+            if (visited.get(current)) continue;
+
+            visited.put(current, true);
+
+            RocketAccessibleDimension currentDimension = travelMap.get(current);
+            if (currentDimension != null) {
+                for (Map.Entry<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> adjacent : currentDimension.adjacentDimensions().entrySet()) {
+                    ResourceLocation target = adjacent.getKey();
+                    int deltaV = adjacent.getValue().deltaV();
+                    int newDist = distances.get(current) + deltaV;
+
+                    if (newDist < distances.get(target)) {
+                        distances.put(target, newDist);
+                        priorityQueue.add(new AbstractMap.SimpleEntry<>(target, newDist));
+                    }
+                }
+            }
+        }
+        return distances;
+    }
+
+    /**
+     * if the value returned is < 0, the target dimension is unreachable
+     */
+    public static int cost(ResourceLocation from, ResourceLocation to) {
+        if (costAdjacentMap == null) {
+            updateCostMap();
+            LOGGER.warn("unexpected null value for space travel cost map, reloading");
+        }
+        return costAdjacentMap.getOrDefault(from, new HashMap<>()).getOrDefault(to, -1);
+    }
+
+    public static void updateCostMap() {
+        costAdjacentMap = new HashMap<>();
+        for (ResourceLocation location : travelMap.keySet()) {
+            costAdjacentMap.put(location, dijkstra(location));
+        }
     }
 }

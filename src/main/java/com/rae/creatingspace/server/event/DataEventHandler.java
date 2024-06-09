@@ -14,12 +14,15 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = CreatingSpace.MODID)
 public class DataEventHandler {
     //if it's null, then your server is distant and your on the client
+    private static final Logger LOGGER = LogManager.getLogger();
     public static RegistryAccess.Frozen registryAccess = null;
     @SubscribeEvent
     public static void onLoadWorld(LevelEvent.Load event) {
@@ -32,11 +35,13 @@ public class DataEventHandler {
         Player player = event.getEntity();
         CreatingSpace.DESIGN_SAVED_DATA.playerLogin(player);
         CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
+        CSDimensionUtil.updateCostMap();
     }
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         registryAccess = event.getServer().registryAccess();
         CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
+        CSDimensionUtil.updateCostMap();
     }
 
     /**

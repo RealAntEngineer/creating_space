@@ -7,5 +7,5 @@
   "arrivalHeight": 200,
   "gravity": 1.6,
   "orbitedBody": "overworld",
-  "distanceToOrbitingBody": 100
+  "distanceToOrbitingBody": 400
 }

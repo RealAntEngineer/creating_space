@@ -10,5 +10,5 @@
   "arrivalHeight": 64,
   "gravity": 0,
   "orbitedBody": "creatingspace:the_moon",
-  "distanceToOrbitingBody": 100
+  "distanceToOrbitingBody": 10
 }

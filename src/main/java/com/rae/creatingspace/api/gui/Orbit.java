@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,10 +19,14 @@ public class Orbit extends BoxWidget {
     int radius;
 
     public void setSatellites(List<Orbit> satellites) {
-        this.satellites = satellites;
+        this.satellites = new ArrayList<>(satellites);
     }
 
-    List<Orbit> satellites = List.of();
+    public void addSatellite(Orbit satellite) {
+        this.satellites.add(satellite);
+    }
+
+    ArrayList<Orbit> satellites = new ArrayList<>();
 
     public Orbit(int centerX, int centerY, int radius, ResourceLocation dim) {
         super(centerX, centerY, radius * 2, radius * 2);
@@ -33,7 +38,7 @@ public class Orbit extends BoxWidget {
         super(centerX, centerY, radius * 2, radius * 2);
         this.radius = radius;
         this.dim = dim;
-        this.satellites = satellites;
+        this.satellites = new ArrayList<>(satellites);
     }
 
     @Override

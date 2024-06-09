@@ -125,8 +125,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity) {
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
-        float deltaVNeeded = CSDimensionUtil.accessibleFrom(rocketContraptionEntity.originDimension.location())
-                .get(rocketContraptionEntity.destination).deltaV();
+        float deltaVNeeded = CSDimensionUtil.cost(rocketContraptionEntity.originDimension.location(), rocketContraptionEntity.destination);
 
         if (contraption==null){
             return;
@@ -245,9 +244,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         if (distance<=0){
             rocketContraptionEntity.disassembleOnFirstTick = true;
         }
-        System.out.println("consumableFluids : " + rocketContraptionEntity.consumableFluids);
+        /*System.out.println("consumableFluids : " + rocketContraptionEntity.consumableFluids);
         System.out.println("theoreticalPerTagFluidConsumption: " + rocketContraptionEntity.theoreticalPerTagFluidConsumption);
-        System.out.println("realPerTagFluidConsumption: " + rocketContraptionEntity.realPerTagFluidConsumption);
+        System.out.println("realPerTagFluidConsumption: " + rocketContraptionEntity.realPerTagFluidConsumption);*/
     }
 
     private static void addToConsumableFluids(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> consumedFluid) {

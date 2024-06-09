@@ -10,5 +10,5 @@
   "arrivalHeight": 64,
   "gravity": 0,
   "orbitedBody": "minecraft:overworld",
-  "distanceToOrbitingBody": 100
+  "distanceToOrbitingBody": 10
 }
