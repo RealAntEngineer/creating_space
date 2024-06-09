@@ -34,13 +34,18 @@ public class DataEventHandler {
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
         CreatingSpace.DESIGN_SAVED_DATA.playerLogin(player);
+        LOGGER.info("updating the travel map");
         CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
+        LOGGER.info("updating the space travel cost map");
         CSDimensionUtil.updateCostMap();
     }
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
+        LOGGER.info("getting the server registry access");
         registryAccess = event.getServer().registryAccess();
+        LOGGER.info("updating the travel map");
         CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
+        LOGGER.debug("updating the space travel cost map");
         CSDimensionUtil.updateCostMap();
     }
 
@@ -53,6 +58,7 @@ public class DataEventHandler {
         if (registryAccess != null) {
             return registryAccess.registryOrThrow(registryKey);
         } else {
+            LOGGER.debug("getting the registry access from the client");
             return Objects.requireNonNull(Minecraft.getInstance().getConnection())
                     .registryAccess().registry(registryKey)
                     .orElseThrow();

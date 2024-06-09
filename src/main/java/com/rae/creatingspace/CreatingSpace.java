@@ -29,7 +29,6 @@ import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 
 @Mod(CreatingSpace.MODID)
-
 public class CreatingSpace {
     @Deprecated
     public static final Logger OLD_LOGGER = LogUtils.getLogger();
@@ -101,4 +100,3 @@ public class CreatingSpace {
         return new ResourceLocation(MODID,path);
     }
 }
-

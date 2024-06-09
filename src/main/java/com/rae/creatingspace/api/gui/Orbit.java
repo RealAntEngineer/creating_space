@@ -3,6 +3,7 @@ package com.rae.creatingspace.api.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
+import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.foundation.gui.widget.BoxWidget;
 import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,9 @@ public class Orbit extends BoxWidget {
     private final ResourceLocation dim;
     //it's a circle
     int radius;
+    private float zoom;
+    private int xShift;
+    private int yShift;
 
     public void setSatellites(List<Orbit> satellites) {
         this.satellites = new ArrayList<>(satellites);
@@ -43,8 +47,8 @@ public class Orbit extends BoxWidget {
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        return ((radius - 5) * (radius - 5) < ((x - mouseX) * (x - mouseX) + (y - mouseY) * (y - mouseY))) &&
-                (((x - mouseX) * (x - mouseX) + (y - mouseY) * (y - mouseY)) < (radius + 5) * (radius + 5));
+        return ((radius / zoom - 5) * (radius / zoom - 5) < ((x + xShift - mouseX) * (x + xShift - mouseX) + (y + yShift - mouseY) * (y + yShift - mouseY))) &&
+                (((x + xShift - mouseX) * (x + xShift - mouseX) + (y + yShift - mouseY) * (y + yShift - mouseY)) < (radius / zoom + 5) * (radius / zoom + 5));
     }
 
     @Override
@@ -58,16 +62,16 @@ public class Orbit extends BoxWidget {
         }
         float theta = getTheta(partialTicks);
         for (Orbit orbit : satellites) {
-            orbit.x = (int) (x + radius * Math.sin(theta));
-            orbit.y = (int) (y + radius * Math.cos(theta));
+            orbit.x = (int) (x + radius / zoom * Math.sin(theta));
+            orbit.y = (int) (y + radius / zoom * Math.cos(theta));
         }
     }
 
     @Override
     public void renderButton(@NotNull PoseStack ms, int mouseX, int mouseY, float partialTicks) {
-        drawCircle(ms, x, y, radius);
+        drawCircle(ms, x + xShift, y + yShift, (int) (radius / zoom));
         float theta = getTheta(partialTicks);
-        drawBody(ms, (int) (x + radius * Math.sin(theta)), (int) (y + radius * Math.cos(theta)));
+        drawBody(ms, (int) (x + xShift + radius / zoom * Math.sin(theta)), (int) (y + yShift + radius / zoom * Math.cos(theta)));
     }
 
     private float getTheta(float partialTicks) {
@@ -76,14 +80,18 @@ public class Orbit extends BoxWidget {
         return (float) (time * 2 * Math.PI / radius) * speed;
     }
 
+    //TODO :make a render that take polar coordinates
+    //TODO : verify if it's inside the screen
     private void drawBody(PoseStack ms, int centerX, int centerY) {
-        GuiTexturesInit.render(CreatingSpace.resource(
-                        "textures/gui/destination/"
-                                +
-                                dim.getPath()
-                                + ".png"),
-                ms, centerX - 5, centerY - 5, 0, 0, 11,
-                11, 11, 11, Color.WHITE);
+        if (!CSDimensionUtil.isOrbit(dim)) {
+            GuiTexturesInit.render(CreatingSpace.resource(
+                            "textures/gui/destination/"
+                                    +
+                                    dim.getPath()
+                                    + ".png"),
+                    ms, centerX - 5, centerY - 5, 0, 0, 11,
+                    11, 11, 11, Color.WHITE);
+        }
     }
 
     @Override
@@ -140,5 +148,17 @@ public class Orbit extends BoxWidget {
 
     public ResourceLocation getDim() {
         return dim;
+    }
+
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
+    }
+
+    public void shiftX(int amount) {
+        this.xShift += amount;
+    }
+
+    public void shiftY(int amount) {
+        this.yShift += amount;
     }
 }

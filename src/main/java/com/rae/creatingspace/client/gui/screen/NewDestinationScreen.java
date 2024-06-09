@@ -24,6 +24,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
@@ -44,8 +45,9 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     Couple<Color> red = Theme.p(Theme.Key.BUTTON_FAIL);
     Couple<Color> green = Theme.p(Theme.Key.BUTTON_SUCCESS);
     private IconButton validateSetting;
-
-
+    float zoom = 20f;
+    int xShift = 0;
+    int yShift = 0;
     public NewDestinationScreen(RocketContraptionEntity rocket) {
         super(Lang.translateDirect("gui.destination_screen.title"));
         this.rocketContraption = rocket;
@@ -59,6 +61,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         this.destinationChanged = false;
     }
 
+    //todo : zoom on double clic
     @Override
     protected void init() {
         setWindowSize(226, 226);
@@ -85,7 +88,6 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         validateSetting.setToolTip(
                 Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
         validateSetting.withCallback(() -> {
-            System.out.println(String.valueOf(destination));
             BlockPos pos = initialPosMap.get(String.valueOf(destination));
             if (pos == null) {
                 pos = this.rocketContraption.getOnPos();
@@ -124,20 +126,18 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         addRenderableWidget(validateSetting);
         addRenderableWidget(destinationCost);
 
-        Component text;
         //the sun
         Orbit sun = new Orbit(x + windowWidth / 2, y + windowHeight / 2, 0, new ResourceLocation("sun"));
         Map<ResourceLocation, Orbit> temp = new HashMap<>();
         temp.put(RocketAccessibleDimension.BASE_BODY, sun);
         //first collect all the planets
         int row = 0;
-        float zoom = 20f;
         //TODO add detection of loops
         ArrayDeque<ResourceLocation> toVisit = new ArrayDeque<>(CSDimensionUtil.travelMap.keySet());
         while (!toVisit.isEmpty()) {
             ResourceLocation dim = toVisit.poll();
             if (temp.containsKey(CSDimensionUtil.travelMap.get(dim).orbitedBody())) {
-                Orbit widget = new Orbit(x + windowWidth / 2, y + windowHeight / 2, (int) (CSDimensionUtil.travelMap.get(dim).distanceToOrbitedBody() / zoom), dim);
+                Orbit widget = new Orbit(x + windowWidth / 2, y + windowHeight / 2, (int) (CSDimensionUtil.travelMap.get(dim).distanceToOrbitedBody()), dim);
                 temp.put(dim, widget);
                 widget.withCallback(
                         () -> {
@@ -155,6 +155,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
                 toVisit.addLast(dim);
             }
         }
+        restZoom();
     }
 
 
@@ -246,6 +247,70 @@ public class NewDestinationScreen extends AbstractSimiScreen {
                 button.getToolTip().add(tooltipText);
             }
         }
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (GLFW.GLFW_KEY_ESCAPE == keyCode) {
+            restZoom();
+        }
+        if (GLFW.GLFW_KEY_LEFT_CONTROL == keyCode) {
+            changeZoom(0.01f);
+        }
+        if (GLFW.GLFW_KEY_LEFT_SHIFT == keyCode) {
+            changeZoom(-0.01f);
+        }
+        if (GLFW.GLFW_KEY_RIGHT == keyCode) {
+            shiftX(1);
+        }
+        if (GLFW.GLFW_KEY_LEFT == keyCode) {
+            shiftX(-1);
+        }
+        if (GLFW.GLFW_KEY_DOWN == keyCode) {
+            shiftY(1);
+        }
+        if (GLFW.GLFW_KEY_UP == keyCode) {
+            shiftY(-1);
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    private void restZoom() {
+        zoom = 20f;
+        for (Orbit orbit :
+                buttonVector) {
+            orbit.setZoom(zoom);
+        }
+    }
+
+    private void changeZoom(float amount) {
+        zoom += amount * zoom;
+        if (zoom <= 1) {
+            zoom = 1;
+        }
+        for (Orbit orbit :
+                buttonVector) {
+            orbit.setZoom(zoom);
+        }
+    }
+
+    private void shiftX(int amount) {
+        for (Orbit orbit :
+                buttonVector) {
+            orbit.shiftX(amount);
+        }
+    }
+
+    private void shiftY(int amount) {
+        for (Orbit orbit :
+                buttonVector) {
+            orbit.shiftY(amount);
+        }
+    }
+
+    @Override
+    public boolean shouldCloseOnEsc() {
+        return false;
     }
 
     private void fillToolTip(IconButton button, String tooltipKey) {

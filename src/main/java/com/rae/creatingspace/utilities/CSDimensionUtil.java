@@ -31,7 +31,6 @@ public class CSDimensionUtil {
                 }
         );
         travelMap = Map.copyOf(collector);
-        System.out.println(travelMap);
     }
 
     //TODO change resource key to resource location
@@ -81,9 +80,12 @@ public class CSDimensionUtil {
         return !TagsInit.CustomBiomeTags.NO_OXYGEN.matches(biome);
     }
     public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
-        return gravity(dimensionType) == 0;
+        return isOrbit(dimensionType.location());
     }
 
+    public static boolean isOrbit(ResourceLocation dimension) {
+        return gravity(dimension) == 0;
+    }
     public static @Nullable ResourceKey<Level> planetUnder(ResourceLocation dimension) {
         if (travelMap != null) {
             if (travelMap.containsKey(dimension)) {
