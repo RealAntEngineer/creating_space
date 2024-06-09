@@ -25,12 +25,16 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 
 @Mod(CreatingSpace.MODID)
 
 public class CreatingSpace {
-    public static final Logger LOGGER = LogUtils.getLogger();
+    @Deprecated
+    public static final Logger OLD_LOGGER = LogUtils.getLogger();
+    public static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
+
 
     public static final String MODID = "creatingspace" ;
 

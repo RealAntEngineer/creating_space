@@ -9,7 +9,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
