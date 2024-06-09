@@ -37,17 +37,20 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     private final GuiTexturesInit background;
     private final ResourceLocation currentDimension;
     private ResourceLocation destination;
-
+    private Orbit focusedPlanet = null;
     private final Vector<Orbit> buttonVector;
     private LabeledBoxWidget destinationCost;
     private EditBox Xinput;
     private EditBox Zinput;
     Couple<Color> red = Theme.p(Theme.Key.BUTTON_FAIL);
     Couple<Color> green = Theme.p(Theme.Key.BUTTON_SUCCESS);
+    Couple<Color> idle = Theme.p(Theme.Key.BUTTON_IDLE);
     private IconButton validateSetting;
     float zoom = 20f;
     int xShift = 0;
     int yShift = 0;
+    private Orbit sun;
+
     public NewDestinationScreen(RocketContraptionEntity rocket) {
         super(Lang.translateDirect("gui.destination_screen.title"));
         this.rocketContraption = rocket;
@@ -57,7 +60,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         //initialise the map in the server side blockEntity to avoid issues
         //this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());//rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : new HashMap<>(rocket.getMapOfAccessibleDimensionAndV());
 
-        this.buttonVector = new Vector<>(CSDimensionUtil.travelMap.size());
+        this.buttonVector = new Vector<>(CSDimensionUtil.travelMap.size() + 1);
         this.destinationChanged = false;
     }
 
@@ -127,22 +130,26 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         addRenderableWidget(destinationCost);
 
         //the sun
-        Orbit sun = new Orbit(x + windowWidth / 2, y + windowHeight / 2, 0, new ResourceLocation("sun"));
+        sun = new Orbit(x + windowWidth / 2, y + windowHeight / 2, 0, new ResourceLocation("sun"));
         Map<ResourceLocation, Orbit> temp = new HashMap<>();
         temp.put(RocketAccessibleDimension.BASE_BODY, sun);
+        addRenderableOnly(sun);
+        buttonVector.add(0, sun);
+        focusedPlanet = sun;
         //first collect all the planets
-        int row = 0;
+        int row = 1;
         //TODO add detection of loops
         ArrayDeque<ResourceLocation> toVisit = new ArrayDeque<>(CSDimensionUtil.travelMap.keySet());
         while (!toVisit.isEmpty()) {
             ResourceLocation dim = toVisit.poll();
             if (temp.containsKey(CSDimensionUtil.travelMap.get(dim).orbitedBody())) {
-                Orbit widget = new Orbit(x + windowWidth / 2, y + windowHeight / 2, (int) (CSDimensionUtil.travelMap.get(dim).distanceToOrbitedBody()), dim);
+                Orbit widget = new Orbit(x + windowWidth / 2, y + windowHeight / 2, CSDimensionUtil.travelMap.get(dim).distanceToOrbitedBody(), dim);
                 temp.put(dim, widget);
                 widget.withCallback(
                         () -> {
                             destination = widget.getDim();
                             destinationChanged = true;
+                            focusedPlanet = widget;
                         }
                 );
                 buttonVector.add(
@@ -165,7 +172,10 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         int y = guiTop;
 
         background.render(ms, x, y, this);
-
+        if (focusedPlanet != null) {
+            setXShift(x + windowWidth / 2 - focusedPlanet.getPlanetX(partialTicks));
+            setYShift(y + windowHeight / 2 - focusedPlanet.getPlanetY(partialTicks));
+        }
 
         if (destination != null) {
             if (destinationChanged) {
@@ -216,6 +226,8 @@ public class NewDestinationScreen extends AbstractSimiScreen {
                 widget.withBorderColors(green);
             } else if (destination != null) {
                 widget.withBorderColors(red);
+            } else {
+                widget.withBorderColors(idle);
             }
         }
 
@@ -249,6 +261,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         }
     }
 
+    //xShift, yShift independent of player input ?
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (GLFW.GLFW_KEY_ESCAPE == keyCode) {
@@ -260,33 +273,25 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         if (GLFW.GLFW_KEY_LEFT_SHIFT == keyCode) {
             changeZoom(-0.01f);
         }
-        if (GLFW.GLFW_KEY_RIGHT == keyCode) {
-            shiftX(1);
-        }
-        if (GLFW.GLFW_KEY_LEFT == keyCode) {
-            shiftX(-1);
-        }
-        if (GLFW.GLFW_KEY_DOWN == keyCode) {
-            shiftY(1);
-        }
-        if (GLFW.GLFW_KEY_UP == keyCode) {
-            shiftY(-1);
-        }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
+    //should reset everything
     private void restZoom() {
         zoom = 20f;
         for (Orbit orbit :
                 buttonVector) {
             orbit.setZoom(zoom);
         }
+        setFocused(null);
+        destination = null;
+        focusedPlanet = sun;
     }
 
     private void changeZoom(float amount) {
         zoom += amount * zoom;
-        if (zoom <= 1) {
-            zoom = 1;
+        if (zoom <= 0.01f) {
+            zoom = 0.01f;
         }
         for (Orbit orbit :
                 buttonVector) {
@@ -295,16 +300,34 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     }
 
     private void shiftX(int amount) {
+        xShift += amount;
         for (Orbit orbit :
                 buttonVector) {
             orbit.shiftX(amount);
         }
     }
 
+    private void setXShift(int xShift) {
+        this.xShift = xShift;
+        for (Orbit orbit :
+                buttonVector) {
+            orbit.setxShift(xShift);
+        }
+    }
+
     private void shiftY(int amount) {
+        yShift += amount;
         for (Orbit orbit :
                 buttonVector) {
             orbit.shiftY(amount);
+        }
+    }
+
+    private void setYShift(int yShift) {
+        this.yShift = yShift;
+        for (Orbit orbit :
+                buttonVector) {
+            orbit.setyShift(yShift);
         }
     }
 

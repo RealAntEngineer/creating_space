@@ -351,7 +351,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         this.propellantConsumption = compound.getInt("propellantConsumption");
         this.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,compound.getBoolean("reentry"));
-
+        this.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, compound.getBoolean("running"));
         this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).get().orThrow();
 
         this.originDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY,
@@ -380,6 +380,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putFloat("thrust",this.totalThrust);
 
         compound.putBoolean("reentry",isReentry());
+        compound.putBoolean("running", this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR));
 
         compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension.location()).get().orThrow());
         compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).get().orThrow());

@@ -19,6 +19,15 @@ public class Orbit extends BoxWidget {
     //it's a circle
     int radius;
     private float zoom;
+
+    public void setxShift(int xShift) {
+        this.xShift = xShift;
+    }
+
+    public void setyShift(int yShift) {
+        this.yShift = yShift;
+    }
+
     private int xShift;
     private int yShift;
 
@@ -70,8 +79,15 @@ public class Orbit extends BoxWidget {
     @Override
     public void renderButton(@NotNull PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         drawCircle(ms, x + xShift, y + yShift, (int) (radius / zoom));
-        float theta = getTheta(partialTicks);
-        drawBody(ms, (int) (x + xShift + radius / zoom * Math.sin(theta)), (int) (y + yShift + radius / zoom * Math.cos(theta)));
+        drawBody(ms, xShift + getPlanetX(partialTicks), yShift + getPlanetY(partialTicks));
+    }
+
+    public int getPlanetY(float partialTicks) {
+        return CSDimensionUtil.isOrbit(dim) ? y : (int) (y + radius / zoom * Math.cos(getTheta(partialTicks)));
+    }
+
+    public int getPlanetX(float partialTicks) {
+        return CSDimensionUtil.isOrbit(dim) ? x : (int) (x + radius / zoom * Math.sin(getTheta(partialTicks)));
     }
 
     private float getTheta(float partialTicks) {
@@ -102,22 +118,25 @@ public class Orbit extends BoxWidget {
     }
 
     private void drawCircle(PoseStack ms, int x, int y, int radius) {
-        int color = gradientColor1.getRGB();
-        int startX = 0;
-        int startY = radius;
-        int length = 0;
-        int d = 1 - radius;
-        while (startX <= startY) {
-            if (d < 0) {
-                d += 2 * (startX + length) + 3;
-            } else {
-                drawSymmetricLines(ms, x, y, startX, startY, length, color);
-                d += 2 * ((startX + length) - startY) + 5;
-                startY -= 1;
-                startX += length;
-                length = 0;
+        if (radius > 4) {
+
+            int color = gradientColor1.getRGB();
+            int startX = 0;
+            int startY = radius;
+            int length = 0;
+            int d = 1 - radius;
+            while (startX <= startY) {
+                if (d < 0) {
+                    d += 2 * (startX + length) + 3;
+                } else {
+                    drawSymmetricLines(ms, x, y, startX, startY, length, color);
+                    d += 2 * ((startX + length) - startY) + 5;
+                    startY -= 1;
+                    startX += length;
+                    length = 0;
+                }
+                length += 1;
             }
-            length += 1;
         }
     }
 
