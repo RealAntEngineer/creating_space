@@ -20,6 +20,12 @@ public class Orbit extends BoxWidget {
     int radius;
     private float zoom;
 
+    public void setBodyRadius(int bodyRadius) {
+        this.bodyRadius = bodyRadius;
+    }
+
+    int bodyRadius = 5;
+
     public void setxShift(int xShift) {
         this.xShift = xShift;
     }
@@ -37,6 +43,15 @@ public class Orbit extends BoxWidget {
 
     public void addSatellite(Orbit satellite) {
         this.satellites.add(satellite);
+    }
+
+    public int getMaxSatelliteDistance() {
+        int max = 0;
+        for (Orbit orbit :
+                satellites) {
+            if (max < orbit.radius) max = orbit.radius;
+        }
+        return max;
     }
 
     ArrayList<Orbit> satellites = new ArrayList<>();
@@ -105,8 +120,8 @@ public class Orbit extends BoxWidget {
                                     +
                                     dim.getPath()
                                     + ".png"),
-                    ms, centerX - 5, centerY - 5, 0, 0, 11,
-                    11, 11, 11, Color.WHITE);
+                    ms, centerX - bodyRadius, centerY - bodyRadius, 0, 0, bodyRadius * 2 + 1,
+                    bodyRadius * 2 + 1, bodyRadius * 2 + 1, bodyRadius * 2 + 1, Color.WHITE);
         }
     }
 

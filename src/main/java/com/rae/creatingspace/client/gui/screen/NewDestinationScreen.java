@@ -15,6 +15,7 @@ import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.Theme;
 import com.simibubi.create.foundation.gui.widget.IconButton;
+import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Color;
 import com.simibubi.create.foundation.utility.Couple;
@@ -50,6 +51,9 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     int xShift = 0;
     int yShift = 0;
     private Orbit sun;
+    private Label posLabel;
+    private Label posX;
+    private Label posY;
 
     public NewDestinationScreen(RocketContraptionEntity rocket) {
         super(Lang.translateDirect("gui.destination_screen.title"));
@@ -67,70 +71,14 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     //todo : zoom on double clic
     @Override
     protected void init() {
-        setWindowSize(226, 226);
+        setWindowSize(width, height);
         super.init();
         int x = guiLeft;
         int y = guiTop;
 
-        launchButton = new Button(x + 141, y + 198, 16 * 4, 20,
-                Component.translatable("creatingspace.gui.rocket_controls.launch"),
-                ($) -> {
-                    if (destination == null) {
-                        return;
-                    }
-                    PacketInit.getChannel()
-                            .sendToServer(new RocketContraptionLaunchPacket(rocketContraption.getId(), destination));
-                    //rocketContraption.destination = destination;
-                    onClose();
-                });
-
-        addRenderableWidget(launchButton);
-        destinationCost = new LabeledBoxWidget(x + 172, y + 20, Component.literal("  500 "));
-
-        validateSetting = new IconButton(x + 192, y + 103, AllIcons.I_CONFIG_SAVE);
-        validateSetting.setToolTip(
-                Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
-        validateSetting.withCallback(() -> {
-            BlockPos pos = initialPosMap.get(String.valueOf(destination));
-            if (pos == null) {
-                pos = this.rocketContraption.getOnPos();
-            }
-            String X = Xinput.getValue().replace(" ", ""),/*Y = Yinput.getValue().replace(" ",""),*/Z = Zinput.getValue().replace(" ", "");
-            if (CSUtil.isInteger(X)) {
-                pos = new BlockPos(Integer.parseInt(X), pos.getY(), pos.getZ());
-            } else {
-                Xinput.setValue(String.valueOf(pos.getX()));
-            }
-                    /*if (isInteger(Y)){
-                        pos = pos.mutable().setY(Integer.parseInt(Y)).immutable();
-                    }else {
-                        Yinput.setValue(String.valueOf(pos.getY()));
-                    }*/
-            if (CSUtil.isInteger(Z)) {
-                pos = pos.mutable().setZ(Integer.parseInt(Z)).immutable();
-            } else {
-                Zinput.setValue(String.valueOf(pos.getZ()));
-            }
-
-            initialPosMap.put(String.valueOf(destination), pos);
-            PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
-        });
-
-        Xinput = new EditBox(font, x + 169, y + 63,
-                50, 14, Component.literal(""));
-        /*Yinput = new EditBox(font,x + 169, y + 63,
-                50, 14, Component.literal(""));*/
-        Zinput = new EditBox(font, x + 169, y + 83,
-                50, 14, Component.literal(""));
-
-        addRenderableWidget(Xinput);
-        //addRenderableWidget(Yinput);
-        addRenderableWidget(Zinput);
-        addRenderableWidget(validateSetting);
-        addRenderableWidget(destinationCost);
-
-        //the sun
+        //add the orbits
         sun = new Orbit(x + windowWidth / 2, y + windowHeight / 2, 0, new ResourceLocation("sun"));
+        sun.setBodyRadius(20);
         Map<ResourceLocation, Orbit> temp = new HashMap<>();
         temp.put(RocketAccessibleDimension.BASE_BODY, sun);
         addRenderableOnly(sun);
@@ -163,18 +111,87 @@ public class NewDestinationScreen extends AbstractSimiScreen {
             }
         }
         restZoom();
-    }
+        //everything else
+        launchButton = new Button(x + 341, y + 198, 16 * 4, 20,
+                Component.translatable("creatingspace.gui.rocket_controls.launch"),
+                ($) -> {
+                    if (destination == null) {
+                        return;
+                    }
+                    PacketInit.getChannel()
+                            .sendToServer(new RocketContraptionLaunchPacket(rocketContraption.getId(), destination));
+                    //rocketContraption.destination = destination;
+                    onClose();
+                });
 
+        addRenderableWidget(launchButton);
+        destinationCost = new LabeledBoxWidget(x + 372, y + 20, Component.literal("  500 "));
+
+        validateSetting = new IconButton(x + 392, y + 103, AllIcons.I_CONFIG_SAVE);
+        validateSetting.setToolTip(
+                Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
+        validateSetting.withCallback(() -> {
+            BlockPos pos = initialPosMap.get(String.valueOf(destination));
+            if (pos == null) {
+                pos = this.rocketContraption.getOnPos();
+            }
+            String X = Xinput.getValue().replace(" ", ""),/*Y = Yinput.getValue().replace(" ",""),*/Z = Zinput.getValue().replace(" ", "");
+            if (CSUtil.isInteger(X)) {
+                pos = new BlockPos(Integer.parseInt(X), pos.getY(), pos.getZ());
+            } else {
+                Xinput.setValue(String.valueOf(pos.getX()));
+            }
+                    /*if (isInteger(Y)){
+                        pos = pos.mutable().setY(Integer.parseInt(Y)).immutable();
+                    }else {
+                        Yinput.setValue(String.valueOf(pos.getY()));
+                    }*/
+            if (CSUtil.isInteger(Z)) {
+                pos = pos.mutable().setZ(Integer.parseInt(Z)).immutable();
+            } else {
+                Zinput.setValue(String.valueOf(pos.getZ()));
+            }
+
+            initialPosMap.put(String.valueOf(destination), pos);
+            PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
+        });
+
+        Xinput = new EditBox(font, x + 369, y + 63,
+                50, 14, Component.literal(""));
+        /*Yinput = new EditBox(font,x + 169, y + 63,
+                50, 14, Component.literal(""));*/
+        Zinput = new EditBox(font, x + 369, y + 83,
+                50, 14, Component.literal(""));
+
+        addRenderableWidget(Xinput);
+        //addRenderableWidget(Yinput);
+        addRenderableWidget(Zinput);
+        addRenderableWidget(validateSetting);
+        addRenderableWidget(destinationCost);
+        posLabel = new Label(x + 366, y + 43, Component.empty());
+        posX = new Label(x + 356, y + 63, Component.empty());
+        posY = new Label(x + 356, y + 83, Component.empty());
+        addRenderableOnly(posLabel);
+        addRenderableOnly(posX);
+        addRenderableOnly(posY);
+    }
 
     @Override
     protected void renderWindow(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+    }
+
+    @Override
+    protected void renderWindowForeground(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         int x = guiLeft;
         int y = guiTop;
 
-        background.render(ms, x, y, this);
         if (focusedPlanet != null) {
             setXShift(x + windowWidth / 2 - focusedPlanet.getPlanetX(partialTicks));
             setYShift(y + windowHeight / 2 - focusedPlanet.getPlanetY(partialTicks));
+            if (focusedPlanet.getMaxSatelliteDistance() > 0) {
+                zoom = (float) focusedPlanet.getMaxSatelliteDistance() / 80;
+                changeZoom(0);
+            }
         }
 
         if (destination != null) {
@@ -189,9 +206,10 @@ public class NewDestinationScreen extends AbstractSimiScreen {
             }
             Xinput.visible = true;
             Xinput.active = true;
-            font.drawShadow(ms, Component.translatable("creatingspace.gui.rocket_controls.pos_selection"), x + 166, y + 43, 0xFFFFFF);
-            font.drawShadow(ms, Component.literal("X :"), x + 156, y + 63, 0xFFFFFF);
-            font.drawShadow(ms, Component.literal("Z :"), x + 156, y + 83, 0xFFFFFF);
+            //TODO use labels
+            posLabel.text = Component.translatable("creatingspace.gui.rocket_controls.pos_selection");
+            posX.text = Component.literal("X :");
+            posY.text = Component.literal("Z :");
 
             //Yinput.visible = true;
             //Yinput.active = true;
@@ -208,6 +226,9 @@ public class NewDestinationScreen extends AbstractSimiScreen {
                     true, 112);
 
         } else {
+            posLabel.text = Component.empty();
+            posX.text = Component.empty();
+            posY.text = Component.empty();
             Xinput.visible = false;
             Xinput.active = false;
             //Yinput.visible = false;
@@ -220,7 +241,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
             destinationCost.visible = false;
         }
 
-        for (int row = 0; row < CSDimensionUtil.travelMap.size(); row++) {
+        for (int row = 0; row < buttonVector.size(); row++) {
             Orbit widget = buttonVector.get(row);
             if (destination == widget.getDim()) {
                 widget.withBorderColors(green);
@@ -234,11 +255,11 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         destinationChanged = false;
     }
 
-    private void renderBackground(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
-
-    }
-
-    private void renderPlanets(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+    @Override
+    protected void renderWindowBackground(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+        super.renderWindowBackground(ms, mouseX, mouseY, partialTicks);
+        fill(ms, 0, 0, width, height, 0xFF000000);
+        //background.render(ms, 0, 0, this);
     }
 
     @Override
@@ -264,6 +285,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     //xShift, yShift independent of player input ?
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean flag = super.keyPressed(keyCode, scanCode, modifiers);
         if (GLFW.GLFW_KEY_ESCAPE == keyCode) {
             restZoom();
         }
@@ -273,7 +295,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         if (GLFW.GLFW_KEY_LEFT_SHIFT == keyCode) {
             changeZoom(-0.01f);
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return flag;
     }
 
     //should reset everything
@@ -333,7 +355,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
 
     @Override
     public boolean shouldCloseOnEsc() {
-        return false;
+        return focusedPlanet == sun;
     }
 
     private void fillToolTip(IconButton button, String tooltipKey) {
