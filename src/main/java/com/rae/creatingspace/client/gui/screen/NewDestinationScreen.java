@@ -100,6 +100,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
                             focusedPlanet = widget;
                         }
                 );
+                widget.setWindow(height, width);
                 buttonVector.add(
                         row,
                         widget);
@@ -184,16 +185,16 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     protected void renderWindowForeground(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         int x = guiLeft;
         int y = guiTop;
-
         if (focusedPlanet != null) {
-            setXShift(x + windowWidth / 2 - focusedPlanet.getPlanetX(partialTicks));
-            setYShift(y + windowHeight / 2 - focusedPlanet.getPlanetY(partialTicks));
-            if (focusedPlanet.getMaxSatelliteDistance() > 0) {
-                zoom = (float) focusedPlanet.getMaxSatelliteDistance() / 80;
-                changeZoom(0);
+            setXShift((int) (x + windowWidth / 2 - focusedPlanet.getPlanetX()));
+            setYShift((int) (y + windowHeight / 2 - focusedPlanet.getPlanetY()));
+            if (destinationChanged) {
+                if (focusedPlanet.getMaxSatelliteDistance() > 0) {
+                    zoom = (float) focusedPlanet.getMaxSatelliteDistance() / 80;
+                    changeZoom(0);
+                }
             }
         }
-
         if (destination != null) {
             if (destinationChanged) {
                 BlockPos pos = initialPosMap.get(String.valueOf(destination));
@@ -258,7 +259,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     @Override
     protected void renderWindowBackground(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         super.renderWindowBackground(ms, mouseX, mouseY, partialTicks);
-        fill(ms, 0, 0, width, height, 0xFF000000);
+        fill(ms, 0, 0, width, height, 0x44000000);
         //background.render(ms, 0, 0, this);
     }
 
@@ -309,7 +310,6 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         destination = null;
         focusedPlanet = sun;
     }
-
     private void changeZoom(float amount) {
         zoom += amount * zoom;
         if (zoom <= 0.01f) {

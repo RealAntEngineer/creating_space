@@ -15,10 +15,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Orbit extends BoxWidget {
+    private Integer windowHeight = null;
+    private Integer windowWidth = null;
+    private double planetY;
+    private double planetX;
     private final ResourceLocation dim;
     //it's a circle
     int radius;
     private float zoom;
+    private Integer maxSatelliteDistance = 0;
 
     public void setBodyRadius(int bodyRadius) {
         this.bodyRadius = bodyRadius;
@@ -43,15 +48,10 @@ public class Orbit extends BoxWidget {
 
     public void addSatellite(Orbit satellite) {
         this.satellites.add(satellite);
+        if (maxSatelliteDistance < satellite.radius) maxSatelliteDistance = satellite.radius;
     }
-
     public int getMaxSatelliteDistance() {
-        int max = 0;
-        for (Orbit orbit :
-                satellites) {
-            if (max < orbit.radius) max = orbit.radius;
-        }
-        return max;
+        return maxSatelliteDistance;
     }
 
     ArrayList<Orbit> satellites = new ArrayList<>();
@@ -67,6 +67,11 @@ public class Orbit extends BoxWidget {
         this.radius = radius;
         this.dim = dim;
         this.satellites = new ArrayList<>(satellites);
+    }
+
+    public void setWindow(int windowHeight, int windowWidth) {
+        this.windowHeight = windowHeight;
+        this.windowWidth = windowWidth;
     }
 
     @Override
@@ -85,34 +90,51 @@ public class Orbit extends BoxWidget {
             wasHovered = isHoveredOrFocused();
         }
         float theta = getTheta(partialTicks);
+        planetX = CSDimensionUtil.isOrbit(dim) ? x : x + radius / zoom * Math.sin(theta);
+        planetY = CSDimensionUtil.isOrbit(dim) ? y : y + radius / zoom * Math.cos(theta);
         for (Orbit orbit : satellites) {
-            orbit.x = (int) (x + radius / zoom * Math.sin(theta));
-            orbit.y = (int) (y + radius / zoom * Math.cos(theta));
+            orbit.x = (int) planetX;
+            orbit.y = (int) planetY;
+        }
+    }
+    @Override
+    public void renderButton(@NotNull PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+        if (isInsideWindow(x + xShift, y + yShift)) {
+            drawCircle(ms, x + xShift, y + yShift, (int) (radius / zoom));
+        }
+        if (isInsideWindow((int) (xShift + getPlanetX()), (int) (yShift + getPlanetY()))) {
+            drawBody(ms, (int) (xShift + getPlanetX()), (int) (yShift + getPlanetY()));
         }
     }
 
-    @Override
-    public void renderButton(@NotNull PoseStack ms, int mouseX, int mouseY, float partialTicks) {
-        drawCircle(ms, x + xShift, y + yShift, (int) (radius / zoom));
-        drawBody(ms, xShift + getPlanetX(partialTicks), yShift + getPlanetY(partialTicks));
+    private boolean isInsideWindow(int x, int y) {
+        if (windowWidth == null || windowHeight == null) {
+            return true;
+        } else {
+            boolean flag1 = -radius / zoom <= (x) && (x) <= windowWidth + radius / zoom && 0 <= (y) && (y) <= windowHeight;
+            boolean flag2 = -radius / zoom <= (y) && (y) <= windowHeight + radius / zoom && 0 <= (x) && (x) <= windowWidth;
+            boolean flag3 = (x) * (x) + (y) * (y) <= (radius / zoom) * (radius / zoom) ||
+                    (x - windowWidth) * (x - windowWidth) + (y) * (y) <= (radius / zoom) * (radius / zoom)
+                    || (x) * (x) + (y - windowHeight) * (y - windowHeight) <= (radius / zoom) * (radius / zoom) ||
+                    (x - windowWidth) * (x - windowWidth) + (y - windowHeight) * (y - windowHeight) <= (radius / zoom) * (radius / zoom);
+            return flag1 || flag2 || flag3;
+        }
     }
 
-    public int getPlanetY(float partialTicks) {
-        return CSDimensionUtil.isOrbit(dim) ? y : (int) (y + radius / zoom * Math.cos(getTheta(partialTicks)));
+    public double getPlanetY() {
+        return planetY;
     }
 
-    public int getPlanetX(float partialTicks) {
-        return CSDimensionUtil.isOrbit(dim) ? x : (int) (x + radius / zoom * Math.sin(getTheta(partialTicks)));
+    public double getPlanetX() {
+        return planetX;
     }
 
     private float getTheta(float partialTicks) {
         float time = Objects.requireNonNull(Minecraft.getInstance().getCameraEntity()).tickCount + partialTicks;
         float speed = 0.01f;
-        return (float) (time * 2 * Math.PI / radius) * speed;
+        return radius > 0 ? (float) (time * 2 * Math.PI / radius) * speed : 1;
     }
 
-    //TODO :make a render that take polar coordinates
-    //TODO : verify if it's inside the screen
     private void drawBody(PoseStack ms, int centerX, int centerY) {
         if (!CSDimensionUtil.isOrbit(dim)) {
             GuiTexturesInit.render(CreatingSpace.resource(
@@ -132,15 +154,36 @@ public class Orbit extends BoxWidget {
         return isMouseOver(pMouseX, pMouseY);
     }
 
+    //launch lazy renderer when the orbit is bigger that the window
     private void drawCircle(PoseStack ms, int x, int y, int radius) {
-        if (radius > 4) {
-
+        if (radius > 8) {
             int color = gradientColor1.getRGB();
             int startX = 0;
             int startY = radius;
+            int stopY = 0;
             int length = 0;
+            if (radius > windowWidth) {
+                if (x > y) {
+                    if (x < 0) {
+                        startX = Math.max(-x, 0);
+                    } else if (x > windowWidth) {
+                        startX = Math.max(x - windowWidth, windowWidth);
+                    }
+                    stopY = (int) Math.sqrt(Math.min(radius * radius - x * x, radius * radius - (x - windowWidth) * (x - windowWidth)));
+                    startY = (int) Math.sqrt(Math.max(radius * radius - x * x, radius * radius - (x - windowWidth) * (x - windowWidth)));
+                } else {
+                    if (y < 0) {
+                        startX = Math.max(-y, 0);
+                    } else if (y > windowHeight) {
+                        startX = Math.max(y - windowHeight, windowHeight);
+                    }
+                    stopY = (int) Math.sqrt(Math.min(radius * radius - y * y, radius * radius - (y - windowHeight) * (y - windowHeight)));
+                    startY = (int) Math.sqrt(Math.max(radius * radius - y * y, radius * radius - (y - windowHeight) * (y - windowHeight)));
+
+                }
+            }
             int d = 1 - radius;
-            while (startX <= startY) {
+            while (startX <= startY && startY >= stopY) {
                 if (d < 0) {
                     d += 2 * (startX + length) + 3;
                 } else {
