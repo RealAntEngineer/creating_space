@@ -18,6 +18,7 @@ public enum GuiTexturesInit implements ScreenElement {
     SEALER_BACKGROUND("oxygen_sealer",13,0,256,124),
     ROCKET_ENGINEER_TABLE("rocket_engineer_table/background", 0, 0, 382, 126, 512, 512),
     ROCKET_ENGINEER_TABLE_INPUT("rocket_engineer_table/background", 0, 125, 131, 126, 512, 512),
+    UPGRADABLE_EQUIPMENT("upgradable_equipment", 0, 0, 64, 64, 64, 64),
     SCROLL_BACKGROUND("scroll_background",0,0,66,20),
     O2_GAUGE_FRAME("o2_gauge/frame",0,0,32,64,64,64),
     O2_GAUGE_SLIDER("o2_gauge/slider",0,0,32,64,64,64),

@@ -17,7 +17,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
 
     @Override
     public boolean isActive(MovementContext context) {
-        return MovementBehaviour.super.isActive(context) /*&& (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && !rocketEntity.isReentry()*/;
+        return MovementBehaviour.super.isActive(context); //&& (context.contraption.entity instanceof RocketContraptionEntity rocketEntity)&& context.motion.length() != 0;
     }
 
     @Override
@@ -40,10 +40,10 @@ public class EngineMovementBehaviour implements MovementBehaviour {
             amount = 3;
         }
         spawnParticles(world,
-                pos.add(0,-1.5,0),
+                pos.add(0, -1.3, 0),
                 Direction.DOWN,
                 amount, particle,
-                0f,
+                contraptionMotion.y >= 0 ? -3f : 40,
                 radius, contraptionMotion);
     }
 
