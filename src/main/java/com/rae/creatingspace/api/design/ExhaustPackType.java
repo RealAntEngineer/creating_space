@@ -25,8 +25,7 @@ public class ExhaustPackType {
                             SLOTS_CODEC
                                     .fieldOf("slots")
                                     .forGetter(i -> i.slots)
-                    ).apply(instance, ExhaustPackType::new)
-    );
+                    ).apply(instance, ExhaustPackType::new));
 
     public ExhaustPackType(float minExpansionRatio, float maxExpansionRatio, List<Couple<Integer>> slots) {
         this.minExpansionRatio = minExpansionRatio;
