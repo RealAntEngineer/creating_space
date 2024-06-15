@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,6 +34,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     public int runningTicks;
     public int processingTicks;
     public boolean running;
+    private ItemStack electrode;
 
     public MechanicalElectrolyzerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -75,6 +77,13 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     protected void read(CompoundTag compound, boolean clientPacket) {
         running = compound.getBoolean("Running");
         runningTicks = compound.getInt("Ticks");
+
+        CompoundTag electrode = compound.getCompound("electrode");
+        if (electrode.isEmpty()) {
+            this.electrode = null;
+        } else {
+            this.electrode.deserializeNBT(electrode);
+        }
         super.read(compound, clientPacket);
 
         if (clientPacket && hasLevel())
@@ -85,6 +94,9 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     public void write(CompoundTag compound, boolean clientPacket) {
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
+        if (electrode != null) {
+            compound.put("electrode", electrode.serializeNBT());
+        }
         super.write(compound, clientPacket);
     }
 
@@ -202,6 +214,14 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         /*if (runningTicks == 20)
             AllSoundEvents.SANDING_SHORT.playAt(level, worldPosition, .75f, 1, true);
     */
+    }
+
+    public ItemStack getElectrode() {
+        return electrode;
+    }
+
+    public void setElectrode(ItemStack held) {
+        electrode = held;
     }
 
 }

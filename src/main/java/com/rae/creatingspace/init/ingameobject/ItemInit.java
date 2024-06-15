@@ -6,6 +6,7 @@ import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.SpacesuitHelmetItem;
 import com.rae.creatingspace.server.items.DesignBlueprintItem;
+import com.rae.creatingspace.server.items.ElectrodeItem;
 import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.foundation.item.CombustibleItem;
@@ -25,6 +26,11 @@ public class ItemInit {
     public static final ItemEntry<Item> BLISK = CreatingSpace.REGISTRATE.item(
                     "blisk", Item::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+    public static final ItemEntry<ElectrodeItem> COPPER_ELECTRODE = CreatingSpace.REGISTRATE.item(
+                    "copper_electrode", ElectrodeItem::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
+                    .defaultDurability(300))
             .register();
     public static final ItemEntry<Item> THROAT = CreatingSpace.REGISTRATE.item(
                     "throat", Item::new)

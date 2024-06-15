@@ -82,7 +82,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(
                             "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
-                    .instance(() -> ElectrolyzerInstance::new, false)
+                    .instance(() -> ElectrolyzerInstance::new, true)
                     .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
                     .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
                     .register();
