@@ -2,9 +2,7 @@ package com.rae.creatingspace.api.squedule.condition;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
-import com.simibubi.create.content.trains.schedule.Schedule;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
-import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -32,11 +30,11 @@ public abstract class ScheduleWaitCondition extends ScheduleDataEntry {
     public static ScheduleWaitCondition fromTag(CompoundTag tag) {
         ResourceLocation location = new ResourceLocation(tag.getString("Id"));
         Supplier<? extends ScheduleWaitCondition> supplier = null;
-        for (Pair<ResourceLocation, Supplier<? extends ScheduleWaitCondition>> pair : Schedule.CONDITION_TYPES)
+        /*for (Pair<ResourceLocation, Supplier<? extends ScheduleWaitCondition>> pair : Schedule.CONDITION_TYPES)
             if (pair.getFirst()
                     .equals(location))
                 supplier = pair.getSecond();
-
+*/
         if (supplier == null) {
             Create.LOGGER.warn("Could not parse waiting condition type: " + location);
             return null;

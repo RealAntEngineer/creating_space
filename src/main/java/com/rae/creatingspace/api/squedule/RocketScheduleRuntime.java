@@ -9,7 +9,6 @@ import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.trains.entity.Carriage;
 import com.simibubi.create.content.trains.entity.Train;
-
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -132,10 +131,10 @@ public class RocketScheduleRuntime {
             destinationReached();
             return;
         }
-        if (train.navigation.startNavigation(nextPath) != TBD) {
+        /*if (train.navigation.startNavigation(nextPath) != TBD) {
             state = State.IN_TRANSIT;
             ticksInTransit = 0;
-        }
+        }*/
     }
 
     public void tickConditions(Level level) {
