@@ -19,13 +19,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.Optional;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
@@ -51,10 +47,9 @@ public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRende
 			if (!electrode.isEmpty()) {
 				ms.pushPose();
 				ms.translate(0, -renderedHeadOffset, 0);
-				Optional<ResourceKey<Item>> itemResourceKey = electrode.getItemHolder().unwrapKey();
 				renderElectrodesFromTexture(ms,
 						CreatingSpace.resource("textures/block/mechanical_electrolyzer/electrodes/" +
-								itemResourceKey.orElseThrow().location().getPath() + ".png"), buffer);
+								electrode.getItemHolder().unwrapKey().orElseThrow().location().getPath() + ".png"), buffer);
 				ms.popPose();
 			}
 		}

@@ -2,6 +2,7 @@ package com.rae.creatingspace.server.blocks;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.MechanicalElectrolyzerBlockEntity;
+import com.rae.creatingspace.server.items.ElectrodeItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
@@ -85,13 +86,11 @@ public class MechanicalElectrolyzerBlock extends HorizontalKineticBlock implemen
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand p_60507_, BlockHitResult p_60508_) {
 		ItemStack held = player.getMainHandItem();
-		if (!held.isEmpty()) {
+		if (!held.isEmpty() && (held.getItem() instanceof ElectrodeItem)) {
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
 					() -> () -> withBlockEntityDo(level, pos, be -> be.setElectrode(held)));
 			return InteractionResult.SUCCESS;
 		}
-
 		return InteractionResult.PASS;
 	}
-
 }

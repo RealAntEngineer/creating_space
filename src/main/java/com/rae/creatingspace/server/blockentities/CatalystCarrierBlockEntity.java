@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +38,7 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
     public int runningTicks;
     public int processingTicks;
     public boolean running;
+    private ItemStack catalyst;
 
     public CatalystCarrierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -80,6 +82,12 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         runningTicks = compound.getInt("Ticks");
         super.read(compound, clientPacket);
 
+        CompoundTag electrode = (CompoundTag) compound.get("catalyst");
+        if (electrode.isEmpty()) {
+            this.catalyst = null;
+        } else {
+            this.catalyst.deserializeNBT(electrode);
+        }
         if (clientPacket && hasLevel())
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
     }
@@ -88,6 +96,9 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
     public void write(CompoundTag compound, boolean clientPacket) {
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
+        if (catalyst != null) {
+            compound.put("catalyst", catalyst.serializeNBT());
+        }
         super.write(compound, clientPacket);
     }
 
@@ -217,4 +228,12 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
          */
     }
 
+    public ItemStack getCatalyst() {
+        return catalyst;
+    }
+
+    public void setCatalyst(ItemStack held) {
+        catalyst = held.copy();
+        notifyUpdate();
+    }
 }

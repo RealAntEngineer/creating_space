@@ -51,7 +51,7 @@ public class BlockEntityInit {
 
     public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
             REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
-                    .instance(() -> CatalystCarrierInstance::new)
+                    .instance(() -> CatalystCarrierInstance::new, true)
                     .validBlocks(BlockInit.CATALYST_CARRIER)
                     .renderer(() -> CatalystCarrierRenderer::new)
                     .register();

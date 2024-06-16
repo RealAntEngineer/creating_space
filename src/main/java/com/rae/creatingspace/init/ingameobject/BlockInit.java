@@ -42,6 +42,10 @@ public class BlockInit {
 
     //just blocks
     //TODO add geode's blocks
+    /*public static final DeferredRegister<Block> BLOCK_REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+    public static final RegistryObject<Block> TITANIUM = BLOCK_REGISTER.register(
+            "titanium", () -> new Block(BlockBehaviour.Properties.of(Material.METAL)));*/
+
     public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
             .block("rocket_engineer_table", RocketEngineerTableBlock::new)
             .properties(p -> p.strength(1.0f).noOcclusion())
@@ -400,6 +404,16 @@ public class BlockInit {
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
+            .register();
+
+
+    public static final BlockEntry<Block> TITANIUM_BLOCK = REGISTRATE.block(
+                    "titanium_block", Block::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .build()
             .register();
 
     //machinery

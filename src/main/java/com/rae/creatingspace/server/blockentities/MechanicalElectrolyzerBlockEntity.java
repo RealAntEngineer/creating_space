@@ -77,6 +77,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     protected void read(CompoundTag compound, boolean clientPacket) {
         running = compound.getBoolean("Running");
         runningTicks = compound.getInt("Ticks");
+        super.read(compound, clientPacket);
 
         CompoundTag electrode = compound.getCompound("electrode");
         if (electrode.isEmpty()) {
@@ -84,7 +85,6 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         } else {
             this.electrode.deserializeNBT(electrode);
         }
-        super.read(compound, clientPacket);
 
         if (clientPacket && hasLevel())
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
@@ -92,12 +92,20 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
 
     @Override
     public void write(CompoundTag compound, boolean clientPacket) {
+        super.write(compound, clientPacket);
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
         if (electrode != null) {
             compound.put("electrode", electrode.serializeNBT());
         }
-        super.write(compound, clientPacket);
+    }
+
+    @Override
+    public void writeSafe(CompoundTag tag) {
+        super.writeSafe(tag);
+        if (electrode != null) {
+            tag.put("electrode", electrode.serializeNBT());
+        }
     }
 
     @Override
@@ -221,7 +229,8 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     }
 
     public void setElectrode(ItemStack held) {
-        electrode = held;
+        electrode = held.copy();
+        setChanged();
     }
 
 }

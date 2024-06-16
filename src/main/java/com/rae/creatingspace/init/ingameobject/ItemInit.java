@@ -5,6 +5,7 @@ import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.SpacesuitHelmetItem;
+import com.rae.creatingspace.server.items.CatalystItem;
 import com.rae.creatingspace.server.items.DesignBlueprintItem;
 import com.rae.creatingspace.server.items.ElectrodeItem;
 import com.rae.creatingspace.server.items.UpgradableEquipment;
@@ -29,6 +30,12 @@ public class ItemInit {
             .register();
     public static final ItemEntry<ElectrodeItem> COPPER_ELECTRODE = CreatingSpace.REGISTRATE.item(
                     "copper_electrode", ElectrodeItem::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
+                    .defaultDurability(300))
+            .register();
+
+    public static final ItemEntry<CatalystItem> COPPER_CATALYST = CreatingSpace.REGISTRATE.item(
+                    "copper_catalyst", CatalystItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
                     .defaultDurability(300))
             .register();
