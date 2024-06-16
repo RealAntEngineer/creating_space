@@ -24,6 +24,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,6 +91,8 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
     }
 
+    //TODO solve the saving issue with electrode (same for catalyst)
+    // seems like the client packet doesn't receive the right data on read
     @Override
     public void write(CompoundTag compound, boolean clientPacket) {
         super.write(compound, clientPacket);
@@ -172,12 +175,28 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     }
 
     @Override
+    protected <C extends Container> boolean matchBasinRecipe(Recipe<C> recipe) {
+        if (electrode == null) return false;
+        return super.matchBasinRecipe(recipe);
+    }
+
+    @Override
     public void startProcessingBasin() {
         if (running && runningTicks <= 20)
             return;
         super.startProcessingBasin();
+
         running = true;
         runningTicks = 0;
+    }
+
+    @Override
+    protected void applyBasinRecipe() {
+        super.applyBasinRecipe();
+        if (electrode != null) {
+            electrode.setDamageValue(electrode.getDamageValue() + 1);
+            System.out.println(electrode.serializeNBT());
+        }
     }
 
     @Override
@@ -228,7 +247,11 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         return electrode;
     }
 
-    public void setElectrode(ItemStack held) {
+    public void setElectrode(@Nullable ItemStack held) {
+        if (held == null) {
+            electrode = null;
+            return;
+        }
         electrode = held.copy();
         setChanged();
     }

@@ -90,6 +90,10 @@ public class MechanicalElectrolyzerBlock extends HorizontalKineticBlock implemen
 			DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
 					() -> () -> withBlockEntityDo(level, pos, be -> be.setElectrode(held)));
 			return InteractionResult.SUCCESS;
+		} else if (held.isEmpty()) {
+			player.setItemInHand(InteractionHand.MAIN_HAND, ((MechanicalElectrolyzerBlockEntity) level.getBlockEntity(pos)).getElectrode());
+			DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+					() -> () -> withBlockEntityDo(level, pos, be -> be.setElectrode(null)));
 		}
 		return InteractionResult.PASS;
 	}
