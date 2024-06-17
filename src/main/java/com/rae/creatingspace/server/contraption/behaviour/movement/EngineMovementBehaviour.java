@@ -8,6 +8,12 @@ import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
 import com.simibubi.create.foundation.utility.VecHelper;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -54,6 +60,20 @@ public class EngineMovementBehaviour implements MovementBehaviour {
     @Override
     public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
 
+    }
+
+    public static ModelPart createElectrodes() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create()
+                        .texOffs(0, 1)
+                        .addBox(-11.0F, 0.0F, 5.0F, 6.0F, 9.0F, 1.0F, new CubeDeformation(0.0F))
+                        .texOffs(0, 1)
+                        .addBox(-11.0F, 0.0F, 10.0F, 6.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)),
+                PartPose.offset(16.0F, -9.0F, 0));
+
+        return bone.bake(16, 16);
     }
 
     //copied from Create's FluidFX
