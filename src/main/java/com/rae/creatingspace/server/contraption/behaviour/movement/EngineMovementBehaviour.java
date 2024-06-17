@@ -1,11 +1,14 @@
 package com.rae.creatingspace.server.contraption.behaviour.movement;
 
+import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.server.particle.RocketPlumeParticleData;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
+import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
 import com.simibubi.create.foundation.utility.VecHelper;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.RandomSource;
@@ -46,6 +49,11 @@ public class EngineMovementBehaviour implements MovementBehaviour {
                 amount, particle,
                 contraptionMotion.y >= 0 ? -3f : 40,
                 radius, contraptionMotion);
+    }
+
+    @Override
+    public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
+
     }
 
     //copied from Create's FluidFX
