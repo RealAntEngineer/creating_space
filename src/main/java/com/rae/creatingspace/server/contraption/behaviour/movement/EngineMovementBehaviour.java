@@ -2,7 +2,6 @@ package com.rae.creatingspace.server.contraption.behaviour.movement;
 
 import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.server.particle.RocketPlumeParticleData;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
@@ -27,7 +26,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
 
     @Override
     public boolean isActive(MovementContext context) {
-        return MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && context.motion.length() != 0;
+        return false;//MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && context.motion.length() != 0;
     }
 
     @Override

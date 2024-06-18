@@ -42,6 +42,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -736,6 +737,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         motion = VecHelper.clampComponentWise(motion, 1);
         setContraptionMotion(motion);
+    }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR) ?
+                new AABB(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE,
+                        Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE) :
+                super.getBoundingBoxForCulling();
     }
 
     @Override
