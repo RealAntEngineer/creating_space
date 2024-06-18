@@ -2,6 +2,7 @@ package com.rae.creatingspace.api.rendering;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeometryRendering {
-    public static void renderCylinder(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, int packedLight, float baseRadius, float topRadius, float height, int segments) {
+    public static void renderCylinder(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, int packedLight, float baseRadius, float topRadius, float height, int segments, Color color) {
         float angleIncrement = (float) (2 * Math.PI / segments);
         // Define the base vertices
         for (int i = 0; i < segments; i++) {
@@ -24,11 +25,11 @@ public class GeometryRendering {
             sideFace.add(new Vec3(baseRadius * Mth.cos(angle1), 0, baseRadius * Mth.sin(angle1)).add(offset));
             // Render the side face using renderPoly
             PoseStack.Pose entry = matrixStack.last();
-            renderPoly(sideFace, vertexBuilder, entry, packedLight);
+            renderPoly(sideFace, vertexBuilder, entry, packedLight, color);
         }
     }
 
-    public static void renderCube(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, int packedLight, float size) {
+    public static void renderCube(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, int packedLight, float size, Color color) {
         float halfSize = size / 2.0F;
 
         // Define the eight vertices of the cube
@@ -51,15 +52,15 @@ public class GeometryRendering {
 
         // Render each face using renderPoly
         PoseStack.Pose entry = matrixStack.last();
-        renderPoly(face1, vertexBuilder, entry, packedLight);
-        renderPoly(face2, vertexBuilder, entry, packedLight);
-        renderPoly(face3, vertexBuilder, entry, packedLight);
-        renderPoly(face4, vertexBuilder, entry, packedLight);
-        renderPoly(face5, vertexBuilder, entry, packedLight);
-        renderPoly(face6, vertexBuilder, entry, packedLight);
+        renderPoly(face1, vertexBuilder, entry, packedLight, color);
+        renderPoly(face2, vertexBuilder, entry, packedLight, color);
+        renderPoly(face3, vertexBuilder, entry, packedLight, color);
+        renderPoly(face4, vertexBuilder, entry, packedLight, color);
+        renderPoly(face5, vertexBuilder, entry, packedLight, color);
+        renderPoly(face6, vertexBuilder, entry, packedLight, color);
     }
 
-    public static void renderPoly(List<Vec3> pos, VertexConsumer vertexBuilder, PoseStack.Pose entry, int packedLight) {
+    public static void renderPoly(List<Vec3> pos, VertexConsumer vertexBuilder, PoseStack.Pose entry, int packedLight, Color color) {
         Vec3 centerPos = new Vec3(0, 0, 0);
         for (Vec3 coord : pos) {
             centerPos = centerPos.add(coord);
@@ -68,7 +69,7 @@ public class GeometryRendering {
         for (Vec3 coord : pos) {
             Vec3 normal = coord.subtract(centerPos);
             vertexBuilder.vertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
-                    .color(255, 255, 255, 254)
+                    .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
                     .uv(0, 0)
                     .overlayCoords(OverlayTexture.NO_OVERLAY)
                     .uv2(packedLight)
