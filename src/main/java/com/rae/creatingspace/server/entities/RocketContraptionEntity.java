@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.api.squedule.RocketPath;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
@@ -59,6 +60,7 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RocketContraptionEntity extends AbstractContraptionEntity {
     //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
@@ -777,5 +779,23 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     public void setAccessibilityData(HashMap<String, BlockPos> initialPosMap) {
         this.initialPosMap = initialPosMap;
+    }
+
+    public void successfulNavigation() {
+
+    }
+
+    public int countPlayerPassengers() {
+        AtomicInteger count = new AtomicInteger();
+        getIndirectPassengers()
+                .forEach(p -> {
+                    if (p instanceof Player)
+                        count.incrementAndGet();
+                });
+        return count.intValue();
+    }
+
+    public int startNavigation(RocketPath nextPath) {
+        return 0;
     }
 }

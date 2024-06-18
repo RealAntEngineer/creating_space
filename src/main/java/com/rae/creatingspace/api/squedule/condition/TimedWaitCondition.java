@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.content.trains.entity.Train;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
@@ -106,7 +106,7 @@ public abstract class TimedWaitCondition extends ScheduleWaitCondition {
     }
 
     @Override
-    public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
+    public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity train, CompoundTag tag) {
         int time = tag.getInt("Time");
         int ticksUntilDeparture = totalWaitTicks() - time;
         boolean showInMinutes = ticksUntilDeparture >= 20 * 60;

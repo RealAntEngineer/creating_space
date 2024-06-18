@@ -1,10 +1,10 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.redstone.link.RedstoneLinkNetworkHandler.Frequency;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Couple;
@@ -68,7 +68,7 @@ public class RedstoneLinkCondition extends ScheduleWaitCondition {
     }
 
     @Override
-    public boolean tickCompletion(Level level, Train train, CompoundTag context) {
+    public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         int lastChecked = context.contains("LastChecked") ? context.getInt("LastChecked") : -1;
         int status = Create.REDSTONE_LINK_NETWORK_HANDLER.globalPowerVersion.get();
         if (status == lastChecked)
@@ -120,7 +120,7 @@ public class RedstoneLinkCondition extends ScheduleWaitCondition {
     }
 
     @Override
-    public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
+    public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity train, CompoundTag tag) {
         return Lang.translateDirect("schedule.condition.redstone_link.status");
     }
 

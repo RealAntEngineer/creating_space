@@ -1,10 +1,9 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.logistics.filter.FilterItemStack;
-import com.simibubi.create.content.trains.entity.Carriage;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
@@ -38,20 +37,19 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
     }
 
     @Override
-    protected boolean test(Level level, Train train, CompoundTag context) {
+    protected boolean test(Level level, RocketContraptionEntity rocket, CompoundTag context) {
         Ops operator = getOperator();
         int target = getThreshold();
 
         int foundFluid = 0;
-        for (Carriage carriage : train.carriages) {
-            IFluidHandler fluids = carriage.storage.getFluids();
+        IFluidHandler fluids = rocket.getContraption().getSharedFluidTanks();
             for (int i = 0; i < fluids.getTanks(); i++) {
                 FluidStack fluidInTank = fluids.getFluidInTank(i);
                 if (!compareStack.test(level, fluidInTank))
                     continue;
                 foundFluid += fluidInTank.getAmount();
             }
-        }
+
 
         requestStatusToUpdate(foundFluid / 1000, context);
         return operator.test(foundFluid, target * 1000);
@@ -71,7 +69,7 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
     }
 
     @Override
-    public boolean tickCompletion(Level level, Train train, CompoundTag context) {
+    public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         return super.tickCompletion(level, train, context);
     }
 
@@ -120,7 +118,7 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
     }
 
     @Override
-    public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
+    public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity rocket, CompoundTag tag) {
         int lastDisplaySnapshot = getLastDisplaySnapshot(tag);
         if (lastDisplaySnapshot == -1)
             return Components.empty();

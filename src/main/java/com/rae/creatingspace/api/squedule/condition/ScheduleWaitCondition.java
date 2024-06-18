@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public abstract class ScheduleWaitCondition extends ScheduleDataEntry {
 
-    public abstract boolean tickCompletion(Level level, Train train, CompoundTag context);
+    public abstract boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context);
 
     protected void requestStatusToUpdate(CompoundTag context) {
         context.putInt("StatusVersion", context.getInt("StatusVersion") + 1);
@@ -49,6 +49,6 @@ public abstract class ScheduleWaitCondition extends ScheduleDataEntry {
         return condition;
     }
 
-    public abstract MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag);
+    public abstract MutableComponent getWaitingStatus(Level level, RocketContraptionEntity train, CompoundTag tag);
 
 }

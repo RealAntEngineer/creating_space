@@ -1,9 +1,9 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
@@ -68,7 +68,7 @@ public class PlayerPassengerCondition extends ScheduleWaitCondition {
     }
 
     @Override
-    public boolean tickCompletion(Level level, Train train, CompoundTag context) {
+    public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         int prev = context.getInt("PrevPlayerCount");
         int present = train.countPlayerPassengers();
         int target = getTarget();
@@ -79,8 +79,8 @@ public class PlayerPassengerCondition extends ScheduleWaitCondition {
     }
 
     @Override
-    public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
-        return Lang.translateDirect("schedule.condition.player_count.status", train.countPlayerPassengers(), getTarget());
+    public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity rocket, CompoundTag tag) {
+        return Lang.translateDirect("schedule.condition.player_count.status", rocket.countPlayerPassengers(), getTarget());
     }
 
 }

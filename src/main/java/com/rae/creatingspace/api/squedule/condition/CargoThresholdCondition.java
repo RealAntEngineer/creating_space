@@ -1,8 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.content.trains.entity.Carriage;
-import com.simibubi.create.content.trains.entity.Train;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
@@ -50,15 +49,15 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
     }
 
     @Override
-    public boolean lazyTickCompletion(Level level, Train train, CompoundTag context) {
+    public boolean lazyTickCompletion(Level level, RocketContraptionEntity rocket, CompoundTag context) {
         int lastChecked = context.contains("LastChecked") ? context.getInt("LastChecked") : -1;
-        int status = 0;
-        for (Carriage carriage : train.carriages)
+        /*int status = 0;
+        for (Carriage carriage : rocket.carriages)
             status += carriage.storage.getVersion();
         if (status == lastChecked)
             return false;
-        context.putInt("LastChecked", status);
-        return test(level, train, context);
+        context.putInt("LastChecked", status);*/
+        return test(level, rocket, context);
     }
 
     protected void requestStatusToUpdate(int amount, CompoundTag context) {
@@ -74,7 +73,7 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
         return context.getInt("CurrentDisplay");
     }
 
-    protected abstract boolean test(Level level, Train train, CompoundTag context);
+    protected abstract boolean test(Level level, RocketContraptionEntity train, CompoundTag context);
 
     protected abstract Component getUnit();
 

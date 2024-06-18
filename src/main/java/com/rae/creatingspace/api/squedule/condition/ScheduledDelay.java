@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +18,7 @@ public class ScheduledDelay extends TimedWaitCondition {
     }
 
     @Override
-    public boolean tickCompletion(Level level, Train train, CompoundTag context) {
+    public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         int time = context.getInt("Time");
         if (time >= totalWaitTicks())
             return true;

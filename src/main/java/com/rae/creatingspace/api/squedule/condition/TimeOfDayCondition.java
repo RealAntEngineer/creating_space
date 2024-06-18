@@ -3,8 +3,8 @@ package com.rae.creatingspace.api.squedule.condition;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.Create;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
@@ -35,7 +35,7 @@ public class TimeOfDayCondition extends ScheduleWaitCondition {
     }
 
     @Override
-    public boolean tickCompletion(Level level, Train train, CompoundTag context) {
+    public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         int maxTickDiff = 40;
         int targetHour = intData("Hour");
         int targetMinute = intData("Minute");
@@ -168,7 +168,7 @@ public class TimeOfDayCondition extends ScheduleWaitCondition {
     }
 
     @Override
-    public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
+    public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity train, CompoundTag tag) {
         int targetHour = intData("Hour");
         int targetMinute = intData("Minute");
         int dayTime = (int) (level.getDayTime() % getRotation());

@@ -1,10 +1,9 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.logistics.filter.FilterItemStack;
-import com.simibubi.create.content.trains.entity.Carriage;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
@@ -36,14 +35,13 @@ public class ItemThresholdCondition extends CargoThresholdCondition {
     }
 
     @Override
-    protected boolean test(Level level, Train train, CompoundTag context) {
+    protected boolean test(Level level, RocketContraptionEntity rocket, CompoundTag context) {
         Ops operator = getOperator();
         int target = getThreshold();
         boolean stacks = inStacks();
 
         int foundItems = 0;
-        for (Carriage carriage : train.carriages) {
-            IItemHandlerModifiable items = carriage.storage.getItems();
+        IItemHandlerModifiable items = rocket.getContraption().getSharedInventory();
             for (int i = 0; i < items.getSlots(); i++) {
                 ItemStack stackInSlot = items.getStackInSlot(i);
                 if (!stack.test(level, stackInSlot))
@@ -54,7 +52,7 @@ public class ItemThresholdCondition extends CargoThresholdCondition {
                 else
                     foundItems += stackInSlot.getCount();
             }
-        }
+
 
         requestStatusToUpdate(foundItems, context);
         return operator.test(foundItems, target);
@@ -74,8 +72,8 @@ public class ItemThresholdCondition extends CargoThresholdCondition {
     }
 
     @Override
-    public boolean tickCompletion(Level level, Train train, CompoundTag context) {
-        return super.tickCompletion(level, train, context);
+    public boolean tickCompletion(Level level, RocketContraptionEntity rocket, CompoundTag context) {
+        return super.tickCompletion(level, rocket, context);
     }
 
     @Override
@@ -123,7 +121,7 @@ public class ItemThresholdCondition extends CargoThresholdCondition {
     }
 
     @Override
-    public MutableComponent getWaitingStatus(Level level, Train train, CompoundTag tag) {
+    public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity train, CompoundTag tag) {
         int lastDisplaySnapshot = getLastDisplaySnapshot(tag);
         if (lastDisplaySnapshot == -1)
             return Components.empty();

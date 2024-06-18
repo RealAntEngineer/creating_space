@@ -7,8 +7,6 @@ import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.trains.entity.Carriage;
-import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +31,7 @@ public class RocketScheduleRuntime {
     }
 
     //TODO remove train and replace by RocketEntity
-    Train train;
+    //Train train;
     ResourceLocation currentWorld;
     RocketContraptionEntity rocket;
     RocketSchedule schedule;
@@ -55,8 +53,8 @@ public class RocketScheduleRuntime {
 
     public boolean displayLinkUpdateRequested;
 
-    public RocketScheduleRuntime(Train train) {
-        this.train = train;
+    public RocketScheduleRuntime(RocketContraptionEntity rocket) {
+        this.rocket = rocket;
         reset();
     }
 
@@ -66,8 +64,6 @@ public class RocketScheduleRuntime {
         state = State.POST_TRANSIT;
         conditionProgress.clear();
         displayLinkUpdateRequested = true;
-        for (Carriage carriage : train.carriages)
-            carriage.storage.resetIdleCargoTracker();
 
         if (ticksInTransit > 0) {
             int current = predictionTicks.get(currentEntry);
@@ -92,14 +88,13 @@ public class RocketScheduleRuntime {
         cooldown = 0;
     }
 
+    //TODO create a Rocket like the Train class ?
     public void tick(Level level) {
         if (schedule == null)
             return;
         if (paused)
             return;
-        if (train.derailed)
-            return;
-        if (train.navigation.destination != null) {
+        if (rocket.destination != null) {
             ticksInTransit++;
             return;
         }
@@ -125,16 +120,16 @@ public class RocketScheduleRuntime {
         if (nextPath == null)
             return;
 
-        train.status.successfulNavigation();
+        rocket.successfulNavigation();
         if (nextPath.destination == rocket.getLevel().dimension().location()) {
             state = State.IN_TRANSIT;
             destinationReached();
             return;
         }
-        /*if (train.navigation.startNavigation(nextPath) != TBD) {
+        if (rocket.startNavigation(nextPath) != TBD) {
             state = State.IN_TRANSIT;
             ticksInTransit = 0;
-        }*/
+        }
     }
 
     public void tickConditions(Level level) {
@@ -153,7 +148,7 @@ public class RocketScheduleRuntime {
             ScheduleWaitCondition condition = list.get(progress);
             int prevVersion = tag.getInt("StatusVersion");
 
-            if (condition.tickCompletion(level, train, tag)) {
+            if (condition.tickCompletion(level, rocket, tag)) {
                 conditionContext.set(i, new CompoundTag());
                 conditionProgress.set(i, progress + 1);
                 displayLinkUpdateRequested |= i == 0;
@@ -161,9 +156,6 @@ public class RocketScheduleRuntime {
 
             displayLinkUpdateRequested |= i == 0 && prevVersion != tag.getInt("StatusVersion");
         }
-
-        for (Carriage carriage : train.carriages)
-            carriage.storage.tickIdleCargoTracker();
     }
 
     public RocketPath startCurrentInstruction() {
@@ -174,11 +166,11 @@ public class RocketScheduleRuntime {
         if (instruction instanceof DestinationInstruction destination) {
             ResourceLocation destinationWorld = destination.getDestination();
 
-            if (!train.hasForwardConductor() && !train.hasBackwardConductor()) {
+            /*if (!train.hasForwardConductor() && !train.hasBackwardConductor()) {
                 train.status.missingConductor();
                 cooldown = INTERVAL;
                 return null;
-            }
+            }*/
             int cost = CSDimensionUtil.cost(currentWorld, destinationWorld);
             if (cost < 0) {
                 return null;
@@ -202,7 +194,7 @@ public class RocketScheduleRuntime {
         currentEntry = Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
         paused = false;
         isAutoSchedule = auto;
-        train.status.newSchedule();
+        //train.status.newSchedule();
         predictionTicks = new ArrayList<>();
         schedule.entries.forEach($ -> predictionTicks.add(TBD));
         displayLinkUpdateRequested = true;
@@ -213,7 +205,7 @@ public class RocketScheduleRuntime {
     }
 
     public void discardSchedule() {
-        train.navigation.cancelNavigation();
+        //train.navigation.cancelNavigation();
         reset();
     }
 
@@ -295,7 +287,7 @@ public class RocketScheduleRuntime {
 
         CompoundTag tag = conditionContext.get(0);
         ScheduleWaitCondition condition = list.get(progress);
-        return condition.getWaitingStatus(level, train, tag);
+        return condition.getWaitingStatus(level, rocket, tag);
     }
 
 }

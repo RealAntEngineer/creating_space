@@ -1,6 +1,6 @@
 package com.rae.creatingspace.api.squedule.condition;
 
-import com.simibubi.create.content.trains.entity.Train;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 
@@ -13,7 +13,7 @@ public abstract class LazyTickedScheduleCondition extends ScheduleWaitCondition 
     }
 
     @Override
-    public boolean tickCompletion(Level level, Train train, CompoundTag context) {
+    public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         int time = context.getInt("Time");
         if (time % tickRate == 0) {
             if (lazyTickCompletion(level, train, context))
@@ -24,6 +24,6 @@ public abstract class LazyTickedScheduleCondition extends ScheduleWaitCondition 
         return false;
     }
 
-    protected abstract boolean lazyTickCompletion(Level level, Train train, CompoundTag context);
+    protected abstract boolean lazyTickCompletion(Level level, RocketContraptionEntity train, CompoundTag context);
 
 }
