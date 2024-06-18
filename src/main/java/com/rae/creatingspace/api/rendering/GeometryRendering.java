@@ -8,24 +8,27 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GeometryRendering {
-    public static void renderCylinder(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, int packedLight, float baseRadius, float topRadius, float height, int segments, Color color) {
+    public static void renderCylinder(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, Color color, int packedLight, float baseRadius, float topRadius, float height, int segments, boolean exterior) {
         float angleIncrement = (float) (2 * Math.PI / segments);
         // Define the base vertices
         for (int i = 0; i < segments; i++) {
             float angle1 = i * angleIncrement;
             float angle2 = (i + 1) % segments * angleIncrement;
 
-            List<Vec3> sideFace = new ArrayList<>();
-            sideFace.add(new Vec3(topRadius * Mth.cos(angle1), height, topRadius * Mth.sin(angle1)).add(offset));
-            sideFace.add(new Vec3(topRadius * Mth.cos(angle2), height, topRadius * Mth.sin(angle2)).add(offset));
-            sideFace.add(new Vec3(baseRadius * Mth.cos(angle2), 0, baseRadius * Mth.sin(angle2)).add(offset));
-            sideFace.add(new Vec3(baseRadius * Mth.cos(angle1), 0, baseRadius * Mth.sin(angle1)).add(offset));
+            List<Vec3> faceVertexes = new ArrayList<>();
+            faceVertexes.add(new Vec3(topRadius * Mth.cos(angle1), height, topRadius * Mth.sin(angle1)).add(offset));
+            faceVertexes.add(new Vec3(topRadius * Mth.cos(angle2), height, topRadius * Mth.sin(angle2)).add(offset));
+            faceVertexes.add(new Vec3(baseRadius * Mth.cos(angle2), 0, baseRadius * Mth.sin(angle2)).add(offset));
+            faceVertexes.add(new Vec3(baseRadius * Mth.cos(angle1), 0, baseRadius * Mth.sin(angle1)).add(offset));
             // Render the side face using renderPoly
+            if (!exterior) Collections.reverse(faceVertexes);
             PoseStack.Pose entry = matrixStack.last();
-            renderPoly(sideFace, vertexBuilder, entry, packedLight, color);
+            renderPoly(faceVertexes, vertexBuilder, entry, packedLight, color);
+            //renderPoly(interiorFaces, vertexBuilder, entry, packedLight, color);
         }
     }
 
