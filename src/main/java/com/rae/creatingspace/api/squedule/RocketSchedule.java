@@ -4,7 +4,6 @@ import com.rae.creatingspace.api.squedule.condition.*;
 import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
 import com.simibubi.create.Create;
-
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.Pair;
@@ -34,8 +33,8 @@ public class RocketSchedule {
         registerCondition("redstone_link", RedstoneLinkCondition::new);
         registerCondition("player_count", PlayerPassengerCondition::new);
         registerCondition("idle", IdleCargoCondition::new);
-        registerCondition("unloaded", StationUnloadedCondition::new);
-        registerCondition("powered", StationPoweredCondition::new);
+        //registerCondition("unloaded", StationUnloadedCondition::new);
+        //registerCondition("powered", StationPoweredCondition::new);
     }
 
     private static void registerInstruction(String name, Supplier<? extends ScheduleInstruction> factory) {

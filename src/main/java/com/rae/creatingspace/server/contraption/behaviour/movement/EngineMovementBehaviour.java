@@ -3,10 +3,10 @@ package com.rae.creatingspace.server.contraption.behaviour.movement;
 import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.rendering.GeometryRendering;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.particle.RocketPlumeParticleData;
+import com.simibubi.create.AllSpecialTextures;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
@@ -68,7 +68,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
 
     @Override
     public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
-        VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.getGlowingTranslucent(CreatingSpace.resource("textures/block/moon_regolith.png")));
+        VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.getGlowingTranslucent(AllSpecialTextures.BLANK.getLocation()));
         PoseStack matrixStack = matrices.getViewProjection();
         matrixStack.pushPose();
         // Translate and rotate the cone to the entity's position and orientation

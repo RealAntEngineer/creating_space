@@ -13,6 +13,7 @@ import java.util.List;
 
 public class GeometryRendering {
     public static void renderCylinder(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, Color color, int packedLight, float baseRadius, float topRadius, float height, int segments, boolean exterior) {
+
         float angleIncrement = (float) (2 * Math.PI / segments);
         // Define the base vertices
         for (int i = 0; i < segments; i++) {
