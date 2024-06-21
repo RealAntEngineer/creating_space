@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.api.squedule.RocketPath;
+import com.rae.creatingspace.api.squedule.RocketScheduleRuntime;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
@@ -91,6 +92,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     //TODO make a record
     public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();
     private HashMap<String, BlockPos> initialPosMap;
+    public RocketScheduleRuntime schedule;
     public HashMap<String, BlockPos> getInitialPosMap() {
         return initialPosMap;
     }
@@ -100,6 +102,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     //make the launch after the assembling of the rocket.
     public RocketContraptionEntity(EntityType<?> type, Level level) {
         super(type, level);
+        schedule = new RocketScheduleRuntime(this);
     }
 
     public static RocketContraptionEntity create(Level level, RocketContraption contraption, ResourceLocation destination) {
@@ -359,6 +362,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         this.originDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY,
                 ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).get().orThrow());
+        this.schedule.read((CompoundTag) compound.get("Runtime"));
         for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
             for (TagKey<Fluid> fluid :
                     combination.getPropellantRatio().keySet()) {
@@ -387,6 +391,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension.location()).get().orThrow());
         compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).get().orThrow());
+        compound.put("Runtime", schedule.write());
 
         super.writeAdditional(compound, spawnPacket);
     }
@@ -426,6 +431,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 shouldHandleCalculation = false;
             }
         }
+        schedule.tick(level);
         super.tick();
     }
 

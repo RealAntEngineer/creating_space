@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.squedule.destination;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.Create;
+import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.Pair;
@@ -22,7 +22,7 @@ public class ChangeTitleInstruction extends TextScheduleInstruction {
 
     @Override
     public ResourceLocation getId() {
-        return Create.asResource("rename");
+        return CreatingSpace.resource("rename");
     }
 
     @Override

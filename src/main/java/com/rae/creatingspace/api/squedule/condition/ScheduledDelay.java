@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +30,7 @@ public class ScheduledDelay extends TimedWaitCondition {
 
     @Override
     public ResourceLocation getId() {
-        return Create.asResource("delay");
+        return CreatingSpace.resource("delay");
     }
 
 }

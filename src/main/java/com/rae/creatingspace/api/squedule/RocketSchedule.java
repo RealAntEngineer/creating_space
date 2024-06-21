@@ -1,9 +1,9 @@
 package com.rae.creatingspace.api.squedule;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.*;
 import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.Pair;
@@ -38,11 +38,11 @@ public class RocketSchedule {
     }
 
     private static void registerInstruction(String name, Supplier<? extends ScheduleInstruction> factory) {
-        INSTRUCTION_TYPES.add(Pair.of(Create.asResource(name), factory));
+        INSTRUCTION_TYPES.add(Pair.of(CreatingSpace.resource(name), factory));
     }
 
     private static void registerCondition(String name, Supplier<? extends ScheduleWaitCondition> factory) {
-        CONDITION_TYPES.add(Pair.of(Create.asResource(name), factory));
+        CONDITION_TYPES.add(Pair.of(CreatingSpace.resource(name), factory));
     }
 
     public static <T> List<? extends Component> getTypeOptions(List<Pair<ResourceLocation, T>> list) {
