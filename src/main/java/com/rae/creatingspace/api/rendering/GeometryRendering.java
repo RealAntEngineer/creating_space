@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -75,6 +76,26 @@ public class GeometryRendering {
             vertexBuilder.vertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
                     .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
                     .uv(0, 0)
+                    .overlayCoords(OverlayTexture.NO_OVERLAY)
+                    .uv2(packedLight)
+                    .normal(entry.normal(), (float) normal.x, (float) normal.y, (float) normal.z)
+                    .endVertex();
+        }
+    }
+
+    public static void renderPolyTex(List<Vec3> pos, List<Vec2> uvVector, VertexConsumer vertexBuilder, PoseStack.Pose entry, int packedLight) {
+        Vec3 centerPos = new Vec3(0, 0, 0);
+        for (Vec3 coord : pos) {
+            centerPos = centerPos.add(coord);
+        }
+        centerPos = centerPos.multiply(1d / pos.size(), 1d / pos.size(), 1d / pos.size());
+        for (int i = 0; i < pos.size(); i++) {
+            Vec3 coord = pos.get(i);
+            Vec2 uv = uvVector.get(i);
+            Vec3 normal = coord.subtract(centerPos);
+            vertexBuilder.vertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
+                    .color(255, 255, 255, 255)
+                    .uv(uv.x, uv.y)
                     .overlayCoords(OverlayTexture.NO_OVERLAY)
                     .uv2(packedLight)
                     .normal(entry.normal(), (float) normal.x, (float) normal.y, (float) normal.z)
