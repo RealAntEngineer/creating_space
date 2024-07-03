@@ -5,7 +5,6 @@ import com.rae.creatingspace.api.gui.Orbit;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.client.gui.screen.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
-import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSUtil;
@@ -35,12 +34,13 @@ public class NewDestinationScreen extends AbstractSimiScreen {
     //private final HashMap<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> mapOfAccessibleDimensionAndV;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
-    private final GuiTexturesInit background;
+    //private final GuiTexturesInit background;
     private final ResourceLocation currentDimension;
     private ResourceLocation destination;
     private Orbit focusedPlanet = null;
     private final Vector<Orbit> buttonVector;
     private LabeledBoxWidget destinationCost;
+    // replace by a render schedule thing from ScheduleScreen
     private EditBox Xinput;
     private EditBox Zinput;
     Couple<Color> red = Theme.p(Theme.Key.BUTTON_FAIL);
@@ -59,7 +59,7 @@ public class NewDestinationScreen extends AbstractSimiScreen {
         super(Lang.translateDirect("gui.destination_screen.title"));
         this.rocketContraption = rocket;
         this.initialPosMap = new HashMap<>(rocket.getInitialPosMap());
-        this.background = GuiTexturesInit.ROCKET_CONTROLS;
+        //this.background = GuiTexturesInit.ROCKET_CONTROLS;
         this.currentDimension = rocket.getLevel().dimension().location();
         //initialise the map in the server side blockEntity to avoid issues
         //this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());//rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : new HashMap<>(rocket.getMapOfAccessibleDimensionAndV());

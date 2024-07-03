@@ -55,11 +55,11 @@ public class EngineMovementBehaviour implements MovementBehaviour {
         matrixStack.pushPose();
         // Translate and rotate the cone to the entity's position and orientation
         // Radius of the cone base
-        segments = 8;
+        segments = 4;
         step = 1f / N;
         Vec3 firstOffset = Vec3.atBottomCenterOf(context.localPos.below());
         matrixStack.translate(firstOffset.x, firstOffset.y, firstOffset.z);
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.0F));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.10F));
         // just for debug mode
         int overlay = LightTexture.FULL_BRIGHT;
         float z = 0;
@@ -82,10 +82,10 @@ public class EngineMovementBehaviour implements MovementBehaviour {
     }
 
     private static float d_w(float t, boolean atmospheric) {
-        return atmospheric ? (float) (-Math.sin(t * Math.PI / 2) * baseRadius * Math.PI / 2) : (float) ((3f) * Math.exp(1 - t));
+        return atmospheric ? -baseRadius : 2f * baseRadius;//(float) (-Math.sin(t * Math.PI / 2) * baseRadius * Math.PI / 2) : (float) ((3f) * Math.exp(1 - t));
     }
 
     private static Color getColorBell(float t) {
-        return new Color(0x77f0b00f).mixWith(new Color(0x00ec972d), Mth.clamp(t, 0, 1));
+        return new Color(0x77f0b00f).mixWith(new Color(0x00ec972d), Mth.clamp(t * 1.5f, 0, 1));
     }
 }

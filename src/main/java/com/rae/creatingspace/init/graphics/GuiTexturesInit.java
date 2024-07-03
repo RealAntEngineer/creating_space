@@ -14,6 +14,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public enum GuiTexturesInit implements ScreenElement {
 
     ROCKET_CONTROLS("rocket_controls",13,0,226,226),
+    ROCKET_ASSEMBLE("rocket_assemble", 0, 0, 192, 76),
+    ROCKET_ICON("rocket_assemble", 1, 231, 16, 24),
     LAUNCH_BUTTON("rocket_controls",155,202,77,18),//clean
     SEALER_BACKGROUND("oxygen_sealer",13,0,256,124),
     ROCKET_ENGINEER_TABLE("rocket_engineer_table/background", 0, 0, 382, 126, 512, 512),
