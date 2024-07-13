@@ -3,6 +3,7 @@ package com.rae.creatingspace.client.event;
 import com.rae.creatingspace.client.gui.RemainingO2Overlay;
 import com.rae.creatingspace.client.renderer.CopperOxygenBacktankFirstPersonRenderer;
 import com.rae.creatingspace.client.renderer.NetheriteOxygenBacktankFirstPersonRenderer;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.armor.OxygenBacktankArmorLayer;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
@@ -34,9 +35,8 @@ public class CSClientEvent {
     @SubscribeEvent
     public static void onMount(EntityMountEvent event) {
         if (event.getEntityMounting() == Minecraft.getInstance().player && event.isMounting() && (event.getEntityBeingMounted() instanceof RocketContraptionEntity rocketContraption)) {
-            CameraDistanceModifier.zoomOut((float) rocketContraption.getBoundingBox().getSize() / 2);
+            CameraDistanceModifier.zoomOut((float) (rocketContraption.getBoundingBox().getSize() * CSConfigs.CLIENT.zoomOut.get()));
         }
-
     }
 
     @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
