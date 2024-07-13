@@ -3,7 +3,6 @@ package com.rae.creatingspace.utilities.packet;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.RocketSchedule;
 import com.rae.creatingspace.api.squedule.ScheduleEntry;
-import com.rae.creatingspace.api.squedule.condition.ScheduledDelay;
 import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
@@ -55,7 +54,7 @@ public class RocketContraptionLaunchPacket extends SimplePacketBase {
                         instructionTag.put("Data", data);
                         ScheduleEntry entry = new ScheduleEntry();
                         entry.instruction = ScheduleInstruction.fromTag(instructionTag);
-                        entry.conditions.add(List.of(new ScheduledDelay()));
+                        entry.conditions.add(List.of());
                         schedule.entries.add(entry);
                         ce.getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, true);
                         ce.schedule.setSchedule(schedule, true);

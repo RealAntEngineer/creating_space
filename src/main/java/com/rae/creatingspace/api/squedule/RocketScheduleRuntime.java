@@ -6,7 +6,6 @@ import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +13,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -259,17 +257,6 @@ public class RocketScheduleRuntime {
         }
     }
 
-    public ItemStack returnSchedule() {
-        if (schedule == null)
-            return ItemStack.EMPTY;
-        ItemStack stack = AllItems.SCHEDULE.asStack();
-        CompoundTag nbt = stack.getOrCreateTag();
-        schedule.savedProgress = currentEntry;
-        nbt.put("Schedule", schedule.write());
-        stack = isAutoSchedule ? ItemStack.EMPTY : stack;
-        discardSchedule();
-        return stack;
-    }
 
     public void setSchedulePresentClientside(boolean present) {
         schedule = present ? new RocketSchedule() : null;

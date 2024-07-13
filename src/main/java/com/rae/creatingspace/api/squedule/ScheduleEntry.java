@@ -28,6 +28,7 @@ public class ScheduleEntry {
         tag.put("Instruction", instruction.write());
         if (!instruction.supportsConditions())
             return tag;
+        System.out.println(conditions);
         for (List<ScheduleWaitCondition> column : conditions)
             outer.add(NBTHelper.writeCompoundList(column, ScheduleWaitCondition::write));
         tag.put("Conditions", outer);

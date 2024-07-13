@@ -69,6 +69,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     // for a normal rocket a path an action will be generated without the player knowing ?
 
     //TODO prevent the rocket from consuming fuel when world is loading ? correct gestion of client player loading
+    // to avoid player falling out of the rocket ( do we force the player to be transported to where the rocket is
+    // (it may move while the player is away)
     private static final Logger LOGGER = LogUtils.getLogger();
     double clientOffsetDiff;
     double speed;
@@ -129,6 +131,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
      * should only be used on the server
      */
     public static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity) {
+        System.out.println(rocketContraptionEntity.deltaV());
+
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
         float deltaVNeeded = CSDimensionUtil.cost(rocketContraptionEntity.originDimension.location(), rocketContraptionEntity.destination);
@@ -142,6 +146,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         int nbrOfTank = fluidHandler.getTanks();
         //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
+        //TODO that could be in the inventory manager of the rocket -> 1.8
         for (PropellantType combination : rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
             RocketContraption.ConsumptionInfo info = rocketContraptionEntity.theoreticalPerTagFluidConsumption.get(combination);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
@@ -255,6 +260,50 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         System.out.println("realPerTagFluidConsumption: " + rocketContraptionEntity.realPerTagFluidConsumption);*/
     }
 
+    public float deltaV() {
+        //wrong because no consideration for the ratio of propellants
+        float totalThrust = 0;
+        float inertFluidsMass = 0;
+        IFluidHandler fluidHandler = contraption.getSharedFluidTanks();
+        int nbrOfTank = fluidHandler.getTanks();
+        //both research of every consumable fluid and addition of the total consumption
+        float totalTheoreticalConsumption = 0;
+        //TODO that could be in the inventory manager of the rocket -> 1.8
+        for (PropellantType combination : this.theoreticalPerTagFluidConsumption.keySet()) {
+            RocketContraption.ConsumptionInfo info = this.theoreticalPerTagFluidConsumption.get(combination);
+            //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
+            for (float consumption :
+                    info.propellantConsumption().values()) {
+                totalTheoreticalConsumption += consumption;
+            }
+            totalThrust += info.partialThrust();
+            //initialise if not present
+            for (TagKey<Fluid> fluid :
+                    combination.getPropellantRatio().keySet()) {
+                addToConsumableFluids(this, fluid);
+            }
+        }
+
+        float meanVe = totalThrust > 0 ? totalThrust / totalTheoreticalConsumption : 0;
+        // massForEachPropellant is just to determine if there is enough fluid,
+        // need to be called after the consumedFluids map is build
+        HashMap<TagKey<Fluid>, Integer> massForEachPropellant =
+                getMassMap(this);
+
+
+        for (int i = 0; i < nbrOfTank; i++) {
+            FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
+            FluidType fluidType = fluidInTank.getFluid().getFluidType();
+
+            inertFluidsMass += (float) (fluidInTank.getAmount() * fluidType.getDensity()) / 1000;
+        }
+        float initialPropellantMass = 0;
+        for (int mass : massForEachPropellant.values()) {
+            initialPropellantMass += mass;
+        }
+        float emptyMass = inertFluidsMass + ((RocketContraption) contraption).getDryMass();
+        return (float) (meanVe * Math.log((emptyMass + initialPropellantMass) / (emptyMass)));
+    }
     private static void addToConsumableFluids(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> consumedFluid) {
         rocketContraptionEntity.consumableFluids.put(consumedFluid, new ArrayList<>());
         IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getSharedFluidTanks();
@@ -668,7 +717,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
                                 destLevel.addDuringTeleport(entity);
                                 if (CSDimensionUtil.gravity(destLevel.dimensionTypeId().location()) == 0f) {
-                                    entity.disassemble();
+                                    //entity.disassemble();
+                                    entity.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, false);
                                 }
                                 else{
                                     entity.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,true);
@@ -788,7 +838,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     public void successfulNavigation() {
-
+        System.out.println("success");
     }
 
     public int countPlayerPassengers() {
@@ -802,6 +852,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     public int startNavigation(RocketPath nextPath) {
+        System.out.println("startNav");
         return 0;
     }
 }

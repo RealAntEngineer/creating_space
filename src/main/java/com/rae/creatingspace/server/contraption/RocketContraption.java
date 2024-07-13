@@ -15,6 +15,7 @@ import com.simibubi.create.content.contraptions.render.NonStationaryLighter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -102,7 +103,24 @@ public class RocketContraption extends TranslatingContraption {
         return CSContraptionType.ROCKET;
     }
 
+    @Override
+    public void readNBT(Level world, CompoundTag nbt, boolean spawnData) {
+        super.readNBT(world, nbt, spawnData);
+        //TODO add data for server/client sync (possible solution of Interactive bug)
+        thrust = nbt.getInt("thrust");
+        dryMass = nbt.getInt("dryMass");
+        Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
+    }
 
+    @Override
+    public CompoundTag writeNBT(boolean spawnPacket) {
+        //TODO add data for server/client sync
+        CompoundTag nbt = super.writeNBT(spawnPacket);
+        nbt.putInt("thrust", thrust);
+        nbt.putInt("dryMass", dryMass);
+        nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
+        return nbt;
+    }
     /*@Override
     public void addBlocksToWorld(Level world, StructureTransform transform) {
         for (StructureTemplate.StructureBlockInfo block : blocks.values()){

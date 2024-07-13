@@ -29,7 +29,8 @@ public enum PacketInit {
     LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket::new, PLAY_TO_SERVER),
     SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
     SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
-    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT);
+    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT),
+    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER);
     public static final ResourceLocation CHANNEL_NAME = CreatingSpace.resource("main");
     public static final int NETWORK_VERSION = 3;
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
