@@ -3,7 +3,9 @@ package com.rae.creatingspace.configs;
 import com.rae.creatingspace.CreatingSpace;
 
 public class CSCfgClient extends CSConfigBase{
-    public final CSOxygenBacktank oxygenBacktank = nested(1, CSOxygenBacktank::new, Comments.oxygenBacktank);
+
+    public final CSOxygenBacktank oxygenBacktankN = nested(1, CSOxygenBacktank::new, Comments.oxygenBacktank);
+    public final ConfigGroup oxygenRoom = group(1, "oxygenRoom", Comments.oxygenBacktank);
     public final ConfigBool oxygenRoomDebugMode = new ConfigBool("oxygenRoomDebugMode", false, Comments.oxygenRoomDebugMode);
     @Override
     public String getName() {
