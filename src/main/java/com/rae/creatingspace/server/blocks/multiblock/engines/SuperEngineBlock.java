@@ -86,7 +86,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
         Direction targetSide = Direction.DOWN;
         BlockPos structurePos = pPos.relative(targetSide);
         BlockState occupiedState = pLevel.getBlockState(structurePos);
-        BlockState requiredStructure = BlockInit.SUPER_ENGINE_STRUCTURAL.getDefaultState()
+        BlockState requiredStructure = BlockInit.ENGINE_STRUCTURAL.getDefaultState()
                 .setValue(SuperRocketStructuralBlock.FACING, targetSide.getOpposite());
         pLevel.setBlockAndUpdate(structurePos, requiredStructure);
 

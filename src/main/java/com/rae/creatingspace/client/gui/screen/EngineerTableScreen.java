@@ -282,7 +282,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private void craftEngine(BlockPos blockEntityPos, PropellantType propellantType, float isp, float mass, float thrust) {
         //send a packet to the BE
         float efficiency = isp / propellantType.getMaxISP();
-        ItemStack newEngine = ((SuperEngineItem) BlockInit.SUPER_ROCKET_ENGINE.get().asItem())
+        ItemStack newEngine = ((SuperEngineItem) BlockInit.ROCKET_ENGINE.get().asItem())
                 .getItemStackFromInfo((int) thrust, efficiency, propellantType);
         PacketInit.getChannel()
                 .sendToServer(

@@ -37,7 +37,7 @@ public class RemainingO2Overlay implements IGuiOverlay {
             float prevO2Value =  tag.getFloat("prevOxygen");
             //prevO2Value = o2Value;
             //TODO create one at initialization the keep the same
-            gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktankN.sliderPlace.get().getX(screenWidth), CSConfigs.CLIENT.oxygenBacktankN.sliderPlace.get().getY(screenHeight), 32, 64, CSConfigs.CLIENT.oxygenBacktankN.sliderColor.get().getColor());
+            gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(screenWidth), CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(screenHeight), 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
             gauge.setMax(OxygenBacktankUtil.maxOxygen(itemInChestSlot));
             gauge.setValues((int) o2Value, (int) prevO2Value);
             gauge.render(poseStack, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,partialTick);

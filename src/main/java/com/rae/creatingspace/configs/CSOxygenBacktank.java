@@ -46,11 +46,11 @@ public class CSOxygenBacktank extends CSConfigBase {
 
         //valid for bottom left
         public int getX(int width) {
-            return (left ? 0 : width) + (left ? 0 : -32) + (left ? 1 : -1) * (32 + CSConfigs.CLIENT.oxygenBacktankN.xOffset.get());
+            return (left ? 0 : width) + (left ? 0 : -32) + (left ? 1 : -1) * (32 + CSConfigs.CLIENT.oxygenBacktank.xOffset.get());
         }
 
         public int getY(int height) {
-            return (top ? 0 : height) + (top ? 0 : -64) + (top ? 1 : -1) * (20 + CSConfigs.CLIENT.oxygenBacktankN.yOffset.get());
+            return (top ? 0 : height) + (top ? 0 : -64) + (top ? 1 : -1) * (20 + CSConfigs.CLIENT.oxygenBacktank.yOffset.get());
         }
     }
 }

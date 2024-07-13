@@ -47,7 +47,7 @@ public class SuperEngineItem extends RocketEngineItem {
         Level lvl = pContext.getLevel();
         Direction facing = pContext.getClickedFace();
         BlockPos mainPos = pContext.getClickedPos().offset(main.getOffset(facing));
-        BlockState ghostState = BlockInit.SUPER_ENGINE_STRUCTURAL.getDefaultState()
+        BlockState ghostState = BlockInit.ENGINE_STRUCTURAL.getDefaultState()
                 .setValue(SmallRocketStructuralBlock.FACING, Direction.UP);
         lvl.setBlock(mainPos, pState, 11);
         lvl.setBlock(mainPos.below(), ghostState, 11);

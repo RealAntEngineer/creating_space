@@ -62,8 +62,8 @@ public class BlockInit {
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
-    public static final BlockEntry<SuperEngineBlock> SUPER_ROCKET_ENGINE = REGISTRATE
-            .block("super_rocket_engine", SuperEngineBlock::new)
+    public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
+            .block("rocket_engine", SuperEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
 
@@ -95,8 +95,8 @@ public class BlockInit {
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .transform(axeOrPickaxe())
                     .register();
-    public static final BlockEntry<SuperRocketStructuralBlock> SUPER_ENGINE_STRUCTURAL =
-            REGISTRATE.block("super_engine_structure", SuperRocketStructuralBlock::new)
+    public static final BlockEntry<SuperRocketStructuralBlock> ENGINE_STRUCTURAL =
+            REGISTRATE.block("engine_structure", SuperRocketStructuralBlock::new)
                     //.initialProperties(SharedProperties::copperMetal)
                     .properties(p -> p.strength(1.0f))
                     .blockstate((c, p) -> p.getVariantBuilder(c.get())
