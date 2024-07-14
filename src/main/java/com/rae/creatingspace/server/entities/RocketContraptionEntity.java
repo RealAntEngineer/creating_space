@@ -131,7 +131,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
      * should only be used on the server
      */
     public static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity) {
-        System.out.println(rocketContraptionEntity.deltaV());
+        //System.out.println(rocketContraptionEntity.deltaV());
 
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 

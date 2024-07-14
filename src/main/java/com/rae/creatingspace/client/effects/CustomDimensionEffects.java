@@ -180,12 +180,12 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             float f14 = (float) (i1) / 2.0F;
             float f15 = (float) (l + 1) / 4.0F;
             float f16 = (float) (i1 + 1) / 2.0F;
-            renderAstralBody(poseStack, bufferbuilder, MOON_PHASES_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F, f15, f13, f16, f14, true);
+            renderAstralBody(poseStack, bufferbuilder, MOON_PHASES_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 100, 300F, f15, f13, f16, f14, true);
             BlockPos pos = camera.getEntity().getOnPos();
             int height = pos.getY();
             int minHeight = -64;
             int maxHeight = 384;
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, false, -90F, 50.0F, 60F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, true, 180, 150.0F, 200f + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
@@ -215,6 +215,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
         public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
             BufferBuilder bufferbuilder = renderSpaceSky(poseStack);
+            //we need to use directly the buffer builder to avoid the issue with overlays or find a solution with the shader
             renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
             RenderSystem.depthMask(true);
             RenderSystem.disableBlend();
@@ -234,6 +235,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
         protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, float rotationAngle, float bodySize, float bodyDistance, float f15, float f13, float f16, float f14, boolean old) {
             poseStack.pushPose();
+            RenderSystem.setShaderLights(Vector3f.ZERO, Vector3f.ZERO);
             if (old) {
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
                 poseStack.mulPose(Vector3f.XP.rotationDegrees(rotationAngle));
@@ -247,10 +249,10 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
                 bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, bodySize).uv(f15, f16).endVertex();
                 BufferUploader.drawWithShader(bufferbuilder.end());
             } else {
-                renderPlanet(bodyTexture, poseStack, LightTexture.FULL_BRIGHT, bodySize, bodyDistance, 0, 0, rotationAngle);
+                renderPlanet(bodyTexture, poseStack, LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
                 poseStack.popPose();
                 poseStack.pushPose();
-                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_BRIGHT, bodySize, bodyDistance, 0, 0, rotationAngle);
+                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
             }
             poseStack.popPose();
 

@@ -86,6 +86,6 @@ public class PlanetsRendering {
         matrixStack.mulPose(Vector3f.XP.rotationDegrees(theta));
         matrixStack.mulPose(Vector3f.ZP.rotationDegrees(alpha));
         matrixStack.translate(distance, 0, 0);
-        renderCube(vertexBuilder, matrixStack, Vec3.ZERO, packedLight, size * 1.1f, color);
+        renderCube(vertexBuilder, matrixStack, Vec3.ZERO, packedLight, size + 10, color);
     }
 }
