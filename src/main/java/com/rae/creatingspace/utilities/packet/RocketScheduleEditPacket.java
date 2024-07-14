@@ -36,6 +36,7 @@ public class RocketScheduleEditPacket extends SimplePacketBase {
 			Entity entity = Objects.requireNonNull(context.getSender()).level.getEntity(rocketId);
 			if (entity instanceof RocketContraptionEntity contraptionEntity) {
 				contraptionEntity.schedule.setSchedule(schedule, true);
+				contraptionEntity.sendPacket();
 			}
 		});
 		return true;

@@ -1219,6 +1219,8 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     public void removed() {
         super.removed();
         PacketInit.getChannel().sendToServer(new RocketScheduleEditPacket(schedule, getMenu().contentHolder.getId()));
+        //set the client side schedule
+        getMenu().contentHolder.schedule.setSchedule(schedule, true);
     }
 
     protected void stopEditing() {

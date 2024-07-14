@@ -15,7 +15,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -114,7 +113,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         contraption.removeBlocksFromWorld(level, BlockPos.ZERO);
 
         if (destination == null){
-            destination = Level.OVERWORLD.location();
+            destination = level.dimension().location();
         }
 
         RocketContraptionEntity rocketContraptionEntity =
@@ -122,6 +121,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
         rocketContraptionEntity.setAccessibilityData(initialPosMap);
+        //we should make that a little better -> no initialisation of entry point before launch
         rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination.toString(), this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);
 

@@ -88,11 +88,15 @@ public class RocketScheduleRuntime {
 
     //TODO create a Rocket like the Train class ?
     public void tick(Level level) {
+        if (currentWorld != rocket.level.dimension().location()) {
+            currentWorld = rocket.level.dimension().location();
+        }
         if (schedule == null)
             return;
+
         if (paused)
             return;
-        if (rocket.destination != null) {
+        if (rocket.destination != rocket.originDimension) {
             ticksInTransit++;
             return;
         }
@@ -170,7 +174,7 @@ public class RocketScheduleRuntime {
                 return null;
             }*/
             int cost = CSDimensionUtil.cost(currentWorld, destinationWorld);
-            if (cost < 0) {
+            if (cost <= 0) {
                 return null;
             } else {
                 return new RocketPath(currentWorld, destinationWorld, cost);

@@ -84,14 +84,15 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public float totalThrust = 0;
     public float initialMass;
     private int propellantConsumption = 0;
-    public ResourceKey<Level> originDimension = Level.OVERWORLD;
+    //
+    public ResourceLocation originDimension = Level.OVERWORLD.location();
     public ResourceLocation destination;
     private boolean disassembleOnFirstTick = false;
     private List<BlockPos> localPosOfFlightRecorders;
 
     public FlightDataHelper.RocketAssemblyData assemblyData;
 
-    //TODO make a record
+    //TODO make a record and CODEC
     public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();
     private HashMap<String, BlockPos> initialPosMap;
     public RocketScheduleRuntime schedule;
@@ -110,7 +111,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public static RocketContraptionEntity create(Level level, RocketContraption contraption, ResourceLocation destination) {
         RocketContraptionEntity entity =
                 new RocketContraptionEntity(EntityInit.ROCKET_CONTRAPTION.get(), level);
-        entity.originDimension = level.dimension();
+        entity.originDimension = level.dimension().location();
         entity.destination = destination;//will be set after the
 
         entity.setContraption(contraption);
@@ -125,7 +126,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     //put that in a rocket assembly helper class ?
-    //TODO put every static methode into a helper class ( make an api ?)
+    //TODO put every static method into a helper class ( make an api ?)
 
     /**
      * should only be used on the server
@@ -135,7 +136,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
-        float deltaVNeeded = CSDimensionUtil.cost(rocketContraptionEntity.originDimension.location(), rocketContraptionEntity.destination);
+        float deltaVNeeded = CSDimensionUtil.cost(rocketContraptionEntity.originDimension, rocketContraptionEntity.destination);
 
         if (contraption==null){
             return;
@@ -409,8 +410,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, compound.getBoolean("running"));
         this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).get().orThrow();
 
-        this.originDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY,
-                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).get().orThrow());
+        this.originDimension =
+                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).get().orThrow();
         this.schedule.read((CompoundTag) compound.get("Runtime"));
         for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
             for (TagKey<Fluid> fluid :
@@ -438,7 +439,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putBoolean("reentry",isReentry());
         compound.putBoolean("running", this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR));
 
-        compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension.location()).get().orThrow());
+        compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension).get().orThrow());
         compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).get().orThrow());
         compound.put("Runtime", schedule.write());
 
