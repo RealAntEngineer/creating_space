@@ -1215,12 +1215,14 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     }
 
     //maybe on save data ? (menu logic rather than screen logic)
+    //do a ::setSchedule on the menu and then on save data send the schedule to the rocket
+    // (there is a need for a sync on the entity side : sync data ?)
     @Override
     public void removed() {
-        super.removed();
         PacketInit.getChannel().sendToServer(new RocketScheduleEditPacket(schedule, getMenu().contentHolder.getId()));
         //set the client side schedule
         getMenu().contentHolder.schedule.setSchedule(schedule, true);
+        super.removed();
     }
 
     protected void stopEditing() {

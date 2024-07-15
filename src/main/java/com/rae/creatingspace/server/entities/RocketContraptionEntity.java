@@ -83,8 +83,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public BlockPos rocketEntryCoordinate = new BlockPos(0,0,0);
     public float totalThrust = 0;
     public float initialMass;
-    private int propellantConsumption = 0;
-    //
     public ResourceLocation originDimension = Level.OVERWORLD.location();
     public ResourceLocation destination;
     private boolean disassembleOnFirstTick = false;
@@ -396,7 +394,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     protected void readAdditional(CompoundTag compound, boolean spawnData) {
         super.readAdditional(compound, spawnData);
         this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
-        this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));
+        this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));//to remove
         this.totalThrust = compound.getFloat("thrust");
         this.initialMass = compound.getFloat("initialMass");
         this.totalTickTime = compound.getFloat("totalTime");
@@ -405,7 +403,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
         this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
 
-        this.propellantConsumption = compound.getInt("propellantConsumption");
         this.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,compound.getBoolean("reentry"));
         this.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, compound.getBoolean("running"));
         this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).get().orThrow();
@@ -425,8 +422,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
         compound.put("initialPosMap", putPosMap(this.initialPosMap, new CompoundTag()));
-        compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));
-        compound.putInt("propellantConsumption", this.propellantConsumption);
+        compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
         compound.putFloat("initialMass",this.initialMass);
         compound.putFloat("totalTime",this.totalTickTime);
         compound.put("theoreticalPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.theoreticalPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
@@ -475,6 +471,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     public void tick() {
         if (this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR)) {
+            //put the handleTrajectory calculation on the start path
             if (!level.isClientSide() && shouldHandleCalculation) {
                 //so the pos is initialized
                 handelTrajectoryCalculation(this);
@@ -482,6 +479,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             }
         }
         schedule.tick(level);
+        if (level.dimension().location().equals(destination) && CSDimensionUtil.isOrbit(destination)) {
+            schedule.destinationReached();
+        }
         super.tick();
     }
 
@@ -838,6 +838,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.initialPosMap = initialPosMap;
     }
 
+    //the successful nav ? look for it in trains
     public void successfulNavigation() {
         System.out.println("success");
     }
@@ -853,6 +854,15 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     public int startNavigation(RocketPath nextPath) {
+        if (!level.isClientSide()) {
+            //so the pos is initialized
+            this.originDimension = nextPath.origin;
+            this.destination = nextPath.destination;
+            getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, true);
+            shouldHandleCalculation = false;
+            handelTrajectoryCalculation(this);
+            //shouldHandleCalculation = false;
+        }
         System.out.println("startNav");
         return 0;
     }

@@ -86,7 +86,10 @@ public class RocketScheduleRuntime {
         cooldown = 0;
     }
 
-    //TODO create a Rocket like the Train class ?
+    //TODO create a Rocket like the Train class ? usefull for staging and docking
+    //TODO
+    // what is cooldown supposed to do ?
+    // when is cooldown reset ? ( in train schedule)
     public void tick(Level level) {
         if (currentWorld != rocket.level.dimension().location()) {
             currentWorld = rocket.level.dimension().location();
@@ -96,11 +99,13 @@ public class RocketScheduleRuntime {
 
         if (paused)
             return;
-        if (rocket.destination != rocket.originDimension) {
+        //that's wrong
+        if (!rocket.destination.equals(currentWorld)) {
             ticksInTransit++;
             return;
         }
-        if (currentEntry >= schedule.entries.size()) {
+        //currentEntry can reach -1
+        if (currentEntry >= schedule.entries.size() || currentEntry < 0) {
             currentEntry = 0;
             if (!schedule.cyclic) {
                 paused = true;
@@ -108,7 +113,7 @@ public class RocketScheduleRuntime {
             }
             return;
         }
-
+//interval should never be put to 0 after sometime no ?
         if (cooldown-- > 0)
             return;
         if (state == State.IN_TRANSIT)
@@ -117,15 +122,16 @@ public class RocketScheduleRuntime {
             tickConditions(level);
             return;
         }
-
+//the iteration doesn't work well
         RocketPath nextPath = startCurrentInstruction();
         if (nextPath == null)
             return;
 
         rocket.successfulNavigation();
-        if (nextPath.destination == rocket.getLevel().dimension().location()) {
+        if (nextPath.destination == rocket.getLevel().dimension().location() && !rocket.isReentry()) {
             state = State.IN_TRANSIT;
             destinationReached();
+            System.out.println("destination reached");
             return;
         }
         if (rocket.startNavigation(nextPath) != TBD) {
@@ -170,7 +176,7 @@ public class RocketScheduleRuntime {
 
             /*if (!train.hasForwardConductor() && !train.hasBackwardConductor()) {
                 train.status.missingConductor();
-                cooldown = INTERVAL;
+                cooldown = INTERVAL;//here is a part of cooldown
                 return null;
             }*/
             int cost = CSDimensionUtil.cost(currentWorld, destinationWorld);
