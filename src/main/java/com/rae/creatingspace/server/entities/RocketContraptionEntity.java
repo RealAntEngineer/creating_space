@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.api.squedule.RocketPath;
 import com.rae.creatingspace.api.squedule.RocketScheduleRuntime;
+import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
@@ -28,7 +29,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 public class RocketContraptionEntity extends AbstractContraptionEntity {
     //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
     // (spaceport block ? to define where the rocket will go)
@@ -74,29 +73,43 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     private static final Logger LOGGER = LogUtils.getLogger();
     double clientOffsetDiff;
     double speed;
-    float totalTickTime;
     boolean shouldHandleCalculation = false;
+    //inventory management
+    // maybe we could make it simpler ?
     HashMap<PropellantType, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<PropellantType, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
-
     HashMap<TagKey<Fluid>, Float> partialDrainAmountPerFluid = new HashMap<>();
+    //end of inventory management
+    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(
+            PropellantTypeInit.PROPELLANT_TYPE.get().getCodec(),
+            RocketContraption.ConsumptionInfo.CODEC
+    ).xmap(HashMap::new, i -> i);
+    public static Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
+            TagKey.codec(Registry.FLUID_REGISTRY),
+            Codec.FLOAT
+    ).xmap(HashMap::new, i -> i);
     public BlockPos rocketEntryCoordinate = new BlockPos(0,0,0);
     public float totalThrust = 0;
     public float initialMass;
     public ResourceLocation originDimension = Level.OVERWORLD.location();
     public ResourceLocation destination;
-    private boolean disassembleOnFirstTick = false;
+    private boolean failedToLaunch = false;
     private List<BlockPos> localPosOfFlightRecorders;
 
     public FlightDataHelper.RocketAssemblyData assemblyData;
 
     //TODO make a record and CODEC
-    public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();
+    public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();//
     private HashMap<String, BlockPos> initialPosMap;
     public RocketScheduleRuntime schedule;
-    public HashMap<String, BlockPos> getInitialPosMap() {
-        return initialPosMap;
-    }
+    /*public static final EntityDataAccessor<Boolean> REENTRY_ENTITY_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
+    //used to now if the rocket need to move or not ( just assemble or finished the list of instruction)
+    public static final EntityDataAccessor<Boolean> RUNNING_ENTITY_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);*/
+    public static final EntityDataAccessor<RocketStatus> STATUS_DATA_ACCESSOR =
+            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializersInit.STATUS_SERIALIZER);
+
 
     //initializing and saving methods
 
@@ -125,7 +138,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     //put that in a rocket assembly helper class ?
     //TODO put every static method into a helper class ( make an api ?)
-
+    //TODO make a python program that does that for testing purpose
     /**
      * should only be used on the server
      */
@@ -202,7 +215,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float acceleration = totalThrust/(emptyMass+initialPropellantMass)-gravity;
         float perTickSpeed = getPerTickSpeed(acceleration);
 
-        rocketContraptionEntity.totalTickTime = distance/perTickSpeed;
+        float totalTickTime = distance / perTickSpeed;
 
         //fill the real consumption map and fill the consumedMass map for mass verification
         HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
@@ -220,7 +233,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             float realPartialConsumption = ponderationCoef*consumedPropellantMass;
             //that's the consumed mass for the ensemble of engine with the same propellant combination
             HashMap<TagKey<Fluid>, Float> correctedConsumptions = new HashMap<>(info.propellantConsumption());
-            RocketContraption.multiplyMap(correctedConsumptions, realPartialConsumption / theoreticalPartialConsumption / rocketContraptionEntity.totalTickTime);
+            RocketContraption.multiplyMap(correctedConsumptions, realPartialConsumption / theoreticalPartialConsumption / totalTickTime);
 
             rocketContraptionEntity.realPerTagFluidConsumption.put(propellantType,
                     new RocketContraption.ConsumptionInfo(
@@ -245,20 +258,25 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                         totalThrust,
                         (emptyMass+initialPropellantMass)*gravity);
         rocketContraptionEntity.assemblyData = assemblyData;
-        rocketContraptionEntity.disassembleOnFirstTick = assemblyData.hasFailed();//just for the fluids
+        rocketContraptionEntity.failedToLaunch = assemblyData.hasFailed();//just for the fluids
 
         //may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
         if (acceleration <=0 ){
-            rocketContraptionEntity.disassembleOnFirstTick = true;
+            rocketContraptionEntity.failedToLaunch = true;
+            rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
         }
         if (distance<=0){
-            rocketContraptionEntity.disassembleOnFirstTick = true;
+            rocketContraptionEntity.failedToLaunch = true;
+            rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
+            return;
         }
+        rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.TRAVELING);
         /*System.out.println("consumableFluids : " + rocketContraptionEntity.consumableFluids);
         System.out.println("theoreticalPerTagFluidConsumption: " + rocketContraptionEntity.theoreticalPerTagFluidConsumption);
         System.out.println("realPerTagFluidConsumption: " + rocketContraptionEntity.realPerTagFluidConsumption);*/
     }
 
+    //the rocket kill itself upon arrival in other dim
     public float deltaV() {
         //wrong because no consideration for the ratio of propellants
         float totalThrust = 0;
@@ -354,12 +372,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     // used to know if the rocket is going up or down
-    public static final EntityDataAccessor<Boolean> REENTRY_ENTITY_DATA_ACCESSOR =
-            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
-    //used to now if the rocket need to move or not ( just assemble or finished the list of instruction)
-    public static final EntityDataAccessor<Boolean> RUNNING_ENTITY_DATA_ACCESSOR =
-            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
-
     @Override
     public void disassemble() {
         //doesn't work with create_interactive
@@ -377,100 +389,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(REENTRY_ENTITY_DATA_ACCESSOR,false);
-        this.entityData.define(RUNNING_ENTITY_DATA_ACCESSOR, false);
+        //this.entityData.define(REENTRY_ENTITY_DATA_ACCESSOR,false);
+        //this.entityData.define(RUNNING_ENTITY_DATA_ACCESSOR, false);
+        this.entityData.define(STATUS_DATA_ACCESSOR, RocketStatus.IDLE);
     }
-    //adjust those two methode so it write and read the 3 new hashmap
-
-    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(
-            PropellantTypeInit.PROPELLANT_TYPE.get().getCodec(),
-            RocketContraption.ConsumptionInfo.CODEC
-    ).xmap(HashMap::new, i -> i);
-    public static Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
-            TagKey.codec(Registry.FLUID_REGISTRY),
-            Codec.FLOAT
-    ).xmap(HashMap::new, i -> i);
-    @Override
-    protected void readAdditional(CompoundTag compound, boolean spawnData) {
-        super.readAdditional(compound, spawnData);
-        this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
-        this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));//to remove
-        this.totalThrust = compound.getFloat("thrust");
-        this.initialMass = compound.getFloat("initialMass");
-        this.totalTickTime = compound.getFloat("totalTime");
-        this.theoreticalPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>());
-        this.realPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
-        this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
-        this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
-
-        this.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,compound.getBoolean("reentry"));
-        this.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, compound.getBoolean("running"));
-        this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).get().orThrow();
-
-        this.originDimension =
-                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).get().orThrow();
-        this.schedule.read((CompoundTag) compound.get("Runtime"));
-        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
-            for (TagKey<Fluid> fluid :
-                    combination.getPropellantRatio().keySet()) {
-                RocketContraptionEntity.addToConsumableFluids(this, fluid);
-
-            }
-        }
-    }
-
-    @Override
-    protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
-        compound.put("initialPosMap", putPosMap(this.initialPosMap, new CompoundTag()));
-        compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
-        compound.putFloat("initialMass",this.initialMass);
-        compound.putFloat("totalTime",this.totalTickTime);
-        compound.put("theoreticalPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.theoreticalPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
-        compound.put("realPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
-        compound.put("partialDrainAmountPerFluid", CODEC_MAP_CONSUMPTION.encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).get().left().orElse(new CompoundTag()));
-
-        compound.put("assemblyData",FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
-        compound.putFloat("thrust",this.totalThrust);
-
-        compound.putBoolean("reentry",isReentry());
-        compound.putBoolean("running", this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR));
-
-        compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension).get().orThrow());
-        compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).get().orThrow());
-        compound.put("Runtime", schedule.write());
-
-        super.writeAdditional(compound, spawnPacket);
-    }
-    public static CompoundTag putPosMap(HashMap<String, BlockPos> initialPosMap, CompoundTag compound) {
-        if (compound == null) {
-            compound = new CompoundTag();
-        }
-        for (String key : initialPosMap.keySet()) {
-            compound.putLong("dimensionInitialPosOf:" + key, initialPosMap.get(key).asLong());
-        }
-
-        return compound;
-    }
-
-    public static HashMap<String, BlockPos> getPosMap(CompoundTag compound) {
-        HashMap<String, BlockPos> initialPosMap = new HashMap<>();
-
-        if (compound != null) {
-            for (String key : compound.getAllKeys()) {
-                if (key.contains("dimensionInitialPosOf:")) {
-                    initialPosMap.put(
-                            key.substring(22),
-                            BlockPos.of(compound.getLong(key)));
-                }
-            }
-        }
-
-        return initialPosMap;
-    }
-
     @Override
     public void tick() {
-        if (this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR)) {
+        boolean wasRunning = isInPropulsionPhase();
+        if (isInPropulsionPhase()) {
             //put the handleTrajectory calculation on the start path
             if (!level.isClientSide() && shouldHandleCalculation) {
                 //so the pos is initialized
@@ -479,25 +405,19 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             }
         }
         schedule.tick(level);
-        if (level.dimension().location().equals(destination) && CSDimensionUtil.isOrbit(destination)) {
+        super.tick();
+        if (wasRunning && !isInPropulsionPhase()) {
             schedule.destinationReached();
         }
-        super.tick();
     }
 
     @Override
     protected void tickContraption() {
         if (!(contraption instanceof RocketContraption))
             return;
-        //TODO new logic : the player assemble the rocket, then the deltaV
-        // is calculated and the player make is choice and the rocket goes up
-        //  better because the rocket can be refuelled on flight
-        //TODO after that make schedule for rocket
-        if (disassembleOnFirstTick){
-            if (!level.isClientSide){
-                setContraptionMotion(Vec3.ZERO);//otherwise the player take damage
-                disassemble();
-            }
+        //TODO make schedule for rocket
+        if (failedToLaunch) {//happens when fail to have enough fuel
+            System.out.println("has failed to launch");
             return;
         }
 
@@ -507,7 +427,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         }
 
         tickActors();
-        if (this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR) && canRun()) {
+        if (isInPropulsionPhase()) {
             tickConsumptionAndSpeed();
             Vec3 movementVec = getDeltaMovement();
             if (!level.isClientSide) tickDimensionChangeLogic();
@@ -515,28 +435,28 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
             if (ContraptionCollider.collideBlocks(this)) {
                 if (!level.isClientSide) {
-                    setContraptionMotion(Vec3.ZERO);//otherwise the player take damage ? no
-                    disassemble();
+                    //stopRocket();
+                    getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.BLOCKED);
+                    //disassemble();
                 }
-                return;
             }
-            if (tickCount > 2) {
+            if (tickCount > 2 && isInPropulsionPhase()) {
                 movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
                 move(movementVec.x, movementVec.y, movementVec.z);
             }
+
         /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
             contraption.stop(level);*/
+        }
+        if (!isInPropulsionPhase()) {
+            setContraptionMotion(Vec3.ZERO);
         }
         if (!level.isClientSide)
             sendPacket();
     }
 
-    private boolean canRun() {
-        return true;
-    }
-
     @Override
-    public boolean causeFallDamage(float p_146828_, float p_146829_, DamageSource p_146830_) {
+    public boolean causeFallDamage(float p_146828_, float p_146829_, DamageSource damageSource) {
         return false;
     }
 
@@ -719,11 +639,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                 destLevel.addDuringTeleport(entity);
                                 if (CSDimensionUtil.gravity(destLevel.dimensionTypeId().location()) == 0f) {
                                     //entity.disassemble();
-                                    entity.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, false);
+                                    entity.stopRocket();
+                                    System.out.println("going to : " + destination);
                                 }
                                 else{
-                                    entity.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,true);
-                                    entity.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, true);
+                                    entity.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.ON_FINAL);
                                 }
                             }
                             return entity;
@@ -770,15 +690,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public ContraptionRotationState getRotationState() {
         return ContraptionRotationState.NONE;
     }
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
-    }
-
-
-    public boolean isReentry(){
-        return this.entityData.get(REENTRY_ENTITY_DATA_ACCESSOR);
-    }
 
 
     public static float getAcceleration(float initialMass, int thrust, float gravity, boolean reentry) {
@@ -790,29 +701,28 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         }
     }
 
-    public void updateClientMotion() {
-
-        Vec3 motion = new Vec3(0,(speed + clientOffsetDiff/2f) * ServerSpeedProvider.get(),0);
-
-        motion = VecHelper.clampComponentWise(motion, 1);
-        setContraptionMotion(motion);
-    }
+    //network and client only
 
     @Override
     public AABB getBoundingBoxForCulling() {
-        return this.entityData.get(RUNNING_ENTITY_DATA_ACCESSOR) ?
+        return isInPropulsionPhase() ?
                 new AABB(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE,
                         Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE) :
                 super.getBoundingBoxForCulling();
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void lerpTo(double x, double y, double z, float yw, float pt, int inc, boolean t) {}
-
+    //that's for knowing what direction the rocket is facing ? -> look for Create's elevator
     public double getAxisCoord() {
         Vec3 anchorVec = getAnchorVec();
         return  anchorVec.y;
+    }
+
+    //only works if the rocket is moving straight up or down
+    public void updateClientMotion() {
+        Vec3 motion = new Vec3(0, (speed + clientOffsetDiff / 2f) * ServerSpeedProvider.get(), 0);
+
+        motion = VecHelper.clampComponentWise(motion, 1);
+        setContraptionMotion(motion);
     }
     public void sendPacket() {
         PacketInit.getChannel()
@@ -828,19 +738,120 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         ce.speed = packet.speed;
         ce.clientOffsetDiff = packet.coord - ce.getAxisCoord();
     }
-    //@OnlyIn(Dist.CLIENT)
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
+    }
+
+    /**
+     * necessary to avoid "vibration" the  updateClientMotion() is used to sync client to server entity
+     */
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void lerpTo(double x, double y, double z, float yw, float pt, int inc, boolean t) {
+    }
+
+    //saving and getters
+    @Override
+    protected void readAdditional(CompoundTag compound, boolean spawnData) {
+        super.readAdditional(compound, spawnData);
+        this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
+        this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));//to remove
+        this.totalThrust = compound.getFloat("thrust");
+        this.initialMass = compound.getFloat("initialMass");
+        this.theoreticalPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>());
+        this.realPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
+        this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
+        this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
+
+        //this.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,compound.getBoolean("reentry"));
+        //this.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, compound.getBoolean("running"));
+        this.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.valueOf(compound.getString("status")));
+        this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).get().orThrow();
+
+        this.originDimension =
+                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).get().orThrow();
+        this.schedule.read((CompoundTag) compound.get("Runtime"));
+        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
+            for (TagKey<Fluid> fluid :
+                    combination.getPropellantRatio().keySet()) {
+                RocketContraptionEntity.addToConsumableFluids(this, fluid);
+
+            }
+        }
+    }
+
+    @Override
+    protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
+        compound.put("initialPosMap", putPosMap(this.initialPosMap, new CompoundTag()));
+        compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
+        compound.putFloat("initialMass", this.initialMass);
+        compound.put("theoreticalPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.theoreticalPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
+        compound.put("realPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
+        compound.put("partialDrainAmountPerFluid", CODEC_MAP_CONSUMPTION.encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).get().left().orElse(new CompoundTag()));
+
+        compound.put("assemblyData", FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
+        compound.putFloat("thrust", this.totalThrust);
+
+        //compound.putBoolean("reentry",isReentry());
+        //compound.putBoolean("running",isInPropulsionPhase());
+        compound.putString("status", this.entityData.get(STATUS_DATA_ACCESSOR).toString());
+        compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension).get().orThrow());
+        compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).get().orThrow());
+        compound.put("Runtime", schedule.write());
+
+        super.writeAdditional(compound, spawnPacket);
+    }
+
+    public boolean isReentry() {
+        return this.entityData.get(STATUS_DATA_ACCESSOR) == RocketStatus.ON_FINAL;
+    }
+
+    public boolean isInPropulsionPhase() {
+        return this.entityData.get(STATUS_DATA_ACCESSOR).propelled_phase;
+    }
+
+    public static CompoundTag putPosMap(HashMap<String, BlockPos> initialPosMap, CompoundTag compound) {
+        if (compound == null) {
+            compound = new CompoundTag();
+        }
+        for (String key : initialPosMap.keySet()) {
+            compound.putLong("dimensionInitialPosOf:" + key, initialPosMap.get(key).asLong());
+        }
+
+        return compound;
+    }
+
+    public static HashMap<String, BlockPos> getPosMap(CompoundTag compound) {
+        HashMap<String, BlockPos> initialPosMap = new HashMap<>();
+
+        if (compound != null) {
+            for (String key : compound.getAllKeys()) {
+                if (key.contains("dimensionInitialPosOf:")) {
+                    initialPosMap.put(
+                            key.substring(22),
+                            BlockPos.of(compound.getLong(key)));
+                }
+            }
+        }
+
+        return initialPosMap;
+    }
     public void setShouldHandleCalculation(boolean shouldHandleCalculation) {
         this.shouldHandleCalculation = shouldHandleCalculation;
     }
-
     public void setAccessibilityData(HashMap<String, BlockPos> initialPosMap) {
         this.initialPosMap = initialPosMap;
     }
 
-    //the successful nav ? look for it in trains
+    public HashMap<String, BlockPos> getInitialPosMap() {
+        return initialPosMap;
+    }
+
+    //navigation part (schedule)
     public void successfulNavigation() {
-        System.out.println("success");
+        System.out.println("rocket found a path and has enough fuel");
     }
 
     public int countPlayerPassengers() {
@@ -858,12 +869,35 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             //so the pos is initialized
             this.originDimension = nextPath.origin;
             this.destination = nextPath.destination;
-            getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, true);
+            //getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, true);
+            getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.TRAVELING);
+
             shouldHandleCalculation = false;
             handelTrajectoryCalculation(this);
             //shouldHandleCalculation = false;
         }
-        System.out.println("startNav");
+        //fail according to handleTrajectoryCalculation ?
         return 0;
+    }
+
+    private void stopRocket() {
+        System.out.println("previous status" + getEntityData().get(STATUS_DATA_ACCESSOR));
+        //getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, false);
+        //getEntityData().set(REENTRY_ENTITY_DATA_ACCESSOR, false);
+        getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.IDLE);
+        setContraptionMotion(Vec3.ZERO);
+    }
+
+    public enum RocketStatus {
+        //replacement for the RUNNING_ENTITY_DATA_ACCESSOR and REENTRY_ENTITY_DATA_ACCESSOR
+        IDLE(false),
+        TRAVELING(true),//going up to the next dimension
+        BLOCKED(false),//used when physically blocked and when not enough fuel, -> separate into several cases ?
+        ON_FINAL(true);
+        final boolean propelled_phase;
+
+        RocketStatus(boolean propelled_phase) {
+            this.propelled_phase = propelled_phase;
+        }
     }
 }

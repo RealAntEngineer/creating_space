@@ -20,6 +20,7 @@ public class ScheduledDelay extends TimedWaitCondition {
     @Override
     public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         int time = context.getInt("Time");
+        System.out.println("condition : " + time + "/" + totalWaitTicks());
         if (time >= totalWaitTicks())
             return true;
 

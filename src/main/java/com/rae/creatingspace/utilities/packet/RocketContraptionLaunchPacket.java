@@ -8,8 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
-import static com.rae.creatingspace.server.entities.RocketContraptionEntity.RUNNING_ENTITY_DATA_ACCESSOR;
-
 public class RocketContraptionLaunchPacket extends SimplePacketBase {
 
     public int entityID;
@@ -49,11 +47,11 @@ public class RocketContraptionLaunchPacket extends SimplePacketBase {
                         entry.instruction = ScheduleInstruction.fromTag(instructionTag);
                         entry.conditions.add(List.of());
                         schedule.entries.add(entry);*/
-                        ce.getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, true);
+                        //ce.getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, true);
                         //ce.schedule.setSchedule(schedule, true);
                         ce.destination = destination;
-                        ce.setShouldHandleCalculation(true);
-                        //handelTrajectoryCalculation(ce);
+                        //ce.setShouldHandleCalculation(true);
+                        RocketContraptionEntity.handelTrajectoryCalculation(ce);
                     }
                 });
         return true;

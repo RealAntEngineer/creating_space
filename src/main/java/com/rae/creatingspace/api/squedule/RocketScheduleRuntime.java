@@ -72,6 +72,10 @@ public class RocketScheduleRuntime {
 
         if (currentEntry >= schedule.entries.size())
             return;
+        resetConditionProgressAndContext();
+    }
+
+    private void resetConditionProgressAndContext() {
         List<List<ScheduleWaitCondition>> conditions = schedule.entries.get(currentEntry).conditions;
         for (int i = 0; i < conditions.size(); i++) {
             conditionProgress.add(0);
@@ -99,8 +103,8 @@ public class RocketScheduleRuntime {
 
         if (paused)
             return;
-        //that's wrong
-        if (!rocket.destination.equals(currentWorld)) {
+        //we don't do shit if the rocket is moving
+        if (rocket.isInPropulsionPhase()) {
             ticksInTransit++;
             return;
         }
@@ -113,30 +117,34 @@ public class RocketScheduleRuntime {
             }
             return;
         }
-//interval should never be put to 0 after sometime no ?
-        if (cooldown-- > 0)
-            return;
+        //interval should never be put to 0 after sometime no ?
+        //if (cooldown-- > 0) cooldown is used for startCurrentInstruction() to avoid too many call
+        // when failing to find a correct path -> we can't fail so no use for now
+        // way be if we don't have enough fuel ?
+        //    return;
         if (state == State.IN_TRANSIT)
             return;
+        //seems like conditions aren't ticked properly
         if (state == State.POST_TRANSIT) {
+            System.out.println("tick condition");
             tickConditions(level);
             return;
         }
-//the iteration doesn't work well
         RocketPath nextPath = startCurrentInstruction();
         if (nextPath == null)
             return;
 
-        rocket.successfulNavigation();
+        rocket.successfulNavigation();//this means that the rocket found a valid path
         if (nextPath.destination == rocket.getLevel().dimension().location() && !rocket.isReentry()) {
+            //only reached when your already on target
             state = State.IN_TRANSIT;
             destinationReached();
-            System.out.println("destination reached");
+            System.out.println("already at destination");
             return;
         }
         if (rocket.startNavigation(nextPath) != TBD) {
             state = State.IN_TRANSIT;
-            ticksInTransit = 0;
+            //ticksInTransit = 0;
         }
     }
 
@@ -144,6 +152,11 @@ public class RocketScheduleRuntime {
         List<List<ScheduleWaitCondition>> conditions = schedule.entries.get(currentEntry).conditions;
         for (int i = 0; i < conditions.size(); i++) {
             List<ScheduleWaitCondition> list = conditions.get(i);
+            if (conditionProgress.size() <= i) {
+                System.out.println("error with conditions");
+                rocket.disassemble();
+                return;
+            }
             int progress = conditionProgress.get(i);
 
             if (progress >= list.size()) {

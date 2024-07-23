@@ -28,8 +28,12 @@ public class ScheduleEntry {
         tag.put("Instruction", instruction.write());
         if (!instruction.supportsConditions())
             return tag;
-        for (List<ScheduleWaitCondition> column : conditions)
+        for (List<ScheduleWaitCondition> column : conditions) {
+            if (column.contains(null)) {
+                System.out.println("encountered null value in condition list :" + column);
+            }
             outer.add(NBTHelper.writeCompoundList(column, ScheduleWaitCondition::write));
+        }
         tag.put("Conditions", outer);
         return tag;
     }
