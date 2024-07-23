@@ -82,11 +82,11 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         runningTicks = compound.getInt("Ticks");
         super.read(compound, clientPacket);
 
-        CompoundTag electrode = (CompoundTag) compound.get("catalyst");
-        if (electrode.isEmpty()) {
+        CompoundTag catalyst = (CompoundTag) compound.get("catalyst");
+        if (catalyst.isEmpty()) {
             this.catalyst = null;
         } else {
-            this.catalyst.deserializeNBT(electrode);
+            this.catalyst.deserializeNBT(catalyst);
         }
         if (clientPacket && hasLevel())
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
