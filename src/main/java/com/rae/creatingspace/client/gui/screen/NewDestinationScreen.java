@@ -69,26 +69,23 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     private IconButton skipProgress;
     private ScheduleInstruction editingDestination;
     private ScheduleWaitCondition editingCondition;
-    private SelectionScrollInput scrollInput;
+    private SelectionScrollInput scrollInput;//only for conditions
     private Label scrollInputLabel;
     private IconButton editorConfirm, editorDelete;
-    private ModularGuiLine editorSubWidgets;
+    private ModularGuiLine editorSubWidgets;//only for conditions not for destination
     private Consumer<Boolean> onEditorClose;
 
     private DestinationSuggestions destinationSuggestions;
     //end of schedule logic
     private boolean destinationChanged;
     private Button launchButton;
-    //private final HashMap<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> mapOfAccessibleDimensionAndV;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
-    //private final GuiTexturesInit background;
     private final ResourceLocation currentDimension;
     private ResourceLocation destination;
     private Orbit focusedPlanet = null;
     private final Vector<Orbit> buttonVector;
     private LabeledBoxWidget destinationCost;
-    // replace by a render schedule thing from ScheduleScreen
     private EditBox Xinput;
     private EditBox Zinput;
     Couple<Color> red = Theme.p(Theme.Key.BUTTON_FAIL);
@@ -378,8 +375,15 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     @Override
     protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
         //super.renderBg(ms, partialTicks, mouseX, mouseY);
-        fill(ms, 0, 0, width, height, 0x44000000);
-        renderSchedule(ms, mouseX, mouseY, partialTicks);
+        fill(ms, 0, 0, width, height, 0xFF000000);
+        AllGuiTextures.SCHEDULE.render(ms, leftPos, topPos);
+        renderSchedule(ms, partialTicks);
+        //render the background of the
+
+        if (editingCondition == null && editingDestination == null)
+            return;
+
+        AllGuiTextures.SCHEDULE_EDITOR.render(ms, leftPos - 2, topPos + 40);
         ms.pushPose();
         ms.translate(0, topPos + 87, 0);
         editorSubWidgets.renderWidgetBG(leftPos + 77, ms);
@@ -504,7 +508,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     }
 
     //schedule logic
-    protected void renderSchedule(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    protected void renderSchedule(PoseStack matrixStack, float partialTicks) {
         UIRenderHelper.swapAndBlitColor(minecraft.getMainRenderTarget(), UIRenderHelper.framebuffer);
         UIRenderHelper.drawStretched(matrixStack, leftPos + 33, topPos + 16, 3, 173, -100,
                 AllGuiTextures.SCHEDULE_STRIP_DARK);
@@ -544,7 +548,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
             ScheduleEntry scheduleEntry = entries.get(i);
             int cardY = yOffset;
-            int cardHeight = renderScheduleEntry(matrixStack, scheduleEntry, cardY, mouseX, mouseY, partialTicks);
+            int cardHeight = renderScheduleEntry(matrixStack, scheduleEntry, cardY);
             yOffset += cardHeight;
 
             if (i + 1 < entries.size()) {
@@ -575,7 +579,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             startStencil(matrixStack, leftPos + 43, topPos + y1, 161, h);
             matrixStack.pushPose();
             matrixStack.translate(0, scrollOffset, 0);
-            renderScheduleConditions(matrixStack, scheduleEntry, cardY, mouseX, mouseY, partialTicks, cardHeight, i);
+            renderScheduleConditions(matrixStack, scheduleEntry, cardY, partialTicks, cardHeight, i);
             matrixStack.popPose();
             endStencil();
 
@@ -594,7 +598,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                 endStencil();
             }
         }
-
         int zLevel = 200;
         Matrix4f mat = matrixStack.last()
                 .pose();
@@ -602,11 +605,12 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                 0x77000000, 0x00000000);
         ScreenUtils.drawGradientRect(mat, zLevel, leftPos + 16, topPos + 179, leftPos + 16 + 220, topPos + 179 + 10,
                 0x00000000, 0x77000000);
+
         UIRenderHelper.swapAndBlitColor(UIRenderHelper.framebuffer, minecraft.getMainRenderTarget());
+
     }
 
-    public int renderScheduleEntry(PoseStack matrixStack, ScheduleEntry entry, int yOffset, int mouseX, int mouseY,
-                                   float partialTicks) {
+    public int renderScheduleEntry(PoseStack matrixStack, ScheduleEntry entry, int yOffset) {
         int zLevel = -100;
 
         AllGuiTextures light = AllGuiTextures.SCHEDULE_CARD_LIGHT;
@@ -657,8 +661,8 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         return cardHeight;
     }
 
-    public void renderScheduleConditions(PoseStack matrixStack, ScheduleEntry entry, int yOffset, int mouseX,
-                                         int mouseY, float partialTicks, int cardHeight, int entryIndex) {
+    public void renderScheduleConditions(PoseStack matrixStack, ScheduleEntry entry, int yOffset,
+                                         float partialTicks, int cardHeight, int entryIndex) {
         int cardWidth = CARD_WIDTH;
         int cardHeader = CARD_HEADER;
 
@@ -770,6 +774,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         return fieldSize;
     }
 
+    //stencil on the outside of the schedule list
     protected void startStencil(PoseStack matrixStack, float x, float y, float w, float h) {
         RenderSystem.clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
 
@@ -822,6 +827,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             updateEditorSubwidgets(editingDestination);
             //TODO change this to a selection in the map
             System.out.println("start edit");
+
             scrollInput.forOptions(RocketSchedule.getTypeOptions(RocketSchedule.INSTRUCTION_TYPES))
                     .titled(Lang.translateDirect("schedule.instruction_type"))
                     .writingTo(scrollInputLabel)
@@ -901,7 +907,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             ResourceLocation location = destination.getDestination();
             ArrayList<ResourceLocation> viableDims = new ArrayList<>(CSDimensionUtil.costAdjacentMap.keySet().stream().toList());
 
-            viableDims.remove(location);
+            viableDims.removeIf(l -> l.equals(location));
             return viableDims.stream().map(
                     dim -> IntAttached.with(CSDimensionUtil.cost(location, dim), dim.toString())
             ).toList();
@@ -1006,6 +1012,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         return super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
 
+    //used for mouse clicking (hard coded widgets)
     public boolean action(PoseStack ms, double mouseX, double mouseY, int click) {
         if (editingCondition != null || editingDestination != null)
             return false;
@@ -1051,7 +1058,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                     }, false);
                 return true;
             }
-
+            // this should be in the screen class
             if (x > 180 && x <= 192) {
                 if (y > 0 && y <= 14) {
                     renderTooltip(ms, ImmutableList.of(Lang.translateDirect("gui.schedule.remove_entry")), Optional.empty(),
