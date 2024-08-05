@@ -66,8 +66,6 @@ public class PlanetsRendering {
         renderPolyTex(face4, uvs, planetBuffer, entry, packedLight);
         renderPolyTex(face5, uvs, planetBuffer, entry, packedLight);
         renderPolyTex(face6, uvs, planetBuffer, entry, packedLight);
-
-
     }
 
     /**

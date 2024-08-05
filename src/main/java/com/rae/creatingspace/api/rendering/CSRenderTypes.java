@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 
 public class CSRenderTypes extends RenderStateShard {
-    private static final RenderType TRANSLUCENT_NO_TEXT = RenderType.create(createLayerName("glowing_translucent"),
+    private static final RenderType TRANSLUCENT_NO_TEXT = RenderType.create(createLayerName("translucent"),
             DefaultVertexFormat.POSITION_COLOR_LIGHTMAP, VertexFormat.Mode.QUADS,
             256, true, true, RenderType.CompositeState.builder()
                     .setShaderState(RENDERTYPE_TRANSLUCENT_SHADER)
