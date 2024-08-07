@@ -196,7 +196,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         // the amount of propellant consumed as the user will have that info
         // need testing -> can it be negative ?
         // yes if there isn't enough propellant
-        // each propellant is making a contribution so it should appear here : need to write done the math...
+        // each propellant is making a contribution, so it should appear here : need to write done the math...
 
         float finalPropellantMass = (float) ((emptyMass+initialPropellantMass)/Math.exp(deltaVNeeded/meanVe)-emptyMass);
 
@@ -395,6 +395,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     @Override
     public void tick() {
+        //movement is bugged when in ground -> avoid collision by slowing down upon landing ? or breaking blocks
         boolean wasRunning = isInPropulsionPhase();
         if (isInPropulsionPhase()) {
             //put the handleTrajectory calculation on the start path
@@ -417,7 +418,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         //TODO make schedule for rocket
         if (failedToLaunch) {//happens when fail to have enough fuel
-            System.out.println("has failed to launch");
+            //disassemble();
             return;
         }
 
@@ -427,7 +428,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         }
 
         tickActors();
-        if (isInPropulsionPhase()) {
+        if (isInPropulsionPhase() && !level.isClientSide) {
             tickConsumptionAndSpeed();
             Vec3 movementVec = getDeltaMovement();
             if (!level.isClientSide) tickDimensionChangeLogic();
@@ -438,6 +439,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                     //stopRocket();
                     getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.BLOCKED);
                     //disassemble();
+                    return;
                 }
             }
             if (tickCount > 2 && isInPropulsionPhase()) {
@@ -764,7 +766,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.realPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
         this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
         this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
-
+        this.failedToLaunch = assemblyData.hasFailed();
         //this.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,compound.getBoolean("reentry"));
         //this.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, compound.getBoolean("running"));
         this.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.valueOf(compound.getString("status")));

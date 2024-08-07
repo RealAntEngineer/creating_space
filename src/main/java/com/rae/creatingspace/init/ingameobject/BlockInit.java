@@ -13,6 +13,7 @@ import com.rae.creatingspace.server.blocks.multiblock.SuperRocketStructuralBlock
 import com.rae.creatingspace.server.blocks.multiblock.engines.BigEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SuperEngineBlock;
+import com.rae.creatingspace.server.contraption.behaviour.interaction.FlightRecorderInteraction;
 import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketControlInteraction;
 import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
 import com.rae.creatingspace.server.items.CryogenicTankItem;
@@ -146,6 +147,7 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
+            .onRegister(interactionBehaviour(new FlightRecorderInteraction()))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
