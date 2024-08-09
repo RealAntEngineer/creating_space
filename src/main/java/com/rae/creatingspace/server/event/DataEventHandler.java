@@ -35,7 +35,7 @@ public class DataEventHandler {
         Player player = event.getEntity();
         CreatingSpace.DESIGN_SAVED_DATA.playerLogin(player);
         LOGGER.info("updating the travel map");
-        CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
+        CSDimensionUtil.updatePlanetsFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.info("updating the space travel cost map");
         CSDimensionUtil.updateCostMap();
     }
@@ -44,7 +44,7 @@ public class DataEventHandler {
         LOGGER.info("getting the server registry access");
         registryAccess = event.getServer().registryAccess();
         LOGGER.info("updating the travel map");
-        CSDimensionUtil.updateTravelMapFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
+        CSDimensionUtil.updatePlanetsFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.debug("updating the space travel cost map");
         CSDimensionUtil.updateCostMap();
     }

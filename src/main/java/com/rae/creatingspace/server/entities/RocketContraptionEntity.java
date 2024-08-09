@@ -418,6 +418,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         //TODO make schedule for rocket
         if (failedToLaunch) {//happens when fail to have enough fuel
+            getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
             //disassemble();
             return;
         }
@@ -438,6 +439,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 if (!level.isClientSide) {
                     //stopRocket();
                     getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.BLOCKED);
+                    setContraptionMotion(Vec3.ZERO);
                     //disassemble();
                     return;
                 }

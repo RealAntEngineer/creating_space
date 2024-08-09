@@ -13,24 +13,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class CSDimensionUtil {
     //should be updated on both server and client load (first on client, then on client join)
     private static final Logger LOGGER = LogManager.getLogger();
     public static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
+    public static List<ResourceLocation> planets;
     public static Map<ResourceLocation, Map<ResourceLocation, Integer>> costAdjacentMap;//map of (source, target) -> cost
 
-    public static void updateTravelMapFromRegistry(Registry<RocketAccessibleDimension> registry) {
+    public static void updatePlanetsFromRegistry(Registry<RocketAccessibleDimension> registry) {
         Map<ResourceLocation, RocketAccessibleDimension> collector = new HashMap<>();
         registry.registryKeySet().forEach(resourceKey -> {
                     collector.put(resourceKey.location(), registry.get(resourceKey.location()));
                 }
         );
         travelMap = Map.copyOf(collector);
+        planets = collector.keySet().stream().toList();
     }
 
     //TODO change resource key to resource location

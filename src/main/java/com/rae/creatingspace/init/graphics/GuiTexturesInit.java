@@ -30,7 +30,8 @@ public enum GuiTexturesInit implements ScreenElement {
 
     ON_EARTH("near_planets",0,339,220,173,512,512),//clean
     ON_EARTH_ORBIT("near_planets",0,250,220,173,512,512),//clean
-    OVERWORLD("overworld",0,83,220,173);//clean
+    OVERWORLD("overworld", 0, 83, 220, 173),
+    ROCKET_INFO("rocket_info", 0, 0, 111, 143);//clean
 
     //copy of allGuiTexture's methods
     public static final int FONT_COLOR = 0x575F7A;

@@ -16,21 +16,18 @@ import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
 import com.rae.creatingspace.client.gui.menu.RocketMenu;
 import com.rae.creatingspace.client.gui.screen.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
+import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSUtil;
-import com.rae.creatingspace.utilities.packet.RocketContraptionLaunchPacket;
+import com.rae.creatingspace.utilities.packet.RocketContraptionDisassemblePacket;
 import com.rae.creatingspace.utilities.packet.RocketControlsSettingsPacket;
 import com.rae.creatingspace.utilities.packet.RocketScheduleEditPacket;
-import com.simibubi.create.content.trains.schedule.DestinationSuggestions;
 import com.simibubi.create.content.trains.schedule.IScheduleInput;
 import com.simibubi.create.foundation.gui.*;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
-import com.simibubi.create.foundation.gui.widget.IconButton;
-import com.simibubi.create.foundation.gui.widget.Indicator;
-import com.simibubi.create.foundation.gui.widget.Label;
-import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
+import com.simibubi.create.foundation.gui.widget.*;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.*;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
@@ -74,11 +71,9 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     private IconButton editorConfirm, editorDelete;
     private ModularGuiLine editorSubWidgets;//only for conditions not for destination
     private Consumer<Boolean> onEditorClose;
-
-    private DestinationSuggestions destinationSuggestions;
     //end of schedule logic
     private boolean destinationChanged;
-    private Button launchButton;
+    private Button disassembleButton;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
     private final ResourceLocation currentDimension;
@@ -96,9 +91,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     int xShift = 0;
     int yShift = 0;
     private Orbit sun;
-    private Label posLabel;
-    private Label posX;
-    private Label posY;
 
     public NewDestinationScreen(RocketMenu container, Inventory inv, Component title) {
         //TODO this screen will swith bwn normal selection (single trip), schedule and rocket overview.
@@ -163,22 +155,19 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         }
         restZoom();
         //everything else
-        launchButton = new Button(x + 341, y + 198, 16 * 4, 20,
-                Component.translatable("creatingspace.gui.rocket_controls.launch"),
+        disassembleButton = new Button(width - 110, y + 120, 16 * 4, 20,
+                Component.translatable("creatingspace.gui.rocket_controls.disassemble"),
                 ($) -> {
-                    if (destination == null) {
-                        return;
-                    }
+
                     PacketInit.getChannel()
-                            .sendToServer(new RocketContraptionLaunchPacket(rocketContraption.getId(), destination));
-                    //rocketContraption.destination = destination;
+                            .sendToServer(new RocketContraptionDisassemblePacket(rocketContraption.getId()));
                     onClose();
                 });
 
-        addRenderableWidget(launchButton);
-        destinationCost = new LabeledBoxWidget(x + 372, y + 20, Component.literal("  500 "));
-
-        validateSetting = new IconButton(x + 392, y + 103, AllIcons.I_CONFIG_SAVE);
+        addRenderableWidget(disassembleButton);
+        destinationCost = new LabeledBoxWidget(width - 97, y + 20, Component.literal("  500 "));
+        destinationCost.setToolTip(Component.translatable("creatingspace.gui.rocket_controls.destination_cost"));
+        validateSetting = new IconButton(width - 45, y + 70, AllIcons.I_CONFIG_SAVE);
         validateSetting.setToolTip(
                 Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
         validateSetting.withCallback(() -> {
@@ -207,11 +196,11 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
         });
 
-        Xinput = new EditBox(font, x + 369, y + 63,
+        Xinput = new EditBox(font, width - 100, y + 63,
                 50, 14, Component.literal(""));
         /*Yinput = new EditBox(font,x + 169, y + 63,
                 50, 14, Component.literal(""));*/
-        Zinput = new EditBox(font, x + 369, y + 83,
+        Zinput = new EditBox(font, width - 100, y + 83,
                 50, 14, Component.literal(""));
 
         addRenderableWidget(Xinput);
@@ -219,14 +208,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         addRenderableWidget(Zinput);
         addRenderableWidget(validateSetting);
         addRenderableWidget(destinationCost);
-        posLabel = new Label(x + 366, y + 43, Component.empty());
-        posX = new Label(x + 356, y + 63, Component.empty());
-        posY = new Label(x + 356, y + 83, Component.empty());
-        addRenderableOnly(posLabel);
-        addRenderableOnly(posX);
-        addRenderableOnly(posY);
 
-        //
         cyclicIndicator = new Indicator(x + 21, y + 196, Components.immutableEmpty());
         cyclicIndicator.state = schedule.cyclic ? Indicator.State.ON : Indicator.State.OFF;
         addRenderableWidget(cyclicIndicator);
@@ -299,48 +281,43 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                 }
             }
         }
-        if (destination != null) {
-            if (destinationChanged) {
-                BlockPos pos = initialPosMap.get(String.valueOf(destination));
+        if (editingDestination != null) {
+            //if (destinationChanged) {
+            BlockPos pos = initialPosMap.get(editingDestination.getData().getString("Text"));
                 if (pos == null) {
                     pos = this.rocketContraption.getOnPos();
                 }
                 Xinput.setValue(String.valueOf(pos.getX()));
                 //Yinput.setValue(String.valueOf(pos.getY()));
                 Zinput.setValue(String.valueOf(pos.getZ()));
-            }
+
             Xinput.visible = true;
             Xinput.active = true;
             //TODO use labels
-            posLabel.text = Component.translatable("creatingspace.gui.rocket_controls.pos_selection");
-            posX.text = Component.literal("X :");
-            posY.text = Component.literal("Z :");
 
             //Yinput.visible = true;
             //Yinput.active = true;
             Zinput.visible = true;
             Zinput.active = true;
 
-            launchButton.active = true;
+            //disassembleButton.active = true;
             validateSetting.active = true;
             validateSetting.visible = true;
             destinationCost.visible = true;
             destinationCost.setTextAndTrim(
                     Component.literal(
-                            String.valueOf(CSDimensionUtil.cost(currentDimension, destination))),
+                            String.valueOf(CSDimensionUtil.cost(currentDimension,
+                                    destination != null ? destination : ResourceLocation.tryParse(editingDestination.getData().getString("Text"))))),
                     true, 112);
 
         } else {
-            posLabel.text = Component.empty();
-            posX.text = Component.empty();
-            posY.text = Component.empty();
             Xinput.visible = false;
             Xinput.active = false;
             //Yinput.visible = false;
             //Yinput.active = false;
             Zinput.visible = false;
             Zinput.active = false;
-            launchButton.active = false;
+            //disassembleButton.active = false;
             validateSetting.active = false;
             validateSetting.visible = false;
             destinationCost.visible = false;
@@ -360,12 +337,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         destinationChanged = false;
         //schedule
 
-        if (destinationSuggestions != null) {
-            ms.pushPose();
-            ms.translate(0, 0, 500);
-            destinationSuggestions.render(ms, mouseX, mouseY);
-            ms.popPose();
-        }
 
         super.renderForeground(ms, mouseX, mouseY, partialTicks);
         action(ms, mouseX, mouseY, -1);
@@ -375,14 +346,20 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     @Override
     protected void renderBg(PoseStack ms, float partialTicks, int mouseX, int mouseY) {
         //super.renderBg(ms, partialTicks, mouseX, mouseY);
-        fill(ms, 0, 0, width, height, 0xFF000000);
         AllGuiTextures.SCHEDULE.render(ms, leftPos, topPos);
+        GuiTexturesInit.ROCKET_INFO.render(ms, width - 130, 10);
         renderSchedule(ms, partialTicks);
         //render the background of the
 
-        if (editingCondition == null && editingDestination == null)
+        if (editingCondition == null && editingDestination == null) {
+            setPlanetView(false);
             return;
+        }
+        if (editingDestination != null) {
+            setPlanetView(false);
 
+            //fill(ms, 0, 0, width, height, 0xFF000000);
+        }
         AllGuiTextures.SCHEDULE_EDITOR.render(ms, leftPos - 2, topPos + 40);
         ms.pushPose();
         ms.translate(0, topPos + 87, 0);
@@ -392,16 +369,20 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         //background.render(ms, 0, 0, this);
     }
 
+    private void setPlanetView(boolean visible) {
+        buttonVector.forEach(
+                orbit -> {
+                    orbit.visible = visible;
+                }
+        );
+    }
     @Override
     public void containerTick() {
-        handleTooltips();
+        //handleTooltips();
         //copied from schedule screen
         scroll.tickChaser();
         for (LerpedFloat lerpedFloat : horizontalScrolls)
             lerpedFloat.tickChaser();
-
-        if (destinationSuggestions != null)
-            destinationSuggestions.tick();
 
         schedule.savedProgress =
                 schedule.entries.isEmpty() ? 0 : Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
@@ -877,7 +858,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     }
 
     protected void updateEditorSubwidgets(IScheduleInput field) {
-        destinationSuggestions = null;
+        //destinationSuggestions = null;
 
         editorSubWidgets.forEach(this::removeWidget);
         editorSubWidgets.clear();
@@ -887,8 +868,24 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
         if (!(field instanceof DestinationInstruction))
             return;
+        editorSubWidgets.forEach(
+                e -> {
+                    if (!(e instanceof ScrollInput))
+                        return;
+                    ((ScrollInput) e).calling(i -> {
+                                destination = CSDimensionUtil.planets.get(i);
+                                destinationCost.setTextAndTrim(
+                                        Component.literal(
+                                                String.valueOf(CSDimensionUtil.cost(currentDimension, destination))),
+                                        true, 112);
+                            }
+                    );
 
-        editorSubWidgets.forEach(e -> {
+                }
+        );
+
+
+        /*editorSubWidgets.forEach(e -> {
             if (!(e instanceof EditBox destinationBox))
                 return;
             destinationSuggestions = new DestinationSuggestions(this.minecraft, this, destinationBox, this.font,
@@ -896,28 +893,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             destinationSuggestions.setAllowSuggestions(true);
             destinationSuggestions.updateCommandInfo();
             destinationBox.setResponder(this::onDestinationEdited);
-        });
-    }
-
-    private List<IntAttached<String>> getViableDestination(IScheduleInput field) {
-
-
-        if (field instanceof DestinationInstruction destination) {
-
-            ResourceLocation location = destination.getDestination();
-            ArrayList<ResourceLocation> viableDims = new ArrayList<>(CSDimensionUtil.costAdjacentMap.keySet().stream().toList());
-
-            viableDims.removeIf(l -> l.equals(location));
-            return viableDims.stream().map(
-                    dim -> IntAttached.with(CSDimensionUtil.cost(location, dim), dim.toString())
-            ).toList();
-        }
-        return List.of();
-    }
-
-    private void onDestinationEdited(String text) {
-        if (destinationSuggestions != null)
-            destinationSuggestions.updateCommandInfo();
+        });*/
     }
 
     private Component clickToEdit = Lang.translateDirect("gui.schedule.lmb_edit")
@@ -927,9 +903,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (destinationSuggestions != null
-                && destinationSuggestions.mouseClicked((int) pMouseX, (int) pMouseY, pButton))
-            return true;
         if (editorConfirm != null && editorConfirm.isMouseOver(pMouseX, pMouseY) && onEditorClose != null) {
             onEditorClose.accept(true);
             stopEditing();
@@ -948,8 +921,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
     @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        if (destinationSuggestions != null && destinationSuggestions.mouseScrolled(Mth.clamp(pDelta, -1.0D, 1.0D)))
-            return true;
         if (editingCondition != null || editingDestination != null)
             return super.mouseScrolled(pMouseX, pMouseY, pDelta);
 
@@ -1014,7 +985,8 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
     //used for mouse clicking (hard coded widgets)
     public boolean action(PoseStack ms, double mouseX, double mouseY, int click) {
-        if (editingCondition != null || editingDestination != null)
+
+        if (editingCondition != null)
             return false;
 
         Component empty = Components.immutableEmpty();
@@ -1023,6 +995,24 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         int my = (int) mouseY;
         int x = mx - leftPos - 25;
         int y = my - topPos - 25;
+        int x2 = width - mx;
+
+
+        if (editingDestination != null) {
+            if (x2 > 50 && x2 < 100) {
+                List<Component> components = new ArrayList<>();
+                if (y > 36 && y < 52) {
+                    components.add(Component.translatable("creatingspace.gui.rocket_controls.x_entry_coord"));
+                    renderTooltip(ms, components, Optional.empty(), mx, my);
+                }
+                if (y > 56 && y < 73) {
+                    components.add(Component.translatable("creatingspace.gui.rocket_controls.z_entry_coord"));
+                    renderTooltip(ms, components, Optional.empty(), mx, my);
+                }
+            }
+            return false;
+        }
+
         if (x < 0 || x >= 205)
             return false;
         if (y < 0 || y >= 173)
@@ -1204,7 +1194,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
         renderTooltip(ms, ImmutableList.of(Lang.translateDirect("gui.schedule.add_entry")), Optional.empty(), mx, my);
         if (click == 0) {
-            System.out.println("clicked on edit destination");
             startEditing(new DestinationInstruction(), confirmed -> {
                 if (!confirmed)
                     return;
@@ -1240,8 +1229,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
         if (editingCondition == null && editingDestination == null)
             return;
-
-        destinationSuggestions = null;
 
         removeWidget(scrollInput);
         removeWidget(scrollInputLabel);
