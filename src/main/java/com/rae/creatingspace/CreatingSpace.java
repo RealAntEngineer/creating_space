@@ -53,6 +53,7 @@ public class CreatingSpace {
 
         TagsInit.init();
 
+        SoundInitV2.register();
         ItemInit.register();
         BlockInit.register();
         BlockEntityInit.register();
