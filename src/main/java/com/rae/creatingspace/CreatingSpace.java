@@ -10,8 +10,6 @@ import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.server.contraption.CSContraptionType;
 import com.rae.creatingspace.server.event.IgniteOnPlace;
-import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
-import com.rae.creatingspace.utilities.data.DimensionTagsReader;
 import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
@@ -27,12 +25,15 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 
 @Mod(CreatingSpace.MODID)
-
 public class CreatingSpace {
-    public static final Logger LOGGER = LogUtils.getLogger();
+    @Deprecated
+    public static final Logger OLD_LOGGER = LogUtils.getLogger();
+    public static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
+
 
     public static final String MODID = "creatingspace" ;
 
@@ -63,8 +64,9 @@ public class CreatingSpace {
         ParticleTypeInit.register(modEventBus);
         CarverInit.register(modEventBus);
         EntityDataSerializersInit.register(modEventBus);
-
         MiscInit.register(modEventBus);
+
+        CSConfigs.registerConfigs(modLoadingContext);
 
         MenuTypesInit.register();
         PacketInit.registerPackets();
@@ -73,7 +75,6 @@ public class CreatingSpace {
 
         CSContraptionType.prepare();
 
-        CSConfigs.registerConfigs(modLoadingContext);
         modEventBus.addListener(CreatingSpace::init);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
@@ -92,8 +93,6 @@ public class CreatingSpace {
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
         //datagen, and tag provider
-        event.addListener(DimensionParameterMapReader.DIMENSION_MAP_HOLDER);
-        event.addListener(DimensionTagsReader.DIMENSION_TAGS_HOLDER);
         event.addListener(MassOfBlockReader.MASS_HOLDER);
     }
 
@@ -101,4 +100,3 @@ public class CreatingSpace {
         return new ResourceLocation(MODID,path);
     }
 }
-

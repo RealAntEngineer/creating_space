@@ -1,8 +1,9 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.server.design.ExhaustPackType;
-import com.rae.creatingspace.server.design.PowerPackType;
+import com.rae.creatingspace.api.design.ExhaustPackType;
+import com.rae.creatingspace.api.design.PowerPackType;
+import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -46,7 +47,15 @@ public class MiscInit {
                             Couple.create(75, 30)
                     ))
     );
+
+    public static final DeferredRegister<RocketAccessibleDimension> DEFERRED_ROCKET_ACCESSIBLE_DIMENSION =
+            DeferredRegister.create(RocketAccessibleDimension.REGISTRY_KEY, CreatingSpace.MODID);
+    public static final Supplier<IForgeRegistry<RocketAccessibleDimension>> ROCKET_ACCESSIBLE_DIMENSIONS = DEFERRED_ROCKET_ACCESSIBLE_DIMENSION.makeRegistry(
+            () -> new RegistryBuilder<RocketAccessibleDimension>().allowModification().disableSaving()
+                    .dataPackRegistry(
+                            RocketAccessibleDimension.CODEC, RocketAccessibleDimension.CODEC));
     /**
+     * use the side aware sync registry access instead
      * @return a client side sync version of the DEFERRED_EXHAUST_PACK_TYPE
      */
     @OnlyIn(Dist.CLIENT)
@@ -67,16 +76,16 @@ public class MiscInit {
 
     public static class Keys {
         public static final ResourceKey<Registry<ExhaustPackType>> EXHAUST_PACK_TYPE =
-                ResourceKey.createRegistryKey(new ResourceLocation("exhaust_pack_type"));
+                ResourceKey.createRegistryKey(new ResourceLocation("creatingspace:exhaust_pack_type"));
         public static final ResourceKey<Registry<PowerPackType>> POWER_PACK_TYPE =
-                ResourceKey.createRegistryKey(new ResourceLocation("power_pack_type"));
+                ResourceKey.createRegistryKey(new ResourceLocation("creatingspace:power_pack_type"));
 
 
     }
-
     public static void register(IEventBus modEventBus) {
         DEFERRED_EXHAUST_PACK_TYPE.register(modEventBus);
         DEFERRED_POWER_PACK_TYPE.register(modEventBus);
+        DEFERRED_ROCKET_ACCESSIBLE_DIMENSION.register(modEventBus);
     }
 
 }

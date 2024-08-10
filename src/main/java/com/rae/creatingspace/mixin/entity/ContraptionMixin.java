@@ -38,12 +38,12 @@ public class ContraptionMixin {
             frontier.add(masterPos);
             moveBigRocketEngine(masterPos, frontier, visited, world.getBlockState(masterPos));
         }
-        if (state.is(BlockInit.SMALL_ROCKET_ENGINE.get())) {
+        if (state.is(BlockInit.SMALL_ROCKET_ENGINE.get()) || state.is(BlockInit.ROCKET_ENGINE.get())) {
             BlockPos nextPos = local$Pos.below();
             if (!visited.contains(nextPos)) {
                 frontier.add(nextPos);
             }
-        } else if (state.is(BlockInit.SMALL_ENGINE_STRUCTURAL.get())) {
+        } else if (state.is(BlockInit.SMALL_ENGINE_STRUCTURAL.get()) || state.is(BlockInit.ENGINE_STRUCTURAL.get())) {
             BlockPos nextPos = local$Pos.above();
             if (!visited.contains(nextPos)) {
                 frontier.add(nextPos);

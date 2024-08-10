@@ -1,5 +1,7 @@
 package com.rae.creatingspace.server.blockentities;
 
+import com.rae.creatingspace.configs.CSCfgClient;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.data.FlightDataHelper;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
@@ -14,9 +16,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHaveGoggleInformation {
 
@@ -93,22 +97,55 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                         if (fluidMass == null) {
                             fluidMass = 0;
                         }
+                        if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
+                            Lang.builder()
+                                    .add(
+                                            Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
+                                                    .append(" ")
+                                                    .append(Component.literal(CSUtil.scientificNbrFormatting((float) fluidMass / 1000, 5))
+                                                            .append(Component.translatable("creatingspace.science.unit.metric_ton"))
+                                                            .withStyle(consumedMass >= fluidMass ?
+                                                                    ChatFormatting.DARK_RED :
+                                                                    ChatFormatting.DARK_GREEN))
+                                                    .append(Component.literal(" / " +
+                                                                    CSUtil.scientificNbrFormatting((float) consumedMass / 1000, 5))
+                                                            .append(Component.translatable("creatingspace.science.unit.metric_ton"))
+                                                            .withStyle(ChatFormatting.GOLD))
+                                    )
+                                    .forGoggles(tooltip, 2);
+                        } else if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.VOLUMETRIC)) {
+                            AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
-                        Lang.builder()
-                                .add(
-                                        Component.translatable("fluid."+fluidTagKey.location().toLanguageKey())
-                                                .append(" ")
-                                                .append(Component.literal(CSUtil.scientificNbrFormatting((float)fluidMass/1000,5))
-                                                        .append(Component.translatable(  "creatingspace.science.unit.metric_ton"))
-                                                        .withStyle(consumedMass>=fluidMass?
-                                                                ChatFormatting.DARK_RED:
-                                                                ChatFormatting.DARK_GREEN))
-                                                .append(Component.literal(" / " +
-                                                                CSUtil.scientificNbrFormatting((float)consumedMass/1000,5))
-                                                        .append(Component.translatable(  "creatingspace.science.unit.metric_ton"))
-                                                        .withStyle(ChatFormatting.GOLD))
-                                )
-                                .forGoggles(tooltip, 2);
+                            ForgeRegistries.FLUIDS.getEntries().forEach(
+                                    resourceKeyFluidEntry -> {
+                                        if (resourceKeyFluidEntry.getValue().is(fluidTagKey)) {
+                                            fluidRef.set(resourceKeyFluidEntry.getValue());
+                                        }
+                                    }
+                            );
+                            if (fluidRef.get() == null) {
+                                Lang.builder()
+                                        .add(Component.literal("Warning : failed to find a fluid in game data")).forGoggles(tooltip, 2);
+                                ;
+                            } else {
+                                float fluidVolume = (float) (fluidMass / fluidRef.get().getFluidType().getDensity()); //in minecraft's bucket
+                                Lang.builder()
+                                        .add(
+                                                Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
+                                                        .append(" ")
+                                                        .append(Component.literal(CSUtil.scientificNbrFormatting((float) fluidVolume, 5))
+                                                                .append(Component.literal("B"))
+                                                                .withStyle(consumedMass >= fluidMass ?
+                                                                        ChatFormatting.DARK_RED :
+                                                                        ChatFormatting.DARK_GREEN))
+                                                        .append(Component.literal(" / " +
+                                                                        CSUtil.scientificNbrFormatting((float) consumedMass / fluidRef.get().getFluidType().getDensity(), 5))
+                                                                .append(Component.literal("B"))
+                                                                .withStyle(ChatFormatting.GOLD))
+                                        )
+                                        .forGoggles(tooltip, 2);
+                            }
+                        }
                     }
                 }
                 if (lastAssemblyData.thrust()<lastAssemblyData.weight()){

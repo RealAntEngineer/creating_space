@@ -198,6 +198,19 @@
   "power_pack_type.creatingspace.open_cycle": "open cycle",
   "power_pack_type.creatingspace.ox_rich_staged_cycle": "ox rich flow",
   "power_pack_type.creatingspace.fuel_rich_staged_cycle": "fuel rich flow",
-  "power_pack_type.creatingspace.full_flow_staged_cycle": "full flow"
+  "power_pack_type.creatingspace.full_flow_staged_cycle": "full flow",
+  "creatingspace.gui.rocket_controls.assemble": "Assemble",
+  "rocket.assemble.new_rocket": "Create New Rocket",
+  "creatingspace.gui.rocket_controls.disassemble": "Disassemble",
+  "creatingspace.gui.rocket_controls.x_entry_coord": "x rocket entry coordinate",
+  "creatingspace.gui.rocket_controls.z_entry_coord": "z rocket entry coordinate",
+  "creatingspace.schedule.instruction.destination": "Destination",
+  "creatingspace.schedule.condition.delay": "Delay",
+  "creatingspace.schedule.condition.time_of_day": "Time of Day",
+  "creatingspace.schedule.condition.fluid_threshold": "Fluid Threshold",
+  "creatingspace.schedule.condition.item_threshold": "Item Threshold",
+  "creatingspace.schedule.condition.redstone_link": "Redstone Link",
+  "creatingspace.schedule.condition.player_count": "Seated Player Count",
+  "creatingspace.schedule.condition.idle": "Idle Inventory"
 
 }
