@@ -2,9 +2,9 @@ package com.rae.creatingspace.server.blockentities;
 
 
 import com.rae.creatingspace.api.IMass;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.rae.creatingspace.server.design.PropellantType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -125,33 +125,7 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         }
     }
 
-    public static class SuperEngine extends RocketEngineBlockEntity {
-        @Override
-        public float getEfficiency() {
-            return 0.9f;
-        }
-
-        @Override
-        public int getThrust() {
-            return CSConfigs.SERVER.rocketEngine.superRocketEngineThrust.get();
-        }
-
-        @Override
-        public PropellantType getPropellantType() {
-            return PropellantTypeInit.METALIC_HYDROGEN.get();
-        }
-
-        public SuperEngine(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-            super(type, pos, state);
-        }
-    }
-
     public static class SmallEngine extends RocketEngineBlockEntity{
-        @Override
-        public int getIsp() {
-            return CSConfigs.SERVER.rocketEngine.methaloxISP.get();
-        }
-
         @Override
         public int getThrust() {
             return  CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get();

@@ -19,7 +19,7 @@ abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "aiStep", at = @At(value = "HEAD"))
     private void flying(CallbackInfo ci) {
-        if (!this.onGround && CSDimensionUtil.gravity(level.dimensionTypeId()) == 0) {
+        if (!this.onGround && CSDimensionUtil.gravity(level.dimension().location()) == 0) {
             float d0 = 0;
             if (jumping) {
                 d0 = 0.01f;

@@ -2,10 +2,10 @@ package com.rae.creatingspace.server.contraption;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.blockentities.RocketEngineBlockEntity;
 import com.rae.creatingspace.server.blocks.FlightRecorderBlock;
-import com.rae.creatingspace.server.design.PropellantType;
 import com.rae.creatingspace.utilities.CSMassUtil;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
@@ -15,6 +15,7 @@ import com.simibubi.create.content.contraptions.render.NonStationaryLighter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -102,7 +103,24 @@ public class RocketContraption extends TranslatingContraption {
         return CSContraptionType.ROCKET;
     }
 
+    @Override
+    public void readNBT(Level world, CompoundTag nbt, boolean spawnData) {
+        super.readNBT(world, nbt, spawnData);
+        //TODO add data for server/client sync (possible solution of Interactive bug)
+        thrust = nbt.getInt("thrust");
+        dryMass = nbt.getInt("dryMass");
+        Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
+    }
 
+    @Override
+    public CompoundTag writeNBT(boolean spawnPacket) {
+        //TODO add data for server/client sync
+        CompoundTag nbt = super.writeNBT(spawnPacket);
+        nbt.putInt("thrust", thrust);
+        nbt.putInt("dryMass", dryMass);
+        nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
+        return nbt;
+    }
     /*@Override
     public void addBlocksToWorld(Level world, StructureTransform transform) {
         for (StructureTemplate.StructureBlockInfo block : blocks.values()){

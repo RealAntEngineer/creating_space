@@ -1,7 +1,9 @@
 package com.rae.creatingspace.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.content.contraptions.render.ContraptionEntityRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.phys.Vec3;
@@ -11,6 +13,10 @@ public class RocketContraptionEntityRenderer extends ContraptionEntityRenderer<R
         super(context);
     }
 
+    @Override
+    public void render(RocketContraptionEntity entity, float yaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffers, int overlay) {
+        super.render(entity, yaw, partialTicks, matrixStack, buffers, overlay);
+    }
 
     @Override
     public boolean shouldRender(RocketContraptionEntity entity, Frustum clippingHelper, double cameraX, double cameraY,
