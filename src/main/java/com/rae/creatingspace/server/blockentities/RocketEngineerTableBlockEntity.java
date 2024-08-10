@@ -2,12 +2,12 @@ package com.rae.creatingspace.server.blockentities;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.api.design.ExhaustPackType;
+import com.rae.creatingspace.api.design.PowerPackType;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
 import com.rae.creatingspace.init.MiscInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.rae.creatingspace.server.design.ExhaustPackType;
-import com.rae.creatingspace.server.design.PowerPackType;
-import com.rae.creatingspace.server.design.PropellantType;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.client.Minecraft;

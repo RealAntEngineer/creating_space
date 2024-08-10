@@ -1,8 +1,8 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.server.design.PropellantType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

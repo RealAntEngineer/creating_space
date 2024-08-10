@@ -6,7 +6,7 @@ license="MIT"
 
 [[mods]]
 modId="creatingspace"
-version = "1.7.1.test1"
+version = "1.7.1.test_rocket_4"
 displayName="Creating Space"
 logoFile = "logo.png"
 credits='''
@@ -17,7 +17,7 @@ PopCorn -> Russian and Ukrainian
 authors="Real Ant Engineer"
 
 description='''
-Going to space with create
+test version for the new rocket/automatic version of 1.7.1
 '''
 
 [[dependencies.creatingspace]]

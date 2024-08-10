@@ -132,11 +132,11 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 	public void readAdditional(FriendlyByteBuf buffer) {
 		super.readAdditional(buffer);
 		blockInFront = buffer.readResourceLocation();
-		if (blockInFront == new ResourceLocation("minecraft:_")) {
+		if (blockInFront.equals(new ResourceLocation("minecraft:_"))) {
 			blockInFront = null;
 		}
 		dimension = buffer.readResourceLocation();
-		if (dimension == new ResourceLocation("minecraft:_")) {
+		if (dimension.equals(new ResourceLocation("minecraft:_"))) {
 			dimension = null;
 		}
 	}

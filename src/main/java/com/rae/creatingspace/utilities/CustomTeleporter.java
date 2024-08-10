@@ -25,8 +25,7 @@ public class CustomTeleporter implements ITeleporter {
     @Override
     public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
         double height;
-        //use the arrivalHeight instead
-        height = CSDimensionUtil.arrivalHeight(destWorld.dimensionTypeId());//CSConfigs.COMMON.spaceSpawnHeight.get();
+        height = CSDimensionUtil.arrivalHeight(destWorld.dimension().location());
         Vec3 position;
         if ( entity instanceof RocketContraptionEntity rocketContraptionEntity){
 
