@@ -9,8 +9,7 @@ import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.rae.creatingspace.server.items.engine.SuperEngineItem;
+import com.rae.creatingspace.server.items.engine.EngineItem;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.EngineerTableCraft;
 import com.rae.creatingspace.utilities.packet.RocketEngineerTableSync;
@@ -40,7 +39,7 @@ import java.util.List;
 
 import static com.rae.creatingspace.init.MiscInit.getSyncedExhaustPackRegistry;
 import static com.rae.creatingspace.init.MiscInit.getSyncedPowerPackRegistry;
-import static com.rae.creatingspace.init.ingameobject.PropellantTypeInit.DEFERRED_PROPELLANT_TYPE;
+import static com.rae.creatingspace.init.ingameobject.PropellantTypeInit.getSyncedPropellantRegistry;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTableMenu> {
@@ -106,13 +105,13 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         propellantLabel.text = Components.immutableEmpty();
         propellantTypes = new ArrayList<>();
         List<MutableComponent> availablePropellantType = new ArrayList<>();
-        DEFERRED_PROPELLANT_TYPE.getEntries().forEach((ro) -> {
+        getSyncedPropellantRegistry().entrySet().forEach((ro) -> {
                     availablePropellantType.add(Component.translatable(
                             "propellant_type." +
-                                    ro.getId().getNamespace() + "." + ro.getId().getPath()).append(
-                            Component.literal("  max isp : " + ro.get().getMaxISP())));
-                    propellantTypes.add(ro.get());
-                    propellantTypeLocations.add(ro.getId());
+                                    ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()).append(
+                            Component.literal("  max isp : " + ro.getValue().getMaxISP())));
+            propellantTypes.add(ro.getValue());
+            propellantTypeLocations.add(ro.getKey().location());
                 }
         );
         setPropellantType = new SelectionScrollInput(x + 7, y + 135, 100, 18)
@@ -282,7 +281,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private void craftEngine(BlockPos blockEntityPos, PropellantType propellantType, float isp, float mass, float thrust) {
         //send a packet to the BE
         float efficiency = isp / propellantType.getMaxISP();
-        ItemStack newEngine = ((SuperEngineItem) BlockInit.ROCKET_ENGINE.get().asItem())
+        ItemStack newEngine = ((EngineItem) BlockInit.ROCKET_ENGINE.get().asItem())
                 .getItemStackFromInfo((int) thrust, efficiency, propellantType);
         PacketInit.getChannel()
                 .sendToServer(
@@ -324,7 +323,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                     availablePropellants.add(Component.translatable(
                             "propellant_type." +
                                     location.getNamespace() + "." + location.getPath()));
-                    propellantTypes.add(PropellantTypeInit.PROPELLANT_TYPE.get().getValue(location));
+                    propellantTypes.add(getSyncedPropellantRegistry().get(location));
                 }
         );
         //getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {

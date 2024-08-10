@@ -26,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SuperEngineItem extends RocketEngineItem {
-    public SuperEngineItem(Block p_40565_, Properties p_40566_) {
+public class EngineItem extends RocketEngineItem {
+    public EngineItem(Block p_40565_, Properties p_40566_) {
         super(p_40565_, p_40566_);
     }
 
@@ -102,7 +102,7 @@ public class SuperEngineItem extends RocketEngineItem {
     public void fillItemCategory(CreativeModeTab modeTab, NonNullList<ItemStack> itemStacks) {
         if (this.allowedIn(modeTab)) {
             itemStacks.add(
-                    getItemStackFromInfo((int) (50000f * 9.81f), 0.9f, PropellantTypeInit.METALIC_HYDROGEN.get())
+                    getItemStackFromInfo((int) (50000f * 9.81f), 0.9f, PropellantTypeInit.LH2LOX.get())
             );
         }
     }

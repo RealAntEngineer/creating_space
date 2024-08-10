@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class MiscInit {
+    //TODO remove slots from the exhaust and power pack, add allowedPropellants for the exhaust pack
     public static final DeferredRegister<ExhaustPackType> DEFERRED_EXHAUST_PACK_TYPE =
             DeferredRegister.create(Keys.EXHAUST_PACK_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<ExhaustPackType>> EXHAUST_PACK_TYPE = DEFERRED_EXHAUST_PACK_TYPE.makeRegistry(

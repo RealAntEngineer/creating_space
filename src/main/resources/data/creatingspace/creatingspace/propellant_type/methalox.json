@@ -1,0 +1,10 @@
+{
+  "propellantRatio": {
+    "creatingspace:methane": 1,
+    "creatingspace:oxygen": 2
+  },
+  "maxIsp": 460,
+  "Cp": 4500,
+  "gamma": 1.1,
+  "M": 18
+}

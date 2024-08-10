@@ -18,8 +18,8 @@ import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketCont
 import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
 import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.engine.BigEngineItem;
+import com.rae.creatingspace.server.items.engine.EngineItem;
 import com.rae.creatingspace.server.items.engine.SmallEngineItem;
-import com.rae.creatingspace.server.items.engine.SuperEngineItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
@@ -71,7 +71,7 @@ public class BlockInit {
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
-            .item(SuperEngineItem::new)
+            .item(EngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
