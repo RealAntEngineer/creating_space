@@ -13,7 +13,8 @@ public class SoundInit {
 
     private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
-    public static final RegistryObject<SoundEvent> ROCKET_LAUNCH = SOUNDS.register("rocket_launch", () -> new SoundEvent(new ResourceLocation("creating_space:rocket_launch_sound")));
+    public static final RegistryObject<SoundEvent> ROCKET_LAUNCH = SOUNDS.register("rocket_launch",
+            () -> new SoundEvent(new ResourceLocation("creating_space:rocket_launch_sound")));
 
     public static void register() {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
