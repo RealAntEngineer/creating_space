@@ -52,12 +52,13 @@ public class CreatingSpace {
         REGISTRATE.registerEventListeners(modEventBus);
 
         TagsInit.init();
+        
+        SoundInit.register();
         ItemInit.register();
         BlockInit.register();
         BlockEntityInit.register();
         EntityInit.register();
         FluidInit.register();
-        SoundInit.register();
         PropellantTypeInit.register(modEventBus);
         PaintingInit.register(modEventBus);
         RecipeInit.register(modEventBus);

@@ -276,9 +276,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         if (acceleration <=0 ){
             rocketContraptionEntity.failedToLaunch = true;
             rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
+            return;
         }
         if (distance<=0){
             rocketContraptionEntity.failedToLaunch = true;
+            rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
+            return;
+        }
+        if (assemblyData.hasFailed()) {
             rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
             return;
         }
