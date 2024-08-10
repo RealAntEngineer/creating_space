@@ -13,8 +13,8 @@
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "Needed for producing methane, deprecated !!",
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
   "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split liquids in a basin",
-  "block.creatingspace.flight_recorder": "Flight Recorder",
-  "block.creatingspace.flight_recorder.tooltip.summary": "shows information when the rocket doesn't work, you need engineer googles to view the information",
+  "block.creatingspace.flight_recorder": "flight recorder",
+  "block.creatingspace.flight_recorder.tooltip.summary": "show information when the rocket doesn't work, need engineer googles to work",
   "block.creatingspace.flow_meter": "Flowmeter",
   "block.creatingspace.flow_meter.tooltip.summary": "Show the amount of fluid passing through a pipe",
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
@@ -22,9 +22,7 @@
   "block.creatingspace.oxygen_sealer.tooltip.condition1": "when R-Clicked with empty hand",
   "block.creatingspace.oxygen_sealer.tooltip.behaviour1": "open the GUI",
   "block.creatingspace.air_liquefier": "Air Liquefier",
-  "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only works on earth",
-  "block.creatingspace.rocket_engineer_table": "Rocket Engineering Table",
-  "block.creatingspace.super_rocket_engine": "Super Rocket Engine",
+  "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only work on earth",
 
 
   "block.creatingspace.clamps": "Clamps",
@@ -77,8 +75,6 @@
   "item.creatingspace.bell_nozzle": "Bell Nozzle",
   "item.creatingspace.copper_coil":"Copper Coil",
   "item.creatingspace.basic_catalyst":"Basic Catalyst",
-  "item.creatingspace.blisk": "Blisk",
-  "item.creatingspace.throat": "Throat",
 
 
   "item.creatingspace.nickel_ingot": "Nickel Ingot",
