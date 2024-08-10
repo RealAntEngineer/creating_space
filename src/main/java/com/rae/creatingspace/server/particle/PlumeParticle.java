@@ -16,8 +16,8 @@ import java.util.List;
 import static net.minecraft.util.Mth.clamp;
 
 public class PlumeParticle extends SimpleAnimatedParticle {
-    public static final float SIZE_FACTOR = .6f;
-    private float drag;
+    public static final float SIZE_FACTOR = .55f;
+    private final float drag;
     private Vec3 speed;
     public PlumeParticle(ClientLevel world, RocketPlumeParticleData data,
                          double x, double y, double z,
@@ -58,10 +58,10 @@ public class PlumeParticle extends SimpleAnimatedParticle {
         }
 
         // Scaling and size adjustments based on speed
-        if (speed.length() < 0.2) {
+        if (!isFlame()) {
             selectSprite(2 + age / 200);
-            if (this.quadSize < 2) {
-                scale(drag * 3 + 1);
+            if (quadSize < 3) {
+                setSize((float) (1 / speed.length()), (float) (1 / speed.length()));
             }
             if (speed.length() < 0.05f) {
                 this.remove();
@@ -89,7 +89,7 @@ public class PlumeParticle extends SimpleAnimatedParticle {
         this.move(this.xd, this.yd, this.zd);
 
         // Check if the particle is close to the ground and set fire
-        if (isCloseToGround()) {
+        if (isCloseToGround() && isFlame()) {
             setFire();
         }
     }
@@ -143,23 +143,20 @@ public class PlumeParticle extends SimpleAnimatedParticle {
     public void morphColor() {
         float speedFactor = (float) speed.length();
         // Mix between yellow and red based on speed
-        Color yellow = new Color(0xFFFF00);
-        Color red = new Color(0xFF0000);
-        Color color = mixColors(yellow, red, speedFactor);
-        if (speed.length() < 1D) {
-            color = color.mixWith(Color.WHITE, (float) (1 - speed.length() / 3f));
+        Color yellow = new Color(0xffffd800);
+        Color red = new Color(0xffff0000);
+        Color color = red.mixWith(yellow, speedFactor / 1.6f);//mixColors(yellow, red, speedFactor/2);
+        if (speed.length() < 1f) {
+            color = Color.WHITE;
         }
         Vec3 colorVec = color.asVector();
         setColor((float) colorVec.x, (float) colorVec.y, (float) colorVec.z);
-        setAlpha((float) clamp(speed.length()*2, 0.2, 1));
+        setAlpha((float) clamp(speed.length(), 0.2, 1));
     }
 
     // Utility method for color mixing
-    private Color mixColors(Color color1, Color color2, float factor) {
-        int red = (int) (color1.getRed() * (1 - factor) + color2.getRed() * factor);
-        int green = (int) (color1.getGreen() * (1 - factor) + color2.getGreen() * factor);
-        int blue = (int) (color1.getBlue() * (1 - factor) + color2.getBlue() * factor);
-        return new Color(red, green, blue);
+    private boolean isFlame() {
+        return speed.length() > 1.1f;
     }
     public int getLightColor(float partialTick) {
         BlockPos blockpos = new BlockPos(this.x, this.y, this.z);
@@ -167,7 +164,7 @@ public class PlumeParticle extends SimpleAnimatedParticle {
     }
 
     private void selectSprite(int index) {
-        setSprite(sprites.get(index, 10));
+        setSprite(sprites.get(index, 8));
     }
 
     public static class Factory implements ParticleProvider<RocketPlumeParticleData> {

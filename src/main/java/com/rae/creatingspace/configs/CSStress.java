@@ -18,6 +18,7 @@ public class CSStress extends ConfigBase implements BlockStressValues.IStressVal
 
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> capacities = new HashMap<>();
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> impacts = new HashMap<>();
+
     @Override
     public void registerAll(ForgeConfigSpec.Builder builder) {
         builder.comment(".", Comments.su, Comments.impact)

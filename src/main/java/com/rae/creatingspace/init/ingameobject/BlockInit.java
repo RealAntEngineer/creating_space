@@ -13,7 +13,9 @@ import com.rae.creatingspace.server.blocks.multiblock.SuperRocketStructuralBlock
 import com.rae.creatingspace.server.blocks.multiblock.engines.BigEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.SuperEngineBlock;
-import com.rae.creatingspace.server.contraption.movementbehaviour.EngineMovementBehaviour;
+import com.rae.creatingspace.server.contraption.behaviour.interaction.FlightRecorderInteraction;
+import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketControlInteraction;
+import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
 import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.engine.BigEngineItem;
 import com.rae.creatingspace.server.items.engine.SmallEngineItem;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
+import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
@@ -64,8 +67,8 @@ public class BlockInit {
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
-    public static final BlockEntry<SuperEngineBlock> SUPER_ROCKET_ENGINE = REGISTRATE
-            .block("super_rocket_engine", SuperEngineBlock::new)
+    public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
+            .block("rocket_engine", SuperEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
 
@@ -97,8 +100,8 @@ public class BlockInit {
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .transform(axeOrPickaxe())
                     .register();
-    public static final BlockEntry<SuperRocketStructuralBlock> SUPER_ENGINE_STRUCTURAL =
-            REGISTRATE.block("super_engine_structure", SuperRocketStructuralBlock::new)
+    public static final BlockEntry<SuperRocketStructuralBlock> ENGINE_STRUCTURAL =
+            REGISTRATE.block("engine_structure", SuperRocketStructuralBlock::new)
                     //.initialProperties(SharedProperties::copperMetal)
                     .properties(p -> p.strength(1.0f))
                     .blockstate((c, p) -> p.getVariantBuilder(c.get())
@@ -138,6 +141,7 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
+            .onRegister(interactionBehaviour(new RocketControlInteraction()))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
@@ -147,6 +151,7 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
+            .onRegister(interactionBehaviour(new FlightRecorderInteraction()))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())

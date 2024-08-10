@@ -1,13 +1,14 @@
 package com.rae.creatingspace.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.client.gui.screen.elements.DimSelectBoxWidget;
 import com.rae.creatingspace.client.gui.screen.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
+import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSUtil;
-import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.rae.creatingspace.utilities.packet.RocketAssemblePacket;
 import com.rae.creatingspace.utilities.packet.RocketControlsSettingsPacket;
 import com.simibubi.create.foundation.gui.AbstractSimiScreen;
@@ -22,8 +23,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +32,12 @@ import java.util.Vector;
 public class DestinationScreen extends AbstractSimiScreen {
     private boolean destinationChanged;
     private Button launchButton;
-    private final HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
+    private final HashMap<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> mapOfAccessibleDimensionAndV;
     HashMap<String, BlockPos> initialPosMap;
     private final RocketControlsBlockEntity blockEntity;
     private final GuiTexturesInit background;
-    private final ResourceKey<Level> currentDimension;
-    private ResourceKey<Level> destination;
+    private final ResourceLocation currentDimension;
+    private ResourceLocation destination;
 
     private final Vector<DimSelectBoxWidget> buttonVector;
     private LabeledBoxWidget destinationCost;
@@ -53,10 +53,9 @@ public class DestinationScreen extends AbstractSimiScreen {
         this.blockEntity = be;
         this.initialPosMap = new HashMap<>(be.initialPosMap);
         this.background = GuiTexturesInit.ROCKET_CONTROLS;
-        this.currentDimension = be.getLevel().dimension();
+        this.currentDimension = be.getLevel().dimension().location();
         //initialise the map in the server side blockEntity to avoid issues
-        this.mapOfAccessibleDimensionAndV = be.mapOfAccessibleDimensionAndV == null ? new HashMap<>() : be.mapOfAccessibleDimensionAndV;
-
+        this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());
         this.buttonVector = new Vector<>(this.mapOfAccessibleDimensionAndV.size());
         this.destinationChanged = false;
     }
@@ -127,8 +126,8 @@ public class DestinationScreen extends AbstractSimiScreen {
 
         Component text;
         for (int row = 0; row < mapOfAccessibleDimensionAndV.size(); row++) {
-            ResourceKey<Level> dim = mapOfAccessibleDimensionAndV.keySet().stream().toList().get(row);
-            text = Component.translatable(dim.location().toString());
+            ResourceLocation dim = mapOfAccessibleDimensionAndV.keySet().stream().toList().get(row);
+            text = Component.translatable(dim.toString());
             DimSelectBoxWidget widget = new DimSelectBoxWidget(x+7,y+20+26*row,134,16,text,dim);
             widget.withCallback(
                     ()-> {

@@ -3,19 +3,18 @@ package com.rae.creatingspace.client.event;
 import com.rae.creatingspace.client.gui.RemainingO2Overlay;
 import com.rae.creatingspace.client.renderer.CopperOxygenBacktankFirstPersonRenderer;
 import com.rae.creatingspace.client.renderer.NetheriteOxygenBacktankFirstPersonRenderer;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.armor.OxygenBacktankArmorLayer;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import net.minecraft.client.CameraType;
+import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -34,15 +33,9 @@ public class CSClientEvent {
     }
 
     @SubscribeEvent
-    public static void calculateRocketFovModifier(ComputeFovModifierEvent event) {
-        Player player = event.getPlayer();
-        Entity vehicle = player.getVehicle();
-        if (vehicle instanceof RocketContraptionEntity rocket) {
-            //TODO take the size of the rocket into account
-            CameraType cameraType = Minecraft.getInstance().options.getCameraType();
-            if (!cameraType.isFirstPerson() && !cameraType.isMirrored()) {
-                event.setNewFovModifier(event.getFovModifier() * 10);
-            }
+    public static void onMount(EntityMountEvent event) {
+        if (event.getEntityMounting() == Minecraft.getInstance().player && event.isMounting() && (event.getEntityBeingMounted() instanceof RocketContraptionEntity rocketContraption)) {
+            CameraDistanceModifier.zoomOut((float) (rocketContraption.getBoundingBox().getSize() * CSConfigs.CLIENT.zoomOut.get()));
         }
     }
 

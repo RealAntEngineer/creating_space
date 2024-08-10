@@ -188,7 +188,7 @@ public class SuperRocketStructuralBlock extends DirectionalBlock implements IWre
         public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
             if (target instanceof BlockHitResult bhr) {
                 BlockPos targetPos = bhr.getBlockPos();
-                @NonnullType SuperRocketStructuralBlock structuralBlock = BlockInit.SUPER_ENGINE_STRUCTURAL.get();
+                @NonnullType SuperRocketStructuralBlock structuralBlock = BlockInit.ENGINE_STRUCTURAL.get();
                 if (structuralBlock.stillValid(level, targetPos, state))
                     manager.crack(SuperRocketStructuralBlock.getMaster(level, targetPos, state), bhr.getDirection());
                 return true;
@@ -199,7 +199,7 @@ public class SuperRocketStructuralBlock extends DirectionalBlock implements IWre
         @Override
         @Nullable
         public Set<BlockPos> getExtraPositions(ClientLevel level, BlockPos pos, BlockState blockState, int progress) {
-            @NonnullType SuperRocketStructuralBlock structuralBlock = BlockInit.SUPER_ENGINE_STRUCTURAL.get();
+            @NonnullType SuperRocketStructuralBlock structuralBlock = BlockInit.ENGINE_STRUCTURAL.get();
             if (!structuralBlock.stillValid(level, pos, blockState))
                 return null;
             HashSet<BlockPos> set = new HashSet<>();

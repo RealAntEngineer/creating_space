@@ -69,7 +69,7 @@ public class BlockEntityInit {
 
     public static final BlockEntityEntry<RocketEngineBlockEntity.NbtDependent> NBT_DEPENDENT_ENGINE =
             REGISTRATE.blockEntity("rocket_engine", RocketEngineBlockEntity.NbtDependent::new)
-                    .validBlocks(BlockInit.SUPER_ROCKET_ENGINE)
+                    .validBlocks(BlockInit.ROCKET_ENGINE)
                     .register();
 
     public static final BlockEntityEntry<LegacyMechanicalElectrolyzerBlockEntity> LEGACY_ELECTROLIZER =

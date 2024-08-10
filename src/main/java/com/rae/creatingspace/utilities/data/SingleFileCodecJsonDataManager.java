@@ -6,8 +6,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
-
-import org.slf4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
