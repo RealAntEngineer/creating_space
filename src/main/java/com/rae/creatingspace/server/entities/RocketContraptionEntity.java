@@ -265,16 +265,16 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                         totalThrust,
                         (emptyMass+initialPropellantMass)*gravity);
         rocketContraptionEntity.assemblyData = assemblyData;
-        rocketContraptionEntity.failedToLaunch = assemblyData.hasFailed();//just for the fluids
+        //rocketContraptionEntity.failedToLaunch = assemblyData.hasFailed();//just for the fluids
 
-        //may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
+        /*//may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
         if (acceleration <=0 ){
-            rocketContraptionEntity.failedToLaunch = true;
+            //rocketContraptionEntity.failedToLaunch = true;
             rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
             return;
-        }
+        }*/
         if (distance<=0){
-            rocketContraptionEntity.failedToLaunch = true;
+            //rocketContraptionEntity.failedToLaunch = true;
             rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
             return;
         }
@@ -283,9 +283,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         }
         rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.TRAVELING);
-        /*System.out.println("consumableFluids : " + rocketContraptionEntity.consumableFluids);
-        System.out.println("theoreticalPerTagFluidConsumption: " + rocketContraptionEntity.theoreticalPerTagFluidConsumption);
-        System.out.println("realPerTagFluidConsumption: " + rocketContraptionEntity.realPerTagFluidConsumption);*/
     }
 
     //the rocket kill itself upon arrival in other dim
@@ -408,16 +405,17 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     public void tick() {
         ROCKET_SOUND_LENGTH = 65;
-        if (soundEffectTickCount <= 0) {
-            //level.playSeededSound(null, this, SoundEvents.ALLAY_HURT, SoundSource.MASTER, 1, 1,0);
-            if (level.isClientSide) playSound(ROCKET_LAUNCH.get(), 1, 1);
-            soundEffectTickCount = ROCKET_SOUND_LENGTH;
-        } else {
-            soundEffectTickCount--;
-        }
+
         //movement is bugged when in ground -> avoid collision by slowing down upon landing ? or breaking blocks
         boolean wasRunning = isInPropulsionPhase();
         if (isInPropulsionPhase()) {
+            if (soundEffectTickCount <= 0) {
+                //level.playSeededSound(null, this, SoundEvents.ALLAY_HURT, SoundSource.MASTER, 1, 1,0);
+                if (!level.isClientSide) playSound(ROCKET_LAUNCH.get(), 1, 1);
+                soundEffectTickCount = ROCKET_SOUND_LENGTH;
+            } else {
+                soundEffectTickCount--;
+            }
             //put the handleTrajectory calculation on the start path
             if (!level.isClientSide() && shouldHandleCalculation) {
                 //so the pos is initialized
@@ -436,12 +434,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     protected void tickContraption() {
         if (!(contraption instanceof RocketContraption))
             return;
-        //TODO make schedule for rocket
-        if (failedToLaunch) {//happens when fail to have enough fuel
+        /*if (failedToLaunch) {//happens when fail to have enough fuel
             getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
             //disassemble();
             return;
-        }
+        }*/
 
         if (level.isClientSide) {
             clientOffsetDiff *= .75f;
@@ -449,34 +446,30 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         }
 
         tickActors();
-        if (isInPropulsionPhase() && !level.isClientSide) {
-            tickConsumptionAndSpeed();
-            Vec3 movementVec = getDeltaMovement();
-            if (!level.isClientSide) tickDimensionChangeLogic();
+        if (!level.isClientSide) {
+            if (isInPropulsionPhase()) {
+                tickConsumptionAndSpeed();
+                Vec3 movementVec = getDeltaMovement();
+                tickDimensionChangeLogic();
 
 
-            if (ContraptionCollider.collideBlocks(this)) {
-                if (!level.isClientSide) {
+                if (ContraptionCollider.collideBlocks(this)) {
                     //stopRocket();
                     getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.BLOCKED);
                     setContraptionMotion(Vec3.ZERO);
                     //disassemble();
-                    return;
-                }
-            }
-            if (tickCount > 2 && isInPropulsionPhase()) {
-                movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
-                move(movementVec.x, movementVec.y, movementVec.z);
-            }
 
-        /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
+                } else if (tickCount > 2) {//that means the rocket takes 2 ticks more than expected to go up
+                    movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
+                    move(movementVec.x, movementVec.y, movementVec.z);
+                }
+                /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
             contraption.stop(level);*/
-        }
-        if (!isInPropulsionPhase()) {
-            setContraptionMotion(Vec3.ZERO);
-        }
-        if (!level.isClientSide)
+            } else {
+                setContraptionMotion(Vec3.ZERO);
+            }
             sendPacket();
+        }
     }
 
     @Override
@@ -746,7 +739,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         Vec3 motion = new Vec3(0, (speed + clientOffsetDiff / 2f) * ServerSpeedProvider.get(), 0);
 
         motion = VecHelper.clampComponentWise(motion, 1);
-        setContraptionMotion(motion);
+        //setContraptionMotion(motion);
+        move(motion.x, motion.y, motion.z);
     }
     public void sendPacket() {
         PacketInit.getChannel()
