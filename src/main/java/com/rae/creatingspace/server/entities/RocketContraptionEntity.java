@@ -34,6 +34,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -77,7 +78,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     double clientOffsetDiff;
     double speed;
     int soundEffectTickCount = 0;
-    static int ROCKET_SOUND_LENGTH = 120;
+    static int ROCKET_SOUND_LENGTH = 60;
 
     boolean shouldHandleCalculation = false;
     //inventory management
@@ -122,7 +123,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     //make the launch after the assembling of the rocket.
     public RocketContraptionEntity(EntityType<?> type, Level level) {
         super(type, level);
-        setSilent(false);
         schedule = new RocketScheduleRuntime(this);
     }
 
@@ -407,8 +407,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     @Override
     public void tick() {
+        ROCKET_SOUND_LENGTH = 65;
         if (soundEffectTickCount <= 0) {
-            playSound(ROCKET_LAUNCH.get(), 1, 1);
+            //level.playSeededSound(null, this, SoundEvents.ALLAY_HURT, SoundSource.MASTER, 1, 1,0);
+            if (level.isClientSide) playSound(ROCKET_LAUNCH.get(), 1, 1);
             soundEffectTickCount = ROCKET_SOUND_LENGTH;
         } else {
             soundEffectTickCount--;
@@ -824,6 +826,16 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.put("Runtime", schedule.write());
 
         super.writeAdditional(compound, spawnPacket);
+    }
+
+    @Override
+    public boolean isSilent() {
+        return false;
+    }
+
+    @Override
+    public SoundSource getSoundSource() {
+        return SoundSource.MASTER;
     }
 
     public boolean isReentry() {

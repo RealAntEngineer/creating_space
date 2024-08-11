@@ -1,11 +1,8 @@
 {
-  "rocket_launch": {
-    "subtitle": "creating_space.subtitle.rocket_launch",
+  "rocket_launch_sound": {
+    "subtitle": "creatingspace.subtitle.rocket_launch",
     "sounds": [
-      {
-        "type": "file",
-        "name": "creating_space:rocket_launch_sound"
-      }
+      "creatingspace:rocket_launch_sound"
     ]
   }
 }
