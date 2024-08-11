@@ -465,10 +465,12 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 }
                 /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
             contraption.stop(level);*/
-            } else {
-                setContraptionMotion(Vec3.ZERO);
             }
             sendPacket();
+        }
+        if (!isInPropulsionPhase()) {
+            setContraptionMotion(Vec3.ZERO);
+            this.speed = 0;
         }
     }
 
@@ -657,6 +659,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                 if (CSDimensionUtil.gravity(destLevel.dimensionTypeId().location()) == 0f) {
                                     //entity.disassemble();
                                     entity.stopRocket();
+                                    entity.schedule.destinationReached();
                                     System.out.println("going to : " + destination);
                                 }
                                 else{
@@ -879,7 +882,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     //navigation part (schedule)
     public void successfulNavigation() {
-        System.out.println("rocket found a path and has enough fuel");
+        System.out.println("rocket found a path");
     }
 
     public int countPlayerPassengers() {
@@ -903,6 +906,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             shouldHandleCalculation = false;
             handelTrajectoryCalculation(this);
             //shouldHandleCalculation = false;
+            if (getEntityData().get(STATUS_DATA_ACCESSOR).equals(RocketStatus.BLOCKED)) {
+                return -1;
+            }
         }
         //fail according to handleTrajectoryCalculation ?
         return 0;
