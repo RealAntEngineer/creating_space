@@ -4,7 +4,6 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.design.ExhaustPackType;
 import com.rae.creatingspace.api.design.PowerPackType;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
-import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -28,12 +27,13 @@ public class MiscInit {
             () -> new RegistryBuilder<ExhaustPackType>().allowModification().disableSaving()
                     .dataPackRegistry(ExhaustPackType.DIRECT_CODEC, ExhaustPackType.DIRECT_CODEC));
     public static final RegistryObject<ExhaustPackType> BELL_NOZZLE = DEFERRED_EXHAUST_PACK_TYPE.register(
-            "bell_nozzle", () -> new ExhaustPackType(2, 100, List.of(
+            "bell_nozzle", () -> new ExhaustPackType(2, 100,
+                    List.of(CreatingSpace.resource("methalox"))
+                    /*,List.of(
                     Couple.create(30, 30),
-                    Couple.create(90, 30)
+                    Couple.create(90, 30)*/
 
-            ))
-    );
+            ));
     public static final DeferredRegister<PowerPackType> DEFERRED_POWER_PACK_TYPE =
             DeferredRegister.create(Keys.POWER_PACK_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<PowerPackType>> POWER_PACK_TYPE = DEFERRED_POWER_PACK_TYPE.makeRegistry(
@@ -42,12 +42,13 @@ public class MiscInit {
                     PowerPackType.DIRECT_CODEC, PowerPackType.DIRECT_CODEC));
     public static final RegistryObject<PowerPackType> OPEN_CYCLE = DEFERRED_POWER_PACK_TYPE.register(
             "open_cycle", () -> new PowerPackType(2,
-                    List.of(CreatingSpace.resource("methalox")),
+                    List.of(CreatingSpace.resource("methalox"))
+                    /*,
                     List.of(
                             Couple.create(34, 31),
                             Couple.create(75, 30)
-                    ))
-    );
+                    )*/
+            ));
 
     public static final DeferredRegister<RocketAccessibleDimension> DEFERRED_ROCKET_ACCESSIBLE_DIMENSION =
             DeferredRegister.create(RocketAccessibleDimension.REGISTRY_KEY, CreatingSpace.MODID);

@@ -12,6 +12,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -67,21 +68,18 @@ public class EngineItem extends RocketEngineItem {
 
         int thrust = 1000;
         float efficiency = 1f;
-        PropellantType propellantType = PropellantTypeInit.METHALOX.get();
-
-        return getItemStackFromInfo(thrust, efficiency, propellantType);
+        return getItemStackFromInfo(thrust, efficiency, PropellantTypeInit.METHALOX.getId());
     }
 
     @NotNull
-    public ItemStack getItemStackFromInfo(int thrust, float efficiency, PropellantType propellantType) {
+    public ItemStack getItemStackFromInfo(int thrust, float efficiency, ResourceLocation propellantType) {
         ItemStack defaultInstance = super.getDefaultInstance();
         CompoundTag nbt = defaultInstance.getOrCreateTag();
         CompoundTag beTag = new CompoundTag();
 
         beTag.putInt("thrust", thrust);
         beTag.putFloat("efficiency", efficiency);
-        beTag.put("propellantType", PropellantTypeInit.PROPELLANT_TYPE.get()
-                .getCodec().encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
+        beTag.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
         nbt.put("blockEntity", beTag);
         defaultInstance.setTag(nbt);
         return defaultInstance;
@@ -94,7 +92,7 @@ public class EngineItem extends RocketEngineItem {
                 .getCodec().parse(NbtOps.INSTANCE, beTag.get("propellantType"))
                 .resultOrPartial(s -> {
                 }).orElse(PropellantTypeInit.METHALOX.get());
-        appendEngineDependentText(components, (int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")), beTag.getInt("thrust"));
+        appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")), beTag.getInt("thrust"));
         super.appendHoverText(itemStack, level, components, flag);
     }
 
@@ -102,7 +100,7 @@ public class EngineItem extends RocketEngineItem {
     public void fillItemCategory(CreativeModeTab modeTab, NonNullList<ItemStack> itemStacks) {
         if (this.allowedIn(modeTab)) {
             itemStacks.add(
-                    getItemStackFromInfo((int) (50000f * 9.81f), 0.9f, PropellantTypeInit.LH2LOX.get())
+                    getItemStackFromInfo((int) (50000f * 9.81f), 0.9f, PropellantTypeInit.LH2LOX.getId())
             );
         }
     }

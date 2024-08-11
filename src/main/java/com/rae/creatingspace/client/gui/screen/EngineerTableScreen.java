@@ -219,7 +219,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         addRenderableWidget(engineThrustInput);
         confirmButton = new IconButton(x + 258, y + 100, AllIcons.I_CONFIRM)
                 .withCallback(() ->
-                        craftEngine(getMenu().contentHolder.getBlockPos(), propellantTypes.get(setPropellantType.getState()), engineIsp, engineMass, engineThrustInput.getState()));
+                        craftEngine(getMenu().contentHolder.getBlockPos(), propellantTypeLocations.get(setPropellantType.getState()), engineIsp, engineMass, engineThrustInput.getState()));
         addRenderableWidget(confirmButton);
         setPowerPackType.onChanged();
     }
@@ -278,9 +278,9 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         }
     }
 
-    private void craftEngine(BlockPos blockEntityPos, PropellantType propellantType, float isp, float mass, float thrust) {
+    private void craftEngine(BlockPos blockEntityPos, ResourceLocation propellantType, float isp, float mass, float thrust) {
         //send a packet to the BE
-        float efficiency = isp / propellantType.getMaxISP();
+        float efficiency = isp / getSyncedPropellantRegistry().get(propellantType).getMaxISP();
         ItemStack newEngine = ((EngineItem) BlockInit.ROCKET_ENGINE.get().asItem())
                 .getItemStackFromInfo((int) thrust, efficiency, propellantType);
         PacketInit.getChannel()

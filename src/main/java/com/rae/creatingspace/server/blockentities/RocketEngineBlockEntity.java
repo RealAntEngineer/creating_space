@@ -8,6 +8,7 @@ import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -91,10 +92,8 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         public void setFromNbt(CompoundTag nbt) {
             thrust = nbt.getInt("thrust");
             efficiency = nbt.getFloat("efficiency");
-            propellantType = PropellantTypeInit.PROPELLANT_TYPE.get()
-                    .getCodec().parse(NbtOps.INSTANCE, nbt.get("propellantType"))
-                    .resultOrPartial(s -> {
-                    }).orElse(PropellantTypeInit.METHALOX.get());
+            propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow())
+                    .orElse(PropellantTypeInit.METHALOX.get());
             ;
         }
 

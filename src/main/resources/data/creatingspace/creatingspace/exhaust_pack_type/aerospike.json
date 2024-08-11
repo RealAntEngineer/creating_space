@@ -1,6 +1,10 @@
 {
   "minExpansionRatio": 2,
   "maxExpansionRatio": 500,
+  "allowedPropellants": [
+    "creatingspace:methalox",
+    "creatingspace:lh2lox"
+  ],
   "slots": [
     {
       "x": 30,
