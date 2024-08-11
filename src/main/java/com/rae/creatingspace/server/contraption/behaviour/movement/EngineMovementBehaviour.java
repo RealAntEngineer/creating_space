@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.api.rendering.GeometryRendering;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
+import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.AllSpecialTextures;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
@@ -27,12 +28,12 @@ public class EngineMovementBehaviour implements MovementBehaviour {
     static int segments = 4; // Number of segments for the base circle
     static int N = 50;
     static float maxDistance = 10f;
-    static float step = 1 / N;
+    static float step = (float) 1 / N;
 
 
     @Override
     public boolean isActive(MovementContext context) {
-        return true;//MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && context.motion.length() != 0;
+        return MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && rocketEntity.isInPropulsionPhase();
     }
 
     @Override
@@ -55,8 +56,6 @@ public class EngineMovementBehaviour implements MovementBehaviour {
         matrixStack.pushPose();
         // Translate and rotate the cone to the entity's position and orientation
         // Radius of the cone base
-        segments = 4;
-        step = 1f / N;
         Vec3 firstOffset = Vec3.atBottomCenterOf(context.localPos.below());
         matrixStack.translate(firstOffset.x, firstOffset.y, firstOffset.z);
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.10F));
