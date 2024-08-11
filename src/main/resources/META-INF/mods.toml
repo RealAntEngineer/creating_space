@@ -6,7 +6,7 @@ license="MIT"
 
 [[mods]]
 modId="creatingspace"
-version = "1.7.1.test_rocket_4"
+version = "1.7.1.test_rocket_5"
 displayName="Creating Space"
 logoFile = "logo.png"
 credits='''
