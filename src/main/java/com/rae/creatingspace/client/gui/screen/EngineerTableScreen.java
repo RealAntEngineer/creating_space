@@ -6,10 +6,11 @@ import com.rae.creatingspace.api.design.ExhaustPackType;
 import com.rae.creatingspace.api.design.PowerPackType;
 import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
+import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.server.items.engine.EngineItem;
+import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.rae.creatingspace.server.items.EngineFabricationBlueprint;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.EngineerTableCraft;
 import com.rae.creatingspace.utilities.packet.RocketEngineerTableSync;
@@ -68,7 +69,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private ScrollInput setPropellantType;
     private Label propellantLabel;
     private ScrollInput engineSizeInput;
-    private Label engineSizeLabel;
+    private Label engineSizeLabel;//should directly be the throat area : change that in the
 
     private ScrollInput engineThrustInput;
     private Label engineThrustLabel;
@@ -78,6 +79,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private IconButton confirmButton;
     float engineIsp;
     float engineMass;
+    int materialLevel = 0;
 
     public EngineerTableScreen(EngineerTableMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -219,7 +221,11 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         addRenderableWidget(engineThrustInput);
         confirmButton = new IconButton(x + 258, y + 100, AllIcons.I_CONFIRM)
                 .withCallback(() ->
-                        craftEngine(getMenu().contentHolder.getBlockPos(), propellantTypeLocations.get(setPropellantType.getState()), engineIsp, engineMass, engineThrustInput.getState()));
+                        craftEngine(getMenu().contentHolder.getBlockPos(),
+                                propellantTypeLocations.get(setPropellantType.getState()),
+                                exhaustPackTypeLocations.get(setExhaustPackType.getState()),
+                                powerPackTypeLocations.get(setPowerPackType.getState()),
+                                engineIsp, engineMass, engineThrustInput.getState()));
         addRenderableWidget(confirmButton);
         setPowerPackType.onChanged();
     }
@@ -255,10 +261,12 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             PowerPackType powerPack = powerPackTypes.get(setPowerPackType.getState());
             ExhaustPackType exhaustPackType = exhaustPackTypes.get(setExhaustPackType.getState());
             //replace by labels
-            font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(prop.getChamberPressure(
-                            engineThrustInput.getState(),
-                            (float) engineSizeInput.getState() / 1000,
-                            powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt()) / 100000, 3) + "bar",
+            float pressure = prop.getChamberPressure(
+                    engineThrustInput.getState(),
+                    (float) engineSizeInput.getState() / 1000,
+                    powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt()) / 100000;
+            float temperature = prop.getCombustionTemperature(powerPack.getCombustionEfficiency()).intValue();
+            font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(pressure, 3) + "bar",
                     x + 260, y + 20 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
             engineIsp = prop.getRealIsp(
@@ -266,27 +274,28 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             font.draw(ms, "ISP : " + (int) engineIsp + "s",
                     x + 260, y + 35 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
-            font.draw(ms, "T : " + prop.getCombustionTemperature(
-                            powerPack.getCombustionEfficiency()).intValue() + "°C",
+            font.draw(ms, /*"T : " + prop.getCombustionTemperature(
+                            powerPack.getCombustionEfficiency()).intValue() + "°C"*/"ML : " + EngineMaterialInit.getLevelFor(temperature, pressure),
                     x + 260, y + 50 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
             engineMass = exhaustPackType.getMass((float) engineSizeInput.getState() / 1000,
                     expansionRatioSlider.getValueInt());
+            materialLevel = EngineMaterialInit.getLevelFor(temperature, pressure);
             font.draw(ms, "M : " + CSUtil.scientificNbrFormatting(engineMass / 1000, 3) + "t",
                     x + 260, y + 65 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
         }
     }
 
-    private void craftEngine(BlockPos blockEntityPos, ResourceLocation propellantType, float isp, float mass, float thrust) {
+    private void craftEngine(BlockPos blockEntityPos, ResourceLocation propellantType, ResourceLocation exhaustType, ResourceLocation powerPackType, float isp, float mass, float thrust) {
         //send a packet to the BE
         float efficiency = isp / getSyncedPropellantRegistry().get(propellantType).getMaxISP();
-        ItemStack newEngine = ((EngineItem) BlockInit.ROCKET_ENGINE.get().asItem())
-                .getItemStackFromInfo((int) thrust, efficiency, propellantType);
+        ItemStack engineBlueprint = ((EngineFabricationBlueprint) ItemInit.ENGINE_BLUEPRINT.get().asItem())
+                .getBlueprintForEngine(engineSizeInput.getState(), expansionRatioSlider.getValueInt(), materialLevel, (int) thrust, efficiency, propellantType, exhaustType, powerPackType);
         PacketInit.getChannel()
                 .sendToServer(
                         EngineerTableCraft
-                                .sendCraft(blockEntityPos, newEngine));
+                                .sendCraft(blockEntityPos, engineBlueprint));
     }
 
     private void syncWithBE() {

@@ -48,8 +48,8 @@ public class ExhaustPackType {
      * @param expansionRatio is the ratio between the throat area and the exhaust area
      * @return the mass of the engine in Kg
      */
-    public float getMass(float size, float expansionRatio) {
-        return (expansionRatio / (maxExpansionRatio - minExpansionRatio) + 1) * size * 2000;
+    public int getMass(float size, float expansionRatio) {
+        return (int) ((expansionRatio / (maxExpansionRatio - minExpansionRatio) + 1) * size * 2000);
     }
 
     /*public List<Couple<Integer>> getSlots() {

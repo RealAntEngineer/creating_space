@@ -41,6 +41,7 @@ public class PowerPackType {
         return combustionEfficiency;
     }
 
+
     /*public List<Couple<Integer>> getSlots() {
         return slots;
     }*/

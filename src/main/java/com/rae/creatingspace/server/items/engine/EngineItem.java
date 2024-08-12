@@ -68,16 +68,18 @@ public class EngineItem extends RocketEngineItem {
 
         int thrust = 1000;
         float efficiency = 1f;
-        return getItemStackFromInfo(thrust, efficiency, PropellantTypeInit.METHALOX.getId());
+        int mass = 3000;
+        return getItemStackFromInfo(thrust, efficiency, mass, PropellantTypeInit.METHALOX.getId());
     }
 
     @NotNull
-    public ItemStack getItemStackFromInfo(int thrust, float efficiency, ResourceLocation propellantType) {
+    public ItemStack getItemStackFromInfo(int thrust, float efficiency, int mass, ResourceLocation propellantType) {
         ItemStack defaultInstance = super.getDefaultInstance();
         CompoundTag nbt = defaultInstance.getOrCreateTag();
         CompoundTag beTag = new CompoundTag();
 
         beTag.putInt("thrust", thrust);
+        beTag.putInt("mass", mass);
         beTag.putFloat("efficiency", efficiency);
         beTag.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
         nbt.put("blockEntity", beTag);
@@ -100,7 +102,7 @@ public class EngineItem extends RocketEngineItem {
     public void fillItemCategory(CreativeModeTab modeTab, NonNullList<ItemStack> itemStacks) {
         if (this.allowedIn(modeTab)) {
             itemStacks.add(
-                    getItemStackFromInfo((int) (50000f * 9.81f), 0.9f, PropellantTypeInit.LH2LOX.getId())
+                    getItemStackFromInfo((int) (50000f * 9.81f), 0.9f, 1000, PropellantTypeInit.LH2LOX.getId())
             );
         }
     }

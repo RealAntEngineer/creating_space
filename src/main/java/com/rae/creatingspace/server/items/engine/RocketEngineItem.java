@@ -22,7 +22,7 @@ public abstract class RocketEngineItem extends BlockItem {
         super(p_40565_, p_40566_);
     }
 
-    public void appendEngineDependentText(List<Component> components, int ISP, int thrust) {
+    public static void appendEngineDependentText(List<Component> components, int ISP, int thrust) {
         components.add(Component.translatable("creatingspace.science.isp")
                 .append(Component.literal(" : " + ISP))
                 .append(Component.translatable("creatingspace.science.unit.second")));
@@ -32,7 +32,7 @@ public abstract class RocketEngineItem extends BlockItem {
 
     }
 
-    public void appendEngineDependentText(List<Component> components, PropellantType propellantType, int ISP, int thrust) {
+    public static void appendEngineDependentText(List<Component> components, PropellantType propellantType, int ISP, int thrust) {
         appendEngineDependentText(components, ISP, thrust);
         components.add(Component.literal("ratio of fluid consumed :"));
         if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
