@@ -1,0 +1,52 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": true,
+  "ingredient": {
+    "item": "creatingspace:engine_blueprint"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "item": "creatingspace:rocket_engine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "machNbt": true,
+      "ingredients": [
+        {
+          "item": "creatingspace:rocket_engine"
+        },
+        {
+          "item": "creatingspace:power_pack"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:rocket_engine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "machNbt": true,
+      "ingredients": [
+        {
+          "item": "creatingspace:rocket_engine"
+        },
+        {
+          "item": "creatingspace:exhaust_pack"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:rocket_engine"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:rocket_engine"
+  }
+}

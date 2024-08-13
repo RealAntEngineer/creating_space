@@ -41,7 +41,7 @@ public class MiscInit {
                     .dataPackRegistry(
                     PowerPackType.DIRECT_CODEC, PowerPackType.DIRECT_CODEC));
     public static final RegistryObject<PowerPackType> OPEN_CYCLE = DEFERRED_POWER_PACK_TYPE.register(
-            "open_cycle", () -> new PowerPackType(2,
+            "open_cycle", () -> new PowerPackType(2, 1,
                     List.of(CreatingSpace.resource("methalox"))
                     /*,
                     List.of(

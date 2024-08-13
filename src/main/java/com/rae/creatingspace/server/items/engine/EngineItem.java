@@ -90,10 +90,10 @@ public class EngineItem extends RocketEngineItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         CompoundTag beTag = itemStack.getOrCreateTagElement("blockEntity");
-        PropellantType propellantType = PropellantTypeInit.PROPELLANT_TYPE.get()
-                .getCodec().parse(NbtOps.INSTANCE, beTag.get("propellantType"))
-                .resultOrPartial(s -> {
-                }).orElse(PropellantTypeInit.METHALOX.get());
+        PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
+                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, beTag.get("propellantType"))
+                        .resultOrPartial(s -> {
+                        }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
         appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")), beTag.getInt("thrust"));
         super.appendHoverText(itemStack, level, components, flag);
     }

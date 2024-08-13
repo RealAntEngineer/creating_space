@@ -29,12 +29,16 @@ public class EngineFabricationBlueprint extends Item {
         if (recipeData != null) {
             int size = recipeData.getInt("size");
             int materialLevel = recipeData.getInt("materialLevel");
-            ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
-            ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
             components.add(Component.literal("size : " + size));
             components.add(Component.literal("materialLevel : " + materialLevel));
-            components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-            components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
+            try {
+                ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
+                ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
+
+                components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
+                components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
+            } catch (Exception ignored) {
+            }
         }
         CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
         if (engineInfo != null) {
@@ -44,7 +48,7 @@ public class EngineFabricationBlueprint extends Item {
                     ResourceLocation.CODEC.parse(NbtOps.INSTANCE, engineInfo.get("propellantType"))
                             .resultOrPartial(s -> {
                             }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
-            RocketEngineItem.appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * engineInfo.getFloat("efficiency")), engineInfo.getInt("thrust"));
+            RocketEngineItem.appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * engineInfo.getFloat("efficiency")), engineInfo.getInt("mass"), engineInfo.getInt("thrust"));
         }
         super.appendHoverText(itemStack, level, components, tooltipFlag);
     }

@@ -11,7 +11,12 @@
     "entity.ItemEntityMixin",
     "entity.LivingEntityMixin",
     "entity.PlayerMixin",
-    "kinetics.BacktankBlockEntityMixin"
+    "kinetics.BacktankBlockEntityMixin",
+    "recipe.ItemApplicationMixin",
+    "recipe.ProcessingRecipeMixin",
+    "recipe.ProcessingRecipeRecipeSerializerMixin",
+    "recipe.SequencedAssemblyRecipeMixin",
+    "recipe.SequencedAssemblyRecipeSerializerMixin"
   ],
   "client": [
   ],

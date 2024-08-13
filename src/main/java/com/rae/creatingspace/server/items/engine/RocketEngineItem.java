@@ -32,8 +32,28 @@ public abstract class RocketEngineItem extends BlockItem {
 
     }
 
+    public static void appendEngineDependentText(List<Component> components, int ISP, int mass, int thrust) {
+        components.add(Component.translatable("creatingspace.science.isp")
+                .append(Component.literal(" : " + ISP))
+                .append(Component.translatable("creatingspace.science.unit.second")));
+        components.add(Component.translatable("creatingspace.science.mass").append(" : " + mass).append(Component.translatable("creatingspace.science.unit.kilo_gramme")));
+        components.add(Component.translatable("creatingspace.science.thrust")
+                .append(Component.literal(" : " + CSUtil.scientificNbrFormatting((float) thrust, 10)))
+                .append(Component.translatable("creatingspace.science.unit.newton")));
+
+    }
+
     public static void appendEngineDependentText(List<Component> components, PropellantType propellantType, int ISP, int thrust) {
         appendEngineDependentText(components, ISP, thrust);
+        appendFluidInfo(components, propellantType);
+    }
+
+    public static void appendEngineDependentText(List<Component> components, PropellantType propellantType, int ISP, int mass, int thrust) {
+        appendEngineDependentText(components, ISP, mass, thrust);
+        appendFluidInfo(components, propellantType);
+    }
+
+    private static void appendFluidInfo(List<Component> components, PropellantType propellantType) {
         components.add(Component.literal("ratio of fluid consumed :"));
         if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
             for (TagKey<Fluid> fluidTagkey : propellantType.getPropellantRatio().keySet()) {
