@@ -211,6 +211,7 @@
   "creatingspace.schedule.condition.item_threshold": "Item Threshold",
   "creatingspace.schedule.condition.redstone_link": "Redstone Link",
   "creatingspace.schedule.condition.player_count": "Seated Player Count",
-  "creatingspace.schedule.condition.idle": "Idle Inventory"
+  "creatingspace.schedule.condition.idle": "Idle Inventory",
+  "creatingspace.science.mass": "Mass"
 
 }

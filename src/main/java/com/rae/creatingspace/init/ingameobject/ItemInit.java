@@ -2,12 +2,15 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
+import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.SpacesuitHelmetItem;
 import com.rae.creatingspace.server.items.DesignBlueprintItem;
+import com.rae.creatingspace.server.items.EngineFabricationBlueprint;
 import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
+import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -19,30 +22,73 @@ import net.minecraft.world.item.Item;
 
 import static com.simibubi.create.AllTags.forgeItemTag;
 public class ItemInit {
+    static {
+        smartRegisterSequencedItem("aerospike_plug");
+        smartRegisterSequencedItem("bell_nozzle");
+        smartRegisterSequencedItem("power_pack");
+        smartRegisterSequencedItem("exhaust_pack");
+        smartRegisterSequencedItem("combustion_chamber");
+        EngineMaterialInit.register();
+
+    }
+
+    public static void registerEngineIngredientForMaterial(String name) {
+
+        smartRegisterSequencedItem(name + "_blisk");
+        smartRegisterSequencedItem(name + "_injector");
+        CreatingSpace.REGISTRATE.item(
+                        name + "_engine_wall", Item::new)
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .defaultModel()
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        name + "_rib", Item::new)
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .defaultModel()
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        name + "_canal", Item::new)
+                .defaultModel()
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        name + "_engine_pipe", Item::new)
+                .defaultModel()
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        name + "_turbine_shaft", Item::new)
+                .defaultModel()
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        smartRegisterSequencedItem(name + "_turbine");
+        smartRegisterSequencedItem(name + "_injector_grid");
+    }
+
+    private static void smartRegisterSequencedItem(String name) {
+        CreatingSpace.REGISTRATE.item(
+                        name, Item::new)
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        registerSequencedItem("incomplete_" + name);
+    }
+
+    private static ItemEntry<SequencedAssemblyItem> registerSequencedItem(String name) {
+        return CreatingSpace.REGISTRATE.item(
+                        name, SequencedAssemblyItem::new)
+                .register();
+    }
 
 
-    //component
-    public static final ItemEntry<Item> BLISK = CreatingSpace.REGISTRATE.item(
-                    "blisk", Item::new)
-            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-    public static final ItemEntry<Item> THROAT = CreatingSpace.REGISTRATE.item(
-                    "throat", Item::new)
-            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-
-    public static final ItemEntry<DesignBlueprintItem> DesignBlueprint =
+    public static final ItemEntry<DesignBlueprintItem> DESIGN_BLUEPRINT =
             CreatingSpace.REGISTRATE.item("design_blueprint", DesignBlueprintItem::new)
                     .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .register();
-    public static final ItemEntry<Item> INJECTOR = CreatingSpace.REGISTRATE.item(
-            "injector",Item::new)
-            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-    public static final ItemEntry<Item> REINFORCED_INJECTOR = CreatingSpace.REGISTRATE.item(
-                    "reinforced_injector",Item::new)
-            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
+    public static final ItemEntry<EngineFabricationBlueprint> ENGINE_BLUEPRINT =
+            CreatingSpace.REGISTRATE.item("engine_blueprint", EngineFabricationBlueprint::new)
+                    .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                    .register();
+
     public static final ItemEntry<Item> BASIC_SPACESUIT_FABRIC = CreatingSpace.REGISTRATE.item(
                     "basic_spacesuit_fabric",Item::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
@@ -53,22 +99,7 @@ public class ItemInit {
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
-    public static final ItemEntry<Item> INCOMPLETE_INJECTOR = CreatingSpace.REGISTRATE.item(
-            "incomplete_injector",Item::new)
-            .register();
 
-    public static final ItemEntry<Item> INJECTOR_GRID = CreatingSpace.REGISTRATE.item(
-            "injector_grid",Item::new)
-            .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-    public static final ItemEntry<Item> REINFORCED_INJECTOR_GRID = CreatingSpace.REGISTRATE.item(
-                    "reinforced_injector_grid",Item::new)
-            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-
-    public static final ItemEntry<Item> INCOMPLETE_INJECTOR_GRID = CreatingSpace.REGISTRATE.item(
-            "incomplete_injector_grid",Item::new)
-            .register();
 
     public static final ItemEntry<Item> COPPER_COIL = CreatingSpace.REGISTRATE.item(
             "copper_coil",Item::new)
@@ -81,31 +112,10 @@ public class ItemInit {
             .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
-    public static final ItemEntry<CombustibleItem> STARTER_CHARGE = CreatingSpace.REGISTRATE.item(
-        "starter_charge", CombustibleItem::new)
-            .onRegister(i -> i.setBurnTime(500))
-            .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
 
     public static final ItemEntry<CombustibleItem> COAL_DUST = CreatingSpace.REGISTRATE.item(
             "coal_dust", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(500))
-            .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-    public static final ItemEntry<Item> STURDY_PROPELLER = CreatingSpace.REGISTRATE.item(
-            "sturdy_propeller",Item::new)
-            .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-
-
-    public static final ItemEntry<Item> COMBUSTION_CHAMBER = CreatingSpace.REGISTRATE.item(
-            "combustion_chamber",Item::new)
-            .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
-
-
-    public static final ItemEntry<Item> BELL_NOZZLE = CreatingSpace.REGISTRATE.item(
-            "bell_nozzle",Item::new)
             .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
@@ -304,8 +314,32 @@ public class ItemInit {
                     .register();
 
 
-    //sub classes
-    
+    //legacy items
+    public static final ItemEntry<CombustibleItem> STARTER_CHARGE = CreatingSpace.REGISTRATE.item(
+                    "starter_charge", CombustibleItem::new)
+            .onRegister(i -> i.setBurnTime(500))
+            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+    public static final ItemEntry<Item> INJECTOR = CreatingSpace.REGISTRATE.item(
+                    "injector", Item::new)
+            //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+    public static final ItemEntry<Item> REINFORCED_INJECTOR = CreatingSpace.REGISTRATE.item(
+                    "reinforced_injector", Item::new)
+            //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+    public static final ItemEntry<Item> STURDY_PROPELLER = CreatingSpace.REGISTRATE.item(
+                    "sturdy_propeller", Item::new)
+            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
 
+    public static final ItemEntry<Item> INJECTOR_GRID = CreatingSpace.REGISTRATE.item(
+                    "injector_grid", Item::new)
+            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+    public static final ItemEntry<Item> REINFORCED_INJECTOR_GRID = CreatingSpace.REGISTRATE.item(
+                    "reinforced_injector_grid", Item::new)
+            //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
     public static void register() {}
 }

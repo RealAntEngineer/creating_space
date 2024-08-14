@@ -1,0 +1,70 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": true,
+  "ingredient": {
+    "type": "forge:intersection",
+    "children": [
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+          "engineRecipeData": {
+            "materialLevel": 1
+          }
+        }
+      },
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "creatingspace:range_int",
+        "range_data": {
+          "path": "engineRecipeData/size",
+          "min": 1000,
+          "max": 2000
+        }
+      }
+    ]
+  },
+  "loops": 3,
+  "results": [
+    {
+      "item": "creatingspace:iron_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_iron_turbine"
+        },
+        {
+          "item": "creatingspace:iron_turbine_shaft"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_iron_turbine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_iron_turbine"
+        },
+        {
+          "item": "creatingspace:iron_blisk"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_iron_turbine"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:incomplete_iron_turbine"
+  }
+}

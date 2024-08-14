@@ -1,7 +1,10 @@
 package com.rae.creatingspace.api.design;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,18 +13,31 @@ import java.util.function.Function;
 import static java.lang.Math.abs;
 
 public class PropellantType {
-    final float R = 8.31446261815324f;
+    static final float R = 8.31446261815324f;
     Map<TagKey<Fluid>, Float> propellantRatio;
     Integer maxISP;
     Float Cp;
     Float gamma;
     Float Rs;
+    Integer M;
+
     //for codec use MiscInit.PROPELLANT_TYPE.get().getCodec()
+    public static final Codec<Map<TagKey<Fluid>, Float>> MAP_CODEC = Codec.unboundedMap(TagKey.codec(ForgeRegistries.FLUIDS.getRegistryKey()), Codec.FLOAT);
+    public static final Codec<PropellantType> DIRECT_CODEC = RecordCodecBuilder.create(
+            instance ->
+                    instance.group(
+                            MAP_CODEC.fieldOf("propellantRatio").forGetter(i -> i.propellantRatio),
+                            Codec.INT.fieldOf("maxIsp").forGetter(i -> i.maxISP),
+                            Codec.FLOAT.fieldOf("Cp").forGetter(i -> i.Cp),
+                            Codec.FLOAT.fieldOf("gamma").forGetter(i -> i.gamma),
+                            Codec.INT.fieldOf("M").forGetter(i -> i.M)
+                    ).apply(instance, PropellantType::new));
 
     public PropellantType(Map<TagKey<Fluid>, Float> propellantRatio, Integer maxISP, Float Cp, Float gamma, int M) {
         this.propellantRatio = normalise(propellantRatio);
         this.maxISP = maxISP;
         this.Rs = R / (M / 1000f);
+        this.M = M;
         this.gamma = gamma;
         this.Cp = Cp;
     }

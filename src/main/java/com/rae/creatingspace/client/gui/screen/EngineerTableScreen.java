@@ -6,11 +6,11 @@ import com.rae.creatingspace.api.design.ExhaustPackType;
 import com.rae.creatingspace.api.design.PowerPackType;
 import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
+import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.rae.creatingspace.server.items.engine.SuperEngineItem;
+import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.rae.creatingspace.server.items.EngineFabricationBlueprint;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.EngineerTableCraft;
 import com.rae.creatingspace.utilities.packet.RocketEngineerTableSync;
@@ -40,7 +40,7 @@ import java.util.List;
 
 import static com.rae.creatingspace.init.MiscInit.getSyncedExhaustPackRegistry;
 import static com.rae.creatingspace.init.MiscInit.getSyncedPowerPackRegistry;
-import static com.rae.creatingspace.init.ingameobject.PropellantTypeInit.DEFERRED_PROPELLANT_TYPE;
+import static com.rae.creatingspace.init.ingameobject.PropellantTypeInit.getSyncedPropellantRegistry;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTableMenu> {
@@ -69,7 +69,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private ScrollInput setPropellantType;
     private Label propellantLabel;
     private ScrollInput engineSizeInput;
-    private Label engineSizeLabel;
+    private Label engineSizeLabel;//should directly be the throat area : change that in the
 
     private ScrollInput engineThrustInput;
     private Label engineThrustLabel;
@@ -79,6 +79,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private IconButton confirmButton;
     float engineIsp;
     float engineMass;
+    int materialLevel = 0;
 
     public EngineerTableScreen(EngineerTableMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -106,13 +107,13 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         propellantLabel.text = Components.immutableEmpty();
         propellantTypes = new ArrayList<>();
         List<MutableComponent> availablePropellantType = new ArrayList<>();
-        DEFERRED_PROPELLANT_TYPE.getEntries().forEach((ro) -> {
+        getSyncedPropellantRegistry().entrySet().forEach((ro) -> {
                     availablePropellantType.add(Component.translatable(
                             "propellant_type." +
-                                    ro.getId().getNamespace() + "." + ro.getId().getPath()).append(
-                            Component.literal("  max isp : " + ro.get().getMaxISP())));
-                    propellantTypes.add(ro.get());
-                    propellantTypeLocations.add(ro.getId());
+                                    ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()).append(
+                            Component.literal("  max isp : " + ro.getValue().getMaxISP())));
+            propellantTypes.add(ro.getValue());
+            propellantTypeLocations.add(ro.getKey().location());
                 }
         );
         setPropellantType = new SelectionScrollInput(x + 7, y + 135, 100, 18)
@@ -220,7 +221,11 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         addRenderableWidget(engineThrustInput);
         confirmButton = new IconButton(x + 258, y + 100, AllIcons.I_CONFIRM)
                 .withCallback(() ->
-                        craftEngine(getMenu().contentHolder.getBlockPos(), propellantTypes.get(setPropellantType.getState()), engineIsp, engineMass, engineThrustInput.getState()));
+                        craftEngine(getMenu().contentHolder.getBlockPos(),
+                                propellantTypeLocations.get(setPropellantType.getState()),
+                                exhaustPackTypeLocations.get(setExhaustPackType.getState()),
+                                powerPackTypeLocations.get(setPowerPackType.getState()),
+                                engineIsp, engineMass, engineThrustInput.getState()));
         addRenderableWidget(confirmButton);
         setPowerPackType.onChanged();
     }
@@ -256,10 +261,12 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             PowerPackType powerPack = powerPackTypes.get(setPowerPackType.getState());
             ExhaustPackType exhaustPackType = exhaustPackTypes.get(setExhaustPackType.getState());
             //replace by labels
-            font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(prop.getChamberPressure(
-                            engineThrustInput.getState(),
-                            (float) engineSizeInput.getState() / 1000,
-                            powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt()) / 100000, 3) + "bar",
+            float pressure = prop.getChamberPressure(
+                    engineThrustInput.getState(),
+                    (float) engineSizeInput.getState() / 1000,
+                    powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt()) / 100000;
+            float temperature = prop.getCombustionTemperature(powerPack.getCombustionEfficiency()).intValue();
+            font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(pressure, 3) + "bar",
                     x + 260, y + 20 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
             engineIsp = prop.getRealIsp(
@@ -267,27 +274,28 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             font.draw(ms, "ISP : " + (int) engineIsp + "s",
                     x + 260, y + 35 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
-            font.draw(ms, "T : " + prop.getCombustionTemperature(
-                            powerPack.getCombustionEfficiency()).intValue() + "°C",
+            font.draw(ms, /*"T : " + prop.getCombustionTemperature(
+                            powerPack.getCombustionEfficiency()).intValue() + "°C"*/"ML : " + EngineMaterialInit.getLevelFor(temperature, pressure),
                     x + 260, y + 50 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
             engineMass = exhaustPackType.getMass((float) engineSizeInput.getState() / 1000,
                     expansionRatioSlider.getValueInt());
+            materialLevel = EngineMaterialInit.getLevelFor(temperature, pressure);
             font.draw(ms, "M : " + CSUtil.scientificNbrFormatting(engineMass / 1000, 3) + "t",
                     x + 260, y + 65 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
         }
     }
 
-    private void craftEngine(BlockPos blockEntityPos, PropellantType propellantType, float isp, float mass, float thrust) {
+    private void craftEngine(BlockPos blockEntityPos, ResourceLocation propellantType, ResourceLocation exhaustType, ResourceLocation powerPackType, float isp, float mass, float thrust) {
         //send a packet to the BE
-        float efficiency = isp / propellantType.getMaxISP();
-        ItemStack newEngine = ((SuperEngineItem) BlockInit.ROCKET_ENGINE.get().asItem())
-                .getItemStackFromInfo((int) thrust, efficiency, propellantType);
+        float efficiency = isp / getSyncedPropellantRegistry().get(propellantType).getMaxISP();
+        ItemStack engineBlueprint = ((EngineFabricationBlueprint) ItemInit.ENGINE_BLUEPRINT.get().asItem())
+                .getBlueprintForEngine(engineSizeInput.getState(), expansionRatioSlider.getValueInt(), materialLevel, (int) thrust, efficiency, propellantType, exhaustType, powerPackType);
         PacketInit.getChannel()
                 .sendToServer(
                         EngineerTableCraft
-                                .sendCraft(blockEntityPos, newEngine));
+                                .sendCraft(blockEntityPos, engineBlueprint));
     }
 
     private void syncWithBE() {
@@ -324,7 +332,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                     availablePropellants.add(Component.translatable(
                             "propellant_type." +
                                     location.getNamespace() + "." + location.getPath()));
-                    propellantTypes.add(PropellantTypeInit.PROPELLANT_TYPE.get().getValue(location));
+                    propellantTypes.add(getSyncedPropellantRegistry().get(location));
                 }
         );
         //getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {

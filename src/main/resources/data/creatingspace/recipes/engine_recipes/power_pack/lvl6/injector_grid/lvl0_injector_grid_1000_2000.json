@@ -1,0 +1,86 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": true,
+  "ingredient": {
+    "type": "forge:intersection",
+    "children": [
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+          "engineRecipeData": {
+            "materialLevel": 6
+          }
+        }
+      },
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "creatingspace:range_int",
+        "range_data": {
+          "path": "engineRecipeData/size",
+          "min": 1000,
+          "max": 2000
+        }
+      }
+    ]
+  },
+  "loops": 3,
+  "results": [
+    {
+      "item": "creatingspace:monel_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        },
+        {
+          "item": "creatingspace:monel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        },
+        {
+          "item": "creatingspace:monel_injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        },
+        {
+          "item": "creatingspace:monel_injector"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:incomplete_monel_turbine"
+  }
+}

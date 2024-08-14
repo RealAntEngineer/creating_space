@@ -1,0 +1,119 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": true,
+  "ingredient": {
+    "type": "forge:intersection",
+    "children": [
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+          "engineRecipeData": {
+            "materialLevel": 4,
+            "exhaustPackType": "creatingspace:bell_nozzle"
+          }
+        }
+      },
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "creatingspace:range_int",
+        "range_data": {
+          "path": "engineRecipeData/size",
+          "min": 0,
+          "max": 1000
+        }
+      }
+    ]
+  },
+  "loops": 1,
+  "results": [
+    {
+      "item": "creatingspace:bell_nozzle"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_rib"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_rib"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:incomplete_bell_nozzle"
+  }
+}
