@@ -1,7 +1,10 @@
 package com.rae.creatingspace.api.squedule;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.squedule.condition.*;
+import com.rae.creatingspace.api.squedule.condition.IdleCargoCondition;
+import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
+import com.rae.creatingspace.api.squedule.condition.ScheduledDelay;
+import com.rae.creatingspace.api.squedule.condition.TimeOfDayCondition;
 import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
 import com.simibubi.create.foundation.utility.Components;
@@ -28,10 +31,10 @@ public class RocketSchedule {
         registerInstruction("destination", DestinationInstruction::new);
         registerCondition("delay", ScheduledDelay::new);
         registerCondition("time_of_day", TimeOfDayCondition::new);
-        registerCondition("fluid_threshold", FluidThresholdCondition::new);
-        registerCondition("item_threshold", ItemThresholdCondition::new);
-        registerCondition("redstone_link", RedstoneLinkCondition::new);
-        registerCondition("player_count", PlayerPassengerCondition::new);
+        //registerCondition("fluid_threshold", FluidThresholdCondition::new);
+        //registerCondition("item_threshold", ItemThresholdCondition::new);
+        //registerCondition("redstone_link", RedstoneLinkCondition::new);
+        //registerCondition("player_count", PlayerPassengerCondition::new);
         registerCondition("idle", IdleCargoCondition::new);
         //registerCondition("unloaded", StationUnloadedCondition::new);
         //registerCondition("powered", StationPoweredCondition::new);
