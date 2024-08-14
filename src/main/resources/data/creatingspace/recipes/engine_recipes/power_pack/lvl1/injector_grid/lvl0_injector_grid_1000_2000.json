@@ -27,7 +27,7 @@
   "loops": 3,
   "results": [
     {
-      "item": "creatingspace:iron_turbine"
+      "item": "creatingspace:iron_injector_grid"
     }
   ],
   "sequence": [
@@ -81,6 +81,6 @@
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_iron_turbine"
+    "item": "creatingspace:incomplete_iron_injector_grid"
   }
 }

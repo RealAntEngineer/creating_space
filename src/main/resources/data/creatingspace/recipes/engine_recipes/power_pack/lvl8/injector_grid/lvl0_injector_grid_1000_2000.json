@@ -27,7 +27,7 @@
   "loops": 3,
   "results": [
     {
-      "item": "creatingspace:hastelloy_turbine"
+      "item": "creatingspace:hastelloy_injector_grid"
     }
   ],
   "sequence": [
@@ -81,6 +81,6 @@
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_hastelloy_turbine"
+    "item": "creatingspace:incomplete_hastelloy_injector_grid"
   }
 }

@@ -27,7 +27,7 @@
   "loops": 3,
   "results": [
     {
-      "item": "creatingspace:brass_turbine"
+      "item": "creatingspace:brass_injector_grid"
     }
   ],
   "sequence": [
@@ -81,6 +81,6 @@
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_brass_turbine"
+    "item": "creatingspace:incomplete_brass_injector_grid"
   }
 }
