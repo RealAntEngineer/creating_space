@@ -1,4 +1,4 @@
-package com.rae.creatingspace.mixin.entity;
+package com.rae.creatingspace.mixin.entity.gravity;
 
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import net.minecraft.world.entity.Entity;
