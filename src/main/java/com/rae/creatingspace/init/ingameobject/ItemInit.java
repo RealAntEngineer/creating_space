@@ -39,17 +39,26 @@ public class ItemInit {
         CreatingSpace.REGISTRATE.item(
                         name + "_engine_wall", Item::new)
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .defaultModel()
                 .register();
         CreatingSpace.REGISTRATE.item(
                         name + "_rib", Item::new)
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .defaultModel()
                 .register();
         CreatingSpace.REGISTRATE.item(
                         name + "_canal", Item::new)
+                .defaultModel()
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register();
         CreatingSpace.REGISTRATE.item(
                         name + "_engine_pipe", Item::new)
+                .defaultModel()
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        name + "_turbine_shaft", Item::new)
+                .defaultModel()
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register();
         smartRegisterSequencedItem(name + "_turbine");
