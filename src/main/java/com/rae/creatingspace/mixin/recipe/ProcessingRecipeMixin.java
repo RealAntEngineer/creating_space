@@ -5,15 +5,17 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
+import java.util.ArrayList;
+
 @Mixin(value = ProcessingRecipe.class)
 public class ProcessingRecipeMixin implements IMoreNbtConditions {
     @Unique
-    public boolean cS_1_19_2$keepNbt = false;
+    public ArrayList<String> nbtKeys = new ArrayList<>();
     @Unique
     public boolean cS_1_19_2$matchNbt = false;
 
-    public void setKeepNbt(boolean value) {
-        cS_1_19_2$keepNbt = value;
+    public void setKeepNbt(ArrayList<String> nbtKeys) {
+        this.nbtKeys = nbtKeys;
     }
 
     public void setMachNbt(boolean value) {
@@ -22,7 +24,7 @@ public class ProcessingRecipeMixin implements IMoreNbtConditions {
 
     @Override
     public boolean isKeepNbt() {
-        return cS_1_19_2$keepNbt;
+        return nbtKeys.isEmpty();
     }
 
     @Override

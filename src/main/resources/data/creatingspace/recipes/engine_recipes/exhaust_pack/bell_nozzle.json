@@ -1,6 +1,9 @@
 {
   "type": "create:sequenced_assembly",
-  "keepNbt": true,
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
   "ingredient": {
     "item": "creatingspace:engine_blueprint",
     "type": "forge:partial_nbt",
@@ -22,7 +25,7 @@
       "machNbt": true,
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:combustion_chamber"
@@ -30,7 +33,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     },
@@ -39,7 +42,7 @@
       "machNbt": true,
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:bell_nozzle"
@@ -47,12 +50,12 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_exhaust_pack"
+    "item": "creatingspace:engine_blueprint"
   }
 }

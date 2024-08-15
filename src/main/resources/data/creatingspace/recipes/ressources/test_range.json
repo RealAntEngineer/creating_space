@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "type": "forge:intersection",
+    "children": [
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+          "engineRecipeData": {
+            "materialLevel": 0
+          }
+        }
+      },
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "creatingspace:range_int",
+        "range_data": {
+          "path": "engineRecipeData/size",
+          "min": 1000,
+          "max": 2000
+        }
+      }
+    ]
+  },
+  "result": "creatingspace:aluminum_ingot",
+  "cookingtime": 40
+}

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "creatingspace:item/incomplete_copper_injector_grid"
+    "layer0": "creatingspace:item/transition_item/incomplete_copper_injector_grid"
   }
 }
