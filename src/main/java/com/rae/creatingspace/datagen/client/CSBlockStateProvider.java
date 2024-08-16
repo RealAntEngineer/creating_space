@@ -12,8 +12,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class CSBlockStateProvider extends BlockStateProvider {
 
-    public CSBlockStateProvider(DataGenerator generator) {
-        super(generator, CreatingSpace.MODID, null);
+    public CSBlockStateProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+        super(generator, CreatingSpace.MODID, existingFileHelper);
     }
 
     @Override
