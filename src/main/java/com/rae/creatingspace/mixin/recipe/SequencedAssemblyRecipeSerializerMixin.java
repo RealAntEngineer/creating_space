@@ -28,7 +28,11 @@ public abstract class SequencedAssemblyRecipeSerializerMixin {
 
         }
         if (GsonHelper.isValidNode(json, "machNbt")) {
-            ((IMoreNbtConditions) recipe).setMachNbt(GsonHelper.getAsBoolean(json, "machNbt"));
+            ArrayList<String> collector = new ArrayList<>();
+            for (JsonElement ob : GsonHelper.getAsJsonArray(json, "machNbt")) {
+                collector.add(ob.getAsString());
+            }
+            ((IMoreNbtConditions) recipe).setMachNbt(collector);
         }
         cir.setReturnValue(recipe);
     }

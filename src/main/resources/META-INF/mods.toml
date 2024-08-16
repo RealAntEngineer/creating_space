@@ -8,11 +8,22 @@ license="MIT"
 modId="creatingspace"
 version = "1.7.1.test_recipe_1"
 displayName="Creating Space"
-logoFile = "logo.png"
+logoFile = "new_logo.png"
 credits='''
+Source code:
+RealAntEngineer
+Icicles
+Bream
+
 Translation :
 RealAntEngineer -> English and French
 PopCorn -> Russian and Ukrainian
+
+Textures :
+RealAntEngineer
+TheTntExpress
+Mr.Sodium
+Cosmos
 '''
 authors="Real Ant Engineer"
 

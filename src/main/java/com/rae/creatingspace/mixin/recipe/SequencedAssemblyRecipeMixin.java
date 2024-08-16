@@ -17,14 +17,25 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
     @Unique
     public ArrayList<String> nbtKeys = new ArrayList<>();
     @Unique
-    public boolean cS_1_19_2$matchNbt = false;
+    public ArrayList<String> matchNbtList = new ArrayList<>();
 
     public void setKeepNbt(ArrayList<String> nbtKeys) {
         this.nbtKeys = nbtKeys;
     }
 
-    public void setMachNbt(boolean value) {
-        cS_1_19_2$matchNbt = value;
+    @Override
+    public ArrayList<String> getKeepNbt() {
+        return nbtKeys;
+    }
+
+    @Override
+    public void setMachNbt(ArrayList<String> machNbtList) {
+        matchNbtList = machNbtList;
+    }
+
+    @Override
+    public ArrayList<String> getMachNbt() {
+        return matchNbtList;
     }
 
     @Override
@@ -34,7 +45,7 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
 
     @Override
     public boolean isMachNbt() {
-        return cS_1_19_2$matchNbt;
+        return !matchNbtList.isEmpty();
     }
     //issue will using either creatingspace:range_int or forge:intersection and a transitional item different that the first ingredient
     //possibly related to getRecipes

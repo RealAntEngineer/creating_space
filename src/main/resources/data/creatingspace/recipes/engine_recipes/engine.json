@@ -16,7 +16,10 @@
   "sequence": [
     {
       "type": "create:deploying",
-      "machNbt": true,
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"
@@ -33,7 +36,10 @@
     },
     {
       "type": "create:deploying",
-      "machNbt": true,
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"

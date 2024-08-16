@@ -18,7 +18,11 @@ public class ItemApplicationMixin {
         if ((this instanceof IMoreNbtConditions conditions) && conditions.isMachNbt()) {
             CompoundTag inputTag = inv.getItem(0).getOrCreateTag();
             CompoundTag outputTag = inv.getItem(1).getOrCreateTag();
-            cir.setReturnValue(inputTag.equals(outputTag));
+            for (String key : (((IMoreNbtConditions) this).getMachNbt())) {
+                if (inputTag.get(key).equals(outputTag.get(key))) {
+                    cir.setReturnValue(false);
+                }
+            }
         }
     }
 }

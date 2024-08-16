@@ -5,8 +5,11 @@ import java.util.ArrayList;
 public interface IMoreNbtConditions {
     void setKeepNbt(ArrayList<String> nbtKeys);
 
-    void setMachNbt(boolean value);
+    ArrayList<String> getKeepNbt();
 
+    void setMachNbt(ArrayList<String> machNbtList);
+
+    ArrayList<String> getMachNbt();
     boolean isKeepNbt();
 
     boolean isMachNbt();
