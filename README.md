@@ -15,7 +15,7 @@
 
 ----
 
-### Creating Space is a mod that allow you to create rocket using contraption and go to other planets. Be prepared to design a rocket inspired by realistic science.
+### Creating Space is a mod that allow you to create rocket using contraptions and go to other planets. Be prepared to design a rocket inspired by realistic science.
 
 ----
 
