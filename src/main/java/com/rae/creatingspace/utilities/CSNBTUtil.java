@@ -16,8 +16,8 @@ import java.util.List;
 public class CSNBTUtil {
     // for propellant consumption -> make documentation + need to make codec for those data structures
     // there is a lot of code duplication -> remove it
-
-    public static HashMap<Couple<TagKey<Fluid>>, Couple<Float>> fromNBTtoMapCouple(CompoundTag partialDrainAmountPerFluid) {
+    //replace by Codec
+    /*public static HashMap<Couple<TagKey<Fluid>>, Couple<Float>> fromNBTtoMapCouple(CompoundTag partialDrainAmountPerFluid) {
         HashMap<Couple<TagKey<Fluid>>, Couple<Float>> returnedMap = new HashMap<>();
         for (String stringCouple:partialDrainAmountPerFluid.getAllKeys()){
             CompoundTag coupleNBT = partialDrainAmountPerFluid.getCompound(stringCouple);
@@ -84,7 +84,7 @@ public class CSNBTUtil {
         }
         return returnNBT;
     }
-
+*/
     public static HashMap<TagKey<Fluid>, Integer> fromNBTtoMapFluidTagsInteger(CompoundTag perTagFluidMap) {
         HashMap<TagKey<Fluid>, Integer> returnedMap = new HashMap<>();
         for (String stringCouple:perTagFluidMap.getAllKeys()){

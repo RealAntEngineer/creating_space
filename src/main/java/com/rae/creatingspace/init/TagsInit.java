@@ -3,6 +3,7 @@ package com.rae.creatingspace.init;
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.utility.Lang;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -181,12 +183,12 @@ public class TagsInit extends AllTags {
         private static void init() {}
 
     }
-
     public enum CustomFluidTags {
 
         LIQUID_METHANE(),
         LIQUID_HYDROGEN(),
         LIQUID_OXYGEN(),
+        METALIC_HYDROGEN(),
         DISSIPATE_IN_SPACE(), LIQUID_CO2();
 
         public final TagKey<Fluid> tag;
@@ -230,6 +232,57 @@ public class TagsInit extends AllTags {
         private static void init() {
         }
 
+    }
+
+    public enum CustomBiomeTags {
+        NO_OXYGEN();
+
+        public final TagKey<Biome> tag;
+        public final boolean alwaysDatagen;
+
+        CustomBiomeTags() {
+            this(CustomNameSpace.MOD);
+        }
+
+        CustomBiomeTags(CustomNameSpace namespace) {
+            this(namespace, namespace.optionalDefault, namespace.alwaysDatagenDefault);
+        }
+
+        CustomBiomeTags(CustomNameSpace namespace, String path) {
+            this(namespace, path, namespace.optionalDefault, namespace.alwaysDatagenDefault);
+        }
+
+        CustomBiomeTags(CustomNameSpace namespace, boolean optional, boolean alwaysDatagen) {
+            this(namespace, null, optional, alwaysDatagen);
+        }
+
+        CustomBiomeTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
+            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            if (optional) {
+                tag = optionalTag(ForgeRegistries.BIOMES, id);
+            } else {
+                tag = TagKey.create(Registries.BIOME, id);
+            }
+            this.alwaysDatagen = alwaysDatagen;
+        }
+
+        public boolean matches(Biome biome) {
+            return matches(ForgeRegistries.BIOMES.getHolder(biome).orElse(null));
+        }
+
+        public boolean matches(ResourceLocation biome) {
+            return matches(ForgeRegistries.BIOMES.getHolder(biome).orElse(null));
+        }
+
+        public boolean matches(Holder<Biome> biome) {
+            if (biome != null) {
+                return biome.is(tag);
+            }
+            return false;
+        }
+
+        private static void init() {
+        }
     }
 
 

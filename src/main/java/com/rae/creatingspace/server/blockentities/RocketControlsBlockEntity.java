@@ -82,7 +82,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         return lastException;
     }
 
-    public void queueAssembly(ResourceKey<Level> destination) {
+    public void queueAssembly(ResourceLocation destination) {
         this.assembleNextTick = true;
         this.destination = destination;
     }

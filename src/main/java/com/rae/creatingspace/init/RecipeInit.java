@@ -1,6 +1,7 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.recipes.AirLiquefyingRecipe;
 import com.rae.creatingspace.recipes.ChemicalSynthesisRecipe;
 import com.rae.creatingspace.recipes.MechanicalElectrolysisRecipe;
 import com.simibubi.create.AllTags;
@@ -27,7 +28,9 @@ import java.util.function.Supplier;
 
 public enum RecipeInit implements IRecipeTypeInfo {
     CHEMICAL_SYNTHESIS(ChemicalSynthesisRecipe::new),
-    MECHANICAL_ELECTROLYSIS(MechanicalElectrolysisRecipe::new);
+    MECHANICAL_ELECTROLYSIS(MechanicalElectrolysisRecipe::new),
+    AIR_LIQUEFYING(AirLiquefyingRecipe::new);
+
     private final ResourceLocation id;
     private final RegistryObject<RecipeSerializer<?>> serializerObject;
     @Nullable

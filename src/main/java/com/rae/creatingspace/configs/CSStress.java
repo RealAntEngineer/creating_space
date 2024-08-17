@@ -18,23 +18,28 @@ public class CSStress extends ConfigBase implements BlockStressValues.IStressVal
 
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> capacities = new HashMap<>();
     private final Map<ResourceLocation, ForgeConfigSpec.ConfigValue<Double>> impacts = new HashMap<>();
+
     @Override
     public void registerAll(ForgeConfigSpec.Builder builder) {
         builder.comment(".", Comments.su, Comments.impact)
                 .push("impact");
-        BlockStressDefaults.DEFAULT_IMPACTS.forEach((r, i) -> {
+        Map<ResourceLocation, Double> staticImpactMap = new HashMap<>(BlockStressDefaults.DEFAULT_IMPACTS);
+        staticImpactMap.forEach((r, i) -> {
             if (r.getNamespace()
-                    .equals(CreatingSpace.MODID))
+                    .equals(CreatingSpace.MODID)) {
                 getImpacts().put(r, builder.define(r.getPath(), i));
+            }
         });
         builder.pop();
 
         builder.comment(".", Comments.su, Comments.capacity)
                 .push("capacity");
-        BlockStressDefaults.DEFAULT_CAPACITIES.forEach((r, i) -> {
+        Map<ResourceLocation, Double> staticCapacitiesMap = new HashMap<>(BlockStressDefaults.DEFAULT_CAPACITIES);
+        staticCapacitiesMap.forEach((r, i) -> {
             if (r.getNamespace()
-                    .equals(CreatingSpace.MODID))
+                    .equals(CreatingSpace.MODID)) {
                 getCapacities().put(r, builder.define(r.getPath(), i));
+            }
         });
         builder.pop();
     }

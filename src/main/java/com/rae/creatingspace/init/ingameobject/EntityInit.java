@@ -2,7 +2,9 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.client.renderer.entity.RocketContraptionEntityRenderer;
+import com.rae.creatingspace.client.renderer.entity.RoomAtmosphereRenderer;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.server.entities.RoomAtmosphere;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
 import com.simibubi.create.foundation.utility.Lang;
@@ -20,6 +22,13 @@ public class EntityInit {
     public static final EntityEntry<RocketContraptionEntity> ROCKET_CONTRAPTION =
             contraption("rocket_contraption", RocketContraptionEntity::new,
                     () -> RocketContraptionEntityRenderer::new, 15, 1, true)
+                    .register();
+
+    public static final EntityEntry<RoomAtmosphere> ATMOSPHERE_ENTITY =
+            register("room_atmosphere", RoomAtmosphere::new,
+                    () -> RoomAtmosphereRenderer::new,
+                    MobCategory.MISC, 3, 10,
+                    false, true, RoomAtmosphere::build)
                     .register();
 
 

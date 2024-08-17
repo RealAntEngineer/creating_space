@@ -3,13 +3,18 @@ package com.rae.creatingspace.server.event;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,12 +22,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.SleepFinishedTimeEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -81,7 +88,51 @@ public class CSEventHandler {
             }
         }
     }
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            execute(event, event.player);
+        }
+    }
 
+    public static void execute(Entity entity) {
+        execute(null, entity);
+    }
+
+    private static void execute(@Nullable Event event, Entity entity) {
+        if (entity == null)
+            return;
+        if ((entity.level().dimension()) == Level.OVERWORLD) {
+            entity.setNoGravity(false);
+        }
+        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creatingspace:earth_orbit")))) {
+            if ((entity instanceof LivingEntity _entGetArmor ? _entGetArmor.getItemBySlot(EquipmentSlot.FEET) : ItemStack.EMPTY).getItem() == ItemInit.GRAVITYBOOTS_BOOTS.get()) {
+                entity.setNoGravity(false);
+            } else {
+                entity.setNoGravity(true);
+            }
+        }
+        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creatingspace:moon_orbit")))) {
+            if ((entity instanceof LivingEntity _entGetArmor ? _entGetArmor.getItemBySlot(EquipmentSlot.FEET) : ItemStack.EMPTY).getItem() == ItemInit.GRAVITYBOOTS_BOOTS.get()) {
+                entity.setNoGravity(false);
+            } else {
+                entity.setNoGravity(true);
+            }
+        }
+        if ((entity.level().dimension()) == (ResourceKey.create(Registries.DIMENSION, new ResourceLocation("creatingspace:the_moon")))) {
+            if ((entity instanceof LivingEntity _entGetArmor ? _entGetArmor.getItemBySlot(EquipmentSlot.FEET) : ItemStack.EMPTY).getItem() == ItemInit.GRAVITYBOOTS_BOOTS.get()) {
+                entity.setNoGravity(false);
+            } else {
+                entity.setNoGravity(false);
+                if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
+                    _entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 30, 1, false, false));
+                if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
+                    _entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30, 2, false, false));
+                if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
+                    _entity.addEffect(new MobEffectInstance(MobEffects.JUMP, 30, 5, false, false));
+            }
+        }
+    }
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
         sleepFinishedEvent.getLevel().getServer().getLevel(Level.OVERWORLD).setDayTime(sleepFinishedEvent.getNewTime());

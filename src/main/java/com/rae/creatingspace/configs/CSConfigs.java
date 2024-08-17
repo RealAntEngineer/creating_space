@@ -14,8 +14,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-// An example config class. This is not required, but it's a good idea to have one to keep your config organized.
-// Demonstrates how to use Forge's config APIs
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 
 public class CSConfigs
@@ -45,7 +43,7 @@ public class CSConfigs
     }
 
     public static void registerConfigs(ModLoadingContext context) {
-        //CLIENT = register(CSCfgClient::new, ModConfig.Type.CLIENT);
+        CLIENT = register(CSCfgClient::new, ModConfig.Type.CLIENT);
         //COMMON = register(CSCfgCommon::new, ModConfig.Type.COMMON);
         SERVER = register(CSCfgServer::new, ModConfig.Type.SERVER);
 

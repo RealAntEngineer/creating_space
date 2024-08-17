@@ -29,6 +29,8 @@ public class CryogenicTankItem extends BlockItem {
                         .getDisplayName()).append(")");
     }
 
+
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         CompoundTag tank = stack.getOrCreateTag().getCompound(FLUID_NBT_KEY);

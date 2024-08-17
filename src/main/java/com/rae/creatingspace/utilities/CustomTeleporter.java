@@ -2,6 +2,7 @@ package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
@@ -25,8 +26,7 @@ public class CustomTeleporter implements ITeleporter {
     @Override
     public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
         double height;
-        //use the arrivalHeight instead
-        height = CSDimensionUtil.arrivalHeight(destWorld.dimensionTypeId());//CSConfigs.COMMON.spaceSpawnHeight.get();
+        height = CSDimensionUtil.arrivalHeight(destWorld.dimension().location());
         Vec3 position;
         if ( entity instanceof RocketContraptionEntity rocketContraptionEntity){
 
@@ -47,6 +47,11 @@ public class CustomTeleporter implements ITeleporter {
 
     @Override
     public boolean isVanilla() {
+        return false;
+    }
+
+    @Override
+    public boolean playTeleportSound(ServerPlayer player, ServerLevel sourceWorld, ServerLevel destWorld) {
         return false;
     }
 }

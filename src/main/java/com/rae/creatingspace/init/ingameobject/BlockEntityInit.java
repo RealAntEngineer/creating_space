@@ -12,6 +12,10 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 
 public class BlockEntityInit {
+    public static final BlockEntityEntry<RocketEngineerTableBlockEntity> ENGINEER_TABLE =
+            REGISTRATE.blockEntity("engineer_table", RocketEngineerTableBlockEntity::new)
+                    .validBlocks(BlockInit.ROCKET_ENGINEER_TABLE)
+                    .register();
     public static final BlockEntityEntry<RocketControlsBlockEntity> CONTROLS =
             REGISTRATE.blockEntity("controls", RocketControlsBlockEntity::new)
             .validBlocks(BlockInit.ROCKET_CONTROLS)
@@ -21,26 +25,7 @@ public class BlockEntityInit {
             REGISTRATE.blockEntity("station", GroundBuilderBlockEntity::new)
                     .validBlocks(BlockInit.GROUND_STATION)
                     .register();*/
-    public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
-            REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
-                    .instance(() -> CatalystCarrierInstance::new)
-                    .validBlocks(BlockInit.CATALYST_CARRIER)
-                    .renderer(() -> CatalystCarrierRenderer::new)
-                    .register();
-    public static final BlockEntityEntry<LegacyMechanicalElectrolyzerBlockEntity> LEGACY_ELECTROLIZER =
-            REGISTRATE.blockEntity(
-                            "legacy_electrolyzer", LegacyMechanicalElectrolyzerBlockEntity::new)
-                    .instance(() -> ShaftInstance::new, false)
-                    .validBlocks(BlockInit.LEGACY_MECHANICAL_ELECTROLYZER)
-                    .renderer(() -> LegacyMechanicalElectrolyserBlockRenderer::new)
-                    .register();
-    public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
-            REGISTRATE.blockEntity(
-                            "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
-                    .instance(() -> ElectrolyzerInstance::new, false)
-                    .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
-                    .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
-                    .register();
+
     public static final BlockEntityEntry<OxygenBacktankBlockEntity> OXYGEN_BACKTANK =
             REGISTRATE.blockEntity("oxygen_backtank",OxygenBacktankBlockEntity::new)
                     .validBlocks(BlockInit.COPPER_OXYGEN_BACKTANK,BlockInit.NETHERITE_OXYGEN_BACKTANK)
@@ -62,6 +47,12 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.CHEMICAL_SYNTHESIZER)
                     .register();
 
+    public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
+            REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
+                    .instance(() -> CatalystCarrierInstance::new)
+                    .validBlocks(BlockInit.CATALYST_CARRIER)
+                    .renderer(() -> CatalystCarrierRenderer::new)
+                    .register();
     public static final BlockEntityEntry<RocketEngineBlockEntity.BigEngine> BIG_ENGINE =
             REGISTRATE.blockEntity(
                     "big_engine", RocketEngineBlockEntity.BigEngine::new)
@@ -72,6 +63,26 @@ public class BlockEntityInit {
             REGISTRATE.blockEntity(
                             "small_engine", RocketEngineBlockEntity.SmallEngine::new)
                     .validBlocks(BlockInit.SMALL_ROCKET_ENGINE)
+                    .register();
+
+    public static final BlockEntityEntry<RocketEngineBlockEntity.NbtDependent> NBT_DEPENDENT_ENGINE =
+            REGISTRATE.blockEntity("rocket_engine", RocketEngineBlockEntity.NbtDependent::new)
+                    .validBlocks(BlockInit.ROCKET_ENGINE)
+                    .register();
+
+    public static final BlockEntityEntry<LegacyMechanicalElectrolyzerBlockEntity> LEGACY_ELECTROLIZER =
+            REGISTRATE.blockEntity(
+                            "legacy_electrolyzer", LegacyMechanicalElectrolyzerBlockEntity::new)
+                    .instance(() -> ShaftInstance::new, false)
+                    .validBlocks(BlockInit.LEGACY_MECHANICAL_ELECTROLYZER)
+                    .renderer(() -> LegacyMechanicalElectrolyserBlockRenderer::new)
+                    .register();
+    public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
+            REGISTRATE.blockEntity(
+                            "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
+                    .instance(() -> ElectrolyzerInstance::new, false)
+                    .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
+                    .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
                     .register();
     public static final BlockEntityEntry<AirLiquefierBlockEntity> AIR_LIQUEFIER =
             REGISTRATE.blockEntity(
@@ -86,7 +97,6 @@ public class BlockEntityInit {
                     .validBlocks( BlockInit.FLOW_METER)
                     .renderer(()-> FlowGaugeBlockRenderer::new)
                     .register();
-
     public static final BlockEntityEntry<OxygenBlockEntity> OXYGEN =
             REGISTRATE.blockEntity(
                             "oxygen", OxygenBlockEntity::new)
@@ -100,6 +110,13 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> OxygenSealerRenderer::new)
                     .register();
+    public static final BlockEntityEntry<RoomPressuriserBlockEntity> ROOM_PRESSURIZER =
+            REGISTRATE.blockEntity(
+                            "room_pressurizer", RoomPressuriserBlockEntity::new)
+                    .instance(() -> RoomPressuriserInstance::new)
+                    .validBlocks(BlockInit.ROOM_PRESSURISER)
+                    .renderer(() -> RoomPressuriserRenderer::new)
+                    .register();
     public static final BlockEntityEntry<FlightRecorderBlockEntity> FLIGHT_RECORDER =
             REGISTRATE.blockEntity(
                             "flight_recorder", FlightRecorderBlockEntity::new)
@@ -107,6 +124,7 @@ public class BlockEntityInit {
                     .validBlocks( BlockInit.FLIGHT_RECORDER)
                     .renderer(()-> FlightRecorderRenderer::new)
                     .register();
+
 
     /*public static final BlockEntityEntry<IOBlockEntity> IO_TILE = REGISTRATE
             .blockEntity("io", IOBlockEntity::new)

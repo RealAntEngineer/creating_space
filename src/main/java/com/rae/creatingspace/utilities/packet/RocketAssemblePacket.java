@@ -6,13 +6,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RocketAssemblePacket extends BlockEntityConfigurationPacket<RocketControlsBlockEntity> {
     private Boolean assembleNextTick;
-    private ResourceKey<Level> destination;
+    private ResourceLocation destination;
 
     public RocketAssemblePacket(BlockPos pos, Boolean assembleNextTick) {
         super(pos);
@@ -26,8 +27,8 @@ public class RocketAssemblePacket extends BlockEntityConfigurationPacket<RocketC
     }
 
 
-    public static RocketAssemblePacket tryAssemble(BlockPos pos, ResourceKey<Level> destination) {
-        RocketAssemblePacket packet = new RocketAssemblePacket(pos,true);
+    public static RocketAssemblePacket tryAssemble(BlockPos pos, ResourceLocation destination) {
+        RocketAssemblePacket packet = new RocketAssemblePacket(pos, true);
         packet.assembleNextTick = true;
         packet.destination = destination;
         return packet;
@@ -38,13 +39,13 @@ public class RocketAssemblePacket extends BlockEntityConfigurationPacket<RocketC
     protected void writeSettings(FriendlyByteBuf buffer) {
 
         buffer.writeBoolean(assembleNextTick);
-        buffer.writeResourceKey(destination);
+        buffer.writeResourceLocation(destination);
     }
 
     @Override
     protected void readSettings(FriendlyByteBuf buffer) {
             assembleNextTick = buffer.readBoolean();
-            destination = buffer.readResourceKey(Registries.DIMENSION);
+        destination = buffer.readResourceLocation();
 
     }
 
