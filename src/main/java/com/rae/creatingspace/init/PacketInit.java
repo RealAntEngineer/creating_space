@@ -21,17 +21,23 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT;
 import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum PacketInit {
+    CRAFT_ENGINE(EngineerTableCraft.class, EngineerTableCraft::new, PLAY_TO_SERVER),
+    SYNC_ROCKET_ENGINEER_BE(RocketEngineerTableSync.class, RocketEngineerTableSync::new, PLAY_TO_SERVER),
     ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket::new, PLAY_TO_SERVER),
+    ASSEMBLE_ROCKET_2(NewRocketAssemblePacket.class, NewRocketAssemblePacket::new, PLAY_TO_SERVER),
     ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
+    LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket::new, PLAY_TO_SERVER),
+    DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket::new, PLAY_TO_SERVER),
     SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
     SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
-    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT);
+    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT),
+    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER);
     public static final ResourceLocation CHANNEL_NAME = CreatingSpace.resource("main");
     public static final int NETWORK_VERSION = 3;
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
     private static SimpleChannel channel;
 
-    private PacketInit.PacketType<?> packetType;
+    private final PacketInit.PacketType<?> packetType;
 
     <T extends SimplePacketBase> PacketInit(Class<T> type, Function<FriendlyByteBuf, T> factory,
                                             NetworkDirection direction) {
@@ -61,11 +67,11 @@ public enum PacketInit {
     private static class PacketType<T extends SimplePacketBase> {
         private static int index = 0;
 
-        private BiConsumer<T, FriendlyByteBuf> encoder;
-        private Function<FriendlyByteBuf, T> decoder;
-        private BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
-        private Class<T> type;
-        private NetworkDirection direction;
+        private final BiConsumer<T, FriendlyByteBuf> encoder;
+        private final Function<FriendlyByteBuf, T> decoder;
+        private final BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
+        private final Class<T> type;
+        private final NetworkDirection direction;
 
         private PacketType(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
             encoder = T::write;

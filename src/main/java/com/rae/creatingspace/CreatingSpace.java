@@ -50,7 +50,13 @@ public class CreatingSpace {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
-
+        modEventBus.addListener((DataPackRegistryEvent.NewRegistry event) -> {
+            event.dataPackRegistry(RocketAccessibleDimension.REGISTRY_KEY,RocketAccessibleDimension.CODEC, RocketAccessibleDimension.CODEC);
+            event.dataPackRegistry(MiscInit.Keys.POWER_PACK_TYPE,PowerPackType.DIRECT_CODEC, PowerPackType.DIRECT_CODEC);
+            event.dataPackRegistry(MiscInit.Keys.EXHAUST_PACK_TYPE,ExhaustPackType.DIRECT_CODEC, ExhaustPackType.DIRECT_CODEC);
+            event.dataPackRegistry(PropellantTypeInit.Keys.PROPELLANT_TYPE,PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC);
+            System.out.println("added reload for registries");
+        });
         REGISTRATE.registerEventListeners(modEventBus);
 
         TagsInit.init();
@@ -68,6 +74,7 @@ public class CreatingSpace {
         CarverInit.register(modEventBus);
         EntityDataSerializersInit.register(modEventBus);
         MiscInit.register(modEventBus);
+        CreativeModeTabsInit.register(modEventBus);
 
         CSConfigs.registerConfigs(modLoadingContext);
 
@@ -80,12 +87,7 @@ public class CreatingSpace {
 
         modEventBus.addListener(CreatingSpace::init);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
-        modEventBus.addListener((DataPackRegistryEvent.NewRegistry event) -> {
-            event.dataPackRegistry(RocketAccessibleDimension.REGISTRY_KEY,RocketAccessibleDimension.CODEC, RocketAccessibleDimension.CODEC);
-            event.dataPackRegistry(MiscInit.Keys.POWER_PACK_TYPE,PowerPackType.DIRECT_CODEC, PowerPackType.DIRECT_CODEC);
-            event.dataPackRegistry(MiscInit.Keys.EXHAUST_PACK_TYPE,ExhaustPackType.DIRECT_CODEC, ExhaustPackType.DIRECT_CODEC);
-            event.dataPackRegistry(PropellantTypeInit.Keys.PROPELLANT_TYPE,PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC);
-        });
+
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 

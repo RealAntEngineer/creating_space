@@ -23,7 +23,7 @@ public class PropellantTypeInit {
     public static final DeferredRegister<PropellantType> DEFERRED_PROPELLANT_TYPE =
             DeferredRegister.create(Keys.PROPELLANT_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<PropellantType>> PROPELLANT_TYPE = DEFERRED_PROPELLANT_TYPE.makeRegistry(
-            () -> new RegistryBuilder<PropellantType>().allowModification().disableSaving());
+            () -> new RegistryBuilder<PropellantType>().allowModification());//.disableSaving());
                     //.dataPackRegistry(PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC));
     public static final RegistryObject<PropellantType> METHALOX = DEFERRED_PROPELLANT_TYPE
             .register("methalox", () -> new PropellantType(

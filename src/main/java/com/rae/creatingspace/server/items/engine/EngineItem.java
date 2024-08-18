@@ -73,7 +73,7 @@ public class EngineItem extends RocketEngineItem {
     }
 
     @NotNull
-    public ItemStack getItemStackFromInfo(int thrust, float efficiency, int mass, ResourceLocation propellantType) {
+    public static ItemStack getItemStackFromInfo(int thrust, float efficiency, int mass, ResourceLocation propellantType) {
         ItemStack defaultInstance = super.getDefaultInstance();
         CompoundTag nbt = defaultInstance.getOrCreateTag();
         CompoundTag beTag = new CompoundTag();
@@ -90,11 +90,15 @@ public class EngineItem extends RocketEngineItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         CompoundTag beTag = itemStack.getOrCreateTagElement("blockEntity");
-        PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
-                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, beTag.get("propellantType"))
-                        .resultOrPartial(s -> {
-                        }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
-        appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")), beTag.getInt("thrust"));
+        try {
+            PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
+                    ResourceLocation.CODEC.parse(NbtOps.INSTANCE, beTag.get("propellantType"))
+                            .resultOrPartial(s -> {
+                            }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
+            appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")), beTag.getInt("thrust"));
+        } catch (Exception ignored){
+
+        }
         super.appendHoverText(itemStack, level, components, flag);
     }
 

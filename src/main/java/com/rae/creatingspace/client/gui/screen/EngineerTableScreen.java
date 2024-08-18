@@ -269,22 +269,22 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             float temperature = prop.getCombustionTemperature(powerPack.getCombustionEfficiency()).intValue();
             graphics.drawString(font, "P : " + CSUtil.scientificNbrFormatting(pressure, 3) + "bar",
                     x + 260, y + 20 + 6,
-                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB(), false);
             engineIsp = prop.getRealIsp(
                     powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt());
             graphics.drawString(font, "ISP : " + (int) engineIsp + "s",
                     x + 260, y + 35 + 6,
-                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB(), false);
             graphics.drawString(font, /*"T : " + prop.getCombustionTemperature(
                             powerPack.getCombustionEfficiency()).intValue() + "°C"*/"ML : " + EngineMaterialInit.getLevelFor(temperature, pressure),
                     x + 260, y + 50 + 6,
-                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB(), false);
             engineMass = exhaustPackType.getMass((float) engineSizeInput.getState() / 1000,
                     expansionRatioSlider.getValueInt());
             materialLevel = EngineMaterialInit.getLevelFor(temperature, pressure);
             graphics.drawString(font, "M : " + CSUtil.scientificNbrFormatting(engineMass / 1000, 3) + "t",
                     x + 260, y + 65 + 6,
-                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB(), false);
         }
     }
 

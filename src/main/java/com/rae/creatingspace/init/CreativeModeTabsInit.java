@@ -4,12 +4,14 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
+import com.rae.creatingspace.server.items.engine.EngineItem;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +48,7 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.ROCKET_CASING);
                         output.accept(BlockInit.SMALL_ROCKET_ENGINE);
                         output.accept(BlockInit.BIG_ROCKET_ENGINE);
+                        output.acceptAll(makeStackEngineListFunc().apply(BlockInit.ROCKET_ENGINE.asItem()));
                         output.accept(BlockInit.ROCKET_CONTROLS);
                         output.accept(BlockInit.CATALYST_CARRIER);
                         output.accept(BlockInit.MECHANICAL_ELECTROLYZER);
@@ -54,7 +57,7 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.OXYGEN_SEALER);
                         output.accept(BlockInit.AIR_LIQUEFIER);
                         output.accept(BlockInit.FLIGHT_RECORDER);
-                        output.acceptAll(makeStackListFunc().apply(BlockInit.CRYOGENIC_TANK.asItem()));
+                        output.acceptAll(makeStackCryoTankListFunc().apply(BlockInit.CRYOGENIC_TANK.asItem()));
                     })
                     .build());
     public static final RegistryObject<CreativeModeTab> COMPONENT_TAB = TAB_REGISTER.register(
@@ -97,11 +100,11 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.BASIC_SPACESUIT_FABRIC);
                         output.accept(ItemInit.ADVANCED_SPACESUIT_FABRIC);
                         output.accept(ItemInit.BASIC_SPACESUIT_HELMET);
-                        output.accept(makeStackFunc().apply(ItemInit.COPPER_OXYGEN_BACKTANK.get()));
+                        output.accept(makeStackBackTankFunc().apply(ItemInit.COPPER_OXYGEN_BACKTANK.get()));
                         output.accept(ItemInit.BASIC_SPACESUIT_LEGGINGS);
                         output.accept(ItemInit.BASIC_SPACESUIT_BOOTS);
                         output.accept(ItemInit.ADVANCED_SPACESUIT_HELMET);
-                        output.accept(makeStackFunc().apply(ItemInit.NETHERITE_OXYGEN_BACKTANK.get()));
+                        output.accept(makeStackBackTankFunc().apply(ItemInit.NETHERITE_OXYGEN_BACKTANK.get()));
                         output.accept(ItemInit.ADVANCED_SPACESUIT_LEGGINGS);
                         output.accept(ItemInit.ADVANCED_SPACESUIT_BOOTS);
 
@@ -131,7 +134,7 @@ public class CreativeModeTabsInit {
                     })
                     .build());
 
-    private static Function<Item, ItemStack> makeStackFunc() {
+    private static Function<Item, ItemStack> makeStackBackTankFunc() {
         Map<Item, Function<Item, ItemStack>> factories = new Reference2ReferenceOpenHashMap<>();
 
         Map<ItemProviderEntry<?>, Function<Item, ItemStack>> simpleFactories = Map.of(
@@ -166,7 +169,7 @@ public class CreativeModeTabsInit {
         };
     }
 
-    private static Function<Item, Collection<ItemStack>> makeStackListFunc() {
+    private static Function<Item, Collection<ItemStack>> makeStackCryoTankListFunc() {
         Map<Item, Function<Item, Collection<ItemStack>>> factories = new Reference2ReferenceOpenHashMap<>();
 
         Map<ItemProviderEntry<?>, Function<Item, Collection<ItemStack>>> simpleFactories = Map.of(
@@ -183,6 +186,32 @@ public class CreativeModeTabsInit {
                             itemStacks.add(itemStack);
                         }
                     }
+                    return itemStacks;
+                }
+        );
+
+        simpleFactories.forEach((entry, factory) -> {
+            factories.put(entry.asItem(), factory);
+        });
+
+        return item -> {
+            Function<Item, Collection<ItemStack>> factory = factories.get(item);
+            if (factory != null) {
+                return factory.apply(item);
+            }
+            return Collections.singleton(new ItemStack(item));
+        };
+    }
+    private static Function<Item, Collection<ItemStack>> makeStackEngineListFunc() {
+        Map<Item, Function<Item, Collection<ItemStack>>> factories = new Reference2ReferenceOpenHashMap<>();
+
+        Map<ItemProviderEntry<?>, Function<Item, Collection<ItemStack>>> simpleFactories = Map.of(
+                BlockInit.ROCKET_ENGINE, item -> {
+                    Collection<ItemStack> itemStacks = new ArrayList<>();
+                            itemStacks.add(item.getDefaultInstance());
+                            itemStacks.add(EngineItem.getItemStackFromInfo(1000000,0.8f,3000,new ResourceLocation("creatingspace:methalox")));
+
+
                     return itemStacks;
                 }
         );

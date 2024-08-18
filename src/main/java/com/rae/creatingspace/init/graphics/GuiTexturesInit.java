@@ -1,7 +1,6 @@
 package com.rae.creatingspace.init.graphics;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.foundation.gui.UIRenderHelper;
 import com.simibubi.create.foundation.gui.element.ScreenElement;
@@ -78,15 +77,8 @@ public enum GuiTexturesInit implements ScreenElement {
     @OnlyIn(Dist.CLIENT)
     public void render(GuiGraphics graphics, int x, int y, Color c) {
         bind();
-        UIRenderHelper.drawColoredTexture(graphics, c, x, y, startX, startY, width, height);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void renderNotStandardSheetSize(GuiGraphics graphics, int x, int y, Color c) {
-        bind();
         UIRenderHelper.drawColoredTexture(graphics, c, x, y,0, startX, startY, width, height, sheet_width, sheet_height);
     }
-
     @OnlyIn(Dist.CLIENT)
     public static void render(ResourceLocation location, GuiGraphics graphics, int x, int y, int startX, int startY, int width, int height, int sheet_width, int sheet_height, Color c) {
         RenderSystem.setShaderTexture(0, location);

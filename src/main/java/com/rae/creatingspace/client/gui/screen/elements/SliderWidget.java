@@ -69,7 +69,7 @@ public class SliderWidget extends AbstractSimiWidget {
 
             graphics.pose().pushPose();
             GuiTexturesInit slider = GuiTexturesInit.O2_GAUGE_SLIDER;
-            slider.renderNotStandardSheetSize(graphics,getX(),getY(), Color.WHITE);
+            slider.render(graphics,getX(),getY(), Color.WHITE);
             graphics.pose().popPose();
             //put numbers
             //System.out.println("progress : "+ prevValue + value + progress);
@@ -91,12 +91,12 @@ public class SliderWidget extends AbstractSimiWidget {
 
             graphics.pose().pushPose();
             GuiTexturesInit shadow = GuiTexturesInit.O2_GAUGE_SHADOW;
-            shadow.renderNotStandardSheetSize(graphics,getX(),getY(),Color.WHITE);
+            shadow.render(graphics,getX(),getY(),Color.WHITE);
             graphics.pose().popPose();
 
             graphics.pose().pushPose();
             GuiTexturesInit frame = GuiTexturesInit.O2_GAUGE_FRAME;
-            frame.renderNotStandardSheetSize(graphics,getX(),getY(),Color.WHITE);
+            frame.render(graphics,getX(),getY(),Color.WHITE);
             graphics.pose().popPose();
 
         }
