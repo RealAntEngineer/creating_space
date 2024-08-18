@@ -6,18 +6,29 @@ license="MIT"
 
 [[mods]]
 modId="creatingspace"
-version = "1.7.0b"
+version = "1.7.1.test_recipe_2"
 displayName="Creating Space"
-logoFile = "logo.png"
+logoFile = "new_logo.png"
 credits='''
+Source code:
+RealAntEngineer
+Icicles
+Bream
+
 Translation :
 RealAntEngineer -> English and French
 PopCorn -> Russian and Ukrainian
+
+Textures :
+RealAntEngineer
+TheTntExpress
+Mr.Sodium
+Cosmos
 '''
 authors="Real Ant Engineer"
 
 description='''
-Going to space with create
+test version 2 for the new engine recipe for 1.7.1
 '''
 
 [[dependencies.creatingspace]]

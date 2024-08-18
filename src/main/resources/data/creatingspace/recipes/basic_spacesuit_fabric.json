@@ -11,7 +11,7 @@
     },
     {
       "chance": 8.0,
-      "item": "create:golden_nugget"
+      "item": "minecraft:gold_nugget"
     }
   ],
   "sequence": [

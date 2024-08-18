@@ -1,0 +1,88 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "ingredient": {
+    "item": "creatingspace:engine_blueprint",
+    "type": "forge:partial_nbt",
+    "nbt": {
+      "engineRecipeData": {
+        "materialLevel": 7,
+        "powerPackType": "creatingspace:full_flow_staged_cycle"
+      }
+    }
+  },
+  "loops": 1,
+  "results": [
+    {
+      "item": "creatingspace:power_pack"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:inconel_turbine"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:inconel_turbine"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:inconel_injector_grid"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:engine_blueprint"
+  }
+}

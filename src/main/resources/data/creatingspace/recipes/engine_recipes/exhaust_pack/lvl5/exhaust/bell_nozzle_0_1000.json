@@ -1,0 +1,122 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "ingredient": {
+    "type": "forge:intersection",
+    "children": [
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+          "engineRecipeData": {
+            "materialLevel": 5,
+            "exhaustPackType": "creatingspace:bell_nozzle"
+          }
+        }
+      },
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "creatingspace:range_int",
+        "range_data": {
+          "path": "engineRecipeData/size",
+          "min": 0,
+          "max": 1000
+        }
+      }
+    ]
+  },
+  "loops": 1,
+  "results": [
+    {
+      "item": "creatingspace:bell_nozzle"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:copronickel_rib"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:copronickel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:copronickel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:copronickel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:copronickel_rib"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:engine_blueprint"
+  }
+}
