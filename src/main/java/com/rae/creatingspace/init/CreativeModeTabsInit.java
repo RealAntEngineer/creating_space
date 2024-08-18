@@ -209,7 +209,7 @@ public class CreativeModeTabsInit {
                 BlockInit.ROCKET_ENGINE, item -> {
                     Collection<ItemStack> itemStacks = new ArrayList<>();
                             itemStacks.add(item.getDefaultInstance());
-                            itemStacks.add(EngineItem.getItemStackFromInfo(1000000,0.8f,3000,new ResourceLocation("creatingspace:methalox")));
+                            itemStacks.add(((EngineItem)item).getItemStackFromInfo(1000000,0.8f,3000,new ResourceLocation("creatingspace:methalox")));
 
 
                     return itemStacks;

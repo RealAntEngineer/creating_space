@@ -13,8 +13,8 @@
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "Needed for producing methane, deprecated !!",
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
   "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split liquids in a basin",
-  "block.creatingspace.flight_recorder": "flight recorder",
-  "block.creatingspace.flight_recorder.tooltip.summary": "show information when the rocket doesn't work, need engineer googles to work",
+  "block.creatingspace.flight_recorder": "Flight Recorder",
+  "block.creatingspace.flight_recorder.tooltip.summary": "shows information when the rocket doesn't work, you need engineer googles to view the information",
   "block.creatingspace.flow_meter": "Flowmeter",
   "block.creatingspace.flow_meter.tooltip.summary": "Show the amount of fluid passing through a pipe",
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
@@ -22,7 +22,9 @@
   "block.creatingspace.oxygen_sealer.tooltip.condition1": "when R-Clicked with empty hand",
   "block.creatingspace.oxygen_sealer.tooltip.behaviour1": "open the GUI",
   "block.creatingspace.air_liquefier": "Air Liquefier",
-  "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only work on earth",
+  "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only works on earth",
+  "block.creatingspace.rocket_engineer_table": "Rocket Engineering Table",
+  "block.creatingspace.super_rocket_engine": "Rocket Engine",
 
 
   "block.creatingspace.clamps": "Clamps",
@@ -75,6 +77,8 @@
   "item.creatingspace.bell_nozzle": "Bell Nozzle",
   "item.creatingspace.copper_coil":"Copper Coil",
   "item.creatingspace.basic_catalyst":"Basic Catalyst",
+  "item.creatingspace.blisk": "Blisk",
+  "item.creatingspace.throat": "Throat",
 
 
   "item.creatingspace.nickel_ingot": "Nickel Ingot",
@@ -109,7 +113,7 @@
 
 
   "item.creatingspace.space_food": "Space Food",
-
+  "item.creatingspace.design_blueprint": "Design Blueprint",
   "itemGroup.creatingspace.machine_tab": "Machine Tab",
   "itemGroup.creatingspace.component_tab": "Component Tab",
   "itemGroup.creatingspace.minerals_tab": "Minerals Tab",
@@ -155,6 +159,11 @@
   "creatingspace.gui.sealer.settings": "Settings",
   "creatingspace.gui.sealer.range": "Range",
   "creatingspace.gui.sealer.automatic_retry": "Automatic Retry ?",
+  "gui.engineer_table_screen.available_exhaust": "Available Exhaust",
+  "gui.engineer_table_screen.available_power": "Available Power",
+  "gui.engineer_table_screen.available_propellants": "Available Propellants",
+  "gui.engineer_table_screen.thrust_selection": "Select Thrust",
+  "gui.engineer_table_screen.size_selection": "Select the size",
 
   "creatingspace.overlay.flight_recorder.title": "last flight :",
   "creatingspace.overlay.flight_recorder.no_failure": "no failure",
@@ -180,5 +189,29 @@
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
   "creatingspace.recipe.chemical": "chemical",
-  "creatingspace.recipe.electrolysis": "electrolysis"
+  "creatingspace.recipe.electrolysis": "electrolysis",
+  "propellant_type.creatingspace.methalox": "Metha/LOX",
+  "propellant_type.creatingspace.lh2lox": "LH2/LOX",
+  "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
+  "exhaust_pack_type.creatingspace.bell_nozzle": "bell nozzle",
+  "exhaust_pack_type.creatingspace.aerospike": "aerospike",
+  "power_pack_type.creatingspace.open_cycle": "open cycle",
+  "power_pack_type.creatingspace.ox_rich_staged_cycle": "ox rich flow",
+  "power_pack_type.creatingspace.fuel_rich_staged_cycle": "fuel rich flow",
+  "power_pack_type.creatingspace.full_flow_staged_cycle": "full flow",
+  "creatingspace.gui.rocket_controls.assemble": "Assemble",
+  "rocket.assemble.new_rocket": "Create New Rocket",
+  "creatingspace.gui.rocket_controls.disassemble": "Disassemble",
+  "creatingspace.gui.rocket_controls.x_entry_coord": "x rocket entry coordinate",
+  "creatingspace.gui.rocket_controls.z_entry_coord": "z rocket entry coordinate",
+  "creatingspace.schedule.instruction.destination": "Destination",
+  "creatingspace.schedule.condition.delay": "Delay",
+  "creatingspace.schedule.condition.time_of_day": "Time of Day",
+  "creatingspace.schedule.condition.fluid_threshold": "Fluid Threshold",
+  "creatingspace.schedule.condition.item_threshold": "Item Threshold",
+  "creatingspace.schedule.condition.redstone_link": "Redstone Link",
+  "creatingspace.schedule.condition.player_count": "Seated Player Count",
+  "creatingspace.schedule.condition.idle": "Idle Inventory",
+  "creatingspace.science.mass": "Mass"
+
 }

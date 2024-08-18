@@ -73,7 +73,7 @@ public class EngineItem extends RocketEngineItem {
     }
 
     @NotNull
-    public static ItemStack getItemStackFromInfo(int thrust, float efficiency, int mass, ResourceLocation propellantType) {
+    public ItemStack getItemStackFromInfo(int thrust, float efficiency, int mass, ResourceLocation propellantType) {
         ItemStack defaultInstance = super.getDefaultInstance();
         CompoundTag nbt = defaultInstance.getOrCreateTag();
         CompoundTag beTag = new CompoundTag();
