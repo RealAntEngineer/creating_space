@@ -1,6 +1,7 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -37,20 +38,8 @@ public class EngineMaterialInit {//will only be used for datagen
         return pressureBonus + temperatureBonus;
     }
 
-    static {
-        registerMaterial(0, "andesite");
-        registerMaterial(1, "iron");
-        registerMaterial(2, "copper");
-        registerMaterial(3, "brass");
-        registerMaterial(4, "reinforced_copper");
-        registerMaterial(5, "copronickel");
-        registerMaterial(6, "monel");
-        registerMaterial(7, "inconel");
-        registerMaterial(8, "hastelloy");
-    }
 
-    public static void registerMaterial(int level, String materialName) {
-        ItemInit.registerEngineIngredientForMaterial(materialName);
+    public static ArrayList<ItemEntry<? extends Item>> registerMaterial(int level, String materialName) {
         ArrayList<TagKey<Item>> collector = new ArrayList<>();
         collector.add(ItemTags.create(new ResourceLocation("forge", "ingots/" + materialName)));
         collector.add(ItemTags.create(new ResourceLocation("forge", "nuggets/" + materialName)));
@@ -59,9 +48,21 @@ public class EngineMaterialInit {//will only be used for datagen
         collector.add(ItemTags.create(new ResourceLocation("creatingspace", "blisk/" + materialName)));
 
         materials.put(level, collector);
+        return ItemInit.registerEngineIngredientForMaterial(materialName);
     }
 
-    public static void register() {
+    public static ArrayList<ItemEntry<? extends Item>> collectMaterials() {
+        ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
+        collector.addAll(registerMaterial(0, "andesite"));
+        collector.addAll(registerMaterial(1, "iron"));
+        collector.addAll(registerMaterial(2, "copper"));
+        collector.addAll(registerMaterial(3, "brass"));
+        collector.addAll(registerMaterial(4, "reinforced_copper"));
+        collector.addAll(registerMaterial(5, "copronickel"));
+        collector.addAll(registerMaterial(6, "monel"));
+        collector.addAll(registerMaterial(7, "inconel"));
+        collector.addAll(registerMaterial(8, "hastelloy"));
 
+        return collector;
     }
 }

@@ -2,7 +2,6 @@ package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.simibubi.create.AllCreativeModeTabs;
@@ -66,17 +65,18 @@ public class CreativeModeTabsInit {
                         .withTabsBefore(MACHINE_TAB.getKey())
                         .icon(ItemInit.INJECTOR::asStack)
                     .displayItems(($1,output)-> {
-                        output.accept(ItemInit.INJECTOR);
-                        output.accept(ItemInit.REINFORCED_INJECTOR);
-                        output.accept(ItemInit.INJECTOR_GRID);
-                        output.accept(ItemInit.REINFORCED_INJECTOR_GRID);
                         output.accept(ItemInit.COPPER_COIL);
                         output.accept(ItemInit.BASIC_CATALYST);
-                        output.accept(ItemInit.STARTER_CHARGE);
                         output.accept(ItemInit.COAL_DUST);
                         output.accept(ItemInit.STURDY_PROPELLER);
-                        output.accept(ItemInit.COMBUSTION_CHAMBER);
-                        output.accept(ItemInit.BELL_NOZZLE);
+                        ItemInit.COMBUSTION_CHAMBER.forEach(output::accept);
+                        ItemInit.BELL_NOZZLE.forEach(output::accept);
+                        ItemInit.AEROSPIKE_PLUG.forEach(output::accept);
+                        ItemInit.AEROSPIKE_PLUG.forEach(output::accept);
+                        ItemInit.EXHAUST_PACK.forEach(output::accept);
+                        ItemInit.POWER_PACK.forEach(output::accept);
+                        ItemInit.ENGINE_INGREDIENTS.forEach(output::accept);
+
                         output.accept(ItemInit.RAW_NICKEL);
                         //output.accept(ItemInit.CRUSHED_NICKEL_ORE);
                         output.accept(ItemInit.NICKEL_DUST);

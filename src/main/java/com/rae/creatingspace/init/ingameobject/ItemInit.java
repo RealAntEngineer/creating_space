@@ -19,58 +19,64 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 
+import java.util.ArrayList;
+
 import static com.simibubi.create.AllTags.forgeItemTag;
 
 public class ItemInit {
-    static {
-        smartRegisterSequencedItem("aerospike_plug");
-        smartRegisterSequencedItem("bell_nozzle");
-        smartRegisterSequencedItem("power_pack");
-        smartRegisterSequencedItem("exhaust_pack");
-        smartRegisterSequencedItem("combustion_chamber");
-        EngineMaterialInit.register();
 
-    }
+    public static final ArrayList<ItemEntry<? extends Item>> AEROSPIKE_PLUG = smartRegisterSequencedItem("aerospike_plug");;
 
-    public static void registerEngineIngredientForMaterial(String name) {
+    public static final ArrayList<ItemEntry<? extends Item>> BELL_NOZZLE = smartRegisterSequencedItem("bell_nozzle");
+    public static final ArrayList<ItemEntry<? extends Item>> POWER_PACK = smartRegisterSequencedItem("power_pack");
+    public static final ArrayList<ItemEntry<? extends Item>> EXHAUST_PACK= smartRegisterSequencedItem("exhaust_pack");
+    public static final ArrayList<ItemEntry<? extends Item>> COMBUSTION_CHAMBER = smartRegisterSequencedItem("combustion_chamber");
+    public static final ArrayList<ItemEntry<? extends Item>> ENGINE_INGREDIENTS = EngineMaterialInit.collectMaterials();
 
-        smartRegisterSequencedItem(name + "_blisk");
-        smartRegisterSequencedItem(name + "_injector");
-        CreatingSpace.REGISTRATE.item(
+
+    public static ArrayList<ItemEntry<? extends Item>> registerEngineIngredientForMaterial(String name) {
+        ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
+
+        collector.addAll(smartRegisterSequencedItem(name + "_blisk"));
+        collector.addAll(smartRegisterSequencedItem(name + "_injector"));
+        collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_engine_wall", Item::new)
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .defaultModel()
-                .register();
-        CreatingSpace.REGISTRATE.item(
+                .register());
+        collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_rib", Item::new)
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .defaultModel()
-                .register();
-        CreatingSpace.REGISTRATE.item(
+                .register());
+        collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_canal", Item::new)
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                .register();
-        CreatingSpace.REGISTRATE.item(
+                .register());
+        collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_engine_pipe", Item::new)
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                .register();
-        CreatingSpace.REGISTRATE.item(
+                .register());
+        collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_turbine_shaft", Item::new)
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                .register();
-        smartRegisterSequencedItem(name + "_turbine");
-        smartRegisterSequencedItem(name + "_injector_grid");
+                .register());
+        collector.addAll(smartRegisterSequencedItem(name + "_turbine"));
+        collector.addAll(smartRegisterSequencedItem(name + "_injector_grid"));
+        return collector;
     }
 
-    private static void smartRegisterSequencedItem(String name) {
-        CreatingSpace.REGISTRATE.item(
+    private static ArrayList<ItemEntry<? extends Item>> smartRegisterSequencedItem(String name) {
+        ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
+        collector.add(CreatingSpace.REGISTRATE.item(
                         name, Item::new)
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                .register();
-        registerSequencedItem("incomplete_" + name);
+                .register());
+        registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
+        return collector;
     }
 
     private static ItemEntry<SequencedAssemblyItem> registerSequencedItem(String name) {

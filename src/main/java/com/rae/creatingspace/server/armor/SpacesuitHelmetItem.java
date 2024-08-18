@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
@@ -24,10 +23,10 @@ import java.util.Map;
 
 @EventBusSubscriber
 public class SpacesuitHelmetItem extends UpgradableEquipment {
-	public static final EquipmentSlot SLOT = EquipmentSlot.HEAD;
+	public static final Type TYPE = Type.HELMET;
 
 	public SpacesuitHelmetItem(ArmorMaterial material, Properties properties, ResourceLocation textureLoc) {
-		super(material, SLOT, properties, textureLoc);
+		super(material, TYPE, properties, textureLoc);
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class SpacesuitHelmetItem extends UpgradableEquipment {
 		if (!(entity instanceof LivingEntity livingEntity)) {
 			return ItemStack.EMPTY;
 		}
-		ItemStack stack = livingEntity.getItemBySlot(SLOT);
+		ItemStack stack = livingEntity.getItemBySlot(TYPE.getSlot());
 		if (!(stack.getItem() instanceof SpacesuitHelmetItem)) {
 			return ItemStack.EMPTY;
 		}
