@@ -63,13 +63,7 @@ public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
                                 boolean pIsMoving) {
         BlockState neighborState = level.getBlockState(neighborPos);
         if (state.getValue(OxygenBlock.BREATHABLE)) {
-            //System.out.println(neighborState);
             notifyMaster(level, pos);
-
-            /*if (!(neighborState.getBlock() instanceof OxygenBlock)){
-
-                //if neighbor is O2 don't send message ? -> it may work without test a 2 sealer room
-            }*/
 
         }
 
@@ -121,14 +115,5 @@ public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
         public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
             return true;
         }
-
-        /*@Override
-        public Vector3d getFogColor(BlockState state, LevelReader level, BlockPos pos, Entity entity, Vector3d originalColor, float partialTick) {
-            if (state.is()){
-                System.out.println("in O2");
-                return new Vector3d(0,0.1F,0.6F);
-            }
-            return IClientBlockExtensions.super.getFogColor(state, level, pos, entity, originalColor, partialTick);
-        }*/
     }
 }

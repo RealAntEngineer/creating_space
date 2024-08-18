@@ -17,7 +17,7 @@ public class SoundInit {
 
     public static RegistryObject<SoundEvent> registerSound(String id) {
         return SOUNDS.register(id,
-                () -> new SoundEvent(CreatingSpace.resource(id)));
+                () -> SoundEvent.createVariableRangeEvent(CreatingSpace.resource(id)));
     }
     public static void register() {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());

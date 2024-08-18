@@ -4,6 +4,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
+import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
@@ -14,6 +17,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderAtmosphere;
+import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderPlanet;
 
 public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     private static final ResourceLocation SPACE_SKY_LOCATION = new ResourceLocation("creatingspace", "textures/environment/space_sky.png");
@@ -102,7 +108,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         @Override
         protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
             super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, true, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F);
         }
     }
 
@@ -128,12 +134,12 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         @Override
         protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
             super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 18.0F, 100F);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION,true, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 18.0F, 100F);
             BlockPos pos = camera.getEntity().getOnPos();
             int height = pos.getY();
             int minHeight = -64;
             int maxHeight = 384;
-            renderAstralBody(poseStack, bufferbuilder, MOON_LOCATION, 180F, 150.0F, 60.0F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+            renderAstralBody(poseStack, bufferbuilder, MOON_LOCATION,true, 180F, 150.0F, 60.0F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
@@ -150,7 +156,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             int height = pos.getY();
             int minHeight = -64;
             int maxHeight = 384;
-            renderAstralBody(poseStack, bufferbuilder, MARS_LOCATION, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+            renderAstralBody(poseStack, bufferbuilder, MARS_LOCATION, true, 180F, 150.0F, ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
@@ -170,12 +176,12 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             float f14 = (float) (i1) / 2.0F;
             float f15 = (float) (l + 1) / 4.0F;
             float f16 = (float) (i1 + 1) / 2.0F;
-            renderAstralBody(poseStack, bufferbuilder, MOON_PHASES_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F, f15, f13, f16, f14);
+            renderAstralBody(poseStack, bufferbuilder, MOON_PHASES_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F, f15, f13, f16, f14,true);
             BlockPos pos = camera.getEntity().getOnPos();
             int height = pos.getY();
             int minHeight = -64;
             int maxHeight = 384;
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, 180F, 150.0F, 60F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, true, 180F, 150.0F, 60F + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
@@ -205,9 +211,8 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
         public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
             BufferBuilder bufferbuilder = renderSpaceSky(poseStack);
+            //we need to use directly the buffer builder to avoid the issue with overlays or find a solution with the shader
             renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
-
-
             RenderSystem.depthMask(true);
             RenderSystem.disableBlend();
             return true;
@@ -220,24 +225,33 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             }
         }
 
-        protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, float rotationAngle, float bodySize, float bodyDistance) {
-            renderAstralBody(poseStack, bufferbuilder, bodyTexture, rotationAngle, bodySize, bodyDistance, 0, 1, 1, 0);
+        protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, boolean old, float rotationAngle, float bodySize, float bodyDistance) {
+            renderAstralBody(poseStack, bufferbuilder, bodyTexture, rotationAngle, bodySize, bodyDistance, 0, 1, 1, 0, old);
         }
 
-        protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, float rotationAngle, float bodySize, float bodyDistance, float f15, float f13, float f16, float f14) {
+        protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, float rotationAngle, float bodySize, float bodyDistance, float f15, float f13, float f16, float f14, boolean old) {
             poseStack.pushPose();
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-            poseStack.mulPose(Axis.XP.rotationDegrees(rotationAngle));
-            Matrix4f matrix4f = poseStack.last().pose();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, bodyTexture);
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, -bodySize).uv(f15, f14).endVertex();
-            bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, -bodySize).uv(f13, f14).endVertex();
-            bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, bodySize).uv(f13, f16).endVertex();
-            bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, bodySize).uv(f15, f16).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
+            RenderSystem.setShaderLights(new Vector3f(0,0,0), new Vector3f(0,0,0));
+            if (old) {
+                poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+                poseStack.mulPose(Axis.XP.rotationDegrees(rotationAngle));
+                Matrix4f matrix4f = poseStack.last().pose();
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, bodyTexture);
+                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+                bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, -bodySize).uv(f15, f14).endVertex();
+                bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, -bodySize).uv(f13, f14).endVertex();
+                bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, bodySize).uv(f13, f16).endVertex();
+                bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, bodySize).uv(f15, f16).endVertex();
+                BufferUploader.drawWithShader(bufferbuilder.end());
+            } else {
+                renderPlanet(bodyTexture, poseStack, LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
+                poseStack.popPose();
+                poseStack.pushPose();
+                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
+            }
             poseStack.popPose();
+
         }
     }
 }

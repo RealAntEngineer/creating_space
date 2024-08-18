@@ -4,8 +4,6 @@ import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.server.blocks.RocketControlsBlock;
 import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import com.rae.creatingspace.utilities.CSDimensionUtil;
-import com.rae.creatingspace.utilities.data.DimensionParameterMapReader;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
@@ -13,14 +11,10 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -33,10 +27,9 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     protected AssemblyException lastException;
 
     private boolean assembleNextTick = false;
-    private ResourceKey<Level> destination;
+    private ResourceLocation destination;
 
     public HashMap<String,BlockPos> initialPosMap = new HashMap<>();
-    public HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV;
 
 
     public RocketControlsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -87,6 +80,11 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         this.destination = destination;
     }
 
+    public void queueAssembly() {
+        this.assembleNextTick = true;
+        this.destination = null;
+    }
+
     private void assemble() {
 
         if (!(level.getBlockState(worldPosition)
@@ -115,30 +113,21 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         contraption.removeBlocksFromWorld(level, BlockPos.ZERO);
 
         if (destination == null){
-            destination = Level.OVERWORLD;
+            destination = level.dimension().location();
         }
 
         RocketContraptionEntity rocketContraptionEntity =
                 RocketContraptionEntity.create(level, contraption, destination);
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
-        if(initialPosMap.containsKey(destination.toString())){
-            rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.get(destination.toString());
-        }
+        rocketContraptionEntity.setAccessibilityData(initialPosMap);
+        //we should make that a little better -> no initialisation of entry point before launch
+        rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination.toString(), this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);
 
         AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(level, worldPosition);
 
     }
-
-    @Override
-    public void initialize() {
-        super.initialize();
-        if (!level.isClientSide())
-            this.mapOfAccessibleDimensionAndV = CSDimensionUtil.accessibleFrom(this.level.dimension());
-        notifyUpdate();
-    }
-
     @Override
     public void tick() {
         super.tick();
@@ -159,22 +148,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     protected void write(CompoundTag compound, boolean clientPacket) {
         AssemblyException.write(compound, lastException);
         compound.put("initialPosMap", putPosMap(this.initialPosMap, new CompoundTag()));
-        compound.put("mapOfDim", putMapOfDim(this.mapOfAccessibleDimensionAndV, new CompoundTag()));
-
         super.write(compound, clientPacket);
-    }
-
-    private CompoundTag putMapOfDim(HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfAccessibleDimensionAndV, CompoundTag compoundTag) {
-        if (compoundTag == null) {
-            compoundTag = new CompoundTag();
-        }
-        if (!(mapOfAccessibleDimensionAndV == null)) {
-            for (ResourceKey<Level> key :
-                    mapOfAccessibleDimensionAndV.keySet()) {
-                compoundTag.put(key.location().toString(), DimensionParameterMapReader.ACCESSIBILITY_PARAMETER_CODEC.encodeStart(NbtOps.INSTANCE, mapOfAccessibleDimensionAndV.get(key)).result().orElse(new CompoundTag()));
-            }
-        }
-        return compoundTag;
     }
 
     public static CompoundTag putPosMap(HashMap<String,BlockPos> initialPosMap, CompoundTag compound) {
@@ -191,24 +165,8 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
         lastException = AssemblyException.read(compound);
-
         this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
-        this.mapOfAccessibleDimensionAndV = getMapOfDim((CompoundTag) compound.get("mapOfDim"));
-
         super.read(compound, clientPacket);
-    }
-
-    private HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> getMapOfDim(CompoundTag compound) {
-        HashMap<ResourceKey<Level>, DimensionParameterMapReader.AccessibilityParameter> mapOfDim = new HashMap<>();
-
-        if (compound != null) {
-            for (String key : compound.getAllKeys()) {
-                mapOfDim.put(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(key)),
-                        DimensionParameterMapReader.ACCESSIBILITY_PARAMETER_CODEC.parse(NbtOps.INSTANCE, compound.get(key)).result().orElse(null));
-            }
-        }
-
-        return mapOfDim;
     }
 
     public static  HashMap<String,BlockPos> getPosMap(CompoundTag compound) {

@@ -1,6 +1,7 @@
 package com.rae.creatingspace.client.gui;
 
 import com.rae.creatingspace.client.gui.screen.elements.SliderWidget;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import net.minecraft.client.Minecraft;
@@ -35,7 +36,8 @@ public class RemainingO2Overlay implements IGuiOverlay {
             float o2Value = tag.getFloat("Oxygen");
             float prevO2Value =  tag.getFloat("prevOxygen");
             //prevO2Value = o2Value;
-            gauge = new SliderWidget(30,screenHeight-80,32,64);
+            //TODO create one at initialization the keep the same
+            gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(screenWidth), CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(screenHeight), 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
             gauge.setMax(OxygenBacktankUtil.maxOxygen(itemInChestSlot));
             gauge.setValues((int) o2Value, (int) prevO2Value);
             gauge.render(graphics, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,partialTick);

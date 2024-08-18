@@ -22,7 +22,7 @@ public class RocketPlumeParticleData implements ParticleOptions,ICustomParticleD
                 i.group(
                                 Codec.FLOAT.fieldOf("drag").forGetter(p -> p.drag))
                         .apply(i, RocketPlumeParticleData::new));
-        public static final Deserializer<RocketPlumeParticleData> DESERIALIZER = new Deserializer<RocketPlumeParticleData>() {
+        public static final ParticleOptions.Deserializer<RocketPlumeParticleData> DESERIALIZER = new ParticleOptions.Deserializer<RocketPlumeParticleData>() {
             public RocketPlumeParticleData fromCommand(ParticleType<RocketPlumeParticleData> particleTypeIn, StringReader reader)
                     throws CommandSyntaxException {
                 reader.expect(' ');
@@ -61,7 +61,7 @@ public class RocketPlumeParticleData implements ParticleOptions,ICustomParticleD
     }
 
         @Override
-        public Deserializer<RocketPlumeParticleData> getDeserializer() {
+        public ParticleOptions.Deserializer<RocketPlumeParticleData> getDeserializer() {
         return DESERIALIZER;
     }
 

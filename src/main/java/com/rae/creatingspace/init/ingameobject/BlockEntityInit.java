@@ -5,6 +5,7 @@ import com.rae.creatingspace.client.renderer.instance.*;
 import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.server.blockentities.*;
 import com.rae.creatingspace.server.blockentities.atmosphere.OxygenBlockEntity;
+import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
 import com.rae.creatingspace.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;

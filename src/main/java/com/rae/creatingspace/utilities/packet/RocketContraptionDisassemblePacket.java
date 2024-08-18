@@ -29,7 +29,7 @@ public class RocketContraptionDisassemblePacket extends SimplePacketBase {
         context.enqueueWork(
                 () -> {
                     ServerPlayer sender = context.getSender();
-                    Entity entity = sender.level.getEntity(entityID);
+                    Entity entity = sender.level().getEntity(entityID);
                     if (entity instanceof RocketContraptionEntity ce) {
 
                         ce.disassemble();

@@ -1,5 +1,8 @@
 package com.rae.creatingspace.server.contraption;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.blockentities.RocketEngineBlockEntity;
 import com.rae.creatingspace.server.blocks.FlightRecorderBlock;
@@ -9,9 +12,10 @@ import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 import com.simibubi.create.content.contraptions.render.ContraptionLighter;
 import com.simibubi.create.content.contraptions.render.NonStationaryLighter;
-import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,17 +27,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class RocketContraption extends TranslatingContraption {
     private int thrust = 0;
     private int dryMass = 0;
-    private HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo>();
+    //private final HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
+    private final HashMap<PropellantType, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
 
-    private ArrayList<BlockPos> localPosOfFlightRecorders = new ArrayList<>();
+    private final ArrayList<BlockPos> localPosOfFlightRecorders = new ArrayList<>();
     public RocketContraption() {
 
     }
@@ -56,30 +58,33 @@ public class RocketContraption extends TranslatingContraption {
         if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity){
 
             this.thrust += engineBlockEntity.getThrust();
-            float totalPropellantConsumption = (float) (engineBlockEntity.getThrust()/(
+            float totalPropellantMassFlow = (float) (engineBlockEntity.getThrust() / (
                     engineBlockEntity.getIsp()* CSConfigs.SERVER.rocketEngine.ISPModifier.get() *9.81));
-            float ratio = engineBlockEntity.getOxFuelRatio();
-            TagKey<Fluid> oxidizerTag = engineBlockEntity.getOxidizerTag();
-            TagKey<Fluid> fuelTag = engineBlockEntity.getFuelTag();
-            Couple<TagKey<Fluid>> combination = Couple.create(oxidizerTag,fuelTag);
-            ConsumptionInfo previousCombInfo = new ConsumptionInfo(0,0,0);
+            PropellantType propellantType = engineBlockEntity.getPropellantType();
+            ConsumptionInfo previousCombInfo = new ConsumptionInfo(new HashMap<>(), 0);
 
-            if (this.theoreticalPerTagFluidConsumption.containsKey(combination)){
+            if (this.theoreticalPerTagFluidConsumption.containsKey(propellantType)) {
                 previousCombInfo = this.theoreticalPerTagFluidConsumption
-                        .get(combination);
+                        .get(propellantType);
             }
-            float oxMass = totalPropellantConsumption *(ratio/(ratio+1));
-            float fuelMass = totalPropellantConsumption *(1/(ratio+1));
-
-            this.theoreticalPerTagFluidConsumption.put(combination,previousCombInfo.add(oxMass,fuelMass,engineBlockEntity.getThrust()));
+            HashMap<TagKey<Fluid>, Float> proportions = new HashMap<>(engineBlockEntity.getPropellantType().getPropellantRatio());
+            multiplyMap(proportions, totalPropellantMassFlow);
+            this.theoreticalPerTagFluidConsumption.put(propellantType, previousCombInfo.add(proportions, engineBlockEntity.getThrust()));
 
 
         }
-        this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState());
+        this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState(), blockEntityAdded);
         if (blockAdded instanceof FlightRecorderBlock){
             this.localPosOfFlightRecorders.add(localPos);
         }
         super.addBlock(pos, pair);
+    }
+
+    public static void multiplyMap(HashMap<TagKey<Fluid>, Float> map, float amount) {
+        for (TagKey<Fluid> fluid :
+                map.keySet()) {
+            map.put(fluid, map.get(fluid) * amount);
+        }
     }
 
     @Override
@@ -97,6 +102,37 @@ public class RocketContraption extends TranslatingContraption {
         return CSContraptionType.ROCKET;
     }
 
+    @Override
+    public void readNBT(Level world, CompoundTag nbt, boolean spawnData) {
+        super.readNBT(world, nbt, spawnData);
+        //TODO add data for server/client sync (possible solution of Interactive bug)
+        thrust = nbt.getInt("thrust");
+        dryMass = nbt.getInt("dryMass");
+        Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
+    }
+
+    @Override
+    public CompoundTag writeNBT(boolean spawnPacket) {
+        //TODO add data for server/client sync
+        CompoundTag nbt = super.writeNBT(spawnPacket);
+        nbt.putInt("thrust", thrust);
+        nbt.putInt("dryMass", dryMass);
+        nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
+        return nbt;
+    }
+    /*@Override
+    public void addBlocksToWorld(Level world, StructureTransform transform) {
+        for (StructureTemplate.StructureBlockInfo block : blocks.values()){
+            BlockPos targetPos = transform.apply(block.pos);
+            BlockState worldState = world.getBlockState(targetPos);
+
+            if (!worldState.isAir()){
+                worldState.getBlock().canBeReplaced(worldState, Fluids.WATER.defaultFluidState().getType());
+                world.explode()
+            }
+        }
+        super.addBlocksToWorld(world, transform);
+    }*/
 
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -115,16 +151,32 @@ public class RocketContraption extends TranslatingContraption {
         return this.thrust;
     }
 
-    public HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> getTPTFluidConsumption() {
+    public HashMap<PropellantType, ConsumptionInfo> getTPTFluidConsumption() {
         return theoreticalPerTagFluidConsumption;
     }
 
-    public record ConsumptionInfo(float oxConsumption, float fuelConsumption, int partialThrust){
-        public ConsumptionInfo add(float oxConsumption,float fuelConsumption, int partialThrust){
-            return new ConsumptionInfo(this.oxConsumption
-                    + oxConsumption,
-                    this.fuelConsumption
-                            +fuelConsumption,
+    //public record ConsumptionInfo(float oxConsumption, float fuelConsumption, int partialThrust){
+    public record ConsumptionInfo(Map<TagKey<Fluid>, Float> propellantConsumption, int partialThrust) {
+        public static final Codec<ConsumptionInfo> CODEC = RecordCodecBuilder.create(
+                instance ->
+                        instance.group(
+                                        Codec.unboundedMap(
+                                                TagKey.codec(Registries.FLUID),
+                                                Codec.FLOAT
+                                        ).fieldOf("propellantConsumption").forGetter(i -> i.propellantConsumption),
+                                        Codec.INT.fieldOf("partialThrust").forGetter(i -> i.partialThrust)
+                                )
+                                .apply(instance, ConsumptionInfo::new)
+        );
+
+        //expect that the keys are the same
+        public ConsumptionInfo add(Map<TagKey<Fluid>, Float> propellantConsumption, int partialThrust) {
+            HashMap<TagKey<Fluid>, Float> newMap = new HashMap<>(this.propellantConsumption());
+            for (TagKey<Fluid> fluid :
+                    propellantConsumption.keySet()) {
+                newMap.put(fluid, newMap.getOrDefault(fluid, 0f) + propellantConsumption.get(fluid));
+            }
+            return new ConsumptionInfo(newMap,
                     this.partialThrust +partialThrust);
         }
     }

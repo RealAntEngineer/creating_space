@@ -1,6 +1,6 @@
 package com.rae.creatingspace.server.blocks;
 
-import com.rae.creatingspace.client.gui.screen.DestinationScreen;
+import com.rae.creatingspace.client.gui.screen.RocketAssembleScreen;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
@@ -65,7 +65,7 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
     protected void displayScreen(RocketControlsBlockEntity be, Player player) {
         if (!(player instanceof LocalPlayer))
             return;
-        ScreenOpener.open(new DestinationScreen(be));
+        ScreenOpener.open(new RocketAssembleScreen(be));
     }
 
 
@@ -133,7 +133,8 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         HashMap<String, BlockPos> blockPosHashMap = blockEntityOptional.map(RocketControlsBlockEntity::getInitialPosMap).orElse(null);
         if(blockPosHashMap!= null){
             CompoundTag compoundTag = new CompoundTag();
-            tag.put("initialPosMap", RocketControlsBlockEntity.putPosMap(blockPosHashMap,compoundTag));
+
+            tag.put("initialPosMap", RocketControlsBlockEntity.putPosMap(blockPosHashMap, compoundTag));
         }
         Component customName = blockEntityOptional.map(RocketControlsBlockEntity::getCustomName).orElse(null);
         if (customName != null)

@@ -58,7 +58,7 @@ public class RocketScene {
         scene.addKeyframe();
 
         scene.world.showSection(seat,Direction.DOWN);
-        scene.overlay.showText(40).text("Don't forget the seat or you will be left Behind");
+        scene.overlay.showText(40).text("A seat can prevent falling from the rocket");
         scene.idleSeconds(3);
         scene.addKeyframe();
 

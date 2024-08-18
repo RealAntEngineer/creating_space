@@ -48,7 +48,6 @@ public class BlockInit {
             .block("rocket_engineer_table", RocketEngineerTableBlock::new)
             .properties(p -> p.strength(1.0f).noOcclusion())
             .item()
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build().register();
     public static final BlockEntry<SmallEngineBlock> SMALL_ROCKET_ENGINE = REGISTRATE
             .block("small_rocket_engine", SmallEngineBlock::new)
@@ -70,7 +69,6 @@ public class BlockInit {
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(EngineItem::new)
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
     public static final BlockEntry<BigEngineBlock> BIG_ROCKET_ENGINE = REGISTRATE
@@ -99,7 +97,6 @@ public class BlockInit {
                     .properties(p -> p.strength(1.0f))
                     .blockstate((c, p) -> p.getVariantBuilder(c.get())
                             .forAllStatesExcept(BlockStateGen.mapToAir(p), SmallRocketStructuralBlock.FACING))
-                    .properties(p -> p.color(MaterialColor.DIRT))
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .transform(axeOrPickaxe())
                     .register();
@@ -117,16 +114,12 @@ public class BlockInit {
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p -> p.strength(1.0f))
             .item()
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
             .block("rocket_casing",CasingBlock::new)
-            .properties(p-> p
-                    .color(MaterialColor.COLOR_BLUE))
             .transform(BuilderTransformers.casing(() -> SpriteShiftInit.ROCKET_CASING))
             .item()
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
             .register();
     public static final BlockEntry<RocketControlsBlock> ROCKET_CONTROLS = REGISTRATE.block(
@@ -208,14 +201,12 @@ public class BlockInit {
             .block("oxygen_sealer", SealerBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .item()
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
             .register();
     public static final BlockEntry<RoomPressuriserBlock> ROOM_PRESSURISER = REGISTRATE
             .block("room_pressuriser", RoomPressuriserBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .item()
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
             .register();
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(

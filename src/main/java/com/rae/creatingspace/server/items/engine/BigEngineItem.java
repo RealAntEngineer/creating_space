@@ -1,10 +1,10 @@
-package com.rae.creatingspace.server.items;
+package com.rae.creatingspace.server.items.engine;
 
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
+import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.engines.RocketEngineBlock;
-import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BigEngineItem extends RocketEngineItem{
+public class BigEngineItem extends RocketEngineItem {
     public BigEngineItem(Block p_40565_, Properties p_40566_) {
         super(p_40565_, p_40566_);
     }
@@ -67,16 +67,12 @@ public class BigEngineItem extends RocketEngineItem{
                         Direction ghostFacing = getGhostDirection(x, z, y);
 
                         BlockState ghostState = BlockInit.BIG_ENGINE_STRUCTURAL.getDefaultState()
-                                    .setValue(BigRocketStructuralBlock.FACING, ghostFacing);
+                                .setValue(BigRocketStructuralBlock.FACING, ghostFacing);
 
-                        lvl.setBlock(pos,ghostState,11);
+                        lvl.setBlock(pos, ghostState, 11);
                     }
                 }
             }
-        }
-        SuperGlueEntity entity = new SuperGlueEntity(lvl, SuperGlueEntity.span(place.offset(-1,-1,-1),place.offset(1,1,1)));
-        if (!lvl.isClientSide) {
-            lvl.addFreshEntity(entity);
         }
         return true;
     }
@@ -90,18 +86,14 @@ public class BigEngineItem extends RocketEngineItem{
             } else {
                 ghostFacing = Direction.DOWN;
             }
-        }
-        else if (x <0){
+        } else if (x < 0) {
             ghostFacing = Direction.EAST;
-        }
-        else if (x >0){
+        } else if (x > 0) {
             ghostFacing = Direction.WEST;
-        }
-        else if (z >0){
+        } else if (z > 0) {
             ghostFacing = Direction.NORTH;
 
-        }
-        else {
+        } else {
             ghostFacing = Direction.SOUTH;
         }
         return ghostFacing;
@@ -109,7 +101,7 @@ public class BigEngineItem extends RocketEngineItem{
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        appendEngineDependentText(components, CSConfigs.SERVER.rocketEngine.methaloxISP.get(),
+        appendEngineDependentText(components, (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),
                 CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get());
 
         super.appendHoverText(itemStack, level, components, flag);

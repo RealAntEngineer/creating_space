@@ -11,7 +11,11 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class SliderWidget extends AbstractSimiWidget {
+    private final int color;
+    //TODO clean up the prevValue, value thing as there already is a lerpedFloat
+    // warning there is remaining value everywhere
 
+    //TODO java doc as this should be in the api
     protected Font font;
     public int min;
     public int max;
@@ -20,7 +24,12 @@ public class SliderWidget extends AbstractSimiWidget {
     public LerpedFloat lerpedValue;
     public int prevValue;
     public SliderWidget(int x, int y, int width, int height) {
+        this(x, y, width, height, 0xFFFFFF);
+    }
+
+    public SliderWidget(int x, int y, int width, int height, int color) {
         super(x, y, width, height);
+        this.color = color;
         font = Minecraft.getInstance().font;
         min = 0;
         value = 0;
@@ -75,7 +84,7 @@ public class SliderWidget extends AbstractSimiWidget {
                     graphics.drawString(font,  nbr + " -",
                             (int) ((getX() + 4) / scale),
                             (int) ((getY() + yAddition) / scale),
-                            0xFFFFFF, false);
+                            color, false);
                     graphics.pose().popPose();
                 }
             }

@@ -33,7 +33,7 @@ public class RocketScheduleEditPacket extends SimplePacketBase {
 	@Override
 	public boolean handle(Context context) {
 		context.enqueueWork(() -> {
-			Entity entity = Objects.requireNonNull(context.getSender()).level.getEntity(rocketId);
+			Entity entity = Objects.requireNonNull(context.getSender()).level().getEntity(rocketId);
 			if (entity instanceof RocketContraptionEntity contraptionEntity) {
 				contraptionEntity.schedule.setSchedule(schedule, true);
 				contraptionEntity.sendPacket();

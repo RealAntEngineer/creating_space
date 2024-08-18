@@ -15,6 +15,10 @@ public class CSDamageSources {
 	public static DamageSource no_oxygen(Level level) {
 		return source(DamageSourceInit.NO_OXYGEN, level);
 	}
+	public static DamageSource over_heat(Level level) {
+		return source(DamageSourceInit.NO_OXYGEN, level);
+	}
+
 
 	private static DamageSource source(ResourceKey<DamageType> key, LevelReader level) {
 		Registry<DamageType> registry = level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);

@@ -1,6 +1,6 @@
 package com.rae.creatingspace.server.armor;
 
-import com.simibubi.create.content.equipment.armor.BaseArmorItem;
+import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,7 +10,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,13 +23,11 @@ import java.util.List;
 import java.util.Map;
 
 @EventBusSubscriber
-public class SpacesuitHelmetItem extends BaseArmorItem {
-	public static final ArmorItem.Type TYPE = Type.HELMET;
+public class SpacesuitHelmetItem extends UpgradableEquipment {
 	public static final EquipmentSlot SLOT = EquipmentSlot.HEAD;
 
-
 	public SpacesuitHelmetItem(ArmorMaterial material, Properties properties, ResourceLocation textureLoc) {
-		super(material, TYPE, properties, textureLoc);
+		super(material, SLOT, properties, textureLoc);
 	}
 
 	@Override
@@ -97,7 +94,6 @@ public class SpacesuitHelmetItem extends BaseArmorItem {
 			return;
 
 		List<ItemStack> O2Backtanks = OxygenBacktankUtil.getAllWithOxygen(entity);
-		System.out.println(O2Backtanks);
 		if (O2Backtanks.isEmpty())
 			return;
 

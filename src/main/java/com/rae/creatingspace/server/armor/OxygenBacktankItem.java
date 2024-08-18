@@ -1,6 +1,6 @@
 package com.rae.creatingspace.server.armor;
 
-import com.simibubi.create.content.equipment.armor.BaseArmorItem;
+import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.foundation.item.LayeredArmorItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -18,15 +18,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class OxygenBacktankItem extends BaseArmorItem {
+public class OxygenBacktankItem extends UpgradableEquipment {
     public static final EquipmentSlot SLOT = EquipmentSlot.CHEST;
-    public static final ArmorItem.Type TYPE = Type.CHESTPLATE;
-
     public static final int BAR_COLOR = 0xEFEFEF;
     private final Supplier<O2BacktankBlockItem> blockItem;
 
     public OxygenBacktankItem(ArmorMaterial material, Properties properties, ResourceLocation textureLoc, Supplier<O2BacktankBlockItem> placeable) {
-        super(material, TYPE, properties, textureLoc);
+        super(material, SLOT, properties, textureLoc);
         this.blockItem = placeable;
     }
 
