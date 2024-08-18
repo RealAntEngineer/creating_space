@@ -220,7 +220,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
         protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
             if (this.renderSun) {
-                renderAstralBody(poseStack, bufferbuilder, SUN_LOCATION, camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F, 30.0F, 100.0F);
+                renderAstralBody(poseStack, bufferbuilder, SUN_LOCATION, true,  camera.getEntity().level().getTimeOfDay(partialTick) * 360.0F, 30.0F, 100.0F);
                 //replace camera with an angle ?
             }
         }

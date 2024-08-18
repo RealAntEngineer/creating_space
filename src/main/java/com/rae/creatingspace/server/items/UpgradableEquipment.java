@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class UpgradableEquipment extends BaseArmorItem {
-    public UpgradableEquipment(ArmorMaterial armorMaterial, EquipmentSlot slot, Properties properties, ResourceLocation textureLoc) {
+    public UpgradableEquipment(ArmorMaterial armorMaterial, Type slot, Properties properties, ResourceLocation textureLoc) {
         super(armorMaterial, slot, properties, textureLoc);
     }
 
@@ -47,7 +47,7 @@ public class UpgradableEquipment extends BaseArmorItem {
         if (interactionHand != InteractionHand.OFF_HAND) {
             ItemStack offHandStack = player.getItemInHand(InteractionHand.OFF_HAND);
             ItemStack mainHandStack = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (offHandStack.getItem().canEquip(offHandStack, this.slot, player)) {
+            if (offHandStack.getItem().canEquip(offHandStack, this.type.getSlot(), player)) {
                 player.setItemInHand(InteractionHand.OFF_HAND, getUpgrade(mainHandStack));
                 player.setItemInHand(InteractionHand.MAIN_HAND, setUpgrade(mainHandStack, offHandStack));
             }

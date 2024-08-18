@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
@@ -112,7 +113,7 @@ public class RoomAtmosphere extends Entity {
                         boolean canBeExpandedToward = true;
                         //ensure that there is no intersecting boxs
                         for (BlockPos pos : collectedPos) {
-                            if (!tempAabb.contains(Vec3.atCenterOf(pos)) && (!canGoThrough(level, pos, dir) || contains(tempRoom, pos))) {
+                            if (!tempAabb.contains(Vec3.atCenterOf(pos)) && (!canGoThrough(level(), pos, dir) || contains(tempRoom, pos))) {
                                 canBeExpandedToward = false;
                             }
                         }
@@ -124,9 +125,9 @@ public class RoomAtmosphere extends Entity {
                         } else {
                             for (BlockPos pos : collectedPos) {
                                 if (!tempAabb.contains(Vec3.atCenterOf(pos)) && !contains(tempRoom, pos)) {
-                                    if (canGoThrough(level, pos, dir)) {
+                                    if (canGoThrough(level(), pos, dir)) {
                                         toVist.add(pos);
-                                        if (!level.getBlockState(pos).isAir()) {
+                                        if (!level().getBlockState(pos).isAir()) {
                                             applyOnSolidBlock(pos);
                                         }
                                     } else {
@@ -148,8 +149,8 @@ public class RoomAtmosphere extends Entity {
     }
 
     private void applyOnSolidBlock(BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
+        BlockState state = level().getBlockState(pos);
+        if (level().getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
             roomSealers.add(pos);
         }
         if (state.getBlock() instanceof LeavesBlock) {
@@ -258,7 +259,7 @@ public class RoomAtmosphere extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -279,9 +280,9 @@ public class RoomAtmosphere extends Entity {
     public void tick() {
         super.tick();
 
-        if (!level.isClientSide()) {
+        if (!level().isClientSide()) {
             if (hasShape()) {
-                List<Entity> entitiesInside = getShape().getEntitiesInside(level);
+                List<Entity> entitiesInside = getShape().getEntitiesInside(level());
                 for (Entity entity :
                         entitiesInside) {
                     if (entity instanceof LivingEntity living && breathable()) {

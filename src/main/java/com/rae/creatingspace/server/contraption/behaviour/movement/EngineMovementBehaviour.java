@@ -3,6 +3,7 @@ package com.rae.creatingspace.server.contraption.behaviour.movement;
 import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.api.rendering.GeometryRendering;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
@@ -17,6 +18,7 @@ import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
@@ -63,7 +65,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
             // Radius of the cone base
             Vec3 firstOffset = Vec3.atBottomCenterOf(context.localPos.below());
             matrixStack.translate(firstOffset.x, firstOffset.y, firstOffset.z);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.10F));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(-45.10F));
             // just for debug mode
             int overlay = LightTexture.FULL_BRIGHT;
             float z = 0;
@@ -71,7 +73,8 @@ public class EngineMovementBehaviour implements MovementBehaviour {
             for (float t = 0; t < 1f; t += step) {
                 z += d_z(t) * step;
                 float prev_w = w;
-                w += d_w(t, CSDimensionUtil.hasO2Atmosphere(renderWorld.getBiome(new BlockPos(context.position)))) * step;
+                w += d_w(t, CSDimensionUtil.hasO2Atmosphere(renderWorld.getBiome(new BlockPos(new Vec3i(
+                        (int) context.position.x(), (int) context.position.y(), (int) context.position.z()))))) * step;
                 GeometryRendering.renderCylinder(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) > 0);
                 GeometryRendering.renderCylinder(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) <= 0);
 

@@ -17,8 +17,8 @@ public class RoomShapeSerializer implements EntityDataSerializer<RoomShape> {
         byteBuf.writeBoolean(roomShape.closed);
         byteBuf.writeInt(roomShape.volume);
         byteBuf.writeCollection(roomShape.listOfBox, ((byteBuf1, aabb) -> {
-            byteBuf1.writeBlockPos(new BlockPos(aabb.minX, aabb.minY, aabb.minZ));
-            byteBuf1.writeBlockPos(new BlockPos(aabb.maxX, aabb.maxY, aabb.maxZ));
+            byteBuf1.writeBlockPos(new BlockPos((int) aabb.minX, (int) aabb.minY, (int) aabb.minZ));
+            byteBuf1.writeBlockPos(new BlockPos((int) aabb.maxX, (int) aabb.maxY, (int) aabb.maxZ));
         }));
     }
 

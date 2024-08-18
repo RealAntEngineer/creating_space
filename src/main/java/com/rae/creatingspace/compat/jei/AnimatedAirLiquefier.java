@@ -2,7 +2,6 @@ package com.rae.creatingspace.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.mojang.math.Vector3f;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;

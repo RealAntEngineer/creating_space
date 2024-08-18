@@ -45,8 +45,8 @@ public class RoomShape {
         CompoundTag tag = new CompoundTag();
         ArrayList<Long> listOfPos = new ArrayList<>();
         for (AABB aabb : listOfBox) {
-            listOfPos.add((new BlockPos(aabb.minX, aabb.minY, aabb.minZ)).asLong());
-            listOfPos.add((new BlockPos(aabb.maxX, aabb.maxY, aabb.maxZ)).asLong());
+            listOfPos.add((new BlockPos((int) aabb.minX, (int) aabb.minY, (int) aabb.minZ)).asLong());
+            listOfPos.add((new BlockPos((int) aabb.maxX, (int) aabb.maxY, (int) aabb.maxZ)).asLong());
 
         }
         tag.putLongArray("listOfBox", listOfPos);

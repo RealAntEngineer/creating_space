@@ -98,12 +98,12 @@ public class EngineItem extends RocketEngineItem {
         super.appendHoverText(itemStack, level, components, flag);
     }
 
-    @Override
+    /*@Override
     public void fillItemCategory(CreativeModeTab modeTab, NonNullList<ItemStack> itemStacks) {
         if (this.allowedIn(modeTab)) {
             itemStacks.add(
                     getItemStackFromInfo((int) (50000f * 9.81f), 0.9f, 1000, PropellantTypeInit.LH2LOX.getId())
             );
         }
-    }
+    }*/
 }

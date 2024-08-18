@@ -19,12 +19,12 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 public class OxygenBacktankItem extends UpgradableEquipment {
-    public static final EquipmentSlot SLOT = EquipmentSlot.CHEST;
+    public static final Type TYPE = Type.CHESTPLATE;
     public static final int BAR_COLOR = 0xEFEFEF;
     private final Supplier<O2BacktankBlockItem> blockItem;
 
     public OxygenBacktankItem(ArmorMaterial material, Properties properties, ResourceLocation textureLoc, Supplier<O2BacktankBlockItem> placeable) {
-        super(material, SLOT, properties, textureLoc);
+        super(material, TYPE, properties, textureLoc);
         this.blockItem = placeable;
     }
 
@@ -47,7 +47,7 @@ public class OxygenBacktankItem extends UpgradableEquipment {
         if (!(entity instanceof LivingEntity livingEntity)) {
             return null;
         }
-        if (!(livingEntity.getItemBySlot(SLOT).getItem() instanceof OxygenBacktankItem item)) {
+        if (!(livingEntity.getItemBySlot(TYPE.getSlot()).getItem() instanceof OxygenBacktankItem item)) {
             return null;
         }
         return item;

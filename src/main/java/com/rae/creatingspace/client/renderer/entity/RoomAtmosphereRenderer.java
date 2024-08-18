@@ -3,9 +3,9 @@ package com.rae.creatingspace.client.renderer.entity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.entities.RoomAtmosphere;
@@ -86,7 +86,7 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
 
         poseStack.pushPose();
         poseStack.translate(aabbCenter.x() - pos.x(), aabbCenter.y() - pos.y() - aabb.getYsize() / 2, aabbCenter.z() - pos.z());
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         vertexconsumer = bufferSource.getBuffer(RENDER_TYPE);
         posestack$pose = poseStack.last();
         matrix4f = posestack$pose.pose();
@@ -99,7 +99,7 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
 
         poseStack.pushPose();
         poseStack.translate(aabbCenter.x() - pos.x(), aabbCenter.y() - pos.y() + aabb.getYsize() / 2, aabbCenter.z() - pos.z());
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         vertexconsumer = bufferSource.getBuffer(RENDER_TYPE);
         posestack$pose = poseStack.last();
         matrix4f = posestack$pose.pose();
@@ -112,7 +112,7 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
 
         poseStack.pushPose();
         poseStack.translate(aabbCenter.x() - pos.x() - aabb.getXsize() / 2, aabbCenter.y() - pos.y(), aabbCenter.z() - pos.z());
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
         vertexconsumer = bufferSource.getBuffer(RENDER_TYPE);
         posestack$pose = poseStack.last();
         matrix4f = posestack$pose.pose();
@@ -125,7 +125,7 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
 
         poseStack.pushPose();
         poseStack.translate(aabbCenter.x() - pos.x() + aabb.getXsize() / 2, aabbCenter.y() - pos.y(), aabbCenter.z() - pos.z());
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
         vertexconsumer = bufferSource.getBuffer(RENDER_TYPE);
         posestack$pose = poseStack.last();
         matrix4f = posestack$pose.pose();

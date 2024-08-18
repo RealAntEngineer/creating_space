@@ -41,7 +41,7 @@ public class DesignBlueprintItem extends Item {
         super.appendHoverText(itemStack, level, components, flag);
     }
 
-    @Override
+    /*@Override
     public void fillItemCategory(CreativeModeTab modeTab, NonNullList<ItemStack> itemStacks) {
         if (category == modeTab) {
             DEFERRED_POWER_PACK_TYPE.getEntries().forEach((ro) -> {
@@ -66,14 +66,15 @@ public class DesignBlueprintItem extends Item {
             });
         }
         super.fillItemCategory(modeTab, itemStacks);
-    }
+    }*/
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity entity, int count) {
+    public void onUseTick(Level p_41428_, LivingEntity entity ,ItemStack stack, int count) {
         if (entity instanceof Player player) {
             save(stack, player);
         }
     }
+
 
     private static void save(ItemStack stack, Player player) {
         CompoundTag nbt = stack.getOrCreateTag();

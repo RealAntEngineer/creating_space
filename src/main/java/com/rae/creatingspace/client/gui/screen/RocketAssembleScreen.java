@@ -9,6 +9,7 @@ import com.rae.creatingspace.utilities.packet.NewRocketAssemblePacket;
 import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.utility.Lang;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 public class RocketAssembleScreen extends AbstractSimiScreen {
@@ -41,10 +42,10 @@ public class RocketAssembleScreen extends AbstractSimiScreen {
 
 
     @Override
-    protected void renderWindow(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+    protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         int x = guiLeft;
         int y = guiTop;
 
-        background.render(ms, x, y, this);
+        background.render(graphics, x, y);
     }
 }

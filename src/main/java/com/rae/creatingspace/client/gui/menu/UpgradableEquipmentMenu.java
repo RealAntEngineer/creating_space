@@ -49,7 +49,7 @@ public class UpgradableEquipmentMenu extends MenuBase<ItemStack> {
                 0, 24, 23) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.canEquip(((UpgradableEquipment) contentHolder.getItem()).getSlot(), player);
+                return stack.canEquip(((UpgradableEquipment) contentHolder.getItem()).getEquipmentSlot(), player);
             }
         };
         CompoundTag nbt = contentHolder.getOrCreateTag();
