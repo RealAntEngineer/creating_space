@@ -29,6 +29,11 @@ public class ItemInit {
         smartRegisterSequencedItem("exhaust_pack");
         smartRegisterSequencedItem("combustion_chamber");
         EngineMaterialInit.register();
+        registerStandardForMetal("reinforced_copper");
+        registerStandardForMetal("copronickel");
+        registerStandardForMetal("inconel");
+        registerStandardForMetal("monel");
+        registerStandardForMetal("hastelloy");
 
     }
 
@@ -63,6 +68,21 @@ public class ItemInit {
                 .register();
         smartRegisterSequencedItem(name + "_turbine");
         smartRegisterSequencedItem(name + "_injector_grid");
+    }
+
+    public static void registerStandardForMetal(String name) {
+        CreatingSpace.REGISTRATE.item(
+                        name + "_ingot", Item::new)
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        name + "_nugget", Item::new)
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        name + "_sheet", Item::new)
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
     }
 
     private static void smartRegisterSequencedItem(String name) {
