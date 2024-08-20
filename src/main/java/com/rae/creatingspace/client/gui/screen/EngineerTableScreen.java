@@ -37,6 +37,7 @@ import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.rae.creatingspace.init.MiscInit.getSyncedExhaustPackRegistry;
@@ -290,6 +291,11 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                     x + 260, y + 65 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
         }
+        else {
+            removeWidgets(setPropellantType);
+            removeWidgets(propellantLabel);
+
+        }
     }
 
     private void craftEngine(BlockPos blockEntityPos, ResourceLocation propellantType, ResourceLocation exhaustType, ResourceLocation powerPackType, float isp, float mass, float thrust) {
@@ -305,25 +311,29 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
     private void syncWithBE() {
         CompoundTag syncData = new CompoundTag();
-        syncData.putInt("thrust", engineThrustInput.getState());
-        syncData.putInt("size", engineSizeInput.getState());
-        syncData.putInt("expansionRatio", (int) expansionRatioSlider.getValue());
+        try {
+            syncData.putInt("thrust", engineThrustInput.getState());
+            syncData.putInt("size", engineSizeInput.getState());
+            syncData.putInt("expansionRatio", (int) expansionRatioSlider.getValue());
 
-        syncData.put("exhaustPack", ResourceLocation.CODEC
-                .encodeStart(NbtOps.INSTANCE, exhaustPackTypeLocations.get(setExhaustPackType.getState()))
-                .result().orElse(new CompoundTag()));
-        syncData.put("powerPack", ResourceLocation.CODEC
-                .encodeStart(NbtOps.INSTANCE, powerPackTypeLocations.get(setPowerPackType.getState()))
-                .result().orElse(new CompoundTag()));
-        syncData.put("propellantType", ResourceLocation.CODEC
-                .encodeStart(NbtOps.INSTANCE, propellantTypeLocations.get(setPropellantType.getState()))
-                .result().orElse(new CompoundTag()));
-        PacketInit.getChannel()
-                .sendToServer(
-                        RocketEngineerTableSync
-                                .sendSettings(getMenu().contentHolder.getBlockPos(),
-                                        syncData
-                                ));
+            syncData.put("exhaustPack", ResourceLocation.CODEC
+                    .encodeStart(NbtOps.INSTANCE, exhaustPackTypeLocations.get(setExhaustPackType.getState()))
+                    .result().orElse(new CompoundTag()));
+            syncData.put("powerPack", ResourceLocation.CODEC
+                    .encodeStart(NbtOps.INSTANCE, powerPackTypeLocations.get(setPowerPackType.getState()))
+                    .result().orElse(new CompoundTag()));
+            syncData.put("propellantType", ResourceLocation.CODEC
+                    .encodeStart(NbtOps.INSTANCE, propellantTypeLocations.get(setPropellantType.getState()))
+                    .result().orElse(new CompoundTag()));
+            PacketInit.getChannel()
+                    .sendToServer(
+                            RocketEngineerTableSync
+                                    .sendSettings(getMenu().contentHolder.getBlockPos(),
+                                            syncData
+                                    ));
+        } catch (Exception ignored){
+
+        }
     }
 
     //the other way around...

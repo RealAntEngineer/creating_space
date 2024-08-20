@@ -3,11 +3,13 @@ package com.rae.creatingspace.server.event;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.DamageSourceInit;
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.saved.DesignCommands;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.server.entities.RoomAtmosphere;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
+import com.simibubi.create.infrastructure.command.AllCommands;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.SleepFinishedTimeEvent;
@@ -145,7 +148,10 @@ public class CSEventHandler {
         }
         return false;
     }
-
+    @SubscribeEvent
+    public static void registerCommands(RegisterCommandsEvent event) {
+        DesignCommands.register(event.getDispatcher());
+    }
     //for legacy purpose
     private static boolean isStateBreathable(BlockState state) {
         return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);

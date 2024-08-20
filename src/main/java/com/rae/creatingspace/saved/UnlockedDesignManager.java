@@ -1,5 +1,6 @@
 package com.rae.creatingspace.saved;
 
+import com.rae.creatingspace.CreatingSpace;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -57,11 +58,31 @@ public class UnlockedDesignManager {
             }
         }
     }
+    public static void clearAllExhaustDesignsForPlayer(Player player) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
+            savedData.unlockedExhaustType.remove(serverPlayer.getStringUUID());
+            savedData.setDirty();
+        }
+    }
+
+    public static void clearAllPowerPackDesignsForPlayer(Player player) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
+            savedData.unlockedPowerPackType.remove(serverPlayer.getStringUUID());
+            savedData.setDirty();
+        }
+    }
+
     public static void playerLogin(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
             if (!savedData.unlockedExhaustType.containsKey(serverPlayer.getStringUUID())) {
-                savedData.unlockedExhaustType.put(serverPlayer.getStringUUID(), new ArrayList<>());
+                savedData.unlockedExhaustType.put(serverPlayer.getStringUUID(), new ArrayList<>(List.of(CreatingSpace.resource("bell_nozzle"))));
+                savedData.setDirty();
+            }
+            if (!savedData.unlockedPowerPackType.containsKey(serverPlayer.getStringUUID())) {
+                savedData.unlockedPowerPackType.put(serverPlayer.getStringUUID(), new ArrayList<>(List.of(CreatingSpace.resource("open_cycle"))));
                 savedData.setDirty();
             }
         }

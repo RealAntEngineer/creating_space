@@ -46,7 +46,7 @@ public class DesignBlueprintItem extends Item {
         super.appendHoverText(itemStack, level, components, flag);
     }
 
-    @Override
+    /*@Override
     public void fillItemCategory(CreativeModeTab modeTab, NonNullList<ItemStack> itemStacks) {
         if (category == modeTab) {
             DEFERRED_POWER_PACK_TYPE.getEntries().forEach((ro) -> {
@@ -71,7 +71,7 @@ public class DesignBlueprintItem extends Item {
             });
         }
         super.fillItemCategory(modeTab, itemStacks);
-    }
+    }*/
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
