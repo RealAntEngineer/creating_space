@@ -10,6 +10,7 @@ import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.server.items.EngineFabricationBlueprint;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.EngineerTableCraft;
@@ -131,11 +132,14 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
         List<MutableComponent> availableExhaustType = new ArrayList<>();
         getSyncedExhaustPackRegistry().entrySet().forEach((ro) -> {
-                    availableExhaustType.add(Component.translatable(
-                            "exhaust_pack_type." +
-                                    ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
-            exhaustPackTypeLocations.add(ro.getKey().location());
-            exhaustPackTypes.add(ro.getValue());
+                    if ( !ro.getValue().getAllowedPropellants().isEmpty() &&
+                UnlockedDesignManager.getExhaustUnlocked(getMenu().player).contains(ro.getKey().location())) {
+                        availableExhaustType.add(Component.translatable(
+                                "exhaust_pack_type." +
+                                        ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
+                        exhaustPackTypeLocations.add(ro.getKey().location());
+                        exhaustPackTypes.add(ro.getValue());
+                    }
                 }
         );
         setExhaustPackType = new SelectionScrollInput(x + 133, y + 20, 100, 18)
@@ -161,7 +165,8 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         powerPackTypeLocations = new ArrayList<>();
         List<MutableComponent> availablePowerType = new ArrayList<>();
         getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {
-            if (!ro.getValue().getAllowedPropellants().isEmpty()) {
+            if (!ro.getValue().getAllowedPropellants().isEmpty()&&
+                    UnlockedDesignManager.getPowerPackUnlocked(getMenu().player).contains(ro.getKey().location())) {
                 availablePowerType.add(Component.translatable(
                         "power_pack_type." +
                                 ro.getKey().location().getNamespace() + "." + ro.getKey().location().getPath()));
@@ -176,7 +181,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .setState(powerPackTypeLocations.indexOf(getMenu().getSyncData().powerPackType()))
                 .calling(state -> {
                     this.syncWithBE();
-                    this.updateSelectors(state);
+                    this.updateSelectors();
 
                 });
         addRenderableWidget(setPowerPackType);
@@ -322,17 +327,22 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     }
 
     //the other way around...
-    private void updateSelectors(int value) {
-        List<ResourceLocation> props = powerPackTypes.get(value).getAllowedPropellants();
+    private void updateSelectors() {
+        List<ResourceLocation> propsPowerPack = powerPackTypes.get(setPowerPackType.getState()).getAllowedPropellants();
+        List<ResourceLocation> propsExhaustPack = exhaustPackTypes.get(setExhaustPackType.getState()).getAllowedPropellants();
+
         List<MutableComponent> availablePropellants = new ArrayList<>();
-        propellantTypeLocations = props;
+        propellantTypeLocations = new ArrayList<>();;
         propellantTypes = new ArrayList<>();
-        props.forEach(
+        propsPowerPack.forEach(
                 location -> {
-                    availablePropellants.add(Component.translatable(
-                            "propellant_type." +
-                                    location.getNamespace() + "." + location.getPath()));
-                    propellantTypes.add(getSyncedPropellantRegistry().get(location));
+                    if (propsExhaustPack.contains(location)) {
+                        availablePropellants.add(Component.translatable(
+                                "propellant_type." +
+                                        location.getNamespace() + "." + location.getPath()));
+                        propellantTypeLocations.add(location);
+                        propellantTypes.add(getSyncedPropellantRegistry().get(location));
+                    }
                 }
         );
         //getSyncedPowerPackRegistry().entrySet().forEach((ro) -> {
@@ -342,6 +352,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             availablePropellants.add(Component.empty());
         }
         ((SelectionScrollInput) setPropellantType).forOptions(availablePropellants);
+
         setPropellantType.visible = !availablePropellants.isEmpty();
         setPropellantType.onChanged();
         //the srollInput is only synced with the label on scroll
