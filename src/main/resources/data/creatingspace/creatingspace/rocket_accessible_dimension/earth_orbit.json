@@ -6,7 +6,7 @@
     "minecraft:overworld": {
       "deltaV": 200
     },
-    "creatingspace:mars": {
+    "creatingspace:mars_orbit": {
       "deltaV": 1400
     }
   },
