@@ -36,6 +36,10 @@ public class RocketAccessibleDimension {
     float gravity;
     ResourceLocation orbitedBody;//mostly used for the DestinationScreen and for falling out of an orbit
 
+    public RocketAccessibleDimension() {
+
+    }
+
     public Map<ResourceLocation, AccessibilityParameter> adjacentDimensions() {
         return adjacentDimensions;
     }
