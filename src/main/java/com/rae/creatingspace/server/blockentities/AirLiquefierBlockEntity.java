@@ -82,13 +82,17 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
             Direction localDir = this.getBlockState().getValue(AirLiquefierBlock.FACING);
 
-            if (side ==  localDir.getOpposite()){
-                //return this.oxygenFluidOptional.cast();
+            // Check if the side is either the back, top, or bottom
+            if (side == localDir.getOpposite() || side == Direction.UP || side == Direction.DOWN) {
                 return this.fluidCapability.cast();
             }
         }
         return super.getCapability(cap, side);
     }
+
+
+
+
 
     public void tick(Level level, BlockPos pos, BlockState state, AirLiquefierBlockEntity blockEntity) {
         super.tick();
