@@ -1,12 +1,12 @@
 {
   "structures": [
     {
-      "structure": "creating_space:raketa_zdohla.json",
+      "structure": "creatingspace:abandoned_moon_outpost",
       "weight": 1
     }
   ],
   "placement": {
-    "salt": 1642136474,
+    "salt": 1642136475,
 
     "spacing": 20,
 
