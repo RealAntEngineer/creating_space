@@ -7,7 +7,10 @@
       "deltaV": 200
     },
     "creatingspace:mars_orbit": {
-      "deltaV": 1400
+      "deltaV": 1000
+    },
+    "creatingspace:venus": {
+      "deltaV": 2200
     }
   },
   "arrivalHeight": 64,
