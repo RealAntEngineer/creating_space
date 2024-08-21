@@ -13,7 +13,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-version = '1.7.1.test_release_1'
+version = '1.19.2_1.7.1.test_release_2'
 group = 'com.rae.creatingspace' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'creatingspace'
 
@@ -162,7 +162,7 @@ jar {
         attributes([
                 "Specification-Title"     : "creating space",
                 "Specification-Vendor"    : "Real Ant Engineer",
-                "Specification-Version": "1.7.1 test_release_1", // We are version 1.7.1 of ourselves
+                "Specification-Version": "1.19.2 1.7.1 test_release_2", // We are version 1.7.1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Real Ant Engineer",
