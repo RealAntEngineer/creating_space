@@ -1,8 +1,18 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
+    }
+    dependencies {
+        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
+    }
+}
 plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+
 }
 
 version = mod_version
@@ -28,6 +38,7 @@ minecraft {
         // applies to all the run configs below
         configureEach {
             workingDirectory project.file('run')
+            arg '-mixin.config=creatingspace.mixins.json'
 
             property 'forge.logging.markers', 'REGISTRIES'
 
@@ -117,8 +128,16 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
 
-}
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
+}
+mixin {
+    add sourceSets.main, 'creatingspace.refmap.json'
+    config 'creatingspace.mixins.json'
+
+    //debug.verbose = true
+    //debug.export = true
+}
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
 // When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
