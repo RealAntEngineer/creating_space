@@ -1,0 +1,28 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/nickel",
+      "count": 2
+    },
+    {
+      "tag": "forge:ingots/iron",
+      "count": 1
+    },
+    {
+      "tag": "forge:ingots/cobalt",
+      "count": 2
+    },
+    {
+      "tag": "forge:ingots/copper",
+      "count": 1
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:hastelloy_ingot",
+      "count": 1
+    }
+  ],
+  "heatRequirement": "superheated"
+}

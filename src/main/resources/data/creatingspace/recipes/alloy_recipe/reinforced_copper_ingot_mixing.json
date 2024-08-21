@@ -1,0 +1,20 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/copper",
+      "count": 2
+    },
+    {
+      "tag": "forge:ingots/iron",
+      "count": 1
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:reinforced_copper",
+      "count": 3
+    }
+  ],
+  "heatRequirement": "heated"
+}

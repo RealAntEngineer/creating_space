@@ -44,7 +44,6 @@ public class RocketEngineerTableSync extends BlockEntityConfigurationPacket<Rock
 
     @Override
     protected void applySettings(ServerPlayer player, RocketEngineerTableBlockEntity be) {
-        System.out.println("sync on server : " + syncData);
         be.readScreenData(syncData);
     }
 

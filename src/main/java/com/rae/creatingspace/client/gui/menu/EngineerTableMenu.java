@@ -3,7 +3,6 @@ package com.rae.creatingspace.client.gui.menu;
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
 import com.rae.creatingspace.server.blockentities.RocketEngineerTableBlockEntity;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
-import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.NbtOps;
@@ -25,6 +24,8 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
         return syncData;
     }
 
+    //TODO we remove everything apart from the outputslot -> transition to a assembly line recipe
+    //  add summary to the item
     RocketEngineerTableBlockEntity.SyncData syncData;
     private List<Slot> exhaustSlots;
     private List<Slot> powerSlots;
@@ -80,7 +81,7 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
         };
         addSlot(outputSlot);
 
-        exhaustSlots = new ArrayList<>();
+        /*exhaustSlots = new ArrayList<>();
         int i = 1;
         for (Couple<Integer> exhaustSlotCoord : syncData.exhaustPackType(Objects.requireNonNull(contentHolder.getLevel()).isClientSide).getSlots()) {
             exhaustSlots.add(new SlotItemHandler(contentHolder.inventory, i, 127 + exhaustSlotCoord.getFirst(), 43 + exhaustSlotCoord.getSecond()) {
@@ -102,7 +103,7 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
             });
             addSlot(powerSlots.get(powerSlots.size() - 1));
             i++;
-        }
+        }*/
 
 
         // player Slots
