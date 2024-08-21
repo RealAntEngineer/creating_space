@@ -21,6 +21,8 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class RoomPressuriserBlockEntity extends KineticBlockEntity {
     public RoomPressuriserBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
@@ -90,12 +92,16 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity {
     public void lazyTick() {
         super.lazyTick();
         if (!level.isClientSide) {
-            if (getSpeed() > 0 && !OXYGEN_TANK.isEmpty()) {
-                for (RoomAtmosphere room : level.getEntitiesOfClass(RoomAtmosphere.class,
+            if (getSpeed() != 0 && !OXYGEN_TANK.isEmpty()) {
+                List<RoomAtmosphere> rooms = level.getEntitiesOfClass(RoomAtmosphere.class,
                         new AABB(getBlockPos().relative(getBlockState()
-                                .getValue(RoomPressuriserBlock.FACING))))) {
+                                .getValue(RoomPressuriserBlock.FACING))));
+                if (rooms.isEmpty()){
+                    tryRoom();
+                }
+                for (RoomAtmosphere room : rooms) {
                     if (room != null) {
-                        room.addO2(OXYGEN_TANK.drain((int) getSpeed(), IFluidHandler.FluidAction.EXECUTE).getAmount() * 10);
+                        room.addO2(OXYGEN_TANK.drain((int)Math.abs(getSpeed()), IFluidHandler.FluidAction.EXECUTE).getAmount() * 10);
                     }
                 }
             }

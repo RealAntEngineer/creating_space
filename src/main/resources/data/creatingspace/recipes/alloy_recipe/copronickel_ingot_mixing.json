@@ -1,0 +1,20 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/copper",
+      "count": 2
+    },
+    {
+      "tag": "forge:ingots/nickel",
+      "count": 1
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:copronickel_ingot",
+      "count": 2
+    }
+  ],
+  "heatRequirement": "heated"
+}

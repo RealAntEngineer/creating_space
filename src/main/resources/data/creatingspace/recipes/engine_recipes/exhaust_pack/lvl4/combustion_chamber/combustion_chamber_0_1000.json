@@ -1,6 +1,9 @@
 {
   "type": "create:sequenced_assembly",
-  "keepNbt": true,
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
   "ingredient": {
     "type": "forge:intersection",
     "children": [
@@ -35,7 +38,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:reinforced_copper_rib"
@@ -43,7 +46,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     },
@@ -51,7 +54,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:reinforced_copper_engine_wall"
@@ -59,7 +62,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     },
@@ -67,7 +70,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:reinforced_copper_rib"
@@ -75,7 +78,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     },
@@ -83,7 +86,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:reinforced_copper_engine_wall"
@@ -91,7 +94,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     },
@@ -99,7 +102,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:reinforced_copper_rib"
@@ -107,12 +110,12 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_combustion_chamber"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_combustion_chamber"
+    "item": "creatingspace:engine_blueprint"
   }
 }

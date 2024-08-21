@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BigEngineItem extends RocketEngineItem{
+public class BigEngineItem extends RocketEngineItem {
     public BigEngineItem(Block p_40565_, Properties p_40566_) {
         super(p_40565_, p_40566_);
     }

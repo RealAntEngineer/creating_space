@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "creatingspace:copronickel_ingot"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "creatingspace:copronickel_nugget"
+  }
+}

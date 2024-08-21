@@ -1,6 +1,9 @@
 {
   "type": "create:sequenced_assembly",
-  "keepNbt": true,
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
   "ingredient": {
     "type": "forge:intersection",
     "children": [
@@ -35,7 +38,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_copronickel_turbine"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:copronickel_turbine_shaft"
@@ -43,7 +46,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_copronickel_turbine"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     },
@@ -51,7 +54,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_copronickel_turbine"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:copronickel_blisk"
@@ -59,12 +62,12 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_copronickel_turbine"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_copronickel_turbine"
+    "item": "creatingspace:engine_blueprint"
   }
 }
