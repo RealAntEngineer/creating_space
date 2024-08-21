@@ -7,7 +7,7 @@
       "deltaV": 200
     },
     "creatingspace:mars": {
-      "deltaV": 1000
+      "deltaV": 1400
     }
   },
   "arrivalHeight": 64,

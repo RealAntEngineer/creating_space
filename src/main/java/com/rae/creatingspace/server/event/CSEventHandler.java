@@ -10,6 +10,8 @@ import com.rae.creatingspace.server.entities.RoomAtmosphere;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.simibubi.create.infrastructure.command.AllCommands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -159,18 +161,38 @@ public class CSEventHandler {
 
     @SubscribeEvent
     public static void onBlockPlaced(BlockEvent.NeighborNotifyEvent event) {
-        boolean flag = false;
+        boolean blockPlaced = false;
+        boolean blockBreak = false;
         Level level = (Level) event.getLevel();
-        AABB colBox = new AABB(event.getPos());
-        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox);
+        AABB colBoxInside = new AABB(event.getPos());
+
+        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBoxInside);
         for (RoomAtmosphere atmosphere : entityStream) {
-            if (atmosphere.getShape().inside(colBox)) {
-                flag = true;
+            if (atmosphere.getShape().inside(colBoxInside)) {
+                blockPlaced = true;
             }
         }
-        if (flag) {
+        if (blockPlaced) {
             for (RoomAtmosphere atmosphere : entityStream) {
                 atmosphere.regenerateRoom(atmosphere.getOnPos());
+            }
+        }
+        else {
+            for (Direction direction :
+                    event.getNotifiedSides()) {
+                AABB colBoxOutside = new AABB(event.getPos().relative(direction));
+                entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBoxOutside);
+
+                for (RoomAtmosphere atmosphere : entityStream) {
+                    if (atmosphere.getShape().inside(colBoxOutside)) {
+                        blockBreak = true;
+                    }
+                }
+                if (blockBreak) {
+                    for (RoomAtmosphere atmosphere : entityStream) {
+                        atmosphere.regenerateRoom(atmosphere.getOnPos());
+                    }
+                }
             }
         }
     }

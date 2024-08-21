@@ -6,7 +6,7 @@ license="MIT"
 
 [[mods]]
 modId="creatingspace"
-version = "1.7.1.test_recipe_2"
+version = "1.7.1.test_release_1"
 displayName="Creating Space"
 logoFile = "new_logo.png"
 credits='''
@@ -28,7 +28,7 @@ Cosmos
 authors="Real Ant Engineer"
 
 description='''
-test version 2 for the new engine recipe for 1.7.1
+test version for the release
 '''
 
 [[dependencies.creatingspace]]
