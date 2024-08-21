@@ -1,5 +1,6 @@
 package com.rae.creatingspace.client.renderer.entity;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
@@ -8,6 +9,10 @@ import com.mojang.math.Vector3f;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.entities.RoomAtmosphere;
+import com.simibubi.create.foundation.outliner.AABBOutline;
+import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
+import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -34,12 +39,17 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
 
     @Override
     public void render(@NotNull RoomAtmosphere roomAtmosphere, float cameraX, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int p_114604_) {
+        poseStack.pushPose();
+        float pt = AnimationTickHolder.getPartialTicks();
+        SuperRenderTypeBuffer superBuffer = SuperRenderTypeBuffer.getInstance();
         for (AABB aabb : roomAtmosphere.getShape().getListOfBox()) {
-            renderAABB(roomAtmosphere.position(), aabb
-                            .contract(-0.001, -0.001, -0.001)
-                            .contract(0.001, 0.001, 0.001)
-                    , poseStack, bufferSource, p_114604_);
+            AABBOutline outline = new AABBOutline(aabb);
+            outline.getParams().colored(new Color(30, 50, 200, 20));
+            outline.render(poseStack, superBuffer, roomAtmosphere.position(), pt);
         }
+        superBuffer.draw();
+        RenderSystem.enableCull();
+        poseStack.popPose();
         super.render(roomAtmosphere, cameraX, partialTick, poseStack, bufferSource, p_114604_);
     }
 

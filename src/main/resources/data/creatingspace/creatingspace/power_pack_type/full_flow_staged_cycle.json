@@ -1,0 +1,8 @@
+{
+  "combustionEfficiency": 0.98,
+  "numberOfPumps": 2,
+  "allowedPropellants": [
+    "creatingspace:methalox",
+    "creatingspace:lh2lox"
+  ]
+}

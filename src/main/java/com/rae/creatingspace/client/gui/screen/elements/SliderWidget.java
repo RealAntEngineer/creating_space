@@ -69,7 +69,7 @@ public class SliderWidget extends AbstractSimiWidget {
 
             ms.pushPose();
             GuiTexturesInit slider = GuiTexturesInit.O2_GAUGE_SLIDER;
-            slider.renderNotStandardSheetSize(ms,x,y, Color.WHITE);
+            slider.render(ms, x, y, Color.WHITE);
             ms.popPose();
 
             float scale = 0.5f;
@@ -89,12 +89,12 @@ public class SliderWidget extends AbstractSimiWidget {
 
             ms.pushPose();
             GuiTexturesInit shadow = GuiTexturesInit.O2_GAUGE_SHADOW;
-            shadow.renderNotStandardSheetSize(ms,x,y,Color.WHITE);
+            shadow.render(ms, x, y, Color.WHITE);
             ms.popPose();
 
             ms.pushPose();
             GuiTexturesInit frame = GuiTexturesInit.O2_GAUGE_FRAME;
-            frame.renderNotStandardSheetSize(ms,x,y,Color.WHITE);
+            frame.render(ms, x, y, Color.WHITE);
             ms.popPose();
 
         }

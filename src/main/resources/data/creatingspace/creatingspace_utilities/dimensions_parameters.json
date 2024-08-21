@@ -21,18 +21,11 @@
     },
     "creatingspace:earth_orbit": {
       "adjacentDimensions": {
-
-        "minecraft:overworld": {
-          "deltaV": 200
-        },
         "creatingspace:moon_orbit": {
           "deltaV": 600
         },
-        "creatingspace:mars_orbit": {
-          "deltaV": 1000
-        },
-        "creatingspace:venus_orbit": {
-          "deltaV": 2000
+        "minecraft:overworld": {
+          "deltaV": 200
         }
       },
       "arrivalHeight": 64,
@@ -56,140 +49,72 @@
         },
         "creatingspace:earth_orbit": {
           "deltaV": 200
-        },
-        "creatingspace:mars_orbit": {
-          "deltaV": 400
-        },
-        "creatingspace:venus_orbit": {
-          "deltaV": 1400
         }
       },
-        "arrivalHeight": 64,
-        "planetUnder": "creatingspace:the_moon",
-        "gravity": 0,
-        "orbitingPlanet": {
-          "fileName": "name",
-          "size": 20
-        },
-        "suns": [
-          {
-            "fileName": "name",
-            "size": 20
-          }
-        ]
+      "arrivalHeight": 64,
+      "planetUnder": "creatingspace:the_moon",
+      "gravity": 0,
+      "orbitingPlanet": {
+        "fileName": "name",
+        "size": 20
       },
-      "creatingspace:the_moon": {
-        "adjacentDimensions": {
-          "creatingspace:moon_orbit": {
-            "deltaV": 300
-          }
-        },
-        "arrivalHeight": 200,
-        "gravity": 1.6,
-        "orbitingPlanet": {
+      "suns": [
+        {
           "fileName": "name",
           "size": 20
-        },
-        "suns": [
-          {
-            "fileName": "name",
-            "size": 20
-          }
-        ]
-      },
-      "creatingspace:mars": {
-        "adjacentDimensions": {
-          "creatingspace:mars_orbit": {
-            "deltaV": 400
-          }
-        },
-        "arrivalHeight": 200,
-        "gravity": 3.71,
-        "orbitingPlanet": {
-          "fileName": "name",
-          "size": 20
-        },
-        "suns": [
-          {
-            "fileName": "name",
-            "size": 20
-          }
-        ]
-      },
-      "creatingspace:venus": {
-        "adjacentDimensions": {
-          "creatingspace:venus_orbit": {
-            "deltaV": 1000
-          }
-        },
-        "arrivalHeight": 200,
-        "gravity": 8.87,
-        "orbitingPlanet": {
-          "fileName": "name",
-          "size": 20
-        },
-        "suns": [
-          {
-            "fileName": "name",
-            "size": 20
-          }
-        ],
-        "creatingspace:venus_orbit": {
-          "adjacentDimensions": {
-            "creatingspace:venus": {
-              "deltaV": 200
-            },
-            "adjacentDimensions": {
-              "creatingspace:moon_orbit": {
-                "deltaV": 800
-              },
-              "adjacentDimensions": {
-                "creatingspace:moon_orbit": {
-                  "deltaV": 800
-                },
-                "adjacentDimensions": {
-                  "creatingspace:earth_orbit": {
-                    "deltaV": 1000
-                  }
-                },
-                "arrivalHeight": 200,
-                "gravity": 8.87,
-                "orbitingPlanet": {
-                  "fileName": "name",
-                  "size": 20
-                },
-                "suns": [
-                  {
-                    "fileName": "name",
-                    "size": 20
-                  }
-                ]
-              },
-              "creatingspace:mars_orbit": {
-                "adjacentDimensions": {
-                  "creatingspace:mars": {
-                    "deltaV": 300
-                  },
-                  "creatingspace:the_moon": {
-                    "deltaV": 300
-                  },
-                  "creatingspace:earth_orbit": {
-                    "deltaV": 300
-                  }
-                },
-                "arrivalHeight": 200,
-                "gravity": 3.71,
-                "orbitingPlanet": {
-                  "fileName": "name",
-                  "size": 20
-                },
-                "suns": [
-                  {
-                    "fileName": "name",
-                    "size": 20
-                  }
-                ]
-              }
-            }
-          }
         }
+      ]
+    },
+    "creatingspace:the_moon": {
+      "adjacentDimensions": {
+        "creatingspace:moon_orbit": {
+          "deltaV": 600
+        }
+      },
+      "arrivalHeight": 200,
+      "gravity": 1.6,
+      "orbitingPlanet": {
+        "fileName": "name",
+        "size": 20
+      },
+      "suns": [
+        {
+          "fileName": "name",
+          "size": 20
+        }
+      ]
+    },
+    "creatingspace:mars": {
+      "adjacentDimensions": {
+      },
+      "arrivalHeight": 200,
+      "gravity": 3.71,
+      "orbitingPlanet": {
+        "fileName": "name",
+        "size": 20
+      },
+      "suns": [
+        {
+          "fileName": "name",
+          "size": 20
+        }
+      ]
+    },
+    "creatingspace:venus": {
+      "adjacentDimensions": {
+      },
+      "arrivalHeight": 200,
+      "gravity": 8.87,
+      "orbitingPlanet": {
+        "fileName": "name",
+        "size": 20
+      },
+      "suns": [
+        {
+          "fileName": "name",
+          "size": 20
+        }
+      ]
+    }
+  }
+}

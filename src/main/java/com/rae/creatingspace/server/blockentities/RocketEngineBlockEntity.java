@@ -1,45 +1,98 @@
 package com.rae.creatingspace.server.blockentities;
 
 
+import com.rae.creatingspace.api.IMass;
+import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.TagKey;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 
 public abstract class RocketEngineBlockEntity extends BlockEntity {
 
-    public abstract int getIsp(); //seconds
+    public int getIsp() {
+        return (int) (getPropellantType().getMaxISP() * getEfficiency());
+    }
 
     public abstract int getThrust();//Newtons
-    public abstract TagKey<Fluid> getOxidizerTag();
-    public abstract TagKey<Fluid> getFuelTag();
-    public abstract float getOxFuelRatio();
+
+    public abstract float getEfficiency();
+
+    public abstract PropellantType getPropellantType();
 
     public RocketEngineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type,pos, state);
 
     }
 
-    @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    public static class NbtDependent extends RocketEngineBlockEntity implements IMass {
+        int thrust = 1000;
+        PropellantType propellantType = PropellantTypeInit.METHALOX.get();
+        Float efficiency = 1f;
+        Integer size = 100;
+        int mass = 0;
 
-    }
-    @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
-    }
+        public NbtDependent(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+            super(type, pos, state);
+        }
+        @Override
+        public float getEfficiency() {
+            return efficiency;
+        }
 
+        @Override
+        public int getThrust() {
+            return thrust;
+        }
+
+        @Override
+        public PropellantType getPropellantType() {
+            return propellantType;
+        }
+
+        public void setThrust(int thrust) {
+            this.thrust = thrust;
+        }
+
+        @Override
+        protected void saveAdditional(CompoundTag nbt) {
+            nbt.putInt("thrust", thrust);
+            nbt.putInt("size", size);
+            nbt.putFloat("efficiency", efficiency);
+            nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, PropellantTypeInit.getSyncedPropellantRegistry().getKey(propellantType)).get().orThrow());
+            super.saveAdditional(nbt);
+        }
+
+        @Override
+        public void load(CompoundTag nbt) {
+            super.load(nbt);
+            setFromNbt(nbt);
+        }
+
+        public void setFromNbt(CompoundTag nbt) {
+            thrust = nbt.getInt("thrust");
+            efficiency = nbt.getFloat("efficiency");
+            mass = nbt.getInt("mass");
+            propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow())
+                    .orElse(PropellantTypeInit.METHALOX.get());
+            ;
+        }
+
+        @Override
+        public float getMass() {
+            return mass;
+        }
+    }
 
     public static class BigEngine extends RocketEngineBlockEntity{
         @Override
-        public int getIsp() {
-            return CSConfigs.SERVER.rocketEngine.methaloxISP.get();
+        public float getEfficiency() {
+            return 0.79f;
         }
 
         @Override
@@ -48,18 +101,8 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         }
 
         @Override
-        public TagKey<Fluid> getOxidizerTag() {
-            return TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag;
-        }
-
-        @Override
-        public TagKey<Fluid> getFuelTag() {
-            return TagsInit.CustomFluidTags.LIQUID_METHANE.tag;
-        }
-
-        @Override
-        public float getOxFuelRatio() {
-            return 2f;
+        public PropellantType getPropellantType() {
+            return PropellantTypeInit.METHALOX.get();
         }
 
         public BigEngine(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -68,28 +111,19 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
     }
 
     public static class SmallEngine extends RocketEngineBlockEntity{
-        public int getIsp() {
-            return CSConfigs.SERVER.rocketEngine.methaloxISP.get();
-        }
-
         @Override
         public int getThrust() {
             return  CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get();
         }
 
         @Override
-        public TagKey<Fluid> getOxidizerTag() {
-            return TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag;
+        public float getEfficiency() {
+            return 0.79f;
         }
 
         @Override
-        public TagKey<Fluid> getFuelTag() {
-            return TagsInit.CustomFluidTags.LIQUID_METHANE.tag;
-        }
-
-        @Override
-        public float getOxFuelRatio() {
-            return 2f;
+        public PropellantType getPropellantType() {
+            return PropellantTypeInit.METHALOX.get();
         }
 
 

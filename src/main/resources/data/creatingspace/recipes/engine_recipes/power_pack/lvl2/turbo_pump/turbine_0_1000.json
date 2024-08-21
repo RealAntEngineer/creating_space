@@ -1,0 +1,70 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": true,
+  "ingredient": {
+    "type": "forge:intersection",
+    "children": [
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+          "engineRecipeData": {
+            "materialLevel": 2
+          }
+        }
+      },
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "creatingspace:range_int",
+        "range_data": {
+          "path": "engineRecipeData/size",
+          "min": 0,
+          "max": 1000
+        }
+      }
+    ]
+  },
+  "loops": 2,
+  "results": [
+    {
+      "item": "creatingspace:copper_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_copper_turbine"
+        },
+        {
+          "item": "creatingspace:copper_turbine_shaft"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_copper_turbine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_copper_turbine"
+        },
+        {
+          "item": "creatingspace:copper_blisk"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_copper_turbine"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:incomplete_copper_turbine"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": true,
+  "ingredient": {
+    "type": "forge:intersection",
+    "children": [
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+          "engineRecipeData": {
+            "materialLevel": 8
+          }
+        }
+      },
+      {
+        "item": "creatingspace:engine_blueprint",
+        "type": "creatingspace:range_int",
+        "range_data": {
+          "path": "engineRecipeData/size",
+          "min": 1000,
+          "max": 2000
+        }
+      }
+    ]
+  },
+  "loops": 3,
+  "results": [
+    {
+      "item": "creatingspace:hastelloy_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_hastelloy_turbine"
+        },
+        {
+          "item": "creatingspace:hastelloy_turbine_shaft"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_hastelloy_turbine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_hastelloy_turbine"
+        },
+        {
+          "item": "creatingspace:hastelloy_blisk"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:incomplete_hastelloy_turbine"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:incomplete_hastelloy_turbine"
+  }
+}
