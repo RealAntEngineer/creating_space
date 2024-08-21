@@ -218,13 +218,6 @@ public class BlockInit {
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
             .register();
-    public static final BlockEntry<RoomPressuriserBlock> ROOM_PRESSURISER = REGISTRATE
-            .block("room_pressuriser", RoomPressuriserBlock::new)
-            .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
-            .item()
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .build()
-            .register();
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -280,7 +273,20 @@ public class BlockInit {
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
             .register();
-
+    public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
+            .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
+    public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
+            .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))

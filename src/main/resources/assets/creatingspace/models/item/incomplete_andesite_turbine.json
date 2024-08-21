@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "creatingspace:item/incomplete_andesite_turbine"
+    "layer0": "creatingspace:item/transition_item/incomplete_andesite_turbine"
   }
 }

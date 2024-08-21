@@ -15,8 +15,8 @@ import java.util.UUID;
 public class UnlockabledDesignSavedData extends SavedData {
 
     private static final Codec<Map<String, List<ResourceLocation>>> CODEC = Codec.unboundedMap(Codec.STRING, Codec.list(ResourceLocation.CODEC));
-    public Map<String, List<ResourceLocation>> unlockedExhaustType = new HashMap<>();
-    public Map<String, List<ResourceLocation>> unlockedPowerPackType = new HashMap<>();
+    public HashMap<String, List<ResourceLocation>> unlockedExhaustType = new HashMap<>();
+    public HashMap<String, List<ResourceLocation>> unlockedPowerPackType = new HashMap<>();
 
     public UnlockabledDesignSavedData() {
     }
@@ -35,10 +35,10 @@ public class UnlockabledDesignSavedData extends SavedData {
 
     public static UnlockabledDesignSavedData load(CompoundTag nbt) {
         UnlockabledDesignSavedData savedData = new UnlockabledDesignSavedData();
-        savedData.unlockedExhaustType = CODEC.parse(NbtOps.INSTANCE, nbt.get("unlocked_exhaust_type"))
-                .result().orElse(new HashMap<>());
-        savedData.unlockedPowerPackType = CODEC.parse(NbtOps.INSTANCE, nbt.get("unlocked_power_pack_type"))
-                .result().orElse(new HashMap<>());
+        savedData.unlockedExhaustType = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("unlocked_exhaust_type"))
+                .result().orElse(new HashMap<>()));
+        savedData.unlockedPowerPackType = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("unlocked_power_pack_type"))
+                .result().orElse(new HashMap<>()));
         return savedData;
     }
 

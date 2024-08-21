@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "creatingspace:inconel_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:inconel_sheet"
+    }
+  ]
+}

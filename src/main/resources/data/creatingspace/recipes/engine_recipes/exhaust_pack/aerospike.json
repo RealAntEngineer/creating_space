@@ -1,6 +1,9 @@
 {
   "type": "create:sequenced_assembly",
-  "keepNbt": true,
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
   "ingredient": {
     "item": "creatingspace:engine_blueprint",
     "type": "forge:partial_nbt",
@@ -19,10 +22,13 @@
   "sequence": [
     {
       "type": "create:deploying",
-      "machNbt": true,
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         },
         {
           "item": "creatingspace:combustion_chamber"
@@ -30,29 +36,32 @@
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     },
     {
       "type": "create:deploying",
-      "machNbt": true,
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
       "ingredients": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         },
         {
-          "item": "creatingspace:aerospike"
+          "item": "creatingspace:aerospike_plug"
         }
       ],
       "results": [
         {
-          "item": "creatingspace:incomplete_exhaust_pack"
+          "item": "creatingspace:engine_blueprint"
         }
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_exhaust_pack"
+    "item": "creatingspace:engine_blueprint"
   }
 }
