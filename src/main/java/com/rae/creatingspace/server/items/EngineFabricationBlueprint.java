@@ -25,6 +25,7 @@ public class EngineFabricationBlueprint extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+        //TODO make this method static somewhere (repetition for the engine, for the engine blueprint then for every item)
         CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
         if (recipeData != null) {
             int size = recipeData.getInt("size");
@@ -62,11 +63,10 @@ public class EngineFabricationBlueprint extends Item {
         PowerPackType powerPackType = MiscInit.getSyncedPowerPackRegistry().get(powerPackTypeLocation);
         ItemStack defaultInstance = super.getDefaultInstance();
         CompoundTag nbt = defaultInstance.getOrCreateTag();
-
         CompoundTag engineInfo = new CompoundTag();
         engineInfo.putInt("thrust", thrust);
         assert exhaustPackType != null;
-        engineInfo.putInt("mass", exhaustPackType.getMass(throatArea, expansionRatio));//size will be defined in the exhaust and powerPack as a coef (0.5 fo reach right now)
+        engineInfo.putInt("mass", exhaustPackType.getMass((float) throatArea / 1000, expansionRatio));//size will be defined in the exhaust and powerPack as a coef (0.5 fo reach right now)
         engineInfo.putFloat("efficiency", efficiency);
         engineInfo.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantTypeLocation).get().orThrow());
 

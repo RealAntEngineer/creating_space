@@ -46,15 +46,19 @@ public class IntRangeNbtIngredient extends AbstractIngredient {
     public boolean test(@Nullable ItemStack input) {
         if (input == null)
             return false;
-        return items.contains(input.getItem()) && matches(input.getShareTag());
+        boolean flag1 = items.contains(input.getItem());
+        boolean flag2 = matches(input.getShareTag());
+        return flag1 && flag2;
     }
 
     private boolean matches(CompoundTag shareTag) {
         try {
             CompoundTag tag = shareTag.copy();
             for (String partialPath : path.subList(0, path.size() - 1)) {
-                tag = (CompoundTag) tag.get(partialPath).copy();
+                assert tag != null;
+                tag = (CompoundTag) tag.get(partialPath);
             }
+            assert tag != null;
             int value = tag.getInt(path.get(path.size() - 1));
             if (value >= min || value <= max) {
                 return true;

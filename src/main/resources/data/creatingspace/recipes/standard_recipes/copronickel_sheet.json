@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "creatingspace:copronickel_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:copronickel_sheet"
+    }
+  ]
+}

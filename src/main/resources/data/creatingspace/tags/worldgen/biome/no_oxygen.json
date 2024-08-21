@@ -1,6 +1,8 @@
 {
   "values": [
     "#creatingspace:is_moon",
+    "#creatingspace:is_mars",
+    "#creatingspace:is_venus",
     "creatingspace:space"
   ]
 }
