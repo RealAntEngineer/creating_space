@@ -18,8 +18,8 @@ import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketCont
 import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
 import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.engine.BigEngineItem;
+import com.rae.creatingspace.server.items.engine.EngineItem;
 import com.rae.creatingspace.server.items.engine.SmallEngineItem;
-import com.rae.creatingspace.server.items.engine.SuperEngineItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
@@ -71,7 +71,7 @@ public class BlockInit {
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
-            .item(SuperEngineItem::new)
+            .item(EngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .register();
@@ -218,13 +218,6 @@ public class BlockInit {
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
             .register();
-    public static final BlockEntry<RoomPressuriserBlock> ROOM_PRESSURISER = REGISTRATE
-            .block("room_pressuriser", RoomPressuriserBlock::new)
-            .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
-            .item()
-            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .build()
-            .register();
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -280,7 +273,20 @@ public class BlockInit {
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
             .register();
-
+    public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
+            .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
+    public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
+            .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))

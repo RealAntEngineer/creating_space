@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "creatingspace:hastelloy_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:hastelloy_sheet"
+    }
+  ]
+}

@@ -74,7 +74,7 @@ public class RocketContraption extends TranslatingContraption {
 
 
         }
-        this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState());
+        this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState(), blockEntityAdded);
         if (blockAdded instanceof FlightRecorderBlock){
             this.localPosOfFlightRecorders.add(localPos);
         }

@@ -7,11 +7,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 
 public class EngineerTableCraft extends BlockEntityConfigurationPacket<RocketEngineerTableBlockEntity> {
-    ItemStack engine;
+    ItemStack engineBlueprint;
 
-    public EngineerTableCraft(BlockPos pos, ItemStack engine) {
+    public EngineerTableCraft(BlockPos pos, ItemStack engineBlueprint) {
         super(pos);
-        this.engine = engine;
+        this.engineBlueprint = engineBlueprint;
     }
 
 
@@ -24,25 +24,25 @@ public class EngineerTableCraft extends BlockEntityConfigurationPacket<RocketEng
     }
 
 
-    public static EngineerTableCraft sendCraft(BlockPos pos, ItemStack engine) {
+    public static EngineerTableCraft sendCraft(BlockPos pos, ItemStack engineBluePrint) {
         EngineerTableCraft packet = new EngineerTableCraft(pos);
-        packet.engine = engine;
+        packet.engineBlueprint = engineBluePrint;
         return packet;
     }
 
 
     @Override
     protected void writeSettings(FriendlyByteBuf buffer) {
-        buffer.writeItem(engine);
+        buffer.writeItem(engineBlueprint);
     }
 
     @Override
     protected void readSettings(FriendlyByteBuf buffer) {
-        engine = buffer.readItem();
+        engineBlueprint = buffer.readItem();
     }
 
     @Override
     protected void applySettings(RocketEngineerTableBlockEntity sealerBlockEntity) {
-        sealerBlockEntity.craftEngine(engine);
+        sealerBlockEntity.craftEngine(engineBlueprint);
     }
 }

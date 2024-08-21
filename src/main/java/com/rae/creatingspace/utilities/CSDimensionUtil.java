@@ -124,10 +124,13 @@ public class CSDimensionUtil {
                     ResourceLocation target = adjacent.getKey();
                     int deltaV = adjacent.getValue().deltaV();
                     int newDist = distances.get(current) + deltaV;
-
-                    if (newDist < distances.get(target)) {
-                        distances.put(target, newDist);
-                        priorityQueue.add(new AbstractMap.SimpleEntry<>(target, newDist));
+                    if (distances.get(target) != null) {
+                        if (newDist < distances.get(target)) {
+                            distances.put(target, newDist);
+                            priorityQueue.add(new AbstractMap.SimpleEntry<>(target, newDist));
+                        }
+                    } else {
+                        LOGGER.warn("unexpected null value loading route from : "+ current + " to "+ target);
                     }
                 }
             }
