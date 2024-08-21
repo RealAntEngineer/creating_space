@@ -35,7 +35,7 @@ public class CreatingSpace {
     public static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
 
 
-    public static final String MODID = "creatingspace" ;
+    public static final String MODID = "creatingspace";
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
     public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();

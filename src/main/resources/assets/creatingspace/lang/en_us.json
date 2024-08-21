@@ -26,6 +26,8 @@
   "block.creatingspace.rocket_engineer_table": "Rocket Engineering Table",
   "block.creatingspace.super_rocket_engine": "Rocket Engine",
 
+  "entity.creatingspace.rocket_contraption": "Flying Rocket",
+
 
   "block.creatingspace.clamps": "Clamps",
   "block.creatingspace.clamps.tooltip.summary": "A mean for preventing a contraption from moving, movable by pistons",
