@@ -1,73 +1,73 @@
 {
-  "type": "create:sequenced_assembly",
-  "keepNbt": [
-    "engineRecipeData",
-    "blockEntity"
-  ],
-  "ingredient": {
-    "type": "forge:intersection",
-    "children": [
-      {
-        "item": "creatingspace:engine_blueprint",
-        "type": "forge:partial_nbt",
-        "nbt": {
-          "engineRecipeData": {
-            "materialLevel": 2
-          }
-        }
-      },
-      {
-        "item": "creatingspace:engine_blueprint",
-        "type": "creatingspace:range_int",
-        "range_data": {
-          "path": "engineRecipeData/size",
-          "min": 1000,
-          "max": 2000
-        }
-      }
-    ]
-  },
-  "loops": 3,
-  "results": [
-    {
-      "item": "creatingspace:copper_turbine"
-    }
-  ],
-  "sequence": [
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:copper_turbine_shaft"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
+    "type": "create:sequenced_assembly",
+    "keepNbt": [
+        "engineRecipeData",
+        "blockEntity"
+    ],
+    "ingredient": {
+        "type": "forge:intersection",
+        "children": [
+            {
+                "item": "creatingspace:engine_blueprint",
+                "type": "forge:partial_nbt",
+                "nbt": {
+                    "engineRecipeData": {
+                        "materialLevel": 2
+                    }
+                }
+            },
+            {
+                "item": "creatingspace:engine_blueprint",
+                "type": "creatingspace:range_int",
+                "range_data": {
+                    "path": "engineRecipeData/size",
+                    "min": 1000,
+                    "max": 2000
+                }
+            }
+        ]
     },
-    {
-      "type": "create:deploying",
-      "ingredients": [
+    "loops": 3,
+    "results": [
         {
-          "item": "creatingspace:engine_blueprint"
+            "item": "creatingspace:copper_turbine"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:copper_turbine_shaft"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
         },
         {
-          "item": "creatingspace:copper_blisk"
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:copper_blisk"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
         }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
+    ],
+    "transitionalItem": {
+        "item": "creatingspace:engine_blueprint"
     }
-  ],
-  "transitionalItem": {
-    "item": "creatingspace:engine_blueprint"
-  }
 }

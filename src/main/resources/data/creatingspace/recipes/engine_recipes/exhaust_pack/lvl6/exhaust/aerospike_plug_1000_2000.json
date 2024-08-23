@@ -1,122 +1,122 @@
 {
-  "type": "create:sequenced_assembly",
-  "keepNbt": [
-    "engineRecipeData",
-    "blockEntity"
-  ],
-  "ingredient": {
-    "type": "forge:intersection",
-    "children": [
-      {
-        "item": "creatingspace:engine_blueprint",
-        "type": "forge:partial_nbt",
-        "nbt": {
-          "engineRecipeData": {
-            "materialLevel": 6,
-            "exhaustPackType": "creatingspace:aerospike"
-          }
+    "type": "create:sequenced_assembly",
+    "keepNbt": [
+        "engineRecipeData",
+        "blockEntity"
+    ],
+    "ingredient": {
+        "type": "forge:intersection",
+        "children": [
+            {
+                "item": "creatingspace:engine_blueprint",
+                "type": "forge:partial_nbt",
+                "nbt": {
+                    "engineRecipeData": {
+                        "materialLevel": 6,
+                        "exhaustPackType": "creatingspace:aerospike"
+                    }
+                }
+            },
+            {
+                "item": "creatingspace:engine_blueprint",
+                "type": "creatingspace:range_int",
+                "range_data": {
+                    "path": "engineRecipeData/size",
+                    "min": 1000,
+                    "max": 2000
+                }
+            }
+        ]
+    },
+    "loops": 2,
+    "results": [
+        {
+            "item": "creatingspace:aerospike_plug"
         }
-      },
-      {
-        "item": "creatingspace:engine_blueprint",
-        "type": "creatingspace:range_int",
-        "range_data": {
-          "path": "engineRecipeData/size",
-          "min": 1000,
-          "max": 2000
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "create:shaft"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:monel_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:monel_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:monel_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:monel_rib"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
         }
-      }
-    ]
-  },
-  "loops": 2,
-  "results": [
-    {
-      "item": "creatingspace:aerospike_plug"
+    ],
+    "transitionalItem": {
+        "item": "creatingspace:engine_blueprint"
     }
-  ],
-  "sequence": [
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "create:shaft"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:monel_engine_wall"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:monel_engine_wall"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:monel_engine_wall"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:monel_rib"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    }
-  ],
-  "transitionalItem": {
-    "item": "creatingspace:engine_blueprint"
-  }
 }

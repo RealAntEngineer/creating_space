@@ -122,7 +122,7 @@ public class CSDimensionUtil {
             if (currentDimension != null) {
                 for (Map.Entry<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> adjacent : currentDimension.adjacentDimensions().entrySet()) {
                     ResourceLocation target = adjacent.getKey();
-                    int deltaV = adjacent.getValue().deltaV();
+                    int deltaV = adjacent.getValue().deltaV(); 
                     int newDist = distances.get(current) + deltaV;
                     if (distances.get(target) != null) {
                         if (newDist < distances.get(target)) {

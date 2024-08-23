@@ -272,9 +272,9 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                     (float) engineSizeInput.getState() / 1000,
                     powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt()) / 100000;
             float temperature = prop.getCombustionTemperature(powerPack.getCombustionEfficiency()).intValue();
-            font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(pressure, 3) + "bar",
+            /*font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(pressure, 3) + "bar",
                     x + 260, y + 20 + 6,
-                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
+                    Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());*/
             engineIsp = prop.getRealIsp(
                     powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt());
             font.draw(ms, "ISP : " + (int) engineIsp + "s",
@@ -291,10 +291,8 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                     x + 260, y + 65 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());
         }
-        else {
-            removeWidgets(setPropellantType);
-            removeWidgets(propellantLabel);
-
+        else if (exhaustPackTypes.isEmpty() || powerPackTypes.isEmpty()){
+            onClose();
         }
     }
 

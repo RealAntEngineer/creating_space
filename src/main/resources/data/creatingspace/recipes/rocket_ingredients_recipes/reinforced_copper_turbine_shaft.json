@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "creatingspace:reinforced_copper_ingot"
+        }
+    },
+    "pattern": [
+        "I  ",
+        " I ",
+        "  I"
+    ],
+    "result": {
+        "item": "creatingspace:reinforced_copper_turbine_shaft"
+    }
+}

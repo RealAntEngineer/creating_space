@@ -1,88 +1,88 @@
 {
-  "type": "create:sequenced_assembly",
-  "keepNbt": [
-    "engineRecipeData",
-    "blockEntity"
-  ],
-  "ingredient": {
-    "item": "creatingspace:engine_blueprint",
-    "type": "forge:partial_nbt",
-    "nbt": {
-      "engineRecipeData": {
-        "materialLevel": 2,
-        "powerPackType": "creatingspace:ox_rich_staged_cycle"
-      }
-    }
-  },
-  "loops": 1,
-  "results": [
-    {
-      "item": "creatingspace:power_pack"
-    }
-  ],
-  "sequence": [
-    {
-      "type": "create:deploying",
-      "machNbt": [
+    "type": "create:sequenced_assembly",
+    "keepNbt": [
         "engineRecipeData",
         "blockEntity"
-      ],
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:copper_turbine"
+    ],
+    "ingredient": {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+            "engineRecipeData": {
+                "materialLevel": 2,
+                "powerPackType": "creatingspace:ox_rich_staged_cycle"
+            }
         }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
     },
-    {
-      "type": "create:deploying",
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
-      ],
-      "ingredients": [
+    "loops": 1,
+    "results": [
         {
-          "item": "creatingspace:engine_blueprint"
+            "item": "creatingspace:power_pack"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "machNbt": [
+                "engineRecipeData",
+                "blockEntity"
+            ],
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:copper_turbine"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
         },
         {
-          "item": "creatingspace:copper_turbine"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
-      ],
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
+            "type": "create:deploying",
+            "machNbt": [
+                "engineRecipeData",
+                "blockEntity"
+            ],
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:copper_turbine"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
         },
         {
-          "item": "creatingspace:copper_injector_grid"
+            "type": "create:deploying",
+            "machNbt": [
+                "engineRecipeData",
+                "blockEntity"
+            ],
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:copper_injector_grid"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
         }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
+    ],
+    "transitionalItem": {
+        "item": "creatingspace:engine_blueprint"
     }
-  ],
-  "transitionalItem": {
-    "item": "creatingspace:engine_blueprint"
-  }
 }

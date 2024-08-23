@@ -51,7 +51,7 @@ public class ItemInit {
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .defaultModel()
                 .register();
-        CreatingSpace.REGISTRATE.item(
+        /*CreatingSpace.REGISTRATE.item(
                         name + "_canal", Item::new)
                 .defaultModel()
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
@@ -60,7 +60,7 @@ public class ItemInit {
                         name + "_engine_pipe", Item::new)
                 .defaultModel()
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                .register();
+                .register();*/
         CreatingSpace.REGISTRATE.item(
                         name + "_turbine_shaft", Item::new)
                 .defaultModel()
@@ -129,14 +129,14 @@ public class ItemInit {
 
     public static final ItemEntry<Item> BASIC_CATALYST = CreatingSpace.REGISTRATE.item(
             "basic_catalyst",Item::new)
-            .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
 
     public static final ItemEntry<CombustibleItem> COAL_DUST = CreatingSpace.REGISTRATE.item(
             "coal_dust", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(500))
-            .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
 

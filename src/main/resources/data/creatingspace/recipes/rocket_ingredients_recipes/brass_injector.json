@@ -1,0 +1,50 @@
+{
+    "type": "create:sequenced_assembly",
+    "ingredient": {
+        "item": "create:sturdy_sheet"
+    },
+    "loops": 1,
+    "results": [
+        {
+            "count": 1,
+            "item": "creatingspace:brass_injector"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "create:sturdy_sheet"
+                },
+                {
+                    "item": "create:brass_sheet"
+                }
+            ],
+            "results": [
+                {
+                    "item": "create:sturdy_sheet"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "create:sturdy_sheet"
+                },
+                {
+                    "item": "create:brass_nugget"
+                }
+            ],
+            "results": [
+                {
+                    "item": "create:sturdy_sheet"
+                }
+            ]
+        }
+    ],
+    "transitionalItem": {
+        "item": "create:sturdy_sheet"
+    }
+}

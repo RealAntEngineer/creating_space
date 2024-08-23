@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "P": {
+            "item": "creatingspace:monel_sheet"
+        },
+        "I": {
+            "item": "creatingspace:monel_ingot"
+        },
+        "N": {
+            "item": "creatingspace:monel_nugget"
+        }
+    },
+    "pattern": [
+        "NPN",
+        "PIP",
+        "NPN"
+    ],
+    "result": {
+        "item": "creatingspace:monel_blisk"
+    }
+}

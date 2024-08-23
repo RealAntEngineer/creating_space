@@ -1,122 +1,122 @@
 {
-  "type": "create:sequenced_assembly",
-  "keepNbt": [
-    "engineRecipeData",
-    "blockEntity"
-  ],
-  "ingredient": {
-    "type": "forge:intersection",
-    "children": [
-      {
-        "item": "creatingspace:engine_blueprint",
-        "type": "forge:partial_nbt",
-        "nbt": {
-          "engineRecipeData": {
-            "materialLevel": 8,
-            "exhaustPackType": "creatingspace:bell_nozzle"
-          }
+    "type": "create:sequenced_assembly",
+    "keepNbt": [
+        "engineRecipeData",
+        "blockEntity"
+    ],
+    "ingredient": {
+        "type": "forge:intersection",
+        "children": [
+            {
+                "item": "creatingspace:engine_blueprint",
+                "type": "forge:partial_nbt",
+                "nbt": {
+                    "engineRecipeData": {
+                        "materialLevel": 8,
+                        "exhaustPackType": "creatingspace:bell_nozzle"
+                    }
+                }
+            },
+            {
+                "item": "creatingspace:engine_blueprint",
+                "type": "creatingspace:range_int",
+                "range_data": {
+                    "path": "engineRecipeData/size",
+                    "min": 0,
+                    "max": 1000
+                }
+            }
+        ]
+    },
+    "loops": 1,
+    "results": [
+        {
+            "item": "creatingspace:bell_nozzle"
         }
-      },
-      {
-        "item": "creatingspace:engine_blueprint",
-        "type": "creatingspace:range_int",
-        "range_data": {
-          "path": "engineRecipeData/size",
-          "min": 0,
-          "max": 1000
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_rib"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_rib"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
         }
-      }
-    ]
-  },
-  "loops": 1,
-  "results": [
-    {
-      "item": "creatingspace:bell_nozzle"
+    ],
+    "transitionalItem": {
+        "item": "creatingspace:engine_blueprint"
     }
-  ],
-  "sequence": [
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:hastelloy_rib"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:hastelloy_engine_wall"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:hastelloy_engine_wall"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:hastelloy_engine_wall"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        },
-        {
-          "item": "creatingspace:hastelloy_rib"
-        }
-      ],
-      "results": [
-        {
-          "item": "creatingspace:engine_blueprint"
-        }
-      ]
-    }
-  ],
-  "transitionalItem": {
-    "item": "creatingspace:engine_blueprint"
-  }
 }

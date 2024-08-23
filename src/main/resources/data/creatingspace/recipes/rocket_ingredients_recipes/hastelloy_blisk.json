@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "P": {
+            "item": "creatingspace:hastelloy_sheet"
+        },
+        "I": {
+            "item": "creatingspace:hastelloy_ingot"
+        },
+        "N": {
+            "item": "creatingspace:hastelloy_nugget"
+        }
+    },
+    "pattern": [
+        "NPN",
+        "PIP",
+        "NPN"
+    ],
+    "result": {
+        "item": "creatingspace:hastelloy_blisk"
+    }
+}
