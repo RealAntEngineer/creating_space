@@ -9,15 +9,16 @@
 
   "biomes": "#creatingspace:has_structure/abandoned_moon_outpost",
 
-  "step": "surface_structures",
+  "step": "surface_structure",
+  "terrain_adaptation": "beard_thin ",
 
   "start_height": {
     "absolute": -8
   },
 
-  "project_start_to_heightmap": "WORLD_SURFACE",
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
 
-  "use_expansion_hack": true,
+  "use_expansion_hack": false,
 
   "spawn_overrides": {
   }

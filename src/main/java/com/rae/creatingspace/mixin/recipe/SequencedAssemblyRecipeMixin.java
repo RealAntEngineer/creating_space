@@ -3,6 +3,7 @@ package com.rae.creatingspace.mixin.recipe;
 import com.rae.creatingspace.recipes.IMoreNbtConditions;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Mixin(value = SequencedAssemblyRecipe.class)
 public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
@@ -61,8 +63,9 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
             CompoundTag itemTag = advancedItem.getOrCreateTag();
             CompoundTag toKeepTag = input.getOrCreateTag();
             for (String key : nbtKeys) {
-                if (toKeepTag.get(key) != null) {
-                    itemTag.put(key, toKeepTag.get(key));
+                Tag tag = toKeepTag.get(key);
+                if (tag != null) {
+                    itemTag.put(key, Objects.requireNonNull(tag));
                 }
             }
             advancedItem.setTag(itemTag);
