@@ -102,7 +102,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         //initialise the map in the server side blockEntity to avoid issues
         //this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());//rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : new HashMap<>(rocket.getMapOfAccessibleDimensionAndV());
 
-        this.buttonVector = new Vector<>(CSDimensionUtil.travelMap.size() + 1);
+        this.buttonVector = new Vector<>(CSDimensionUtil.getTravelMap().size() + 1);
         this.destinationChanged = false;
         // schedule
         this.schedule = container.contentHolder.schedule.getSchedule() == null ? new RocketSchedule() : container.contentHolder.schedule.getSchedule();
@@ -129,11 +129,11 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         //first collect all the planets
         int row = 1;
         //TODO add detection of loops
-        ArrayDeque<ResourceLocation> toVisit = new ArrayDeque<>(CSDimensionUtil.travelMap.keySet());
+        ArrayDeque<ResourceLocation> toVisit = new ArrayDeque<>(CSDimensionUtil.getTravelMap().keySet());
         while (!toVisit.isEmpty()) {
             ResourceLocation dim = toVisit.poll();
-            if (temp.containsKey(CSDimensionUtil.travelMap.get(dim).orbitedBody())) {
-                Orbit widget = new Orbit(x + width / 2, y + height / 2, CSDimensionUtil.travelMap.get(dim).distanceToOrbitedBody(), dim);
+            if (temp.containsKey(CSDimensionUtil.getTravelMap().get(dim).orbitedBody())) {
+                Orbit widget = new Orbit(x + width / 2, y + height / 2, CSDimensionUtil.getTravelMap().get(dim).distanceToOrbitedBody(), dim);
                 temp.put(dim, widget);
                 widget.withCallback(
                         () -> {
@@ -148,7 +148,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                         widget);
                 row++;
                 addRenderableWidget(widget);
-                temp.get(CSDimensionUtil.travelMap.get(dim).orbitedBody()).addSatellite(widget);
+                temp.get(CSDimensionUtil.getTravelMap().get(dim).orbitedBody()).addSatellite(widget);
             } else {
                 toVisit.addLast(dim);
             }
@@ -873,7 +873,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                     if (!(e instanceof ScrollInput))
                         return;
                     ((ScrollInput) e).calling(i -> {
-                                destination = CSDimensionUtil.planets.get(i);
+                                destination = CSDimensionUtil.getPlanets().get(i);
                                 destinationCost.setTextAndTrim(
                                         Component.literal(
                                                 String.valueOf(CSDimensionUtil.cost(currentDimension, destination))),

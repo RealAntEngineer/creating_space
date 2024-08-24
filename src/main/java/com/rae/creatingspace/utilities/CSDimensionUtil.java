@@ -18,9 +18,28 @@ import java.util.*;
 public class CSDimensionUtil {
     //should be updated on both server and client load (first on client, then on client join)
     private static final Logger LOGGER = LogManager.getLogger();
-    public static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
-    public static List<ResourceLocation> planets;
-    public static Map<ResourceLocation, Map<ResourceLocation, Integer>> costAdjacentMap;//map of (source, target) -> cost
+
+    public static Map<ResourceLocation, RocketAccessibleDimension> getTravelMap() {
+        if (travelMap == null){
+            return new HashMap<>();
+        }
+        return travelMap;
+    }
+
+    public static List<ResourceLocation> getPlanets() {
+        if (travelMap == null){
+            return Collections.emptyList();
+        }
+        return planets;
+    }
+
+    public static Map<ResourceLocation, Map<ResourceLocation, Integer>> getCostAdjacentMap() {
+        return costAdjacentMap;
+    }
+
+    private static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
+    private static List<ResourceLocation> planets;
+    private static Map<ResourceLocation, Map<ResourceLocation, Integer>> costAdjacentMap;//map of (source, target) -> cost
 
     public static void updatePlanetsFromRegistry(Registry<RocketAccessibleDimension> registry) {
         Map<ResourceLocation, RocketAccessibleDimension> collector = new HashMap<>();
