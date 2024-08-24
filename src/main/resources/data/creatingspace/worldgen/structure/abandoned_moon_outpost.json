@@ -9,7 +9,7 @@
 
   "biomes": "#creatingspace:has_structure/abandoned_moon_outpost",
 
-  "step": "surface_structure",
+  "step": "surface_structures",
   "terrain_adaptation": "beard_thin ",
 
   "start_height": {

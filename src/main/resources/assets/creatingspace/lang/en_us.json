@@ -262,6 +262,8 @@
 
   "item.creatingspace.space_food": "Space Food",
   "item.creatingspace.design_blueprint": "Design Blueprint",
+  "item.creatingspace.engine_blueprint": "Engine Blueprint",
+
   "itemGroup.creatingspace.machine_tab": "Machine Tab",
   "itemGroup.creatingspace.component_tab": "Component Tab",
   "itemGroup.creatingspace.minerals_tab": "Minerals Tab",
