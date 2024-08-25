@@ -19,8 +19,6 @@
   "block.creatingspace.flow_meter.tooltip.summary": "Show the amount of fluid passing through a pipe",
   "block.creatingspace.oxygen_sealer": "Oxygen Sealer",
   "block.creatingspace.oxygen_sealer.tooltip.summary": "A machine that fill a room with oxygen",
-  "block.creatingspace.oxygen_sealer.tooltip.condition1": "when R-Clicked with empty hand",
-  "block.creatingspace.oxygen_sealer.tooltip.behaviour1": "open the GUI",
   "block.creatingspace.air_liquefier": "Air Liquefier",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only works on earth",
   "block.creatingspace.rocket_engineer_table": "Rocket Engineering Table",
@@ -39,7 +37,9 @@
   "block.creatingspace.moon_stone": "Moon Stone",
   "block.creatingspace.moon_regolith": "Moon Regolith",
   "block.creatingspace.moon_surface_regolith": "Moon Surface Regolith",
-
+  "block.creatingspace.mars_stone": "Mars Stone",
+  "block.creatingspace.mars_regolith": "Mars Regolith",
+  "block.creatingspace.mars_surface_regolith": "Mars Surface Regolith",
   "block.creatingspace.nickel_ore": "Nickel Ore",
   "block.creatingspace.deepslate_nickel_ore": "Deepslate Nickel Ore",
   "block.creatingspace.moon_nickel_ore": "Moon Nickel Ore",
@@ -328,6 +328,11 @@
   "creatingspace:moon_orbit": "Moon Orbit",
   "creatingspace:the_moon": "The Moon",
   "minecraft:overworld": "The Earth",
+  "creatingspace:mars": "Mars",
+  "creatingspace:mars_orbit": "Mars Orbit",
+  "creatingspace:venus": "Venus",
+
+
 
   "death.attack.no_oxygen": "%1$s didn't found oxygen in space",
 
@@ -365,7 +370,18 @@
   "creatingspace.science.mass": "Mass",
   "item.creatingspace.design_blueprint.message": "unlocked :",
   "creatingspace.power_pack_type": "Power Pack",
-  "creatingspace.exhaust_pack_type": "Exhaust Pack"
-
+  "creatingspace.exhaust_pack_type": "Exhaust Pack",
+  "creatingspace.gui.engineer_table.engine_size_hint": "heavier but decrease material requirement",
+  "creatingspace.gui.engineer_table.engine_thrust_hint": "more thrust but increase material requirement",
+  "creatingspace.gui.engineer_table.expansion_ratio": "expansion ratio :",
+  "creatingspace.gui.engineer_table.propellant_type_hint": "using a better propellant will mean using better materials",
+  "creatingspace.gui.engineer_table.max_isp": "max isp : %d s",
+  "creatingspace.gui.engineer_table.material_level": "Material Lvl : %d",
+  "creatingspace.gui.engineer_table.engine_mass": "Mass : %f t",
+  "creatingspace.gui.engineer_table.engine_temperature": "T : %d °C",
+  "creatingspace.gui.engineer_table.engine_pressure": "P : %d bar",
+  "creatingspace.gui.engineer_table.isp": "ISP : %d s",
+  "creatingspace.gui.engineer_table.engine_size_input": "%i mb",
+  "creatingspace.gui.engineer_table.engine_thrust_input": "%iN"
 
 }

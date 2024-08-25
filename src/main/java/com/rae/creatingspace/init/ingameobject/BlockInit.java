@@ -289,7 +289,7 @@ public class BlockInit {
             .register();
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.SNOW))
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
@@ -297,7 +297,7 @@ public class BlockInit {
 
     public static final BlockEntry<RegolithSurfaceBlock> MOON_SURFACE_REGOLITH = REGISTRATE
             .block("moon_surface_regolith",RegolithSurfaceBlock::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.SNOW))
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
@@ -312,14 +312,14 @@ public class BlockInit {
             .register();
     public static final BlockEntry<Block> MARS_REGOLITH = REGISTRATE
             .block("mars_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
-            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.TERRACOTTA_RED))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
             .register();
     public static final BlockEntry<Block> MARS_SURFACE_REGOLITH = REGISTRATE
             .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
-            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.TERRACOTTA_RED))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
