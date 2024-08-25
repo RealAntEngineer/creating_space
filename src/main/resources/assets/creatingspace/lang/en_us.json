@@ -22,7 +22,7 @@
   "block.creatingspace.air_liquefier": "Air Liquefier",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only works on earth",
   "block.creatingspace.rocket_engineer_table": "Rocket Engineering Table",
-  "block.creatingspace.super_rocket_engine": "Rocket Engine",
+  "block.creatingspace.rocket_engine": "Rocket Engine",
 
   "entity.creatingspace.rocket_contraption": "Flying Rocket",
 

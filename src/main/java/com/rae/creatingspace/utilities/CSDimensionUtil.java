@@ -177,7 +177,7 @@ public class CSDimensionUtil {
 
     public static void updateCostMap() {
         costAdjacentMap = new HashMap<>();
-        for (ResourceLocation location : travelMap.keySet()) {
+        for (ResourceLocation location : getTravelMap().keySet()) {
             costAdjacentMap.put(location, dijkstra(location));
         }
     }

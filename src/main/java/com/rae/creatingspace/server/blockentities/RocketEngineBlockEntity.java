@@ -64,7 +64,12 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
             nbt.putInt("thrust", thrust);
             nbt.putInt("size", size);
             nbt.putFloat("efficiency", efficiency);
-            nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, PropellantTypeInit.getSyncedPropellantRegistry().getKey(propellantType)).get().orThrow());
+            try {
+                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,
+                        PropellantTypeInit.getSyncedPropellantRegistry().getKey(propellantType)).get().orThrow());
+            } catch (Exception ignored){
+                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,PropellantTypeInit.METHALOX.getId() ).get().orThrow());
+            }
             super.saveAdditional(nbt);
         }
 

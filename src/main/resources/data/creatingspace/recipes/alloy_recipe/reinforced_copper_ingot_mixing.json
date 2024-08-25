@@ -2,17 +2,19 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "forge:ingots/copper",
-      "count": 2
+      "item": "minecraft:copper_ingot"
     },
     {
-      "tag": "forge:ingots/iron",
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot",
       "count": 1
     }
   ],
   "results": [
     {
-      "item": "creatingspace:reinforced_copper",
+      "item": "creatingspace:reinforced_copper_ingot",
       "count": 3
     }
   ],

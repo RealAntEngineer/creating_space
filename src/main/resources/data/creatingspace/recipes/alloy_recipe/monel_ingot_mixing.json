@@ -2,11 +2,13 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "tag": "forge:ingots/nickel",
-      "count": 2
+      "item": "creatingspace:nickel_ingot"
     },
     {
-      "tag": "forge:ingots/copper",
+      "item": "creatingspace:nickel_ingot"
+    },
+    {
+      "item": "minecraft:copper_ingot",
       "count": 1
     }
   ],
