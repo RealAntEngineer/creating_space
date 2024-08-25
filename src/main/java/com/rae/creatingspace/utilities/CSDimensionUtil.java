@@ -2,6 +2,7 @@ package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.init.TagsInit;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -21,20 +22,26 @@ public class CSDimensionUtil {
 
     public static Map<ResourceLocation, RocketAccessibleDimension> getTravelMap() {
         if (travelMap == null){
-            return new HashMap<>();
+            LOGGER.info("updating the travel map");
+            CSDimensionUtil.updatePlanetsFromRegistry(Objects.requireNonNull(Minecraft.getInstance().getConnection())
+                    .registryAccess().registry(RocketAccessibleDimension.REGISTRY_KEY)
+                    .orElseThrow());
+            LOGGER.info("updating the space travel cost map");
+            CSDimensionUtil.updateCostMap();
         }
         return travelMap;
     }
 
     public static List<ResourceLocation> getPlanets() {
-        if (travelMap == null){
-            return Collections.emptyList();
+        if (planets == null){
+            LOGGER.info("updating the travel map");
+            CSDimensionUtil.updatePlanetsFromRegistry(Objects.requireNonNull(Minecraft.getInstance().getConnection())
+                    .registryAccess().registry(RocketAccessibleDimension.REGISTRY_KEY)
+                    .orElseThrow());
+            LOGGER.info("updating the space travel cost map");
+            CSDimensionUtil.updateCostMap();
         }
         return planets;
-    }
-
-    public static Map<ResourceLocation, Map<ResourceLocation, Integer>> getCostAdjacentMap() {
-        return costAdjacentMap;
     }
 
     private static Map<ResourceLocation, RocketAccessibleDimension> travelMap;

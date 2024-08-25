@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.saveddata.SavedData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,7 @@ public class UnlockabledDesignSavedData extends SavedData {
         return unlockedExhaustType.get(playerId.toString());
     }
     @Override
-    public CompoundTag save(CompoundTag nbt) {
+    public @NotNull CompoundTag save(CompoundTag nbt) {
         nbt.put("unlocked_exhaust_type", CODEC.encodeStart(NbtOps.INSTANCE, unlockedExhaustType)
                 .result().orElse(new CompoundTag()));
         nbt.put("unlocked_power_pack_type", CODEC.encodeStart(NbtOps.INSTANCE, unlockedPowerPackType)

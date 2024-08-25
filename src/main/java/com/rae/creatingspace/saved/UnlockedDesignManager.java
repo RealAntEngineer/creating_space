@@ -1,11 +1,14 @@
 package com.rae.creatingspace.saved;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.init.PacketInit;
+import com.rae.creatingspace.utilities.packet.UpdateSavedDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,15 +16,20 @@ import java.util.List;
 
 public class UnlockedDesignManager {
     private static UnlockabledDesignSavedData savedData;
+    public static void setSavedData(UnlockabledDesignSavedData savedData) {
+        UnlockedDesignManager.savedData = savedData;
+    }
     public static List<ResourceLocation> getExhaustUnlocked(Player player){
         return savedData.unlockedExhaustType.get(player.getStringUUID());
     }
     public static List<ResourceLocation> getPowerPackUnlocked(Player player){
         return savedData.unlockedPowerPackType.get(player.getStringUUID());
+
     }
 
     //register only the ResourceLocation not the design class
     public static void addExhaustForPlayer(Player player, ResourceLocation exhaustPackType) {
+
         if (player instanceof ServerPlayer serverPlayer) {
             savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
             if (!savedData.unlockedExhaustType.containsKey(serverPlayer.getStringUUID())) {
@@ -37,10 +45,14 @@ public class UnlockedDesignManager {
                 savedData.unlockedExhaustType = originalMap;
                 savedData.setDirty();
             }
+            PacketInit.getChannel()
+                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                            new UpdateSavedDataPacket(savedData));
         }
     }
 
     public static void addPowerPackForPlayer(Player player, ResourceLocation powerPackType) {
+
         if (player instanceof ServerPlayer serverPlayer) {
             savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
             if (!savedData.unlockedPowerPackType.containsKey(serverPlayer.getStringUUID())) {
@@ -56,6 +68,9 @@ public class UnlockedDesignManager {
                 savedData.unlockedPowerPackType = originalMap;
                 savedData.setDirty();
             }
+            PacketInit.getChannel()
+                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                            new UpdateSavedDataPacket(savedData));
         }
     }
     public static void clearAllExhaustDesignsForPlayer(Player player) {
@@ -63,6 +78,9 @@ public class UnlockedDesignManager {
             savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
             savedData.unlockedExhaustType.remove(serverPlayer.getStringUUID());
             savedData.setDirty();
+            PacketInit.getChannel()
+                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                            new UpdateSavedDataPacket(savedData));
         }
     }
 
@@ -71,7 +89,11 @@ public class UnlockedDesignManager {
             savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
             savedData.unlockedPowerPackType.remove(serverPlayer.getStringUUID());
             savedData.setDirty();
+            PacketInit.getChannel()
+                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                            new UpdateSavedDataPacket(savedData));
         }
+
     }
 
     public static void playerLogin(Player player) {
@@ -85,6 +107,9 @@ public class UnlockedDesignManager {
                 savedData.unlockedPowerPackType.put(serverPlayer.getStringUUID(), new ArrayList<>(List.of(CreatingSpace.resource("open_cycle"))));
                 savedData.setDirty();
             }
+            PacketInit.getChannel()
+                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
+                            new UpdateSavedDataPacket(savedData));
         }
     }
 
@@ -93,6 +118,7 @@ public class UnlockedDesignManager {
         if (server == null || server.overworld() != level)
             return;
         savedData = UnlockabledDesignSavedData.loadData(server);
+
     }
 
 }

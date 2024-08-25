@@ -31,7 +31,11 @@ public enum PacketInit {
     SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
     SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
     UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT),
-    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER);
+    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER),
+    /*UPDATE_UNLOCKED_DESIGN_SERVER(PlayerUpdateUnlockedDesignClientPacket.class, PlayerUpdateUnlockedDesignClientPacket::new, PLAY_TO_SERVER),
+    UPDATE_UNLOCKED_DESIGN_CLIENT(PlayerUpdateUnlockedDesignServerPacket.class, PlayerUpdateUnlockedDesignServerPacket::new, PLAY_TO_CLIENT),*/
+    UPDATE_SAVED_DATA(UpdateSavedDataPacket.class, UpdateSavedDataPacket::new,PLAY_TO_CLIENT);
+
     public static final ResourceLocation CHANNEL_NAME = CreatingSpace.resource("main");
     public static final int NETWORK_VERSION = 3;
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);

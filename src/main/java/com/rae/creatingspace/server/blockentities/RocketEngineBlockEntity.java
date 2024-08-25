@@ -80,7 +80,6 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
             mass = nbt.getInt("mass");
             propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow())
                     .orElse(PropellantTypeInit.METHALOX.get());
-            ;
         }
 
         @Override

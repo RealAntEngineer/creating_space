@@ -19,6 +19,8 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static com.rae.creatingspace.server.event.DataEventHandler.getSideAwareRegistry;
+
 public class MiscInit {
     //TODO remove slots from the exhaust and power pack, add allowedPropellants for the exhaust pack
     public static final DeferredRegister<ExhaustPackType> DEFERRED_EXHAUST_PACK_TYPE =
@@ -56,24 +58,12 @@ public class MiscInit {
             () -> new RegistryBuilder<RocketAccessibleDimension>().allowModification().disableSaving()
                     .dataPackRegistry(
                             RocketAccessibleDimension.CODEC, RocketAccessibleDimension.CODEC));
-    /**
-     * use the side aware sync registry access instead
-     * @return a client side sync version of the DEFERRED_EXHAUST_PACK_TYPE
-     */
-    @OnlyIn(Dist.CLIENT)
     public static Registry<ExhaustPackType> getSyncedExhaustPackRegistry() {
-        return Minecraft.getInstance().getConnection().registryAccess().registry(Keys.EXHAUST_PACK_TYPE)
-                .orElseThrow();
+        return getSideAwareRegistry(Keys.EXHAUST_PACK_TYPE);
     }
 
-    /**
-     *
-     * @return a client side sync version of the DEFERRED_POWER_PACK_TYPE
-     */
-    @OnlyIn(Dist.CLIENT)
     public static Registry<PowerPackType> getSyncedPowerPackRegistry() {
-        return Minecraft.getInstance().getConnection().registryAccess().registry(Keys.POWER_PACK_TYPE)
-                .orElseThrow();
+        return getSideAwareRegistry(Keys.POWER_PACK_TYPE);
     }
 
     public static class Keys {
