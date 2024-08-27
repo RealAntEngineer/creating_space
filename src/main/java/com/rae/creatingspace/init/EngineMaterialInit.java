@@ -29,7 +29,7 @@ public class EngineMaterialInit {//will only be used for datagen
             temperatureBonus = 1;
         } else if (temperature > 1000 && temperature <= 2000) {
             temperatureBonus = 2;
-        } else if (temperature > 2000 && temperature <= 5000) {
+        } else if (temperature > 2000 && temperature <= 4000) {
             temperatureBonus = 3;
         } else {
             temperatureBonus = 4;

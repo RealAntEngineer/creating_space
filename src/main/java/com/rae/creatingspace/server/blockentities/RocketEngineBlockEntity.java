@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -80,16 +81,26 @@ public abstract class RocketEngineBlockEntity extends BlockEntity {
         }
 
         public void setFromNbt(CompoundTag nbt) {
-            thrust = nbt.getInt("thrust");
-            efficiency = nbt.getFloat("efficiency");
-            mass = nbt.getInt("mass");
-            propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow())
-                    .orElse(PropellantTypeInit.METHALOX.get());
+
+                thrust = nbt.getInt("thrust");
+                efficiency = nbt.getFloat("efficiency");
+                mass = nbt.getInt("mass");
+            try {
+                propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow())
+                        .orElse(PropellantTypeInit.METHALOX.get());
+            } catch (Exception ignored){
+                propellantType = PropellantTypeInit.METHALOX.get();
+            }
         }
 
         @Override
         public float getMass() {
             return mass;
+        }
+
+        @Override
+        public void saveToItem(ItemStack itemStack) {
+            super.saveToItem(itemStack);
         }
     }
 

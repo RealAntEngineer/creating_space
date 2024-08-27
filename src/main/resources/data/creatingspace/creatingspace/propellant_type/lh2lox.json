@@ -4,7 +4,7 @@
     "creatingspace:liquid_oxygen": 6
   },
   "maxIsp": 540,
-  "Cp": 4000,
+  "Cp": 3000,
   "gamma": 1.2,
   "M": 10
 }

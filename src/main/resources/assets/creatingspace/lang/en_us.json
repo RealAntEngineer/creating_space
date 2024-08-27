@@ -22,6 +22,7 @@
   "block.creatingspace.air_liquefier": "Air Liquefier",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only works on earth",
   "block.creatingspace.rocket_engineer_table": "Rocket Engineering Table",
+  "block.creatingspace.rocket_engineer_table.tooltip.summary" : "This table is used to craft engine blueprint.",
   "block.creatingspace.rocket_engine": "Rocket Engine",
 
   "entity.creatingspace.rocket_contraption": "Flying Rocket",
@@ -262,7 +263,13 @@
 
   "item.creatingspace.space_food": "Space Food",
   "item.creatingspace.design_blueprint": "Design Blueprint",
+  "item.creatingspace.design_blueprint.tooltip.summary" : "This table is used to craft engine blueprint.",
+  "item.creatingspace.design_blueprint.tooltip.condition1": "R-Click",
+  "item.creatingspace.design_blueprint.tooltip.behaviour1": "Learn new design",
+
   "item.creatingspace.engine_blueprint": "Engine Blueprint",
+  "item.creatingspace.engine_blueprint.tooltip.summary" : "Use to craft rocket engines and it's component.",
+
 
   "itemGroup.creatingspace.machine_tab": "Machine Tab",
   "itemGroup.creatingspace.component_tab": "Component Tab",
