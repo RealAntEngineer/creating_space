@@ -1,0 +1,108 @@
+{
+    "type": "create:sequenced_assembly",
+    "keepNbt": [
+        "engineRecipeData",
+        "blockEntity"
+    ],
+    "ingredient": {
+        "item": "creatingspace:engine_blueprint",
+        "type": "forge:partial_nbt",
+        "nbt": {
+            "engineRecipeData": {
+                "materialLevel": 8,
+                "exhaustPackType": "creatingspace:aerospike"
+            }
+        }
+    },
+    "loops": 1,
+    "results": [
+        {
+            "item": "creatingspace:aerospike_plug"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "create:shaft"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                },
+                {
+                    "item": "creatingspace:hastelloy_rib"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:engine_blueprint"
+                }
+            ]
+        }
+    ],
+    "transitionalItem": {
+        "item": "creatingspace:engine_blueprint"
+    }
+}

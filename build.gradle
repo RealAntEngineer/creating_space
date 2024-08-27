@@ -99,7 +99,10 @@ repositories {
         url = 'https://maven.tterrag.com/'
 
     }
-
+    maven {
+        name = 'curse maven'
+        url "https://cursemaven.com"
+    }
 	//JEI
 	//maven {
     	//	name = "Progwml6's maven"
@@ -144,6 +147,7 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
 
+    implementation fg.deobf("curse.maven:nbt-tool-451553:3879898")
     //if (!Boolean.getBoolean('idea.sync.active')) {
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     //}
