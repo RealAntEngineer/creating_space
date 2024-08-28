@@ -63,4 +63,9 @@ public class ExhaustPackType {
                 ", maxExpansionRatio=" + maxExpansionRatio +
                 '}';
     }
+
+    public List<ResourceLocation> getAllowedPropellants() {
+        return allowedPropellants;
+    }
+
 }

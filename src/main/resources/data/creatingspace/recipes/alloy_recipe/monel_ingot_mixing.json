@@ -1,0 +1,22 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "creatingspace:nickel_ingot"
+    },
+    {
+      "item": "creatingspace:nickel_ingot"
+    },
+    {
+      "item": "minecraft:copper_ingot",
+      "count": 1
+    }
+  ],
+  "results": [
+    {
+      "item": "creatingspace:monel_ingot",
+      "count": 1
+    }
+  ],
+  "heatRequirement": "superheated"
+}

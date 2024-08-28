@@ -2,9 +2,9 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "0": "create:block/schematic_table_side",
-    "1": "create:block/schematic_table_top",
-    "particle": "create:block/schematic_table_side"
+    "0": "creatingspace:block/rocket_engineer_table_side",
+    "1": "creatingspace:block/rocket_engineer_table_top",
+    "particle": "creatingspace:block/rocket_engineer_table_side"
   },
   "elements": [
     {

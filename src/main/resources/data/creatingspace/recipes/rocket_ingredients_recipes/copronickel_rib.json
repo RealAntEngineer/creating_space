@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "creatingspace:copronickel_ingot"
+        },
+        "N": {
+            "item": "creatingspace:copronickel_nugget"
+        }
+    },
+    "pattern": [
+        "   ",
+        "NIN",
+        " N "
+    ],
+    "result": {
+        "item": "creatingspace:copronickel_rib"
+    }
+}

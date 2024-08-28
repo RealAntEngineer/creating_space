@@ -32,6 +32,7 @@ public class ItemInit {
     public static final ArrayList<ItemEntry<? extends Item>> EXHAUST_PACK= smartRegisterSequencedItem("exhaust_pack");
     public static final ArrayList<ItemEntry<? extends Item>> COMBUSTION_CHAMBER = smartRegisterSequencedItem("combustion_chamber");
     public static final ArrayList<ItemEntry<? extends Item>> ENGINE_INGREDIENTS = EngineMaterialInit.collectMaterials();
+    public static final ArrayList<ItemEntry<? extends Item>> METALS_INGREDIENTS = EngineMaterialInit.collectMetals();
 
 
     public static ArrayList<ItemEntry<? extends Item>> registerEngineIngredientForMaterial(String name) {
@@ -49,7 +50,7 @@ public class ItemInit {
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .defaultModel()
                 .register());
-        collector.add(CreatingSpace.REGISTRATE.item(
+        /*collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_canal", Item::new)
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
@@ -58,7 +59,7 @@ public class ItemInit {
                         name + "_engine_pipe", Item::new)
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                .register());
+                .register());*/
         collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_turbine_shaft", Item::new)
                 .defaultModel()
@@ -66,6 +67,26 @@ public class ItemInit {
                 .register());
         collector.addAll(smartRegisterSequencedItem(name + "_turbine"));
         collector.addAll(smartRegisterSequencedItem(name + "_injector_grid"));
+        return collector;
+    }
+    public static ArrayList<ItemEntry<? extends Item>> registerMetalVariants(String name) {
+        ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
+
+        collector.add(CreatingSpace.REGISTRATE.item(
+                        name + "_ingot", Item::new)
+                .defaultModel()
+                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register());
+        collector.add(CreatingSpace.REGISTRATE.item(
+                        name + "_sheet", Item::new)
+                .defaultModel()
+                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register());
+        collector.add(CreatingSpace.REGISTRATE.item(
+                        name + "_nugget", Item::new)
+                .defaultModel()
+                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register());
         return collector;
     }
 

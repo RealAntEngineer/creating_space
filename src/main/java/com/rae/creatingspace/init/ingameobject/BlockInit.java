@@ -203,12 +203,6 @@ public class BlockInit {
             .item()
             .build()
             .register();
-    public static final BlockEntry<RoomPressuriserBlock> ROOM_PRESSURISER = REGISTRATE
-            .block("room_pressuriser", RoomPressuriserBlock::new)
-            .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
-            .item()
-            .build()
-            .register();
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -260,7 +254,18 @@ public class BlockInit {
             .item()
             .transform(customItemModel())
             .register();
-
+    public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
+            .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            .transform(customItemModel())
+            .register();
+    public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
+            .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            .transform(customItemModel())
+            .register();
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
@@ -268,9 +273,9 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    public static final BlockEntry<Block> MOON_SURFACE_REGOLITH = REGISTRATE
-            .block("moon_surface_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
+    public static final BlockEntry<RegolithSurfaceBlock> MOON_SURFACE_REGOLITH = REGISTRATE
+            .block("moon_surface_regolith",RegolithSurfaceBlock::new).initialProperties(()-> Blocks.DIRT)
+            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).mapColor(MapColor.SNOW))
             .item()
             .transform(customItemModel())
             .register();

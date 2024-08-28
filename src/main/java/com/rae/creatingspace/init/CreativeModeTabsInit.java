@@ -79,7 +79,7 @@ public class CreativeModeTabsInit {
                         ItemInit.EXHAUST_PACK.forEach(output::accept);
                         ItemInit.POWER_PACK.forEach(output::accept);
                         ItemInit.ENGINE_INGREDIENTS.forEach(output::accept);
-
+                        ItemInit.METALS_INGREDIENTS.forEach(output::accept);
                         output.accept(ItemInit.RAW_NICKEL);
                         //output.accept(ItemInit.CRUSHED_NICKEL_ORE);
                         output.accept(ItemInit.NICKEL_DUST);

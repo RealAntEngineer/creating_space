@@ -1,7 +1,7 @@
 {
   "propellantRatio": {
-    "creatingspace:liquid_hydrogen": 1,
-    "creatingspace:liquid_methane": 6
+    "creatingspace:liquid_oxygen": 2,
+    "creatingspace:liquid_methane": 1
   },
   "maxIsp": 460,
   "Cp": 4500,

@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "create:brass_ingot"
+        }
+    },
+    "pattern": [
+        "I  ",
+        " I ",
+        "  I"
+    ],
+    "result": {
+        "item": "creatingspace:brass_turbine_shaft"
+    }
+}

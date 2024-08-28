@@ -1,12 +1,14 @@
 package com.rae.creatingspace.client.gui.menu;
 
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
+import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.server.blockentities.RocketEngineerTableBlockEntity;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -27,19 +29,15 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
     //TODO we remove everything apart from the outputslot -> transition to a assembly line recipe
     //  add summary to the item
     RocketEngineerTableBlockEntity.SyncData syncData;
-    private List<Slot> exhaustSlots;
-    private List<Slot> powerSlots;
     private Slot outputSlot;
 
     public EngineerTableMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
-        exhaustSlots = new ArrayList<>();
-        powerSlots = new ArrayList<>();
     }
 
     public EngineerTableMenu(MenuType<?> type, int id, Inventory inv, RocketEngineerTableBlockEntity be) {
         super(type, id, inv, be);
-        exhaustSlots = new ArrayList<>();
+
     }
 
     public boolean canWrite() {

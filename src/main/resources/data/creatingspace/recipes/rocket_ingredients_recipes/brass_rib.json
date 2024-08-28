@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "create:brass_ingot"
+        },
+        "N": {
+            "item": "create:brass_nugget"
+        }
+    },
+    "pattern": [
+        "   ",
+        "NIN",
+        " N "
+    ],
+    "result": {
+        "item": "creatingspace:brass_rib"
+    }
+}

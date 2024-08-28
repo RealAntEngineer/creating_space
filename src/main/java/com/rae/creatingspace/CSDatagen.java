@@ -53,7 +53,7 @@ public class CSDatagen {
 	}
 
 	private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {
-		String path = "assets/create/lang/default/" + fileName + ".json";
+		String path = "assets/creatingspace/lang/default/" + fileName + ".json";
 		JsonElement jsonElement = FilesHelper.loadJsonResource(path);
 		if (jsonElement == null) {
 			throw new IllegalStateException(String.format("Could not find default lang file: %s", path));

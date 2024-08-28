@@ -65,4 +65,15 @@ public class EngineMaterialInit {//will only be used for datagen
 
         return collector;
     }
+    public static ArrayList<ItemEntry<? extends Item>> collectMetals() {
+        ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
+        collector.addAll(ItemInit.registerMetalVariants("reinforced_copper"));
+        collector.addAll(ItemInit.registerMetalVariants( "copronickel"));
+        collector.addAll(ItemInit.registerMetalVariants("monel"));
+        collector.addAll(ItemInit.registerMetalVariants("inconel"));
+        collector.addAll(ItemInit.registerMetalVariants("hastelloy"));
+
+        return collector;
+    }
+
 }

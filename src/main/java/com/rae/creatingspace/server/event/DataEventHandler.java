@@ -2,6 +2,7 @@ package com.rae.creatingspace.server.event;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
+import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -27,24 +28,24 @@ public class DataEventHandler {
     @SubscribeEvent
     public static void onLoadWorld(LevelEvent.Load event) {
         LevelAccessor world = event.getLevel();
-        CreatingSpace.DESIGN_SAVED_DATA.levelLoaded(world);
+        UnlockedDesignManager.levelLoaded(world);
     }
 
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
-        CreatingSpace.DESIGN_SAVED_DATA.playerLogin(player);
-        LOGGER.info("updating the travel map");
+        UnlockedDesignManager.playerLogin(player);
+        /*LOGGER.info("updating the travel map");
         CSDimensionUtil.updatePlanetsFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.info("updating the space travel cost map");
-        CSDimensionUtil.updateCostMap();
+        CSDimensionUtil.updateCostMap();*/
     }
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         LOGGER.info("getting the server registry access");
         registryAccess = event.getServer().registryAccess();
         LOGGER.info("updating the travel map");
-        CSDimensionUtil.updatePlanetsFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
+        CSDimensionUtil.updatePlanetsFromRegistry(registryAccess.registryOrThrow(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.debug("updating the space travel cost map");
         CSDimensionUtil.updateCostMap();
     }

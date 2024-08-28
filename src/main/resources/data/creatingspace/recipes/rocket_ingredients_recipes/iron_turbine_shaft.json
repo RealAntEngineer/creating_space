@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "pattern": [
+        "I  ",
+        " I ",
+        "  I"
+    ],
+    "result": {
+        "item": "creatingspace:iron_turbine_shaft"
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "priority": 900,
+  "package": "com.rae.creatingspace.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "creatingspace.refmap.json",
+  "mixins": [
+    "entity.ContraptionMixin",
+    "entity.PlayerMixin",
+    "entity.gravity.BoatMixin",
+    "entity.gravity.FallingBlockEntityEntityMixin",
+    "entity.gravity.ItemEntityMixin",
+    "entity.gravity.LivingEntityMixin",
+    "entity.gravity.MinecartMixin",
+    "kinetics.BacktankBlockEntityMixin",
+    "recipe.ItemApplicationMixin",
+    "recipe.ProcessingRecipeMixin",
+    "recipe.ProcessingRecipeRecipeSerializerMixin",
+    "recipe.SequencedAssemblyRecipeMixin",
+    "recipe.SequencedAssemblyRecipeSerializerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
