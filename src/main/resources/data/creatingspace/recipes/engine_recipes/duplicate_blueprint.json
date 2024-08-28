@@ -5,34 +5,24 @@
     "blockEntity"
   ],
   "ingredient": {
-    "item": "creatingspace:engine_blueprint",
-    "type": "forge:partial_nbt",
-    "nbt": {
-      "engineRecipeData": {
-        "materialLevel": 8,
-        "powerPackType": "creatingspace:open_cycle"
-      }
-    }
+    "item": "creatingspace:engine_blueprint"
   },
   "loops": 1,
   "results": [
     {
-      "item": "creatingspace:power_pack"
+      "count": 2,
+      "item": "creatingspace:engine_blueprint"
     }
   ],
   "sequence": [
     {
       "type": "create:deploying",
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
-      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"
         },
         {
-          "item": "creatingspace:hastelloy_turbine"
+          "item": "minecraft:paper"
         }
       ],
       "results": [
@@ -43,16 +33,12 @@
     },
     {
       "type": "create:deploying",
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
-      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"
         },
         {
-          "item": "creatingspace:hastelloy_injector_grid"
+          "item": "minecraft:paper"
         }
       ],
       "results": [
