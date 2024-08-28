@@ -64,6 +64,7 @@ public class RoomAtmosphere extends Entity {
     //TODO make a regenerateRoom and a searchFrontier methode (regenerateRoom will only initiate the call, searchFrontier will be private)
     public void regenerateRoom(BlockPos firstPos) {
         passiveFilters = new HashMap<>();
+        roomSealers = new ArrayList<>();
         RoomShape shape = searchTopology(firstPos);
         setBoundingBox(shape.getEncapsulatingBox());
         entityData.set(SHAPE_DATA_ACCESSOR, shape);
@@ -89,7 +90,8 @@ public class RoomAtmosphere extends Entity {
         Queue<BlockPos> toVist = new ArrayDeque<>();
         toVist.add(start);
         ArrayList<AABB> tempRoom = new ArrayList<>();
-        while (!toVist.isEmpty() && size(tempRoom) < 1000 * Math.max(roomSealers.size(), 1)) {
+        int currentSize = 0;
+        while (!toVist.isEmpty() && currentSize < CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             BlockPos tempPos = toVist.poll();
             assert tempPos != null;
             if (!contains(tempRoom, tempPos)) {
@@ -141,10 +143,11 @@ public class RoomAtmosphere extends Entity {
                     }
                 }
                 tempRoom.add(tempAabb);
+                currentSize += (int) (tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize());
             }
         }
         RoomShape shape = new RoomShape(tempRoom);
-        if (size(tempRoom) >= 1000 * Math.max(roomSealers.size(), 1)) {
+        if (size(tempRoom) >=  CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             shape.setOpen();
         }
         else {
@@ -155,7 +158,7 @@ public class RoomAtmosphere extends Entity {
 
     private void applyOnSolidBlock(BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
+        if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp && !roomSealers.contains(pos)) {
             roomSealers.add(pos);
         }
         if (state.getBlock() instanceof LeavesBlock) {
@@ -163,15 +166,19 @@ public class RoomAtmosphere extends Entity {
             if (passiveFilters.containsKey(location)) {
                 passiveFilters.put(location, passiveFilters.get(location).add(pos));
             } else {
-                passiveFilters.put(location, new AtmosphereFilterData(new ArrayList<>(List.of(pos)), CSConfigs.CLIENT.leafOxygenProduction.get()));
+                passiveFilters.put(location, new AtmosphereFilterData(new ArrayList<>(List.of(pos)), CSConfigs.SERVER.leafOxygenProduction.get()));
             }
         }
     }
 
     private int size(List<AABB> aabbs) {
-        AABB aabb = new RoomShape(aabbs).getEncapsulatingBox();
-        if (aabb == null) return 0;
-        return (int) (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
+        int acc = 0;
+        for (AABB aabb :
+                aabbs) {
+            acc += (int) (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
+        }
+
+        return acc;
     }
 
     private boolean canGoThrough(Level world, BlockPos currentPos, Direction dir) {
@@ -311,8 +318,8 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void consumeO2() {
-        if (entityData.get(O2_AMOUNT) >= CSConfigs.CLIENT.livingO2Consumption.get()) {
-            entityData.set(O2_AMOUNT,entityData.get(O2_AMOUNT) - CSConfigs.CLIENT.livingO2Consumption.get());
+        if (entityData.get(O2_AMOUNT) >= CSConfigs.SERVER.livingO2Consumption.get()) {
+            entityData.set(O2_AMOUNT,entityData.get(O2_AMOUNT) - CSConfigs.SERVER.livingO2Consumption.get());
         }
     }
 

@@ -85,7 +85,7 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
         @Override
         public void read(CompoundTag nbt, boolean clientPacket) {
-            super.load(nbt);
+            super.read(nbt,clientPacket);
             setFromNbt(nbt);
         }
 
