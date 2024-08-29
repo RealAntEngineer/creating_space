@@ -44,6 +44,7 @@ public class CreativeModeTabsInit {
                     .withTabsBefore(AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getKey())
                     .icon(BlockInit.MECHANICAL_ELECTROLYZER::asStack)
                     .displayItems(($1,output)-> {
+                        output.accept(BlockInit.ROCKET_ENGINEER_TABLE);
                         output.accept(BlockInit.CLAMPS);
                         output.accept(BlockInit.ROCKET_CASING);
                         output.accept(BlockInit.SMALL_ROCKET_ENGINE);
