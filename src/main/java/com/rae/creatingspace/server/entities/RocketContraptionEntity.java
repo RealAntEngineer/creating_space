@@ -879,10 +879,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public HashMap<String, BlockPos> getInitialPosMap() {
         return initialPosMap;
     }
+    public void setInitialPosMap(HashMap<String, BlockPos> map) {
+        initialPosMap = map;
+    }
 
     //navigation part (schedule)
     public void successfulNavigation() {
-        System.out.println("rocket found a path");
+        //System.out.println("rocket found a path");
     }
 
     public int countPlayerPassengers() {
@@ -915,7 +918,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     private void stopRocket() {
-        System.out.println("previous status" + getEntityData().get(STATUS_DATA_ACCESSOR));
+        //System.out.println("previous status" + getEntityData().get(STATUS_DATA_ACCESSOR));
         //getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, false);
         //getEntityData().set(REENTRY_ENTITY_DATA_ACCESSOR, false);
         getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.IDLE);

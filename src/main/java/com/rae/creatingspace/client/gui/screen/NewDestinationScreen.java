@@ -193,7 +193,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             }
 
             initialPosMap.put(String.valueOf(destination), pos);
-            PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
+            rocketContraption.setInitialPosMap(initialPosMap);//PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
         });
 
         Xinput = new EditBox(font, width - 100, y + 63,
@@ -282,15 +282,15 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             }
         }
         if (editingDestination != null) {
-            //if (destinationChanged) {
-            BlockPos pos = initialPosMap.get(editingDestination.getData().getString("Text"));
+            if (destinationChanged) {
+                BlockPos pos = initialPosMap.get(editingDestination.getData().getString("Text"));
                 if (pos == null) {
                     pos = this.rocketContraption.getOnPos();
                 }
                 Xinput.setValue(String.valueOf(pos.getX()));
                 //Yinput.setValue(String.valueOf(pos.getY()));
                 Zinput.setValue(String.valueOf(pos.getZ()));
-
+            }
             Xinput.visible = true;
             Xinput.active = true;
             //TODO use labels
@@ -807,7 +807,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
             editingDestination = instruction;
             updateEditorSubwidgets(editingDestination);
             //TODO change this to a selection in the map
-            System.out.println("start edit");
+            //System.out.println("start edit");
 
             scrollInput.forOptions(RocketSchedule.getTypeOptions(RocketSchedule.INSTRUCTION_TYPES))
                     .titled(Lang.translateDirect("schedule.instruction_type"))
@@ -878,6 +878,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                                         Component.literal(
                                                 String.valueOf(CSDimensionUtil.cost(currentDimension, destination))),
                                         true, 112);
+                                destinationChanged = true;
                             }
                     );
 

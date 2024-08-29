@@ -48,6 +48,7 @@ public class DataEventHandler {
         CSDimensionUtil.updatePlanetsFromRegistry(registryAccess.registryOrThrow(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.debug("updating the space travel cost map");
         CSDimensionUtil.updateCostMap();
+        CSDimensionUtil.removeUnreachableDimensions();
     }
 
     /**

@@ -28,6 +28,7 @@ public class CSDimensionUtil {
                     .orElseThrow());
             LOGGER.info("updating the space travel cost map");
             CSDimensionUtil.updateCostMap();
+            CSDimensionUtil.removeUnreachableDimensions();
         }
         return travelMap;
     }
@@ -40,8 +41,24 @@ public class CSDimensionUtil {
                     .orElseThrow());
             LOGGER.info("updating the space travel cost map");
             CSDimensionUtil.updateCostMap();
+            CSDimensionUtil.removeUnreachableDimensions();
         }
         return planets;
+    }
+
+    public static void removeUnreachableDimensions() {
+        planets = planets.stream().filter(
+                l-> {
+                    Map<ResourceLocation, Integer> cost = costAdjacentMap.get(l);
+                    for (Map.Entry<ResourceLocation, Integer> entries:
+                         cost.entrySet()) {
+                        if (entries.getValue() > 0 && entries.getValue() < Integer.MAX_VALUE){
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+        ).toList();
     }
 
     private static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
