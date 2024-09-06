@@ -692,7 +692,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                     //entity.disassemble();
                                     entity.stopRocket();
                                     entity.schedule.destinationReached();
-                                    System.out.println("going to : " + destination);
                                 }
                                 else{
                                     entity.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.ON_FINAL);
