@@ -10,11 +10,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.Locale;
 import java.util.function.Supplier;
@@ -44,14 +47,42 @@ public class OxygenBacktankItem extends UpgradableEquipment {
     }
 
     @Nullable
-    public static OxygenBacktankItem getWornBy(Entity entity) {
+    public static ItemStack getWornByItem(Entity entity) {
         if (!(entity instanceof LivingEntity livingEntity)) {
             return null;
         }
-        if (!(livingEntity.getItemBySlot(SLOT).getItem() instanceof OxygenBacktankItem item)) {
-            return null;
+
+        // armor slot
+        if ((livingEntity.getItemBySlot(SLOT).getItem() instanceof OxygenBacktankItem)) {
+            return livingEntity.getItemBySlot(SLOT);
         }
-        return item;
+
+        // curios slot
+        if (entity instanceof Player) {
+            return entity.getCapability(CuriosCapability.INVENTORY)
+                    .resolve().map(handler -> {
+                        ICurioStacksHandler stacksHandler = handler.getCurios().get("back");
+                        if (stacksHandler != null) {
+                            int slots = stacksHandler.getSlots();
+                            for (int slot = 0; slot < slots; slot++) {
+                                ItemStack item = stacksHandler.getStacks().getStackInSlot(slot);
+                                if (item.getItem() instanceof OxygenBacktankItem) {
+                                    return item;
+                                }
+                            }
+                        }
+                        return null;
+                    })
+                    .orElse(null);
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static OxygenBacktankItem getWornBy(Entity entity) {
+        ItemStack item = getWornByItem(entity);
+        return item != null ? (OxygenBacktankItem) item.getItem() : null;
     }
 
     @Override

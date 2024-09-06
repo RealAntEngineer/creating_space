@@ -14,7 +14,10 @@ import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,22 @@ public class OxygenBacktankUtil {
 				if (TagsInit.CustomItemTags.OXYGEN_SOURCES.matches(itemStack)) {
 					stacks.add(itemStack);
 				}
+
+			if (entity instanceof Player) {
+				entity.getCapability(CuriosCapability.INVENTORY)
+					.ifPresent(handler -> {
+						ICurioStacksHandler stacksHandler = handler.getCurios().get("back");
+						if (stacksHandler != null) {
+							int slots = stacksHandler.getSlots();
+							for (int slot = 0; slot < slots; slot++) {
+								ItemStack item = stacksHandler.getStacks().getStackInSlot(slot);
+								if (item.getItem() instanceof OxygenBacktankItem) {
+									stacks.add(item);
+								}
+							}
+						}
+					});
+			}
 
 			return stacks;
 		});
