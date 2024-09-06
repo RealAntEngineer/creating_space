@@ -86,10 +86,10 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
     private static <C extends Container, R extends ProcessingRecipe<C>> void debugInfo(Level world, C inv, RecipeType<R> type, Class<R> recipeClass, Predicate<? super R> recipeFilter, CallbackInfoReturnable<Optional<R>> cir) {
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("getting possible recipe for :");
-            CreatingSpace.LOGGER.info(inv.getItem(0).serializeNBT());
-            CreatingSpace.LOGGER.info(inv.getItem(1).serializeNBT());
+            CreatingSpace.LOGGER.info(inv.getItem(0).serializeNBT().toString());
+            CreatingSpace.LOGGER.info(inv.getItem(1).serializeNBT().toString());
             for (R optional : getRecipes(world, inv.getItem(0), type, recipeClass).filter(recipeFilter).toList()) {
-                CreatingSpace.LOGGER.info(optional.getId());
+                CreatingSpace.LOGGER.info(optional.getId().toString());
             }
         }
     }

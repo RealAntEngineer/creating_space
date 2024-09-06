@@ -296,7 +296,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         rocketContraptionEntity.assemblyData = assemblyData;
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("determining if the rocket can go :");
-            CreatingSpace.LOGGER.info(assemblyData);
+            CreatingSpace.LOGGER.info(assemblyData.toString());
         }
         //rocketContraptionEntity.failedToLaunch = assemblyData.hasFailed();//just for the fluids
 
