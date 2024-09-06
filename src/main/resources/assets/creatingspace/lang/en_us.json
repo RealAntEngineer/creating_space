@@ -339,9 +339,23 @@
   "creatingspace:mars_orbit": "Mars Orbit",
   "creatingspace:venus": "Venus",
 
+  "creatingspace.biome.venus": "Venus",
+  "creatingspace.biome.space": "Space",
+  "creatingspace.biome.moon_plains": "Moon Plains",
+  "creatingspace.biome.mars_plains": "Mars Plains",
+
+  "creatingspace.biome.moon_cave": "Moon Cave",
+  "creatingspace.biome.venus_hellground": "Venus Hellground",
 
 
-  "death.attack.no_oxygen": "%1$s didn't found oxygen in space",
+  "adastra:earth_orbit": "Earth Orbit",
+  "adastra:moon_orbit": "Moon Orbit",
+  "adastra:the_moon": "The Moon",
+  "adastra:mars": "Mars",
+  "adastra:mars_orbit": "Mars Orbit",
+  "adastra:venus": "Venus",
+
+  "death.attack.no_oxygen": "%1$s didn't find oxygen in space",
 
   "creatingspace.science.thrust": "Thrust",
   "creatingspace.science.unit.newton": "N",

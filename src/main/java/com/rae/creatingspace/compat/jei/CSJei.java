@@ -1,10 +1,12 @@
 package com.rae.creatingspace.compat.jei;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.compat.jei.category.AirLiquefyingCategory;
 import com.rae.creatingspace.compat.jei.category.ChemicalSynthesisCategory;
 import com.rae.creatingspace.compat.jei.category.MechanicalElectrolysisCategory;
 import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
+import com.rae.creatingspace.recipes.AirLiquefyingRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.*;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
@@ -16,11 +18,10 @@ import com.simibubi.create.infrastructure.config.CRecipes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -67,14 +68,13 @@ public class CSJei implements IModPlugin {
                         .emptyBackground(177, 103)
                         .build("electrolysis", MechanicalElectrolysisCategory::standard);
 
-    /*    CreateRecipeCategory<?> gasExtraction =
-                builder(BasinRecipe.class)
-                        .addTypedRecipes(RecipeInit.MECHANICAL_ELECTROLYSIS)
+        CreateRecipeCategory<?> airLiquefying =
+                builder(AirLiquefyingRecipe.class)
+                        .addTypedRecipes(RecipeInit.AIR_LIQUEFYING)
                         .catalyst(BlockInit.AIR_LIQUEFIER::get)
                         .itemIcon(BlockInit.AIR_LIQUEFIER.get())
                         .emptyBackground(177, 103)
-                        .build("gas_extraction", GasExtractionCategory::standard);
-*/
+                        .build("air_liquefying", AirLiquefyingCategory::new);
 
     }
 
@@ -193,6 +193,18 @@ public class CSJei implements IModPlugin {
         allCategories.forEach(c -> c.registerRecipes(registration));
 
         registration.addRecipes(RecipeTypes.CRAFTING, ToolboxColoringRecipeMaker.createRecipes().toList());
+    }
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registration) {
+        IModPlugin.super.registerIngredients(registration);
+
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
+        CryoSubtypeInterpreter interpreter = new CryoSubtypeInterpreter();
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, BlockInit.CRYOGENIC_TANK.get().asItem(),interpreter);
     }
 
     @Override
