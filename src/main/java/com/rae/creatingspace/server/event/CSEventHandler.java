@@ -4,6 +4,7 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.DamageSourceInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.saved.DesignCommands;
+import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.server.entities.RoomAtmosphere;
@@ -74,7 +75,7 @@ public class CSEventHandler {
                 if (entityLiving instanceof ServerPlayer player)  {
                     if (playerNeedEquipment(player)) {
                         if (checkPlayerO2Equipment(player)) {
-                            ItemStack tank = player.getItemBySlot(EquipmentSlot.CHEST);
+                            ItemStack tank = OxygenBacktankItem.getWornByItem(player);
                             OxygenBacktankUtil.consumeOxygen(player, tank, 1);
                         } else {
                             player.hurt(DamageSourceInit.NO_OXYGEN, 0.5f);
@@ -107,13 +108,13 @@ public class CSEventHandler {
 
     public static boolean checkPlayerO2Equipment(ServerPlayer player){
 
-        ItemStack chestPlate = player.getItemBySlot(EquipmentSlot.CHEST);
+        ItemStack tank = OxygenBacktankItem.getWornByItem(player);
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
         ItemStack leggings = player.getItemBySlot(EquipmentSlot.LEGS);
         ItemStack boots =  player.getItemBySlot(EquipmentSlot.FEET);
 
-        if (TagsInit.CustomItemTags.OXYGEN_SOURCES.matches(chestPlate) && OxygenBacktankUtil.hasOxygenRemaining(chestPlate)){
-            return TagsInit.CustomItemTags.SPACESUIT.matches(chestPlate)&&
+        if (tank != null && TagsInit.CustomItemTags.OXYGEN_SOURCES.matches(tank) && OxygenBacktankUtil.hasOxygenRemaining(tank)) {
+            return TagsInit.CustomItemTags.SPACESUIT.matches(tank)&&
                     TagsInit.CustomItemTags.SPACESUIT.matches(helmet)&&
                     TagsInit.CustomItemTags.SPACESUIT.matches(leggings)&&
                     TagsInit.CustomItemTags.SPACESUIT.matches(boots);

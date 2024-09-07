@@ -8,7 +8,6 @@ import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
@@ -29,16 +28,16 @@ public class RemainingO2Overlay implements IGuiOverlay {
         if (player == null)
             return;
 
-        ItemStack itemInChestSlot = player.getItemBySlot(EquipmentSlot.CHEST);
+        ItemStack tank = OxygenBacktankItem.getWornByItem(player);
 
-        if (itemInChestSlot.getItem() instanceof OxygenBacktankItem){
-            CompoundTag tag = itemInChestSlot.getOrCreateTag();
+        if (tank != null){
+            CompoundTag tag = tank.getOrCreateTag();
             float o2Value = tag.getFloat("Oxygen");
             float prevO2Value =  tag.getFloat("prevOxygen");
             //prevO2Value = o2Value;
             //TODO create one at initialization the keep the same
             gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(screenWidth), CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(screenHeight), 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
-            gauge.setMax(OxygenBacktankUtil.maxOxygen(itemInChestSlot));
+            gauge.setMax(OxygenBacktankUtil.maxOxygen(tank));
             gauge.setValues((int) o2Value, (int) prevO2Value);
             gauge.render(poseStack, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,partialTick);
 

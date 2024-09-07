@@ -4,12 +4,14 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.design.ExhaustPackType;
 import com.rae.creatingspace.api.design.PowerPackType;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
+import com.rae.creatingspace.server.armor.OxygenBacktankCurios;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -78,6 +80,9 @@ public class MiscInit {
         DEFERRED_EXHAUST_PACK_TYPE.register(modEventBus);
         DEFERRED_POWER_PACK_TYPE.register(modEventBus);
         DEFERRED_ROCKET_ACCESSIBLE_DIMENSION.register(modEventBus);
+
+        IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+        OxygenBacktankCurios.init(modEventBus, forgeEventBus);
     }
 
 }
