@@ -97,11 +97,6 @@ public class SealerBlockEntity extends KineticBlockEntity {
         return super.getCapability(cap, side);
     }
 
-
-
-
-
-
     public Boolean isRoomSealable(Level level, BlockPos pos, BlockPos sealerPos, int distanceMax){
 
 
