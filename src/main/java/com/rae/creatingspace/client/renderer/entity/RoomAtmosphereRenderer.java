@@ -44,7 +44,8 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
         SuperRenderTypeBuffer superBuffer = SuperRenderTypeBuffer.getInstance();
         for (AABB aabb : roomAtmosphere.getShape().getListOfBox()) {
             AABBOutline outline = new AABBOutline(aabb);
-            outline.getParams().colored(new Color(30, 50, 200, 20));
+            Color outlineColor = roomAtmosphere.breathable()?new Color(30, 50, (int)(200 * roomAtmosphere.getO2concentration()/100 ), 20):new Color(50, 30,0 );
+            outline.getParams().colored(outlineColor);
             outline.render(poseStack, superBuffer, roomAtmosphere.position(), pt);
         }
         superBuffer.draw();

@@ -144,6 +144,7 @@ public class RoomAtmosphere extends Entity {
                     }
                 }
                 tempRoom.add(tempAabb);
+                currentSize += (int) (tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize());
             }
         }
         RoomShape shape = new RoomShape(tempRoom);
@@ -159,7 +160,7 @@ public class RoomAtmosphere extends Entity {
     private void applyOnSolidBlock(BlockPos pos) {
         BlockState state = level().getBlockState(pos);
         if (level().getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
-            roomSealers.add(pos);
+            if (!roomSealers.contains(pos)) roomSealers.add(pos);
         }
         if (state.getBlock() instanceof LeavesBlock) {
             ResourceLocation location = state.getBlock().builtInRegistryHolder().key().location();
@@ -318,8 +319,9 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void consumeO2() {
-        if (entityData.get(O2_AMOUNT) >= CSConfigs.SERVER.livingO2Consumption.get()) {
-            entityData.set(O2_AMOUNT,entityData.get(O2_AMOUNT) - CSConfigs.SERVER.livingO2Consumption.get());
+        Integer amount = entityData.get(O2_AMOUNT);
+        if (amount >= CSConfigs.SERVER.livingO2Consumption.get()) {
+            entityData.set(O2_AMOUNT, amount - CSConfigs.SERVER.livingO2Consumption.get());
         }
     }
 
