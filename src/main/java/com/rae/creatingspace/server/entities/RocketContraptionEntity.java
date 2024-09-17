@@ -18,6 +18,7 @@ import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.rae.creatingspace.utilities.data.FlightDataHelper;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
+import com.rae.creatingspace.utilities.packet.RocketEntryPosMapClientPacket;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ContraptionCollider;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -900,7 +901,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     public void setInitialPosMap(HashMap<String, BlockPos> map) {
         initialPosMap = map;
-        if (level().isClientSide){
+        if (level.isClientSide){
             PacketInit.getChannel()
                     .sendToServer(new RocketEntryPosMapClientPacket(this.getId(), initialPosMap));
         }

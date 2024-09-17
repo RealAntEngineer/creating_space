@@ -108,13 +108,15 @@ public class RocketContraption extends TranslatingContraption {
     public void readNBT(Level world, CompoundTag nbt, boolean spawnData) {
 
         //TODO add data for server/client sync (possible solution of Interactive bug)
-        thrust = nbt.getInt("thrust");
-        dryMass = nbt.getInt("dryMass");
-        Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
-        try {
-            theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE,nbt.get("theoreticalPerTagFluidConsumption")).result().orElseThrow());
-        } catch (Exception ignored){
+        if (!spawnData) {
+            thrust = nbt.getInt("thrust");
+            dryMass = nbt.getInt("dryMass");
+            Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
+            try {
+                theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElseThrow());
+            } catch (Exception ignored) {
 
+            }
         }
         super.readNBT(world, nbt, spawnData);
     }

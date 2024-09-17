@@ -15,6 +15,7 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.MissingMappingsEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,6 +30,9 @@ public class DataEventHandler {
     public static void onLoadWorld(LevelEvent.Load event) {
         LevelAccessor world = event.getLevel();
         UnlockedDesignManager.levelLoaded(world);
+    }
+    @SubscribeEvent
+    public static void missingEntries(MissingMappingsEvent event) {
     }
 
     @SubscribeEvent
