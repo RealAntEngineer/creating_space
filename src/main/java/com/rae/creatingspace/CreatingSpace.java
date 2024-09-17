@@ -55,7 +55,7 @@ public class CreatingSpace {
             event.dataPackRegistry(MiscInit.Keys.POWER_PACK_TYPE,PowerPackType.DIRECT_CODEC, PowerPackType.DIRECT_CODEC);
             event.dataPackRegistry(MiscInit.Keys.EXHAUST_PACK_TYPE,ExhaustPackType.DIRECT_CODEC, ExhaustPackType.DIRECT_CODEC);
             event.dataPackRegistry(PropellantTypeInit.Keys.PROPELLANT_TYPE,PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC);
-            System.out.println("added reload for registries");
+            LOGGER.debug("added reload for CS registries");
         });
         REGISTRATE.registerEventListeners(modEventBus);
 

@@ -78,7 +78,7 @@ public class DestinationInstruction extends ScheduleInstruction {
                 .withStyle(ChatFormatting.GOLD), Lang.translateDirect("generic.in_quotes", Components.translatable(textData("Text"))));
     }
 
-
+    //todo make the entry point coordinate here : it needs to be in the destination instruction.
     @Override
     @OnlyIn(Dist.CLIENT)
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {

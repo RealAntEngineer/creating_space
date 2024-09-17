@@ -17,7 +17,9 @@ import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.rae.creatingspace.utilities.data.FlightDataHelper;
+import com.rae.creatingspace.utilities.packet.RocketContraptionDisassemblePacket;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
+import com.rae.creatingspace.utilities.packet.RocketEntryPosMapClientPacket;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ContraptionCollider;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -72,7 +74,6 @@ import static com.rae.creatingspace.init.ingameobject.SoundInit.ROCKET_LAUNCH;
 public class RocketContraptionEntity extends AbstractContraptionEntity {
     //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
     // (spaceport block ? to define where the rocket will go)
-    // for a normal rocket a path an action will be generated without the player knowing ?
 
     //TODO prevent the rocket from consuming fuel when world is loading ? correct gestion of client player loading
     // to avoid player falling out of the rocket ( do we force the player to be transported to where the rocket is
@@ -98,6 +99,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             TagKey.codec(Registries.FLUID),
             Codec.FLOAT
     ).xmap(HashMap::new, i -> i);
+    //todo remove this, will be in rocket path in the future
     public BlockPos rocketEntryCoordinate = new BlockPos(0,0,0);
     public float totalThrust = 0;
     public float initialMass;
@@ -111,11 +113,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();//
     private HashMap<String, BlockPos> initialPosMap;
     public RocketScheduleRuntime schedule;
-    /*public static final EntityDataAccessor<Boolean> REENTRY_ENTITY_DATA_ACCESSOR =
-            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);
-    //used to now if the rocket need to move or not ( just assemble or finished the list of instruction)
-    public static final EntityDataAccessor<Boolean> RUNNING_ENTITY_DATA_ACCESSOR =
-            SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.BOOLEAN);*/
     public static final EntityDataAccessor<RocketStatus> STATUS_DATA_ACCESSOR =
             SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializersInit.STATUS_SERIALIZER);
 
@@ -816,9 +813,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.realPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
         this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
         this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
-        //this.failedToLaunch = assemblyData != null && assemblyData.hasFailed();
-        //this.entityData.set(REENTRY_ENTITY_DATA_ACCESSOR,compound.getBoolean("reentry"));
-        //this.entityData.set(RUNNING_ENTITY_DATA_ACCESSOR, compound.getBoolean("running"));
         this.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.valueOf(compound.getString("status")));
         this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).get().orThrow();
 
@@ -845,9 +839,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         compound.put("assemblyData", FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
         compound.putFloat("thrust", this.totalThrust);
-
-        //compound.putBoolean("reentry",isReentry());
-        //compound.putBoolean("running",isInPropulsionPhase());
         compound.putString("status", this.entityData.get(STATUS_DATA_ACCESSOR).toString());
         compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension).get().orThrow());
         compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).get().orThrow());
@@ -900,23 +891,20 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         return initialPosMap;
     }
-    public void setShouldHandleCalculation(boolean shouldHandleCalculation) {
-        this.shouldHandleCalculation = shouldHandleCalculation;
-    }
-    public void setAccessibilityData(HashMap<String, BlockPos> initialPosMap) {
-        this.initialPosMap = initialPosMap;
-    }
 
     public HashMap<String, BlockPos> getInitialPosMap() {
         return initialPosMap;
     }
     public void setInitialPosMap(HashMap<String, BlockPos> map) {
         initialPosMap = map;
+        if (level().isClientSide){
+            PacketInit.getChannel()
+                    .sendToServer(new RocketEntryPosMapClientPacket(this.getId(), initialPosMap));
+        }
     }
 
     //navigation part (schedule)
     public void successfulNavigation() {
-        //System.out.println("rocket found a path");
     }
 
     public int countPlayerPassengers() {
@@ -934,12 +922,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             //so the pos is initialized
             this.originDimension = nextPath.origin;
             this.destination = nextPath.destination;
-            //getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, true);
             getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.TRAVELING);
 
             shouldHandleCalculation = false;
             handelTrajectoryCalculation(this);
-            //shouldHandleCalculation = false;
             if (getEntityData().get(STATUS_DATA_ACCESSOR).equals(RocketStatus.BLOCKED)) {
                 return -1;
             }
@@ -949,9 +935,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
 
     private void stopRocket() {
-        //System.out.println("previous status" + getEntityData().get(STATUS_DATA_ACCESSOR));
-        //getEntityData().set(RUNNING_ENTITY_DATA_ACCESSOR, false);
-        //getEntityData().set(REENTRY_ENTITY_DATA_ACCESSOR, false);
         getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.IDLE);
         setContraptionMotion(Vec3.ZERO);
     }

@@ -1,6 +1,7 @@
 package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -29,12 +30,11 @@ public class CustomTeleporter implements ITeleporter {
         height = CSDimensionUtil.arrivalHeight(destWorld.dimension().location());
         Vec3 position;
         if ( entity instanceof RocketContraptionEntity rocketContraptionEntity){
-
+            BlockPos entryPoint = rocketContraptionEntity.getInitialPosMap().getOrDefault(rocketContraptionEntity.destination.toString(), rocketContraptionEntity.getOnPos());
             position = new Vec3(
-                    rocketContraptionEntity.rocketEntryCoordinate.getX(),
+                    entryPoint.getX(),
                     height,
-                    rocketContraptionEntity.rocketEntryCoordinate.getZ());
-
+                    entryPoint.getZ());
         }
         else {
             position = new Vec3(

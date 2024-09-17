@@ -1,6 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.Pair;
@@ -20,7 +21,9 @@ public class ScheduledDelay extends TimedWaitCondition {
     @Override
     public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
         int time = context.getInt("Time");
-        System.out.println("condition : " + time + "/" + totalWaitTicks());
+        if (CSConfigs.COMMON.additionalLogInfo.get()) {
+            CreatingSpace.LOGGER.info("condition : " + time + "/" + totalWaitTicks());
+        }
         if (time >= totalWaitTicks())
             return true;
 

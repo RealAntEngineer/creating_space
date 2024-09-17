@@ -1,9 +1,11 @@
 package com.rae.creatingspace.api.squedule;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
 import com.rae.creatingspace.api.squedule.destination.ChangeTitleInstruction;
 import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.foundation.utility.Components;
@@ -126,7 +128,9 @@ public class RocketScheduleRuntime {
             return;
         //seems like conditions aren't ticked properly
         if (state == State.POST_TRANSIT) {
-            System.out.println("tick condition");
+            if (CSConfigs.COMMON.additionalLogInfo.get()) {
+                CreatingSpace.LOGGER.info("tick condition");
+            }
             tickConditions(level);
             return;
         }
@@ -139,7 +143,9 @@ public class RocketScheduleRuntime {
             //only reached when your already on target
             state = State.IN_TRANSIT;
             destinationReached();
-            System.out.println("already at destination");
+            if (CSConfigs.COMMON.additionalLogInfo.get()) {
+                CreatingSpace.LOGGER.info("already at destination");
+            }
             return;
         }
         if (rocket.startNavigation(nextPath) != TBD) {
@@ -153,7 +159,7 @@ public class RocketScheduleRuntime {
         for (int i = 0; i < conditions.size(); i++) {
             List<ScheduleWaitCondition> list = conditions.get(i);
             if (conditionProgress.size() <= i) {
-                System.out.println("error with conditions");
+                CreatingSpace.LOGGER.warn("error with schedule conditions");
                 rocket.disassemble();
                 return;
             }
