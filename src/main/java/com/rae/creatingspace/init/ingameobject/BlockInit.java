@@ -429,6 +429,29 @@ public class BlockInit {
 
     //machinery
 
+    public static final BlockEntry<FreezerBlock> FREEZER_BLOCK = REGISTRATE.block(
+                    "freezer_block", FreezerBlock::new)
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
+
+    public static final BlockEntry<BurnBlock> BURN_BLOCK = REGISTRATE.block(
+                    "burn_block", BurnBlock::new)
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .transform(customItemModel())
+            .register();
+
+    //machinery
 
 
 

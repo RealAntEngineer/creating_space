@@ -4,6 +4,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.server.fluids.CSOpenEndedPipe;
 import com.rae.creatingspace.server.fluids.CustomVirtualFluid;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
@@ -15,13 +16,17 @@ import com.tterrag.registrate.util.entry.FluidEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidInteractionRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -118,7 +123,7 @@ public class FluidInit {
 
     public static void register() {}
     public static void registerOpenEndedEffect() {
-        OpenEndedPipe.registerEffectHandler(new CryogenicLiquidEffectHandler());
+        OpenEndedPipe.registerEffectHandler(new CSOpenEndedPipe.OxygenEffectHandler());
     }
     public static class CryogenicLiquidEffectHandler implements OpenEndedPipe.IEffectHandler {
         @Override
@@ -141,6 +146,71 @@ public class FluidInit {
 
                     world.addParticle(ParticleTypes.SNOWFLAKE, entity.getX(), (entity.getY() + 1), entity.getZ(), (Mth.randomBetween(randomsource, -1.0F, 1.0F) * 0.083333336F), 0.05F, (Mth.randomBetween(randomsource, -1.0F, 1.0F) * 0.083333336F));
                 }
+            }
+        }
+
+        private void freezeEntities(ServerLevel world, BlockPos pos) {
+            AABB range = new AABB(pos).inflate(5);
+            List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, range);
+
+            for (LivingEntity entity : entities) {
+                double distanceSqr = entity.blockPosition().distSqr(pos);
+                if (distanceSqr <= 25.0) { // 5.0 * 5.0
+                    double intensity = 1.0 - (Math.sqrt(distanceSqr) / 5.0);
+                    int freezeTicks = (int) (20 * (1 + 3 * intensity));
+                    entity.setTicksFrozen(entity.getTicksFrozen() + freezeTicks);
+                }
+            }
+        }
+
+        private void freezeWaterAndSpawnParticles(ServerLevel world, BlockPos pos, RandomSource random) {
+            BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+
+            for (int dx = -5; dx <= 5; dx++) {
+                for (int dy = -5; dy <= 5; dy++) {
+                    for (int dz = -5; dz <= 5; dz++) {
+                        mutablePos.set(pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz);
+                        BlockState blockState = world.getBlockState(mutablePos);
+
+                        // Particle spawning
+                        spawnParticlesIfGroundLevel(world, random, mutablePos);
+
+                        // Freeze water
+                        if (blockState.is(Blocks.WATER) && blockState.getValue(BlockStateProperties.LEVEL) == 0) {
+                            int distanceSqr = dx * dx + dy * dy + dz * dz;
+                            int distanceCategory = (int) Math.ceil(Math.sqrt(distanceSqr));
+
+                            switch (distanceCategory) {
+                                case 1:
+                                    world.setBlock(mutablePos, Blocks.BLUE_ICE.defaultBlockState(), 3);
+                                    break;
+                                case 2:
+                                    world.setBlock(mutablePos, Blocks.PACKED_ICE.defaultBlockState(), 3);
+                                    break;
+                                case 3:
+                                    world.setBlock(mutablePos, Blocks.ICE.defaultBlockState(), 3);
+                                    break;
+                                case 4:
+                                    world.setBlock(mutablePos, Blocks.POWDER_SNOW.defaultBlockState(), 3);
+                                    break;
+                                case 5:
+                                    world.setBlock(mutablePos, Blocks.SNOW.defaultBlockState(), 3);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void spawnParticlesIfGroundLevel(ServerLevel world, RandomSource random, BlockPos.MutableBlockPos mutablePos) {
+            BlockPos belowPos = mutablePos.below();
+            if (world.getBlockState(belowPos).isSolidRender(world, belowPos) && random.nextFloat() < 0.05) {
+                world.sendParticles(ParticleTypes.SNOWFLAKE,
+                        mutablePos.getX() + 0.5, mutablePos.getY() + 0.1, mutablePos.getZ() + 0.5,
+                        1, 0.0, 0.02, 0.0, 0.01);
             }
         }
     }
