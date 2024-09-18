@@ -125,7 +125,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         @Override
         protected void renderAdditionalBody(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, BufferBuilder bufferbuilder, Camera camera, Matrix4f projectionMatrix) {
             super.renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
-
+            //renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, camera.getEntity().getLevel().getTimeOfDay(partialTick) * 360.0F + 180F, 20, 100F);
         }
     }
 

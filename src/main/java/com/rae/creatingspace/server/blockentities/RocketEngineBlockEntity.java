@@ -5,18 +5,16 @@ import com.rae.creatingspace.api.IMass;
 import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 
-import java.util.List;
-
-public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
+public abstract class RocketEngineBlockEntity extends BlockEntity {
 
     public int getIsp() {
         return (int) (getPropellantType().getMaxISP() * getEfficiency());
@@ -25,6 +23,19 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
     public abstract int getThrust();//Newtons
 
     public abstract float getEfficiency();
+
+    public TagKey<Fluid> getOxidizerTag() {
+        return getPropellantType().getPropellantRatio().keySet().stream().toList().get(0);
+    }
+
+    public TagKey<Fluid> getFuelTag() {
+        return getPropellantType().getPropellantRatio().keySet().stream().toList().get(1);
+    }
+
+    public float getOxFuelRatio() {
+        return getPropellantType().getPropellantRatio().get(getOxidizerTag())
+                / getPropellantType().getPropellantRatio().get(getFuelTag());
+    }
 
     public abstract PropellantType getPropellantType();
 
@@ -37,17 +48,11 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
         int thrust = 1000;
         PropellantType propellantType = PropellantTypeInit.METHALOX.get();
         Float efficiency = 1f;
-        int mass = 0;
+        Integer size = 100;
 
         public NbtDependent(BlockEntityType<?> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
         }
-
-        @Override
-        public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-
-        }
-
         @Override
         public float getEfficiency() {
             return efficiency;
@@ -68,47 +73,34 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
         }
 
         @Override
-        protected void write(CompoundTag nbt, boolean clientPacket) {
+        protected void saveAdditional(CompoundTag nbt) {
             nbt.putInt("thrust", thrust);
-            nbt.putInt("mass", mass);
+            nbt.putInt("size", size);
             nbt.putFloat("efficiency", efficiency);
-            try {
-                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,
-                        PropellantTypeInit.getSyncedPropellantRegistry().getKey(propellantType)).get().orThrow());
-            } catch (Exception ignored){
-                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,PropellantTypeInit.METHALOX.getId() ).get().orThrow());
-            }
-            super.write(nbt, clientPacket);
+            nbt.put("propellantType", PropellantTypeInit.PROPELLANT_TYPE.get()
+                    .getCodec().encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
+            super.saveAdditional(nbt);
         }
 
         @Override
-        public void read(CompoundTag nbt, boolean clientPacket) {
-            super.read(nbt,clientPacket);
+        public void load(CompoundTag nbt) {
+            super.load(nbt);
             setFromNbt(nbt);
         }
 
         public void setFromNbt(CompoundTag nbt) {
-
-                thrust = nbt.getInt("thrust");
-                efficiency = nbt.getFloat("efficiency");
-                mass = nbt.getInt("mass");
-            try {
-                propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow())
-                        .orElse(PropellantTypeInit.METHALOX.get());
-            } catch (Exception ignored){
-                propellantType = PropellantTypeInit.METHALOX.get();
-            }
+            thrust = nbt.getInt("thrust");
+            efficiency = nbt.getFloat("efficiency");
+            propellantType = PropellantTypeInit.PROPELLANT_TYPE.get()
+                    .getCodec().parse(NbtOps.INSTANCE, nbt.get("propellantType"))
+                    .resultOrPartial(s -> {
+                    }).orElse(PropellantTypeInit.METHALOX.get());
+            ;
         }
 
         @Override
         public float getMass() {
-            return mass;
-        }
-
-        @Override
-        public void initialize() {
-            notifyUpdate();
-            super.initialize();
+            return 0;
         }
     }
 
@@ -131,11 +123,6 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
         public BigEngine(BlockEntityType<?> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
         }
-
-        @Override
-        public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-
-        }
     }
 
     public static class SmallEngine extends RocketEngineBlockEntity{
@@ -157,11 +144,6 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
         public SmallEngine(BlockEntityType<?> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
-        }
-
-        @Override
-        public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-
         }
 
     }

@@ -2,7 +2,6 @@ package com.rae.creatingspace.server.event;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
-import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -15,7 +14,6 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.MissingMappingsEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,30 +27,26 @@ public class DataEventHandler {
     @SubscribeEvent
     public static void onLoadWorld(LevelEvent.Load event) {
         LevelAccessor world = event.getLevel();
-        UnlockedDesignManager.levelLoaded(world);
-    }
-    @SubscribeEvent
-    public static void missingEntries(MissingMappingsEvent event) {
+        CreatingSpace.DESIGN_SAVED_DATA.levelLoaded(world);
     }
 
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
-        UnlockedDesignManager.playerLogin(player);
-        /*LOGGER.info("updating the travel map");
+        CreatingSpace.DESIGN_SAVED_DATA.playerLogin(player);
+        LOGGER.info("updating the travel map");
         CSDimensionUtil.updatePlanetsFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.info("updating the space travel cost map");
-        CSDimensionUtil.updateCostMap();*/
+        CSDimensionUtil.updateCostMap();
     }
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         LOGGER.info("getting the server registry access");
         registryAccess = event.getServer().registryAccess();
         LOGGER.info("updating the travel map");
-        CSDimensionUtil.updatePlanetsFromRegistry(registryAccess.registryOrThrow(RocketAccessibleDimension.REGISTRY_KEY));
+        CSDimensionUtil.updatePlanetsFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.debug("updating the space travel cost map");
         CSDimensionUtil.updateCostMap();
-        CSDimensionUtil.removeUnreachableDimensions();
     }
 
     /**

@@ -89,8 +89,7 @@ public class SealerBlockEntity extends KineticBlockEntity {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
             Direction localDir = this.getBlockState().getValue(SealerBlock.FACING);
 
-            // Check if the side is either the back, top, or bottom
-            if (side == localDir.getOpposite() || side == Direction.UP || side == Direction.DOWN) {
+            if (side ==  localDir.getOpposite()){
                 return this.fluidOptional.cast();
             }
         }

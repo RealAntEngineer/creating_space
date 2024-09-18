@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.api.rendering.GeometryRendering;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.simibubi.create.AllSpecialTextures;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
@@ -28,16 +27,12 @@ public class EngineMovementBehaviour implements MovementBehaviour {
     static int segments = 4; // Number of segments for the base circle
     static int N = 50;
     static float maxDistance = 10f;
-    static float step = (float) 1 / N;
+    static float step = 1 / N;
 
 
     @Override
     public boolean isActive(MovementContext context) {
-        if ((context.contraption.entity instanceof RocketContraptionEntity rocketEntity)) {
-            boolean flag = rocketEntity.isInPropulsionPhase();
-            return MovementBehaviour.super.isActive(context) && flag;
-        }
-        return false;
+        return true;//MovementBehaviour.super.isActive(context) && (context.contraption.entity instanceof RocketContraptionEntity rocketEntity) && context.motion.length() != 0;
     }
 
     @Override
@@ -54,31 +49,31 @@ public class EngineMovementBehaviour implements MovementBehaviour {
 
     @Override
     public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
-        if (isActive(context)) {
-            VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.getGlowingTranslucent(AllSpecialTextures.BLANK.getLocation()));
-            PoseStack matrixStack = matrices.getViewProjection();
+        VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.getGlowingTranslucent(AllSpecialTextures.BLANK.getLocation()));
+        PoseStack matrixStack = matrices.getViewProjection();
 
-            matrixStack.pushPose();
-            // Translate and rotate the cone to the entity's position and orientation
-            // Radius of the cone base
-            Vec3 firstOffset = Vec3.atBottomCenterOf(context.localPos.below());
-            matrixStack.translate(firstOffset.x, firstOffset.y, firstOffset.z);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.10F));
-            // just for debug mode
-            int overlay = LightTexture.FULL_BRIGHT;
-            float z = 0;
-            float w = baseRadius;
-            for (float t = 0; t < 1f; t += step) {
-                z += d_z(t) * step;
-                float prev_w = w;
-                w += d_w(t, CSDimensionUtil.hasO2Atmosphere(renderWorld.getBiome(new BlockPos(context.position)))) * step;
-                GeometryRendering.renderCylinder(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) > 0);
-                GeometryRendering.renderCylinder(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) <= 0);
+        matrixStack.pushPose();
+        // Translate and rotate the cone to the entity's position and orientation
+        // Radius of the cone base
+        segments = 4;
+        step = 1f / N;
+        Vec3 firstOffset = Vec3.atBottomCenterOf(context.localPos.below());
+        matrixStack.translate(firstOffset.x, firstOffset.y, firstOffset.z);
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-45.10F));
+        // just for debug mode
+        int overlay = LightTexture.FULL_BRIGHT;
+        float z = 0;
+        float w = baseRadius;
+        for (float t = 0; t < 1f; t += step) {
+            z += d_z(t) * step;
+            float prev_w = w;
+            w += d_w(t, CSDimensionUtil.hasO2Atmosphere(renderWorld.getBiome(new BlockPos(context.position)))) * step;
+            GeometryRendering.renderCylinder(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) > 0);
+            GeometryRendering.renderCylinder(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) <= 0);
 
-            }
-
-            matrixStack.popPose();
         }
+
+        matrixStack.popPose();
 
     }
 

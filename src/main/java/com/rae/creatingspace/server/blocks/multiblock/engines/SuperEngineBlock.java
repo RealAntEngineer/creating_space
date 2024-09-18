@@ -60,6 +60,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
 
         if (worldIn.isClientSide)
             return;
+        System.out.println("coucou 2");
         withBlockEntityDo(worldIn, pos, be -> {
             be.setFromNbt(stack.getOrCreateTag().getCompound("blockEntity"));
         });
@@ -73,8 +74,8 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
         Optional<RocketEngineBlockEntity.NbtDependent> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
 
         CompoundTag tag = stack.getOrCreateTag();
-        assert blockEntityOptional.orElse(null) != null;
-        CompoundTag beData = blockEntityOptional.orElse(null).saveWithoutMetadata();
+        CompoundTag beData = new CompoundTag();
+        blockEntityOptional.orElse(null).setFromNbt(beData);
         tag.put("blockEntity", beData);
         stack.setTag(tag);
         return stack;

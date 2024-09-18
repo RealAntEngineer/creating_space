@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -34,7 +33,7 @@ public class RocketContraption extends TranslatingContraption {
     private int thrust = 0;
     private int dryMass = 0;
     //private final HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
-    private HashMap<PropellantType, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
+    private final HashMap<PropellantType, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
 
     private final ArrayList<BlockPos> localPosOfFlightRecorders = new ArrayList<>();
     public RocketContraption() {
@@ -75,7 +74,7 @@ public class RocketContraption extends TranslatingContraption {
 
 
         }
-        this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState(), blockEntityAdded);
+        this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState());
         if (blockAdded instanceof FlightRecorderBlock){
             this.localPosOfFlightRecorders.add(localPos);
         }
@@ -103,22 +102,14 @@ public class RocketContraption extends TranslatingContraption {
     public ContraptionType getType() {
         return CSContraptionType.ROCKET;
     }
-    public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantType.DIRECT_CODEC,ConsumptionInfo.CODEC);
+
     @Override
     public void readNBT(Level world, CompoundTag nbt, boolean spawnData) {
-
-        //TODO add data for server/client sync (possible solution of Interactive bug)
-        if (!spawnData) {
-            thrust = nbt.getInt("thrust");
-            dryMass = nbt.getInt("dryMass");
-            Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
-            try {
-                theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElseThrow());
-            } catch (Exception ignored) {
-
-            }
-        }
         super.readNBT(world, nbt, spawnData);
+        //TODO add data for server/client sync (possible solution of Interactive bug)
+        thrust = nbt.getInt("thrust");
+        dryMass = nbt.getInt("dryMass");
+        Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
     }
 
     @Override
@@ -128,11 +119,6 @@ public class RocketContraption extends TranslatingContraption {
         nbt.putInt("thrust", thrust);
         nbt.putInt("dryMass", dryMass);
         nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
-        try {
-            nbt.put("theoreticalPerTagFluidConsumption",CODEC.encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElseThrow());
-        } catch (Exception ignored){
-
-        }
         return nbt;
     }
     /*@Override

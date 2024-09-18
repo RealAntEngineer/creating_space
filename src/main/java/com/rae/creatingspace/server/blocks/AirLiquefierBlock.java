@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.blocks;
 
+import com.google.common.collect.ImmutableMap;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.AirLiquefierBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
@@ -15,8 +16,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
 
 import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
 

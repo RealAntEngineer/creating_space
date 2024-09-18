@@ -7,18 +7,11 @@
   "refmap": "creatingspace.refmap.json",
   "mixins": [
     "entity.ContraptionMixin",
+    "entity.FallingBlockEntityEntityMixin",
+    "entity.ItemEntityMixin",
+    "entity.LivingEntityMixin",
     "entity.PlayerMixin",
-    "entity.gravity.BoatMixin",
-    "entity.gravity.FallingBlockEntityEntityMixin",
-    "entity.gravity.ItemEntityMixin",
-    "entity.gravity.LivingEntityMixin",
-    "entity.gravity.MinecartMixin",
-    "kinetics.BacktankBlockEntityMixin",
-    "recipe.ItemApplicationMixin",
-    "recipe.ProcessingRecipeMixin",
-    "recipe.ProcessingRecipeRecipeSerializerMixin",
-    "recipe.SequencedAssemblyRecipeMixin",
-    "recipe.SequencedAssemblyRecipeSerializerMixin"
+    "kinetics.BacktankBlockEntityMixin"
   ],
   "client": [
   ],

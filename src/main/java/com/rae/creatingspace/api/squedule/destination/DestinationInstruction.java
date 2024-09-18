@@ -92,7 +92,7 @@ public class DestinationInstruction extends ScheduleInstruction {
 
     @NotNull
     private static List<ResourceLocation> getPlanets() {
-        return CSDimensionUtil.getPlanets();
+        return CSDimensionUtil.planets;
     }
 
 }

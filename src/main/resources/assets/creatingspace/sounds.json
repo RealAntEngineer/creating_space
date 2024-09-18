@@ -1,8 +1,0 @@
-{
-  "rocket_launch_sound": {
-    "subtitle": "creatingspace.subtitle.rocket_launch",
-    "sounds": [
-      "creatingspace:rocket_launch_sound"
-    ]
-  }
-}

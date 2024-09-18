@@ -2,7 +2,6 @@ package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.init.TagsInit;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -19,51 +18,9 @@ import java.util.*;
 public class CSDimensionUtil {
     //should be updated on both server and client load (first on client, then on client join)
     private static final Logger LOGGER = LogManager.getLogger();
-
-    public static Map<ResourceLocation, RocketAccessibleDimension> getTravelMap() {
-        if (travelMap == null){
-            LOGGER.info("updating the travel map");
-            CSDimensionUtil.updatePlanetsFromRegistry(Objects.requireNonNull(Minecraft.getInstance().getConnection())
-                    .registryAccess().registry(RocketAccessibleDimension.REGISTRY_KEY)
-                    .orElseThrow());
-            LOGGER.info("updating the space travel cost map");
-            CSDimensionUtil.updateCostMap();
-            CSDimensionUtil.removeUnreachableDimensions();
-        }
-        return travelMap;
-    }
-
-    public static List<ResourceLocation> getPlanets() {
-        if (planets == null){
-            LOGGER.info("updating the travel map");
-            CSDimensionUtil.updatePlanetsFromRegistry(Objects.requireNonNull(Minecraft.getInstance().getConnection())
-                    .registryAccess().registry(RocketAccessibleDimension.REGISTRY_KEY)
-                    .orElseThrow());
-            LOGGER.info("updating the space travel cost map");
-            CSDimensionUtil.updateCostMap();
-            CSDimensionUtil.removeUnreachableDimensions();
-        }
-        return planets;
-    }
-
-    public static void removeUnreachableDimensions() {
-        planets = planets.stream().filter(
-                l-> {
-                    Map<ResourceLocation, Integer> cost = costAdjacentMap.get(l);
-                    for (Map.Entry<ResourceLocation, Integer> entries:
-                         cost.entrySet()) {
-                        if (entries.getValue() > 0 && entries.getValue() < Integer.MAX_VALUE){
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-        ).toList();
-    }
-
-    private static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
-    private static List<ResourceLocation> planets;
-    private static Map<ResourceLocation, Map<ResourceLocation, Integer>> costAdjacentMap;//map of (source, target) -> cost
+    public static Map<ResourceLocation, RocketAccessibleDimension> travelMap;
+    public static List<ResourceLocation> planets;
+    public static Map<ResourceLocation, Map<ResourceLocation, Integer>> costAdjacentMap;//map of (source, target) -> cost
 
     public static void updatePlanetsFromRegistry(Registry<RocketAccessibleDimension> registry) {
         Map<ResourceLocation, RocketAccessibleDimension> collector = new HashMap<>();
@@ -165,15 +122,12 @@ public class CSDimensionUtil {
             if (currentDimension != null) {
                 for (Map.Entry<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> adjacent : currentDimension.adjacentDimensions().entrySet()) {
                     ResourceLocation target = adjacent.getKey();
-                    int deltaV = adjacent.getValue().deltaV(); 
+                    int deltaV = adjacent.getValue().deltaV();
                     int newDist = distances.get(current) + deltaV;
-                    if (distances.get(target) != null) {
-                        if (newDist < distances.get(target)) {
-                            distances.put(target, newDist);
-                            priorityQueue.add(new AbstractMap.SimpleEntry<>(target, newDist));
-                        }
-                    } else {
-                        LOGGER.warn("unexpected null value loading route from : "+ current + " to "+ target);
+
+                    if (newDist < distances.get(target)) {
+                        distances.put(target, newDist);
+                        priorityQueue.add(new AbstractMap.SimpleEntry<>(target, newDist));
                     }
                 }
             }
@@ -194,7 +148,7 @@ public class CSDimensionUtil {
 
     public static void updateCostMap() {
         costAdjacentMap = new HashMap<>();
-        for (ResourceLocation location : getTravelMap().keySet()) {
+        for (ResourceLocation location : travelMap.keySet()) {
             costAdjacentMap.put(location, dijkstra(location));
         }
     }

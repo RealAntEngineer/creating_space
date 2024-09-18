@@ -6,7 +6,6 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 
 public class OxygenSuffocationEvent extends LivingEvent {
-    //mostly copied from galacticraft
     public final DimensionType dimension;
 
     public OxygenSuffocationEvent(LivingEntity entity)

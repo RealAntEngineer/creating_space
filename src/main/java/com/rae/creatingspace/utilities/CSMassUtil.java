@@ -1,22 +1,17 @@
 package com.rae.creatingspace.utilities;
 
-import com.rae.creatingspace.api.IMass;
 import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Map;
 
 public class CSMassUtil {
 
-    public static int mass(BlockState state, BlockEntity blockEntity) {
-        if (blockEntity instanceof IMass hasAMass) {
-            return (int) hasAMass.getMass();
-        }
+    public static int mass(BlockState state){
         MassOfBlockReader.PartialMassMap data = MassOfBlockReader.MASS_HOLDER.getData();
         if( data!=null){
             ResourceLocation id = Registry.BLOCK.getKey(state.getBlock());

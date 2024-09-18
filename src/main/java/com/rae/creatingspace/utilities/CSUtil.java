@@ -14,12 +14,7 @@ public class CSUtil {
 
     //TODO use String.format()
     public static String scientificNbrFormatting(Float toRound, int digit) {
-        try {
-            return scientificNbrFormatting(BigDecimal.valueOf(toRound), digit);
-        } catch (NumberFormatException exception) {
-            return "NaN";
-        }
-
+        return scientificNbrFormatting(BigDecimal.valueOf(toRound),digit);
     }
     public static String scientificNbrFormatting(BigDecimal toRound, int digit) {
         if (toRound.floatValue() == 0) return "0";

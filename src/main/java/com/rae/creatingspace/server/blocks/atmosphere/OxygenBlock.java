@@ -1,5 +1,6 @@
 package com.rae.creatingspace.server.blocks.atmosphere;
 
+import com.mojang.math.Vector3d;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.atmosphere.OxygenBlockEntity;
 import com.rae.creatingspace.server.blockentities.atmosphere.SealerBlockEntity;
@@ -7,16 +8,19 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -114,6 +118,14 @@ public class OxygenBlock extends Block implements IBE<OxygenBlockEntity> {
         @Override
         public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
             return true;
+        }
+
+        @Override
+        public Vector3d getFogColor(BlockState state, LevelReader level, BlockPos pos, Entity entity, Vector3d originalColor, float partialTick) {
+            if (state.getMaterial() == Material.AIR){
+                return new Vector3d(0,0.1F,0.6F);
+            }
+            return IClientBlockExtensions.super.getFogColor(state, level, pos, entity, originalColor, partialTick);
         }
     }
 }

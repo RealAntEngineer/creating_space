@@ -1,6 +1,5 @@
 package com.rae.creatingspace.worldgen;
 
-import com.google.common.collect.Multiset;
 import com.mojang.serialization.Codec;
 import com.simibubi.create.foundation.utility.Couple;
 import net.minecraft.core.BlockPos;
@@ -13,16 +12,10 @@ import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 public class CraterCarver extends WorldCarver<CraterCarverConfig> {
@@ -34,7 +27,6 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
 
     public boolean carve(CarvingContext context, CraterCarverConfig config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> posToBiome, RandomSource random, Aquifer aquiferSampler, ChunkPos pos, CarvingMask carvingMask) {
         //pos = center chunk pos
-
         int x = random.nextInt(16);
         int z = random.nextInt(16);
         int y = getHeightInInitialChunkIfClose(context, config, chunk, pos, x, z);
@@ -48,30 +40,6 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
             radius = 8 + (random.nextDouble() * (config.maxRadius - config.minRadius));
         double depthMultiplier = 1 - ((random.nextDouble() - 0.5) * 0.3);
         boolean fresh = random.nextInt(16) == 1;
-
-        //adjust structures position
-        if (chunk.hasAnyStructureReferences()){
-            for (Map.Entry<Structure, StructureStart> entry:chunk.getAllStarts().entrySet()){
-                if (entry.getKey().step().equals(GenerationStep.Decoration.SURFACE_STRUCTURES)){
-                    double xDev = Math.abs((chunk.getPos().getBlockX(entry.getValue().getBoundingBox().getCenter().getX())) - craterCenter.getX());
-                    double zDev = Math.abs((chunk.getPos().getBlockZ(entry.getValue().getBoundingBox().getCenter().getZ())) - craterCenter.getZ());
-                    if (xDev >= 0 && xDev < 32 && zDev >= 0 && zDev < 32) {
-                        if (xDev * xDev + zDev * zDev < radius * radius) { //distance to crater and depth
-                            xDev /= radius;
-                            zDev /= radius;
-                            final double sqrtY = xDev * xDev + zDev * zDev;
-                            double yDev = sqrtY * sqrtY * 6;
-                            double craterDepth = 5 - yDev;
-                            craterDepth *= depthMultiplier;
-                            BoundingBox boundingBox = entry.getValue().getBoundingBox().moved(0, (int) - craterDepth,0);
-                            entry.getKey().adjustBoundingBox(boundingBox);
-                        }
-                    }
-                }
-            }
-        }
-
-
         for (int innerChunkX = 0; innerChunkX < 16; innerChunkX++) { //iterate through positions in chunk
             for (int innerChunkZ = 0; innerChunkZ < 16; innerChunkZ++) {
                 double toDig = 0;
@@ -106,12 +74,12 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
                     for (int dug = 0; dug < toDig; dug++) {
                         mutable.move(Direction.DOWN);
                             if (!chunk.getBlockState(mutable).isAir() || carvingMask.get(innerChunkX, mutable.getY()/* + 64*/, innerChunkZ) || dug > 0) {
-                                if (!carvingMask.get(innerChunkX, mutable.getY()/* + 64*/, innerChunkZ)) {
-                                    chunk.setBlockState(mutable, AIR, true);
+                                chunk.setBlockState(mutable, AIR, false);
+                                if (dug == 0) {
                                     carvingMask.set(innerChunkX, mutable.getY()/* + 64*/, innerChunkZ);
-                                    if (!fresh && dug + 1 >= toDig && !chunk.getBlockState(copy.set(mutable).move(Direction.DOWN, 2)).isAir()) {
-                                        context.topMaterial(posToBiome, chunk, mutable, true).ifPresent(blockStates -> chunk.setBlockState(mutable.move(Direction.DOWN), blockStates, true));
-                                    }
+                                }
+                                if (!fresh && dug + 1 >= toDig && !chunk.getBlockState(copy.set(mutable).move(Direction.DOWN, 2)).isAir()) {
+                                    context.topMaterial(posToBiome, chunk, mutable, false).ifPresent(blockStates -> chunk.setBlockState(mutable.move(Direction.DOWN), blockStates, false));
                                 }
                             } else {
                                 dug--;

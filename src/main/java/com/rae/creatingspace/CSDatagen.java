@@ -2,13 +2,10 @@ package com.rae.creatingspace;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.rae.creatingspace.datagen.client.CSBlockStateProvider;
-import com.rae.creatingspace.datagen.server.CSSimpleRecipeProvider;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.data.DataGenerator;
-import com.rae.creatingspace.datagen.server.CSLootTableProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 
@@ -23,15 +20,15 @@ public class CSDatagen {
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
 		if (event.includeClient()) {
-			//generator.addProvider(true, AllSoundEvents.provider(generator))
-			generator.addProvider(true, new CSBlockStateProvider(generator, existingFileHelper));
+			//generator.addProvider(true, AllSoundEvents.provider(generator));
 		}
 		//TODO use this to load the info for dimensions (need to be one file for each dimension)
 		if (event.includeServer()) {
 			//generator.addProvider(true, new CreateRecipeSerializerTagsProvider(generator, existingFileHelper));
+
 			//generator.addProvider(true, new AllAdvancements(generator));
-			generator.addProvider(true, new CSLootTableProvider(generator));
-			generator.addProvider(true, new CSSimpleRecipeProvider(generator));
+
+			//generator.addProvider(true, new StandardRecipeGen(generator));
 			//generator.addProvider(true, new MechanicalCraftingRecipeGen(generator));
 			//generator.addProvider(true, new SequencedAssemblyRecipeGen(generator));
 			//ProcessingRecipeGen.registerAll(generator);

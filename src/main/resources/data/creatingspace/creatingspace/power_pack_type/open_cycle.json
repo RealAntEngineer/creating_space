@@ -1,7 +1,16 @@
 {
   "combustionEfficiency": 0.7,
-  "numberOfPumps": 1,
   "allowedPropellants": [
     "creatingspace:methalox"
+  ],
+  "slots": [
+    {
+      "x": 34,
+      "y": 31
+    },
+    {
+      "x": 75,
+      "y": 30
+    }
   ]
 }

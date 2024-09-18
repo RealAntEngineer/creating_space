@@ -96,7 +96,6 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         return nbt;
     }
 
-    //should be replaced by craft blueprint
     public void craftEngine(ItemStack newEngine) {
         System.out.println(newEngine);
         if (inventory.isItemValid(0, newEngine)) {

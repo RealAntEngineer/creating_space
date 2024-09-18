@@ -1,6 +1,7 @@
 package com.rae.creatingspace.server.blocks;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
+import com.rae.creatingspace.server.blockentities.AirLiquefierBlockEntity;
 import com.rae.creatingspace.server.blockentities.FlightRecorderBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;

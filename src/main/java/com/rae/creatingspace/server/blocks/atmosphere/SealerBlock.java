@@ -2,7 +2,6 @@ package com.rae.creatingspace.server.blocks.atmosphere;
 
 import com.rae.creatingspace.client.gui.screen.SealerScreen;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
 import com.rae.creatingspace.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -32,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
 
-public class SealerBlock extends DirectionalAxisKineticBlock implements IBE<RoomPressuriserBlockEntity> {
+public class SealerBlock extends DirectionalAxisKineticBlock implements IBE<SealerBlockEntity> {
     public SealerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
@@ -50,13 +49,13 @@ public class SealerBlock extends DirectionalAxisKineticBlock implements IBE<Room
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack held = player.getMainHandItem();
-        /*if (held.isEmpty()){
+        if (held.isEmpty()){
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
                     () -> () -> withBlockEntityDo(level, pos, be-> {
                         be.resetRemainingTries();
                         displayScreen(be,player);}));
             return InteractionResult.SUCCESS;
-        }*/
+        }
 
         return InteractionResult.PASS;
     }
@@ -77,21 +76,21 @@ public class SealerBlock extends DirectionalAxisKineticBlock implements IBE<Room
     }
 
     @Override
-    public Class<RoomPressuriserBlockEntity> getBlockEntityClass() {
-        return RoomPressuriserBlockEntity.class;
+    public Class<SealerBlockEntity> getBlockEntityClass() {
+        return SealerBlockEntity.class;
     }
 
     @Override
-    public BlockEntityType<? extends RoomPressuriserBlockEntity> getBlockEntityType() {
-        return BlockEntityInit.ROOM_PRESSURIZER.get();
+    public BlockEntityType<? extends SealerBlockEntity> getBlockEntityType() {
+        return BlockEntityInit.OXYGEN_SEALER.get();
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide() ? null : ($0,pos,$1,blockEntity) -> {
-            if(blockEntity instanceof RoomPressuriserBlockEntity sealerBlockEntity) {
-                sealerBlockEntity.tick();
+            if(blockEntity instanceof SealerBlockEntity sealerBlockEntity) {
+                sealerBlockEntity.tick(level,pos,state);
             }
         };
     }

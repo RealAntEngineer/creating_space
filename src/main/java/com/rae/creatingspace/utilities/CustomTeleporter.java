@@ -2,7 +2,6 @@ package com.rae.creatingspace.utilities;
 
 import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
@@ -47,11 +46,6 @@ public class CustomTeleporter implements ITeleporter {
 
     @Override
     public boolean isVanilla() {
-        return false;
-    }
-
-    @Override
-    public boolean playTeleportSound(ServerPlayer player, ServerLevel sourceWorld, ServerLevel destWorld) {
         return false;
     }
 }

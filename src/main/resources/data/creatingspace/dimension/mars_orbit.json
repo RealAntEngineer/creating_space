@@ -3,7 +3,7 @@
   "generator": {
     "type": "minecraft:flat",
     "settings": {
-      "biome": "creatingspace:space",
+      "biome": "minecraft:the_end",
       "lakes": false,
       "features": false,
       "layers": []

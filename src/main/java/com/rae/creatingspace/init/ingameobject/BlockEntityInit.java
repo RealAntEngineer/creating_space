@@ -116,7 +116,7 @@ public class BlockEntityInit {
             REGISTRATE.blockEntity(
                             "room_pressurizer", RoomPressuriserBlockEntity::new)
                     .instance(() -> RoomPressuriserInstance::new)
-                    .validBlocks(BlockInit.OXYGEN_SEALER)
+                    .validBlocks(BlockInit.ROOM_PRESSURISER)
                     .renderer(() -> RoomPressuriserRenderer::new)
                     .register();
     public static final BlockEntityEntry<FlightRecorderBlockEntity> FLIGHT_RECORDER =

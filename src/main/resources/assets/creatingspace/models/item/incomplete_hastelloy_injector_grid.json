@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "creatingspace:item/transition_item/incomplete_hastelloy_injector_grid"
-  }
-}
