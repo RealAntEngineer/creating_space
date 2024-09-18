@@ -80,11 +80,13 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         runningTicks = compound.getInt("Ticks");
         super.read(compound, clientPacket);
 
-        CompoundTag electrode = compound.getCompound("electrode");
-        if (electrode.isEmpty()) {
-            this.electrode = null;
-        } else {
-            this.electrode.deserializeNBT(electrode);
+        CompoundTag electrode = (CompoundTag) compound.get("electrode");
+        if (electrode != null) {
+            if (electrode.isEmpty()) {
+                this.electrode = null;
+            } else {
+                this.electrode  = ItemStack.of(electrode);
+            }
         }
 
         if (clientPacket && hasLevel())
@@ -98,8 +100,11 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
         super.write(compound, clientPacket);
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
-        if (electrode != null) {
-            compound.put("electrode", electrode.serializeNBT());
+        assert level != null;
+        if (!level.isClientSide) {
+            if (electrode != null) {
+                compound.put("electrode", electrode.serializeNBT());
+            }
         }
     }
 
@@ -250,10 +255,11 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     public void setElectrode(@Nullable ItemStack held) {
         if (held == null) {
             electrode = null;
+            notifyUpdate();
             return;
         }
         electrode = held.copy();
-        setChanged();
+        notifyUpdate();
     }
 
 }

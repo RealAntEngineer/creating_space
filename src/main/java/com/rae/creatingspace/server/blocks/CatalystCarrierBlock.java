@@ -2,7 +2,9 @@ package com.rae.creatingspace.server.blocks;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.CatalystCarrierBlockEntity;
+import com.rae.creatingspace.server.blockentities.MechanicalElectrolyzerBlockEntity;
 import com.rae.creatingspace.server.items.CatalystItem;
+import com.rae.creatingspace.server.items.ElectrodeItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
@@ -25,6 +27,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+
+import java.util.Objects;
 
 public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<CatalystCarrierBlockEntity> {
 
@@ -84,9 +90,16 @@ public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand p_60507_, BlockHitResult p_60508_) {
         ItemStack held = player.getMainHandItem();
-        if (!held.isEmpty() && (held.getItem() instanceof CatalystItem)) {
-            withBlockEntityDo(level, pos, be -> be.setCatalyst(held));
-            return InteractionResult.SUCCESS;
+        if (!level.isClientSide) {
+            if (!held.isEmpty() && (held.getItem() instanceof CatalystItem)) {
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                        () -> () -> withBlockEntityDo(level, pos, be -> be.setCatalyst(held)));
+                return InteractionResult.SUCCESS;
+            } else if (held.isEmpty()) {
+                player.setItemInHand(InteractionHand.MAIN_HAND, ((CatalystCarrierBlockEntity) Objects.requireNonNull(level.getBlockEntity(pos))).getCatalyst());
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                        () -> () -> withBlockEntityDo(level, pos, be -> be.setCatalyst(null)));
+            }
         }
         return InteractionResult.PASS;
     }

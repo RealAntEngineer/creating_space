@@ -27,6 +27,9 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class MechanicalElectrolyzerBlock extends HorizontalKineticBlock implements IBE<MechanicalElectrolyzerBlockEntity> {
 
@@ -84,16 +87,18 @@ public class MechanicalElectrolyzerBlock extends HorizontalKineticBlock implemen
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand p_60507_, BlockHitResult p_60508_) {
+	public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull InteractionHand interactionHand, @NotNull BlockHitResult p_60508_) {
 		ItemStack held = player.getMainHandItem();
-		if (!held.isEmpty() && (held.getItem() instanceof ElectrodeItem)) {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
-					() -> () -> withBlockEntityDo(level, pos, be -> be.setElectrode(held)));
-			return InteractionResult.SUCCESS;
-		} else if (held.isEmpty()) {
-			player.setItemInHand(InteractionHand.MAIN_HAND, ((MechanicalElectrolyzerBlockEntity) level.getBlockEntity(pos)).getElectrode());
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
-					() -> () -> withBlockEntityDo(level, pos, be -> be.setElectrode(null)));
+		if (!level.isClientSide) {
+			if (!held.isEmpty() && (held.getItem() instanceof ElectrodeItem)) {
+				DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+						() -> () -> withBlockEntityDo(level, pos, be -> be.setElectrode(held)));
+				return InteractionResult.SUCCESS;
+			} else if (held.isEmpty()) {
+				player.setItemInHand(InteractionHand.MAIN_HAND, ((MechanicalElectrolyzerBlockEntity) Objects.requireNonNull(level.getBlockEntity(pos))).getElectrode());
+				DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+						() -> () -> withBlockEntityDo(level, pos, be -> be.setElectrode(null)));
+			}
 		}
 		return InteractionResult.PASS;
 	}
