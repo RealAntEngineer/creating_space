@@ -176,7 +176,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
 
     @Override
     protected <C extends Container> boolean matchBasinRecipe(Recipe<C> recipe) {
-        if (electrode == null) return false;
+        //if (electrode == null) return false;
         return super.matchBasinRecipe(recipe);
     }
 
@@ -193,10 +193,13 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     @Override
     protected void applyBasinRecipe() {
         super.applyBasinRecipe();
+        /*
         if (electrode != null) {
             electrode.setDamageValue(electrode.getDamageValue() + 1);
             System.out.println(electrode.serializeNBT());
         }
+
+         */
     }
 
     @Override
@@ -248,12 +251,13 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     }
 
     public void setElectrode(@Nullable ItemStack held) {
-        if (held == null) {
+        /*if (held == null) {
             electrode = null;
             return;
         }
         electrode = held.copy();
         setChanged();
+         */
     }
 
 }

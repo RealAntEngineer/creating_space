@@ -102,7 +102,7 @@ public class ItemInit {
     }
 
 
-    public static final ItemEntry<ElectrodeItem> COPPER_ELECTRODE = CreatingSpace.REGISTRATE.item(
+    /*public static final ItemEntry<ElectrodeItem> COPPER_ELECTRODE = CreatingSpace.REGISTRATE.item(
                     "copper_electrode", ElectrodeItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
                     .defaultDurability(300))
@@ -113,7 +113,7 @@ public class ItemInit {
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
                     .defaultDurability(300))
             .register();
-
+*/
 
     public static final ItemEntry<DesignBlueprintItem> DESIGN_BLUEPRINT =
             CreatingSpace.REGISTRATE.item("design_blueprint", DesignBlueprintItem::new)

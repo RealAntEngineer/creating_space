@@ -74,7 +74,7 @@ public class CatalystCarrierRenderer extends KineticBlockEntityRenderer<Catalyst
 
     private void renderCatalystFromTexture(PoseStack stack, ResourceLocation texLocation, MultiBufferSource buffer) {
         ModelPart catalyst = createCatalyst();
-        catalyst.render(stack, buffer.getBuffer(RenderType.entitySolid(texLocation)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+        //catalyst.render(stack, buffer.getBuffer(RenderType.entitySolid(texLocation)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
     }
 
     public static ModelPart createCatalyst() {

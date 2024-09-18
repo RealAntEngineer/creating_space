@@ -42,17 +42,19 @@ public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRende
 		super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
 		float renderedHeadOffset =
 				be.getRenderedHeadOffset(partialTicks);
-		ItemStack electrode = be.getElectrode();
-		if (electrode != null) {
-			if (!electrode.isEmpty()) {
+		//ItemStack electrode = be.getElectrode();
+		//if (electrode != null) {
+		//	if (!electrode.isEmpty()) {
 				ms.pushPose();
 				ms.translate(0, -renderedHeadOffset, 0);
 				renderElectrodesFromTexture(ms,
 						CreatingSpace.resource("textures/block/mechanical_electrolyzer/electrodes/" +
-								electrode.getItemHolder().unwrapKey().orElseThrow().location().getPath() + ".png"), buffer);
+								"copper_electrode"
+								//electrode.getItemHolder().unwrapKey().orElseThrow().location().getPath()
+										+ ".png"), buffer);
 				ms.popPose();
-			}
-		}
+		//	}
+		//}
 
 		if (Backend.canUseInstancing(be.getLevel()))
 			return;

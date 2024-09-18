@@ -81,13 +81,15 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         running = compound.getBoolean("Running");
         runningTicks = compound.getInt("Ticks");
         super.read(compound, clientPacket);
-
+/*
         CompoundTag catalyst = (CompoundTag) compound.get("catalyst");
         if (catalyst.isEmpty()) {
             this.catalyst = null;
         } else {
             this.catalyst.deserializeNBT(catalyst);
         }
+
+ */
         if (clientPacket && hasLevel())
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
     }
@@ -96,9 +98,12 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
     public void write(CompoundTag compound, boolean clientPacket) {
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
+        /*
         if (catalyst != null) {
             compound.put("catalyst", catalyst.serializeNBT());
         }
+
+         */
         super.write(compound, clientPacket);
     }
 
@@ -233,7 +238,8 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
     }
 
     public void setCatalyst(ItemStack held) {
-        catalyst = held.copy();
+        /*catalyst = held.copy();
         notifyUpdate();
+         */
     }
 }
