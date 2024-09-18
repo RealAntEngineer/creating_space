@@ -96,6 +96,7 @@ public class TagsInit extends AllTags {
     }
     public enum CustomItemTags {
         OXYGEN_SOURCES(),
+        ELECTRODES(),
         SPACESUIT();
 
         public final TagKey<Item> tag;

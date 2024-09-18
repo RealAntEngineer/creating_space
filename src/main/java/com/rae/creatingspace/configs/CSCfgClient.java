@@ -10,11 +10,11 @@ public class CSCfgClient extends CSConfigBase{
 
 
     public final ConfigGroup rocket = group(1, "rocket", Comments.rocket);
-    public final ConfigFloat zoomOut = new ConfigFloat("zoomOut", 3f, 0.1f, 20, Comments.zoomOut);
+    public final ConfigFloat zoomOut = new ConfigFloat("zoomOut", 0.5f, 0.1f, 20, Comments.zoomOut);
     public final ConfigEnum<Measurement> recorder_measurement = e(Measurement.VOLUMETRIC, "recorder_measurement", Comments.recorder_measurement);
     @Override
     public String getName() {
-        return CreatingSpace.MODID + ".client";
+        return CreatingSpace.MODID + ".client.V"+2;
     }
 
     private static class Comments {

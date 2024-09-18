@@ -120,7 +120,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
                 RocketContraptionEntity.create(level, contraption, destination);
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
-        rocketContraptionEntity.setAccessibilityData(initialPosMap);
+        rocketContraptionEntity.setInitialPosMap(initialPosMap);
         //we should make that a little better -> no initialisation of entry point before launch
         rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination.toString(), this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);
@@ -132,8 +132,9 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     public void tick() {
         super.tick();
 
-        if (!this.initialPosMap.containsKey(this.level.dimension().toString())) {
-            this.initialPosMap.put(this.level.dimension().toString(),this.getBlockPos());
+        assert this.level != null;
+        if (!this.initialPosMap.containsKey(this.level.dimension().location().toString())) {
+            this.initialPosMap.put(this.level.dimension().location().toString(),this.getBlockPos());
         }
 
 

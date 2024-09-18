@@ -6,8 +6,10 @@ import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.server.armor.OxygenBacktankItem;
 import com.rae.creatingspace.server.armor.SpacesuitHelmetItem;
+import com.rae.creatingspace.server.items.CatalystItem;
 import com.rae.creatingspace.server.items.DesignBlueprintItem;
 import com.rae.creatingspace.server.items.EngineFabricationBlueprint;
+import com.rae.creatingspace.server.items.ElectrodeItem;
 import com.rae.creatingspace.server.items.UpgradableEquipment;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
@@ -98,6 +100,19 @@ public class ItemInit {
                         name, SequencedAssemblyItem::new)
                 .register();
     }
+
+
+    public static final ItemEntry<ElectrodeItem> COPPER_ELECTRODE = CreatingSpace.REGISTRATE.item(
+                    "copper_electrode", ElectrodeItem::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
+                    .defaultDurability(300))
+            .register();
+
+    public static final ItemEntry<CatalystItem> COPPER_CATALYST = CreatingSpace.REGISTRATE.item(
+                    "copper_catalyst", CatalystItem::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
+                    .defaultDurability(300))
+            .register();
 
 
     public static final ItemEntry<DesignBlueprintItem> DESIGN_BLUEPRINT =
@@ -259,6 +274,11 @@ public class ItemInit {
     public static final ItemEntry<Item> COBALT_SHEET = CreatingSpace.REGISTRATE.item(
                     "cobalt_sheet",Item::new)
             .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .register();
+
+    public static final ItemEntry<Item> TITANIUM_INGOT = CreatingSpace.REGISTRATE
+            .item("titanium_ingot", Item::new)
+            .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
     public static final ItemEntry<SpacesuitHelmetItem> BASIC_SPACESUIT_HELMET =

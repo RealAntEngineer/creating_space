@@ -1,0 +1,67 @@
+{
+  "type": "create:sequenced_assembly",
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "ingredient": {
+    "item": "creatingspace:engine_blueprint",
+    "type": "forge:partial_nbt",
+    "nbt": {
+      "engineRecipeData": {
+        "exhaustPackType": "creatingspace:bell_nozzle"
+      }
+    }
+  },
+  "loops": 1,
+  "results": [
+    {
+      "item": "creatingspace:exhaust_pack"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:combustion_chamber"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
+      "ingredients": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        },
+        {
+          "item": "creatingspace:bell_nozzle"
+        }
+      ],
+      "results": [
+        {
+          "item": "creatingspace:engine_blueprint"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "creatingspace:engine_blueprint"
+  }
+}
