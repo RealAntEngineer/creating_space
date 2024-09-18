@@ -2,15 +2,12 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "rolls": 1,
+      "bonus_rolls": 0,
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "creatingspace:rocket_engine",
           "functions": [
             {
               "function": "minecraft:copy_name",
@@ -18,20 +15,38 @@
             },
             {
               "function": "minecraft:copy_nbt",
+              "source": "block_entity",
               "ops": [
                 {
-                  "op": "replace",
-                  "source": "blockEntity",
-                  "target": "blockEntity"
+                  "source": "thrust",
+                  "target": "blockEntity.thrust",
+                  "op": "replace"
+                },
+                {
+                  "source": "efficiency",
+                  "target": "blockEntity.efficiency",
+                  "op": "replace"
+                },
+                {
+                  "source": "propellantType",
+                  "target": "blockEntity.propellantType",
+                  "op": "replace"
+                },
+                {
+                  "source": "mass",
+                  "target": "blockEntity.mass",
+                  "op": "replace"
                 }
-              ],
-              "source": "block_entity"
+              ]
             }
-          ],
-          "name": "creatingspace:rocket_engine"
+          ]
         }
       ],
-      "rolls": 1.0
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
     }
   ]
 }
