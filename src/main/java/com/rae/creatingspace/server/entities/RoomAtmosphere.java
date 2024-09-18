@@ -3,6 +3,7 @@ package com.rae.creatingspace.server.entities;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
 import com.simibubi.create.AllTags;
@@ -13,6 +14,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -31,16 +34,16 @@ import java.util.*;
 
 public class RoomAtmosphere extends Entity {
 
-    private int o2amount;//equivalent to 1 mb of liquid oxygen ?
     private static final EntityDataAccessor<RoomShape> SHAPE_DATA_ACCESSOR = SynchedEntityData.defineId(RoomAtmosphere.class, EntityDataSerializersInit.SHAPE_SERIALIZER);
+    private static final EntityDataAccessor<Integer> O2_AMOUNT = SynchedEntityData.defineId(RoomAtmosphere.class, EntityDataSerializers.INT);
 
     public float getO2concentration() {
-        return (float) this.o2amount / getShape().volume;
+        return (float) this.entityData.get(O2_AMOUNT) / getShape().volume;
     }
 
     public void addO2(int o2amount) {
-        this.o2amount += o2amount;
-        this.o2amount = (int) Math.min(this.o2amount, 100 * getShape().getVolume());
+        this.entityData.set(O2_AMOUNT,(int) Math.min(this.entityData.get(O2_AMOUNT)+ o2amount, 100 * getShape().getVolume()));
+
     }
     public RoomAtmosphere(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -61,6 +64,7 @@ public class RoomAtmosphere extends Entity {
     //TODO make a regenerateRoom and a searchFrontier methode (regenerateRoom will only initiate the call, searchFrontier will be private)
     public void regenerateRoom(BlockPos firstPos) {
         passiveFilters = new HashMap<>();
+        roomSealers = new ArrayList<>();
         RoomShape shape = searchTopology(firstPos);
         setBoundingBox(shape.getEncapsulatingBox());
         entityData.set(SHAPE_DATA_ACCESSOR, shape);
@@ -86,7 +90,8 @@ public class RoomAtmosphere extends Entity {
         Queue<BlockPos> toVist = new ArrayDeque<>();
         toVist.add(start);
         ArrayList<AABB> tempRoom = new ArrayList<>();
-        while (!toVist.isEmpty() && size(tempRoom) < 1000 * Math.max(roomSealers.size(), 1)) {
+        int currentSize = 0;
+        while (!toVist.isEmpty() && currentSize < CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             BlockPos tempPos = toVist.poll();
             assert tempPos != null;
             if (!contains(tempRoom, tempPos)) {
@@ -138,18 +143,22 @@ public class RoomAtmosphere extends Entity {
                     }
                 }
                 tempRoom.add(tempAabb);
+                currentSize += (int) (tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize());
             }
         }
         RoomShape shape = new RoomShape(tempRoom);
-        if (size(tempRoom) >= 1000 * Math.max(roomSealers.size(), 1)) {
+        if (size(tempRoom) >=  CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             shape.setOpen();
+        }
+        else {
+            shape.setClosed();
         }
         return shape;
     }
 
     private void applyOnSolidBlock(BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
+        if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp && !roomSealers.contains(pos)) {
             roomSealers.add(pos);
         }
         if (state.getBlock() instanceof LeavesBlock) {
@@ -157,15 +166,19 @@ public class RoomAtmosphere extends Entity {
             if (passiveFilters.containsKey(location)) {
                 passiveFilters.put(location, passiveFilters.get(location).add(pos));
             } else {
-                passiveFilters.put(location, new AtmosphereFilterData(new ArrayList<>(List.of(pos)), 1));
+                passiveFilters.put(location, new AtmosphereFilterData(new ArrayList<>(List.of(pos)), CSConfigs.SERVER.leafOxygenProduction.get()));
             }
         }
     }
 
     private int size(List<AABB> aabbs) {
-        AABB aabb = new RoomShape(aabbs).getEncapsulatingBox();
-        if (aabb == null) return 0;
-        return (int) (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
+        int acc = 0;
+        for (AABB aabb :
+                aabbs) {
+            acc += (int) (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
+        }
+
+        return acc;
     }
 
     private boolean canGoThrough(Level world, BlockPos currentPos, Direction dir) {
@@ -236,6 +249,7 @@ public class RoomAtmosphere extends Entity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(SHAPE_DATA_ACCESSOR, new RoomShape(new ArrayList<>()));
+        this.entityData.define(O2_AMOUNT, 0);
     }
 
     @Override
@@ -244,7 +258,7 @@ public class RoomAtmosphere extends Entity {
                 PASSIVE_FILTER_CODEC.parse(NbtOps.INSTANCE, nbt.get("passiveFilters"))
                         .result().orElse(new HashMap<>())
         );
-        o2amount = nbt.getInt("o2amount");
+        entityData.set(O2_AMOUNT,nbt.getInt("o2amount"));
         entityData.set(SHAPE_DATA_ACCESSOR, RoomShape.fromNbt((CompoundTag) nbt.get("shape")));
     }
 
@@ -253,7 +267,7 @@ public class RoomAtmosphere extends Entity {
         nbt.put("passiveFilters",
                 PASSIVE_FILTER_CODEC.encodeStart(NbtOps.INSTANCE, passiveFilters).result()
                         .orElse(new CompoundTag()));
-        nbt.putInt("o2amount", o2amount);
+        nbt.putInt("o2amount", entityData.get(O2_AMOUNT));
         nbt.put("shape", getShape().toNbt());
     }
 
@@ -280,6 +294,9 @@ public class RoomAtmosphere extends Entity {
         super.tick();
 
         if (!level.isClientSide()) {
+            if (!getShape().closed){
+                entityData.set(O2_AMOUNT,0);
+            }
             if (hasShape()) {
                 List<Entity> entitiesInside = getShape().getEntitiesInside(level);
                 for (Entity entity :
@@ -301,13 +318,13 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void consumeO2() {
-        if (o2amount >= 10) {
-            o2amount -= 10;
+        if (entityData.get(O2_AMOUNT) >= CSConfigs.SERVER.livingO2Consumption.get()) {
+            entityData.set(O2_AMOUNT,entityData.get(O2_AMOUNT) - CSConfigs.SERVER.livingO2Consumption.get());
         }
     }
 
     public boolean breathable() {
-        return (float) o2amount / getShape().getVolume() > 10 && getShape().isClosed();
+        return (float) entityData.get(O2_AMOUNT) / getShape().getVolume() > 10 && getShape().isClosed();
     }
 
     public RoomShape getShape() {

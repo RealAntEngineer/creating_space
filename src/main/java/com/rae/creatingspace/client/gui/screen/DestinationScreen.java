@@ -55,7 +55,7 @@ public class DestinationScreen extends AbstractSimiScreen {
         this.background = GuiTexturesInit.ROCKET_CONTROLS;
         this.currentDimension = be.getLevel().dimension().location();
         //initialise the map in the server side blockEntity to avoid issues
-        this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());
+        this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.getTravelMap().get(currentDimension).adjacentDimensions());
         this.buttonVector = new Vector<>(this.mapOfAccessibleDimensionAndV.size());
         this.destinationChanged = false;
     }

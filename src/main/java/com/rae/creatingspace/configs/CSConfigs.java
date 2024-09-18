@@ -44,7 +44,7 @@ public class CSConfigs
 
     public static void registerConfigs(ModLoadingContext context) {
         CLIENT = register(CSCfgClient::new, ModConfig.Type.CLIENT);
-        //COMMON = register(CSCfgCommon::new, ModConfig.Type.COMMON);
+        COMMON = register(CSCfgCommon::new, ModConfig.Type.COMMON);
         SERVER = register(CSCfgServer::new, ModConfig.Type.SERVER);
 
         for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())

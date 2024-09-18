@@ -1,0 +1,13 @@
+{
+    "type": "create:pressing",
+    "ingredients": [
+        {
+            "item": "creatingspace:monel_sheet"
+        }
+    ],
+    "results": [
+        {
+            "item": "creatingspace:monel_engine_wall"
+        }
+    ]
+}

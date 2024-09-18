@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BigEngineItem extends RocketEngineItem{
+public class BigEngineItem extends RocketEngineItem {
     public BigEngineItem(Block p_40565_, Properties p_40566_) {
         super(p_40565_, p_40566_);
     }
@@ -101,7 +101,7 @@ public class BigEngineItem extends RocketEngineItem{
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        appendEngineDependentText(components, (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),
+        appendEngineDependentText(components,PropellantTypeInit.METHALOX.get(), (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),
                 CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get());
 
         super.appendHoverText(itemStack, level, components, flag);

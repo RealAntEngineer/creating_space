@@ -27,11 +27,16 @@ public enum PacketInit {
     ASSEMBLE_ROCKET_2(NewRocketAssemblePacket.class, NewRocketAssemblePacket::new, PLAY_TO_SERVER),
     ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
     LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket::new, PLAY_TO_SERVER),
+    SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket::new,PLAY_TO_SERVER),
     DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket::new, PLAY_TO_SERVER),
     SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
     SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
     UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT),
-    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER);
+    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER),
+    /*UPDATE_UNLOCKED_DESIGN_SERVER(PlayerUpdateUnlockedDesignClientPacket.class, PlayerUpdateUnlockedDesignClientPacket::new, PLAY_TO_SERVER),
+    UPDATE_UNLOCKED_DESIGN_CLIENT(PlayerUpdateUnlockedDesignServerPacket.class, PlayerUpdateUnlockedDesignServerPacket::new, PLAY_TO_CLIENT),*/
+    UPDATE_SAVED_DATA(UpdateSavedDataPacket.class, UpdateSavedDataPacket::new,PLAY_TO_CLIENT);
+
     public static final ResourceLocation CHANNEL_NAME = CreatingSpace.resource("main");
     public static final int NETWORK_VERSION = 3;
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);

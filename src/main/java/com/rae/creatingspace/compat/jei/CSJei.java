@@ -18,12 +18,10 @@ import com.simibubi.create.infrastructure.config.CRecipes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.registration.IModIngredientRegistration;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -201,6 +199,12 @@ public class CSJei implements IModPlugin {
     public void registerIngredients(IModIngredientRegistration registration) {
         IModPlugin.super.registerIngredients(registration);
 
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
+        CryoSubtypeInterpreter interpreter = new CryoSubtypeInterpreter();
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, BlockInit.CRYOGENIC_TANK.get().asItem(),interpreter);
     }
 
     @Override

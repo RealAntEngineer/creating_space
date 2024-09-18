@@ -1,0 +1,29 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "creatingspace:moon_regolith"
+    }
+  ],
+  "results": [
+    {
+      "chance": 0.125,
+      "count": 2,
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "chance": 0.08,
+      "count": 2,
+      "item": "creatingspace:nickel_nugget"
+    }
+  ,
+    {
+      "chance": 0.04,
+      "item": "creatingspace:cobalt_nugget"
+    },
+    {
+      "chance": 0.04,
+      "item": "creatingspace:aluminum_nugget"
+    }
+  ]
+}

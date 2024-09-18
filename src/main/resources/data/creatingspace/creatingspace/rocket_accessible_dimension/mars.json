@@ -1,5 +1,8 @@
 {
   "adjacentDimensions": {
+    "creatingspace:mars_orbit": {
+      "deltaV": 400
+    }
   },
   "arrivalHeight": 200,
   "gravity": 3.71,

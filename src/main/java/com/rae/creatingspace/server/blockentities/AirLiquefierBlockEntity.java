@@ -79,13 +79,14 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     }
 
 
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
             Direction localDir = this.getBlockState().getValue(AirLiquefierBlock.FACING);
 
-            if (side ==  localDir.getOpposite()){
-                //return this.oxygenFluidOptional.cast();
+            // Check if the side is either the back, top, or bottom
+            if (side == localDir.getOpposite() || side == Direction.UP || side == Direction.DOWN) {
                 return this.fluidCapability.cast();
             }
         }

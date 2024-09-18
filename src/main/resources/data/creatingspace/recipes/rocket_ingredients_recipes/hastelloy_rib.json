@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "creatingspace:hastelloy_ingot"
+        },
+        "N": {
+            "item": "creatingspace:hastelloy_nugget"
+        }
+    },
+    "pattern": [
+        "   ",
+        "NIN",
+        " N "
+    ],
+    "result": {
+        "item": "creatingspace:hastelloy_rib"
+    }
+}

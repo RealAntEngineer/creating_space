@@ -1,0 +1,9 @@
+{
+  "propellantRatio": {
+    "creatingspace:liquid_hydrogen": 1
+  },
+  "maxIsp": 6000,
+  "Cp": 18280,
+  "gamma": 1.3,
+  "M": 2
+}

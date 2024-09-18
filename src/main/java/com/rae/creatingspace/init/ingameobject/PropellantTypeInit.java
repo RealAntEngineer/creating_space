@@ -3,10 +3,14 @@ package com.rae.creatingspace.init.ingameobject;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.init.TagsInit;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -15,12 +19,15 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static com.rae.creatingspace.server.event.DataEventHandler.getSideAwareRegistry;
+
 public class PropellantTypeInit {
     //TODO use datapackRegitry(Codec,Codec)
     public static final DeferredRegister<PropellantType> DEFERRED_PROPELLANT_TYPE =
             DeferredRegister.create(Keys.PROPELLANT_TYPE, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<PropellantType>> PROPELLANT_TYPE = DEFERRED_PROPELLANT_TYPE.makeRegistry(
-            RegistryBuilder::new);
+            () -> new RegistryBuilder<PropellantType>().allowModification().disableSaving()
+                    .dataPackRegistry(PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC));
     public static final RegistryObject<PropellantType> METHALOX = DEFERRED_PROPELLANT_TYPE
             .register("methalox", () -> new PropellantType(
                     Map.of(
@@ -40,17 +47,11 @@ public class PropellantTypeInit {
                     4000f,
                     1.2f,
                     10
-            ));//real value is 532
-    public static final RegistryObject<PropellantType> METALIC_HYDROGEN = DEFERRED_PROPELLANT_TYPE
-            .register("metalic_hydrogen", () -> new PropellantType(
-                    Map.of(
-                            TagsInit.CustomFluidTags.METALIC_HYDROGEN.tag, 1f),
-                    6000,
-                    18280f,
-                    1.3f,
-                    2
             ));
 
+    public static Registry<PropellantType> getSyncedPropellantRegistry() {
+        return getSideAwareRegistry(Keys.PROPELLANT_TYPE);
+    }
     public static void register(IEventBus modEventBus) {
         DEFERRED_PROPELLANT_TYPE.register(modEventBus);
     }

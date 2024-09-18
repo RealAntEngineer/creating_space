@@ -16,10 +16,6 @@
       "offset": 2
     },
     "particle": {
-      "options": {
-        "type": "minecraft:ash"
-      },
-      "probability": 0.118093334
     }
   },
   "spawners": {},

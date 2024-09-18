@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 
 public class AnimatedCatalystCarrier extends AnimatedKinetics {
 
-    public AnimatedCatalystCarrier() {
+    public  AnimatedCatalystCarrier() {
     }
 
     @Override

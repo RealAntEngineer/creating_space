@@ -1,0 +1,13 @@
+{
+    "type": "create:pressing",
+    "ingredients": [
+        {
+            "item": "creatingspace:reinforced_copper_sheet"
+        }
+    ],
+    "results": [
+        {
+            "item": "creatingspace:reinforced_copper_engine_wall"
+        }
+    ]
+}
