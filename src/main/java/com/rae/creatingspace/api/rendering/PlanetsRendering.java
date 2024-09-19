@@ -3,12 +3,9 @@ package com.rae.creatingspace.api.rendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import com.simibubi.create.AllSpecialTextures;
-import com.simibubi.create.foundation.render.RenderTypes;
 import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
 import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -31,7 +28,7 @@ public class PlanetsRendering {
      */
     public static void renderPlanet(ResourceLocation texture, MultiBufferSource buffer, PoseStack matrixStack,
                                     int packedLight, float size, float distance, float theta, float phi, float alpha) {
-        VertexConsumer planetBuffer = buffer.getBuffer(RenderType.entityTranslucent(texture));
+        VertexConsumer planetBuffer =  buffer.getBuffer(CSRenderTypes.getTranslucentPlanet(texture));//buffer.getBuffer(RenderType.entityTranslucent(texture));
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(phi));
         matrixStack.mulPose(Vector3f.XP.rotationDegrees(theta));
         matrixStack.mulPose(Vector3f.ZP.rotationDegrees(alpha));
@@ -79,7 +76,7 @@ public class PlanetsRendering {
 
     public static void renderAtmosphere(MultiBufferSource buffer, PoseStack matrixStack, Color color,
                                         int packedLight, float size, float distance, float theta, float phi, float alpha) {
-        VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.getGlowingTranslucent(AllSpecialTextures.BLANK.getLocation()));
+        VertexConsumer vertexBuilder = buffer.getBuffer(CSRenderTypes.getTranslucentAtmo());//RenderTypes.getGlowingTranslucent(AllSpecialTextures.BLANK.getLocation()));
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(phi));
         matrixStack.mulPose(Vector3f.XP.rotationDegrees(theta));
         matrixStack.mulPose(Vector3f.ZP.rotationDegrees(alpha));

@@ -5,6 +5,7 @@
 
 package com.rae.creatingspace.client.effects;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
@@ -14,6 +15,7 @@ import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
@@ -21,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ScreenEvent;
 
 import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderAtmosphere;
 import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderPlanet;
@@ -39,7 +42,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     }
     @Override
     public Vec3 getBrightnessDependentFogColor(Vec3 vec, float brightness) {
-        return vec;
+        return Vec3.ZERO;
     }
     @Override
     public boolean isFoggyAt(int p_108874_, int p_108875_) {
@@ -49,7 +52,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     private static BufferBuilder renderSpaceSky(PoseStack poseStack) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.depthMask(false);
+        //RenderSystem.depthMask(false); already done at setup
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, SPACE_SKY_LOCATION);
         Tesselator tesselator = Tesselator.getInstance();
@@ -185,7 +188,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             int height = pos.getY();
             int minHeight = -64;
             int maxHeight = 384;
-            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, true, 180, 150.0F, 200f + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
+            renderAstralBody(poseStack, bufferbuilder, EARTH_LOCATION, false, 180, 150.0F, 200f + ((float) (height - minHeight) / (maxHeight - minHeight)) * 40);
         }
     }
 
@@ -194,7 +197,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         private boolean renderSun = true;
 
         public GenericCelestialOrbitEffect() {
-            super(Float.NaN, false, SkyType.NONE, false, false);
+            super(Float.NaN, false, SkyType.NONE, true, false);
         }
 
         public void setRenderSun(boolean renderSun) {
@@ -214,9 +217,13 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         }
 
         public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+            float[] fogColor = RenderSystem.getShaderFogColor();
+            RenderSystem.setShaderFogColor(0,0,0,0);
+            RenderSystem.depthMask(false);
             BufferBuilder bufferbuilder = renderSpaceSky(poseStack);
             //we need to use directly the buffer builder to avoid the issue with overlays or find a solution with the shader
             renderAdditionalBody(level, ticks, partialTick, poseStack, bufferbuilder, camera, projectionMatrix);
+            RenderSystem.setShaderFogColor(fogColor[0],fogColor[1],fogColor[2], fogColor[3]);
             RenderSystem.depthMask(true);
             RenderSystem.disableBlend();
             return true;
@@ -235,7 +242,6 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
         protected void renderAstralBody(PoseStack poseStack, BufferBuilder bufferbuilder, ResourceLocation bodyTexture, float rotationAngle, float bodySize, float bodyDistance, float f15, float f13, float f16, float f14, boolean old) {
             poseStack.pushPose();
-            RenderSystem.setShaderLights(Vector3f.ZERO, Vector3f.ZERO);
             if (old) {
                 poseStack.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
                 poseStack.mulPose(Vector3f.XP.rotationDegrees(rotationAngle));
@@ -249,10 +255,10 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
                 bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, bodySize).uv(f15, f16).endVertex();
                 BufferUploader.drawWithShader(bufferbuilder.end());
             } else {
-                renderPlanet(bodyTexture, poseStack, LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
+                renderPlanet(bodyTexture, poseStack, LightTexture.FULL_SKY, bodySize, bodyDistance,  0, 0,rotationAngle+90);
                 poseStack.popPose();
                 poseStack.pushPose();
-                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
+                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_SKY, bodySize, bodyDistance,  0,0, rotationAngle+90);
             }
             poseStack.popPose();
 
