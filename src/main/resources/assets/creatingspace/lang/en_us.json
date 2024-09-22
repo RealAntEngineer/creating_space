@@ -354,6 +354,12 @@
   "adastra:mars": "Mars",
   "adastra:mars_orbit": "Mars Orbit",
   "adastra:venus": "Venus",
+  "ad_astra:earth_orbit": "Ad Astra Earth orbit",
+  "ad_astra:moon_orbit": "Ad Astra Moon Orbit",
+  "ad_astra:the_moon": "Ad Astra The Moon",
+  "ad_astra:mars": "Ad Astra Mars",
+  "ad_astra:mars_orbit": "Ad Astra Mars orbit",
+  "ad_astra:venus": "Ad Astra Venus",
 
   "death.attack.no_oxygen": "%1$s didn't find oxygen in space",
 
