@@ -4,12 +4,10 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedBlock;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
-import com.rae.creatingspace.server.blocks.cassing.IsolateCasing;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlock;
 import com.simibubi.create.content.fluids.pump.PumpBlock;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.world.level.block.Block;
-import org.openjdk.nashorn.internal.ir.annotations.Ignore;
 
 public class EncasingsInit {
     public static <B extends Block & EncasableBlock, E extends Block & EncasedBlock, P> void registerEncasings() {

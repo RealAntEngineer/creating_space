@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;

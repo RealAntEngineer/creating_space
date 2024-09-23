@@ -1,5 +1,6 @@
 package com.rae.creatingspace.mixin.fluids;
 
+import com.rae.creatingspace.content.fluids.effect.FreezeEffect;
 import com.rae.creatingspace.init.TagsInit;
 import com.simibubi.create.content.fluids.FluidTransportBehaviour;
 import com.simibubi.create.content.fluids.PipeConnection;
@@ -12,7 +13,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import com.rae.creatingspace.server.effect.FreezeEffect;
 
 import java.util.Collection;
 

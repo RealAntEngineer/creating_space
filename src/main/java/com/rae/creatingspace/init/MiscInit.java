@@ -4,13 +4,10 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.design.ExhaustPackType;
 import com.rae.creatingspace.api.design.PowerPackType;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
-import com.rae.creatingspace.server.armor.OxygenBacktankCurios;
-import net.minecraft.client.Minecraft;
+import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankCurios;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -21,7 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.rae.creatingspace.server.event.DataEventHandler.getSideAwareRegistry;
+import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
 
 public class MiscInit {
     //TODO remove slots from the exhaust and power pack, add allowedPropellants for the exhaust pack

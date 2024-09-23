@@ -2,13 +2,13 @@ package com.rae.creatingspace;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.rae.creatingspace.datagen.client.CSBlockStateProvider;
-import com.rae.creatingspace.datagen.server.CSSimpleRecipeProvider;
+import com.rae.creatingspace.content.datagen.client.CSBlockStateProvider;
+import com.rae.creatingspace.content.datagen.server.CSSimpleRecipeProvider;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.data.DataGenerator;
-import com.rae.creatingspace.datagen.server.CSLootTableProvider;
+import com.rae.creatingspace.content.datagen.server.CSLootTableProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 

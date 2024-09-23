@@ -7,6 +7,7 @@ import com.simibubi.create.AllSpecialTextures;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.ForgeRenderTypes;
 
 public class CSRenderTypes extends RenderStateShard {
     //maybe use something like that : https://github.com/bernie-g/geckolib/blob/main/common/src/main/java/software/bernie/geckolib/cache/texture/AutoGlowingTexture.java#L36
@@ -18,6 +19,7 @@ public class CSRenderTypes extends RenderStateShard {
                     .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                     .setLightmapState(RenderStateShard.NO_LIGHTMAP)
                     .setOverlayState(OVERLAY)
+                    .setCullState(NO_CULL)
                     .setWriteMaskState(COLOR_WRITE)
                     .setDepthTestState(NO_DEPTH_TEST)
                     .createCompositeState(false));
@@ -30,11 +32,12 @@ public class CSRenderTypes extends RenderStateShard {
                         .setTextureState(new RenderStateShard.TextureStateShard(AllSpecialTextures.BLANK.getLocation(), false, false))
                         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                         .setLightmapState(RenderStateShard.LIGHTMAP)
+                        .setCullState(NO_CULL)
                         //.setOverlayState(OVERLAY)
                         //.setTexturingState(RenderStateShard.GLINT_TEXTURING)
                         .setWriteMaskState(COLOR_WRITE)
                         .setDepthTestState(NO_DEPTH_TEST)
-                        .createCompositeState(false));//TRANSLUCENT_NO_TEXT;
+                        .createCompositeState(false));//TRANSLUCENT_NO_TEXT;*/
     }
     public static RenderType getTranslucentPlanet(ResourceLocation location){
         return RenderType.create(createLayerName("translucent_planet"),
@@ -43,6 +46,7 @@ public class CSRenderTypes extends RenderStateShard {
                         .setShaderState(RenderStateShard.POSITION_COLOR_TEX_LIGHTMAP_SHADER)
                         .setTextureState(new RenderStateShard.TextureStateShard(location, false, false))
                         .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                        .setCullState(NO_CULL)
                         //.setLightmapState(RenderStateShard.NO_LIGHTMAP)
                         //.setOverlayState(OVERLAY)
                         //.setTexturingState(RenderStateShard.GLINT_TEXTURING)e

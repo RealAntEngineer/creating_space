@@ -1,53 +1,49 @@
 package com.rae.creatingspace.init.ingameobject;
 
+import com.rae.creatingspace.content.fluids.CryogenicTankBlock;
+import com.rae.creatingspace.content.fluids.effect.BurnBlock;
+import com.rae.creatingspace.content.fluids.effect.FreezerBlock;
+import com.rae.creatingspace.content.planets.RegolithSurfaceBlock;
+import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock;
+import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlock;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
+import com.rae.creatingspace.content.rocket.FlightRecorderBlock;
+import com.rae.creatingspace.content.rocket.engine.*;
+import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlock;
+import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
-import com.rae.creatingspace.server.armor.OxygenBacktankBlock;
-import com.rae.creatingspace.server.blocks.*;
-import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
-import com.rae.creatingspace.server.blocks.atmosphere.RoomPressuriserBlock;
-import com.rae.creatingspace.server.blocks.atmosphere.SealerBlock;
-import com.rae.creatingspace.server.blocks.cassing.IsolateCasing;
-import com.rae.creatingspace.server.blocks.cassing.IsolatedFluidPipe;
-import com.rae.creatingspace.server.blocks.cassing.IsolatedFluidPump;
-import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
-import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock;
-import com.rae.creatingspace.server.blocks.multiblock.SuperRocketStructuralBlock;
-import com.rae.creatingspace.server.blocks.multiblock.engines.BigEngineBlock;
-import com.rae.creatingspace.server.blocks.multiblock.engines.SmallEngineBlock;
-import com.rae.creatingspace.server.blocks.multiblock.engines.SuperEngineBlock;
+import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock;
+import com.rae.creatingspace.legacy.server.blocks.ChemicalSynthesizerBlock;
+import com.rae.creatingspace.legacy.server.blocks.FlowGaugeBlock;
+import com.rae.creatingspace.legacy.server.blocks.LegacyMechanicalElectrolyzerBlock;
+import com.rae.creatingspace.legacy.server.blocks.RocketGeneratorBlock;
+import com.rae.creatingspace.legacy.server.blocks.cassing.IsolatedFluidPipe;
+import com.rae.creatingspace.legacy.server.blocks.cassing.IsolatedFluidPump;
+import com.rae.creatingspace.legacy.server.blocks.atmosphere.OxygenBlock;
+import com.rae.creatingspace.legacy.server.blocks.atmosphere.SealerBlock;
+import com.rae.creatingspace.content.rocket.engine.engines.BigEngineBlock;
+import com.rae.creatingspace.content.rocket.engine.engines.SmallEngineBlock;
+import com.rae.creatingspace.content.rocket.engine.engines.SuperEngineBlock;
 import com.rae.creatingspace.server.contraption.behaviour.interaction.FlightRecorderInteraction;
 import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketControlInteraction;
 import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
-import com.rae.creatingspace.server.items.CryogenicTankItem;
-import com.rae.creatingspace.server.items.engine.BigEngineItem;
-import com.rae.creatingspace.server.items.engine.EngineItem;
-import com.rae.creatingspace.server.items.engine.SmallEngineItem;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllSpriteShifts;
+import com.rae.creatingspace.legacy.server.items.CryogenicTankItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
-import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
-import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
-import com.simibubi.create.content.fluids.pipes.EncasedPipeBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
-import static com.simibubi.create.AllBlocks.FLUID_PIPE;
 import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -563,7 +559,6 @@ public class BlockInit {
             .item()
             .build()
             .register();
-
     public static void register() {}
 
 }

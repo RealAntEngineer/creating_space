@@ -3,7 +3,7 @@ package com.rae.creatingspace.api.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.rae.creatingspace.utilities.CSDimensionUtil;
+import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.simibubi.create.foundation.gui.widget.BoxWidget;
 import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.Minecraft;

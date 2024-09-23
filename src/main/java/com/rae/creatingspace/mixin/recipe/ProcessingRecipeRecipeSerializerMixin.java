@@ -2,7 +2,7 @@ package com.rae.creatingspace.mixin.recipe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.rae.creatingspace.recipes.IMoreNbtConditions;
+import com.rae.creatingspace.content.recipes.IMoreNbtConditions;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import net.minecraft.resources.ResourceLocation;

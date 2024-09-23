@@ -3,7 +3,7 @@ package com.rae.creatingspace.api.squedule.condition;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.gui.widget.Label;

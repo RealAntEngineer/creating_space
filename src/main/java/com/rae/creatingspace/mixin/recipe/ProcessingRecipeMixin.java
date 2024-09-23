@@ -1,6 +1,6 @@
 package com.rae.creatingspace.mixin.recipe;
 
-import com.rae.creatingspace.recipes.IMoreNbtConditions;
+import com.rae.creatingspace.content.recipes.IMoreNbtConditions;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

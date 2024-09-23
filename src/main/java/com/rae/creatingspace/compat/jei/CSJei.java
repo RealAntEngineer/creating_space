@@ -6,7 +6,7 @@ import com.rae.creatingspace.compat.jei.category.ChemicalSynthesisCategory;
 import com.rae.creatingspace.compat.jei.category.MechanicalElectrolysisCategory;
 import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.recipes.AirLiquefyingRecipe;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.*;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;

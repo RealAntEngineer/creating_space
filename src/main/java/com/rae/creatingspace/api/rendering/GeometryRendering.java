@@ -33,7 +33,12 @@ public class GeometryRendering {
             //renderPoly(interiorFaces, vertexBuilder, entry, packedLight, color);
         }
     }
-
+    public static void renderCylinderFakeVol(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, Color centerColor, Color exteriorColor, int packedLight, float baseRadius, float topRadius, float height, int segments, boolean exterior, float precision){
+        for (int i = 0; i <= precision; i++) {
+            Color newCol = centerColor.setImmutable().setAlpha((float) centerColor.getAlpha() /255 / (precision)).mixWith(exteriorColor, 1- i /precision);
+            renderCylinder(vertexBuilder, matrixStack, offset, newCol, packedLight, baseRadius * i / precision, topRadius * i / precision, height, segments, exterior);
+        }
+    }
     public static void renderCube(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, int packedLight, float size, Color color) {
         float halfSize = size / 2.0F;
 

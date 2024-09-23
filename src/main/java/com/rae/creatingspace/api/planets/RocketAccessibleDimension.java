@@ -34,7 +34,8 @@ public class RocketAccessibleDimension {
     // (with changes for visibility ?)
     int arrivalHeight;
     float gravity;
-    ResourceLocation orbitedBody;//mostly used for the DestinationScreen and for falling out of an orbit
+    //mostly used for the DestinationScreen and for falling out of an orbit
+    ResourceLocation orbitedBody;
 
     public RocketAccessibleDimension() {
 

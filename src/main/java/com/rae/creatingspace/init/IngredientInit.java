@@ -1,7 +1,7 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.recipes.IntRangeNbtIngredient;
+import com.rae.creatingspace.content.recipes.IntRangeNbtIngredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
