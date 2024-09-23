@@ -35,5 +35,5 @@ test version for the release
 modId="create"
 mandatory=true
 versionRange="[0.5.1.a,)"
-ordering="NONE"
+ordering="BEFORE"
 side="BOTH"

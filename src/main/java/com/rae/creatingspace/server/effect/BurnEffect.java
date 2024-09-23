@@ -74,7 +74,7 @@ public class BurnEffect {
                         }
 
                         // Handle cobblestone conversion to lava
-                        if (handleLava && blockState.is(BlockTags.BASE_STONE_OVERWORLD)) {
+                        if (handleLava && blockState.is(BlockTags.BASE_STONE_OVERWORLD) || blockState.is(Blocks.COBBLESTONE)) {
                             world.setBlock(mutablePos, Blocks.LAVA.defaultBlockState(), 3);
                             playBurnEffects(world, mutablePos, random);
                         }
