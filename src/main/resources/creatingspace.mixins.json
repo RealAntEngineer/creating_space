@@ -13,6 +13,8 @@
     "entity.gravity.ItemEntityMixin",
     "entity.gravity.LivingEntityMixin",
     "entity.gravity.MinecartMixin",
+    "fluids.MixinFluidTransportBehaviour",
+    "fluids.pump.MixinPumpBlock",
     "kinetics.BacktankBlockEntityMixin",
     "recipe.ItemApplicationMixin",
     "recipe.ProcessingRecipeMixin",

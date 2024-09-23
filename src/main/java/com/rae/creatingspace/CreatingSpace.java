@@ -66,7 +66,6 @@ public class CreatingSpace {
         CarverInit.register(modEventBus);
         EntityDataSerializersInit.register(modEventBus);
         MiscInit.register(modEventBus);
-
         CSConfigs.registerConfigs(modLoadingContext);
 
         MenuTypesInit.register();
@@ -80,6 +79,8 @@ public class CreatingSpace {
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
+
+
 
     }
     public static void init(final FMLCommonSetupEvent event) {

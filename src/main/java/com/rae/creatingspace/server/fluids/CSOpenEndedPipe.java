@@ -12,10 +12,10 @@ import static com.simibubi.create.content.fluids.OpenEndedPipe.registerEffectHan
 public class CSOpenEndedPipe {
 
     static {
-        registerEffectHandler(new OxygenEffectHandler());
+        registerEffectHandler(new CryogenicLiquidEffectHandler());
     }
 
-    public static class OxygenEffectHandler implements OpenEndedPipe.IEffectHandler {
+    public static class CryogenicLiquidEffectHandler implements OpenEndedPipe.IEffectHandler {
 
         @Override
         public boolean canApplyEffects(OpenEndedPipe openEndedPipe, FluidStack fluidStack) {

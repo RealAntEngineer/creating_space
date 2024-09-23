@@ -2,6 +2,7 @@ package com.rae.creatingspace.server.event;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
+import com.rae.creatingspace.init.ingameobject.EncasingsInit;
 import com.rae.creatingspace.saved.UnlockedDesignManager;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import net.minecraft.client.Minecraft;
@@ -39,6 +40,8 @@ public class DataEventHandler {
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
         UnlockedDesignManager.playerLogin(player);
+
+        EncasingsInit.registerEncasings();
         /*LOGGER.info("updating the travel map");
         CSDimensionUtil.updatePlanetsFromRegistry(getSideAwareRegistry(RocketAccessibleDimension.REGISTRY_KEY));
         LOGGER.info("updating the space travel cost map");

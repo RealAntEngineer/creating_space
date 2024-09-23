@@ -7,6 +7,11 @@ import com.rae.creatingspace.server.blockentities.*;
 import com.rae.creatingspace.server.blockentities.atmosphere.OxygenBlockEntity;
 import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
 import com.rae.creatingspace.server.blockentities.atmosphere.SealerBlockEntity;
+import com.rae.creatingspace.server.blocks.cassing.IsolatedFluidPump;
+import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
+import com.simibubi.create.content.fluids.pump.PumpBlockEntity;
+import com.simibubi.create.content.fluids.pump.PumpCogInstance;
+import com.simibubi.create.content.fluids.pump.PumpRenderer;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -126,6 +131,18 @@ public class BlockEntityInit {
                     .validBlocks( BlockInit.FLIGHT_RECORDER)
                     .renderer(()-> FlightRecorderRenderer::new)
                     .register();
+
+    public static final BlockEntityEntry<FluidPipeBlockEntity> ISOLATED_FLUID_PIPE = REGISTRATE
+            .blockEntity("isolated_fluid_pipe", FluidPipeBlockEntity::new)
+            .validBlocks(BlockInit.ISOLATED_FLUID_PIPE)
+            .register();
+
+    public static final BlockEntityEntry<PumpBlockEntity> ISOLATED_PUMP = REGISTRATE
+            .blockEntity("isolated_fluid_pipe", PumpBlockEntity::new)
+            //.instance(() -> PumpCogInstance::new)
+            .validBlocks(BlockInit.ISOLATED_FLUID_PUMP)
+            //.renderer(() -> PumpRenderer::new)
+            .register();
 
 
     /*public static final BlockEntityEntry<IOBlockEntity> IO_TILE = REGISTRATE

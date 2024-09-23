@@ -7,6 +7,9 @@ import com.rae.creatingspace.server.blocks.*;
 import com.rae.creatingspace.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.server.blocks.atmosphere.RoomPressuriserBlock;
 import com.rae.creatingspace.server.blocks.atmosphere.SealerBlock;
+import com.rae.creatingspace.server.blocks.cassing.IsolateCasing;
+import com.rae.creatingspace.server.blocks.cassing.IsolatedFluidPipe;
+import com.rae.creatingspace.server.blocks.cassing.IsolatedFluidPump;
 import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.SmallRocketStructuralBlock;
 import com.rae.creatingspace.server.blocks.multiblock.SuperRocketStructuralBlock;
@@ -20,20 +23,31 @@ import com.rae.creatingspace.server.items.CryogenicTankItem;
 import com.rae.creatingspace.server.items.engine.BigEngineItem;
 import com.rae.creatingspace.server.items.engine.EngineItem;
 import com.rae.creatingspace.server.items.engine.SmallEngineItem;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
+import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
+import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
+import com.simibubi.create.content.fluids.PipeAttachmentModel;
+import com.simibubi.create.content.fluids.pipes.EncasedPipeBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
+import static com.simibubi.create.AllBlocks.FLUID_PIPE;
 import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
 import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -451,9 +465,44 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    //machinery
+    public static final BlockEntry<CasingBlock> ISOLATE_CASING = REGISTRATE.block("isolate_casing", CasingBlock::new)
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .transform(customItemModel())
+            .register();
 
 
+    public static final BlockEntry<IsolatedFluidPipe> ISOLATED_FLUID_PIPE =
+            REGISTRATE.block("isolated_fluid_pipe", p -> new IsolatedFluidPipe(p, BlockInit.ISOLATE_CASING::get))
+                    .initialProperties(SharedProperties::copperMetal)
+                    .properties(p -> p.noOcclusion().color(MaterialColor.TERRACOTTA_LIGHT_GRAY))
+                    .transform(axeOrPickaxe())
+                    //.blockstate(BlockStateGen.encasedPipe())
+                    //.onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.COPPER_CASING)))
+                    //.onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.COPPER_CASING,
+                    //        (s, f) -> !s.getValue(EncasedPipeBlock.FACING_TO_PROPERTY_MAP.get(f)))))
+                    //.onRegisterAfter(ForgeRegistries.BLOCKS.getRegistryKey(), b -> EncasingRegistry.addVariant(FLUID_PIPE.get(), b))
+                    .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::new))
+                    //.transform(EncasingRegistry.addVariantTo(AllBlocks.FLUID_PIPE))
+                    .register();
+
+    public static final BlockEntry<IsolatedFluidPump> ISOLATED_FLUID_PUMP =
+            REGISTRATE.block("isolated_fluid_pump", p -> new IsolatedFluidPump(p, BlockInit.ISOLATE_CASING::get))
+                    .initialProperties(SharedProperties::copperMetal)
+                    .properties(p -> p.noOcclusion().color(MaterialColor.TERRACOTTA_LIGHT_GRAY))
+                    .transform(axeOrPickaxe())
+                    //.blockstate(BlockStateGen.encasedPipe())
+                    //.onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.COPPER_CASING)))
+                    //.onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.COPPER_CASING,
+                    //        (s, f) -> !s.getValue(EncasedPipeBlock.FACING_TO_PROPERTY_MAP.get(f)))))
+                    //.onRegisterAfter(ForgeRegistries.BLOCKS.getRegistryKey(), b -> EncasingRegistry.addVariant(FLUID_PIPE.get(), b))
+                    .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::new))
+                    //.transform(EncasingRegistry.addVariantTo(AllBlocks.FLUID_PIPE))
+                    .register();
 
 
     public static final BlockEntry<AmethystBlock> CRYSTAL_BLOCK = REGISTRATE.block(
@@ -514,6 +563,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
+
     public static void register() {}
 
 }

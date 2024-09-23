@@ -2,6 +2,7 @@ package com.rae.creatingspace.server.blocks;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.server.blockentities.FlowGaugeBlockEntity;
+import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.content.fluids.FluidPropagator;
 import com.simibubi.create.content.fluids.pipes.IAxisPipe;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
@@ -31,7 +32,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
-public class FlowGaugeBlock extends KineticBlock implements IAxisPipe, IBE<FlowGaugeBlockEntity> {
+public class FlowGaugeBlock extends KineticBlock implements IAxisPipe, IBE<FlowGaugeBlockEntity>, EncasableBlock {
 
 
     public FlowGaugeBlock(Properties properties) {

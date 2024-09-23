@@ -34,8 +34,11 @@ public class FreezeEffect {
         }
     }
 
-    public static void freezeWaterAndSpawnParticles(ServerLevel world, BlockPos pos, RandomSource random, boolean handleLava, boolean handleParticles) {
+    public static void freezeWaterAndSpawnParticles(ServerLevel world, BlockPos pos, RandomSource random, boolean... lavaAndParticleFlags) {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+
+        boolean handleLava = lavaAndParticleFlags.length > 0 && lavaAndParticleFlags[0];
+        boolean handleParticles = lavaAndParticleFlags.length > 1 && lavaAndParticleFlags[1];
 
         for (int dx = -5; dx <= 5; dx++) {
             for (int dy = -5; dy <= 5; dy++) {
