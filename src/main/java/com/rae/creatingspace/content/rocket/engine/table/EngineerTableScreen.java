@@ -2,9 +2,9 @@ package com.rae.creatingspace.content.rocket.engine.table;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.design.ExhaustPackType;
-import com.rae.creatingspace.api.design.PowerPackType;
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.ExhaustPackType;
+import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;

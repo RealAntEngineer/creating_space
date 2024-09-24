@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.rae.creatingspace.api.gui.TallIconButton;
+import com.rae.creatingspace.api.gui.elements.TallIconButton;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;

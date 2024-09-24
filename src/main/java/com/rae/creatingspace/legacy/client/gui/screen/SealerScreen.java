@@ -1,8 +1,8 @@
 package com.rae.creatingspace.legacy.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.rae.creatingspace.legacy.client.gui.screen.elements.BackgroundScrollInput;
-import com.rae.creatingspace.legacy.client.gui.screen.elements.SliderWidget;
+import com.rae.creatingspace.api.gui.elements.BackgroundScrollInput;
+import com.rae.creatingspace.api.gui.elements.SliderWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;

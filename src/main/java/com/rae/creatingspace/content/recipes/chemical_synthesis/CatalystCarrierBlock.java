@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.recipes.chemical_synthesis;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.legacy.server.items.CatalystItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;

@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.rae.creatingspace.legacy.client.gui.screen.elements.SliderWidget;
+import com.rae.creatingspace.api.gui.elements.SliderWidget;
 import com.rae.creatingspace.configs.CSConfigs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

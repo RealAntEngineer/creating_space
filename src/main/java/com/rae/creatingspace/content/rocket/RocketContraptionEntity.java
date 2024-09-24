@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.api.squedule.RocketPath;
 import com.rae.creatingspace.api.squedule.RocketScheduleRuntime;
 import com.rae.creatingspace.configs.CSConfigs;

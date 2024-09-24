@@ -2,10 +2,9 @@ package com.rae.creatingspace.content.rocket.engine.table;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.rae.creatingspace.api.design.ExhaustPackType;
-import com.rae.creatingspace.api.design.PowerPackType;
-import com.rae.creatingspace.api.design.PropellantType;
-import com.rae.creatingspace.content.rocket.engine.table.EngineerTableMenu;
+import com.rae.creatingspace.content.rocket.engine.design.ExhaustPackType;
+import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.MiscInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;

@@ -1,6 +1,8 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.content.fluids.CryogenicTankBlockEntity;
+import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockRenderer;
+import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity;
+import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserInstance;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
@@ -13,7 +15,8 @@ import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierR
 import com.rae.creatingspace.content.recipes.electrolysis.ElectrolyzerInstance;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyserBlockRenderer;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockEntity;
-import com.rae.creatingspace.content.rocket.FlightRecorderRenderer;
+import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlockEntity;
+import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderRenderer;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
 import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;

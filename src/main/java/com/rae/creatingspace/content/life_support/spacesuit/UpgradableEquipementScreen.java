@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.rae.creatingspace.legacy.client.gui.menu.UpgradableEquipmentMenu;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;

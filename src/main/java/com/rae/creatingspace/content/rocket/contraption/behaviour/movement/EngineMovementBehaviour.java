@@ -73,8 +73,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
             for (float t = 0; t < 1f; t += step) {
                 z += d_z(t) * step;
                 float prev_w = w;
-                w += d_w(t, CSDimensionUtil.hasO2Atmosphere(renderWorld.getBiome(new BlockPos(context.position)))) * step;
-                System.out.println( CSDimensionUtil.hasO2Atmosphere(renderWorld.getBiome(new BlockPos(context.position))));
+                w += d_w(t, CSDimensionUtil.hasO2Atmosphere(context.world.getBiome(new BlockPos(context.position)))) * step;
                 GeometryRendering.renderCylinderFakeVol(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), getColorBell(t).setImmutable().scaleAlpha(0.9f), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) > 0, 5);
                 //GeometryRendering.renderCylinder(vertexBuilder, matrixStack, new Vec3(0, -z, 0), getColorBell(t), overlay, w, prev_w, d_z(t) * step, segments, d_z(t) <= 0);
 

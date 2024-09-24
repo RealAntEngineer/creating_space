@@ -2,7 +2,7 @@ package com.rae.creatingspace.content.rocket.engine;
 
 
 import com.rae.creatingspace.api.IMass;
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;

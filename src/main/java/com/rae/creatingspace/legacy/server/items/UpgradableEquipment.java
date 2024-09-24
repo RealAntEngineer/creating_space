@@ -1,7 +1,7 @@
 package com.rae.creatingspace.legacy.server.items;
 
 import com.google.common.collect.Multimap;
-import com.rae.creatingspace.legacy.client.gui.menu.UpgradableEquipmentMenu;
+import com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipmentMenu;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

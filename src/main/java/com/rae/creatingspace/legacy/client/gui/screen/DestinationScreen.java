@@ -2,8 +2,8 @@ package com.rae.creatingspace.legacy.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
-import com.rae.creatingspace.legacy.client.gui.screen.elements.DimSelectBoxWidget;
-import com.rae.creatingspace.legacy.client.gui.screen.elements.LabeledBoxWidget;
+import com.rae.creatingspace.api.gui.elements.DimSelectBoxWidget;
+import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;

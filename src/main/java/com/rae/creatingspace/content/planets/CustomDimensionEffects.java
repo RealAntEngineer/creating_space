@@ -39,7 +39,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     }
     @Override
     public Vec3 getBrightnessDependentFogColor(Vec3 vec, float brightness) {
-        return Vec3.ZERO;
+        return vec;
     }
     @Override
     public boolean isFoggyAt(int p_108874_, int p_108875_) {
@@ -194,7 +194,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         private boolean renderSun = true;
 
         public GenericCelestialOrbitEffect() {
-            super(Float.NaN, false, SkyType.NONE, true, false);
+            super(Float.NaN, false, SkyType.NONE, false, false);
         }
 
         public void setRenderSun(boolean renderSun) {

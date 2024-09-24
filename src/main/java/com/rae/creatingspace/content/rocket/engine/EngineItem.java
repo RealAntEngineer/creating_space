@@ -1,9 +1,9 @@
 package com.rae.creatingspace.content.rocket.engine;
 
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import com.rae.creatingspace.content.rocket.engine.engines.RocketEngineBlock;
+import com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

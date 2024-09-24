@@ -3,7 +3,7 @@ package com.rae.creatingspace.init.graphics;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.engine.table.EngineerTableMenu;
 import com.rae.creatingspace.content.rocket.RocketMenu;
-import com.rae.creatingspace.legacy.client.gui.menu.UpgradableEquipmentMenu;
+import com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipmentMenu;
 import com.rae.creatingspace.content.rocket.engine.table.EngineerTableScreen;
 import com.rae.creatingspace.content.rocket.NewDestinationScreen;
 import com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipementScreen;

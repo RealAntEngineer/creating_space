@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket.engine;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
