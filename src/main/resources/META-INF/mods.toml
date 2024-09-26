@@ -28,7 +28,6 @@ Cosmos
 authors="Real Ant Engineer"
 
 description='''
-test version 2 for the new engine recipe for 1.7.1
 '''
 
 [[dependencies.creatingspace]]
