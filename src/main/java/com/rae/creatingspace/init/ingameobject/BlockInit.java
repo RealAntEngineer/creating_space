@@ -1,9 +1,11 @@
 package com.rae.creatingspace.init.ingameobject;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock;
 import com.rae.creatingspace.content.fluids.effect.BurnBlock;
 import com.rae.creatingspace.content.fluids.effect.FreezerBlock;
 import com.rae.creatingspace.content.planets.RegolithSurfaceBlock;
+import com.rae.creatingspace.content.planets.hologram.ProjectorBlock;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlock;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
@@ -14,9 +16,7 @@ import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock;
-import com.rae.creatingspace.legacy.server.blocks.ChemicalSynthesizerBlock;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
-import com.rae.creatingspace.legacy.server.blocks.LegacyMechanicalElectrolyzerBlock;
 import com.rae.creatingspace.legacy.server.blocks.RocketGeneratorBlock;
 import com.rae.creatingspace.content.fluids.cassing.IsolatedFluidPipe;
 import com.rae.creatingspace.content.fluids.cassing.IsolatedFluidPump;
@@ -44,8 +44,11 @@ import net.minecraft.core.Registry;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.Tags;
+import org.checkerframework.checker.units.qual.C;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
@@ -62,10 +65,15 @@ public class BlockInit {
     /*public static final DeferredRegister<Block> BLOCK_REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final RegistryObject<Block> TITANIUM = BLOCK_REGISTER.register(
             "titanium", () -> new Block(BlockBehaviour.Properties.of(Material.METAL)));*/
-
+    public static final BlockEntry<ProjectorBlock> PROJECTOR = REGISTRATE
+            .block("projector", ProjectorBlock::new)
+            .item()
+            .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
+            .build().register();
     public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
             .block("rocket_engineer_table", RocketEngineerTableBlock::new)
             .properties(p -> p.strength(1.0f).noOcclusion())
+            .blockstate((c, p)-> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build().register();
@@ -75,7 +83,7 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
 
             .transform(axeOrPickaxe())
-            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
+            .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(SmallEngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
@@ -87,7 +95,7 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
 
             .transform(axeOrPickaxe())
-            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
+            .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(CreatingSpace.resource("block/small_rocket_engine"))))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(EngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
@@ -98,6 +106,7 @@ public class BlockInit {
             //.initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
             .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(BigEngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
@@ -155,6 +164,7 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .onRegister(interactionBehaviour(new RocketControlInteraction()))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
@@ -164,6 +174,7 @@ public class BlockInit {
                     "flight_recorder", FlightRecorderBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
+            .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .transform(axeOrPickaxe())
             .onRegister(interactionBehaviour(new FlightRecorderInteraction()))
             .item()
@@ -175,6 +186,16 @@ public class BlockInit {
                     "rocket_generator", RocketGeneratorBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .blockstate((c,p)-> p.getVariantBuilder(c.get())
+                    .forAllStatesExcept(state ->
+                        ConfiguredModel.builder().modelFile(
+                                p.models().getExistingFile(
+                        state.getValue(RocketGeneratorBlock.CHARGED)?
+                                CreatingSpace.resource("block/rocket_generator/loaded"):
+                                CreatingSpace.resource("block/rocket_generator/empty")))
+                                .rotationY(((int) state.getValue(RocketGeneratorBlock.FACING).toYRot() + 180) % 360)
+                                .build()
+                    , BlockStateProperties.FACING, RocketGeneratorBlock.GENERATING))
             .transform(BlockStressDefaults.setCapacity(10000))
             .transform(BlockStressDefaults.setGeneratorSpeed(RocketGeneratorBlock::getSpeedRange))
             .transform(axeOrPickaxe())
@@ -183,12 +204,13 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    @Deprecated
+    /*@Deprecated
     public static final BlockEntry<ChemicalSynthesizerBlock> CHEMICAL_SYNTHESIZER = REGISTRATE.block(
                     "chemical_synthesizer", ChemicalSynthesizerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .item()
             //.properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
@@ -201,17 +223,19 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .transform(BlockStressDefaults.setImpact(10000))
             .transform(axeOrPickaxe())
+            .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .item()
             //.properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
             .onRegisterAfter(Registry.ITEM_REGISTRY, i -> ItemDescription.useKey(i, "block.creatingspace.legacy_mechanical_electrolyzer"))
-            .register();
+            .register();*/
     public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .transform(BlockStressDefaults.setImpact(2000))
             .transform(axeOrPickaxe())
+            .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
@@ -232,6 +256,7 @@ public class BlockInit {
     public static final BlockEntry<SealerBlock> OXYGEN_SEALER = REGISTRATE
             .block("oxygen_sealer", SealerBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
+            .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .build()
@@ -242,6 +267,7 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .transform(BlockStressDefaults.setImpact(500))
             .transform(axeOrPickaxe())
+            .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
             .transform(customItemModel())
@@ -259,12 +285,16 @@ public class BlockInit {
             .block("oxygen", OxygenBlock::new)
             .initialProperties(() -> Blocks.AIR)
             .properties(p -> p.noOcclusion().noCollission().dynamicShape().air())
+            .blockstate((c, p) -> p.getVariantBuilder(c.get())
+                    .forAllStatesExcept(BlockStateGen.mapToAir(p), SmallRocketStructuralBlock.FACING))
             .register();
+    //transform .backtank() or similar to generate some correct shit
     public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
             .block("copper_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
+            .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(CreatingSpace.resource("block/oxygen_backtank/copper"))))
             .register();
 
     public static final BlockEntry<OxygenBacktankBlock> NETHERITE_OXYGEN_BACKTANK = REGISTRATE
@@ -272,12 +302,14 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
+            .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(CreatingSpace.resource("block/oxygen_backtank/netherite"))))
             .register();
 
     public static final BlockEntry<CryogenicTankBlock> CRYOGENIC_TANK = REGISTRATE
             .block("cryogenic_tank", CryogenicTankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .transform(pickaxeOnly())
+            .blockstate((c,p)-> p.simpleBlock(c.getEntry(), p.models().getExistingFile(CreatingSpace.resource("block/cryogenic_tank"))))
             .item(CryogenicTankItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB).stacksTo(1))
             .build()
@@ -432,14 +464,14 @@ public class BlockInit {
             .register();
 
 
-    public static final BlockEntry<Block> TITANIUM_BLOCK = REGISTRATE.block(
+    /*public static final BlockEntry<Block> TITANIUM_BLOCK = REGISTRATE.block(
                     "titanium_block", Block::new)
             .initialProperties(() -> Blocks.IRON_BLOCK)
             .properties(BlockBehaviour.Properties::requiresCorrectToolForDrops)
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .build()
-            .register();
+            .register();*/
 
     //machinery
 

@@ -6,6 +6,8 @@ import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserInstance;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
+import com.rae.creatingspace.content.planets.hologram.ProjectorBlockEntity;
+import com.rae.creatingspace.content.planets.hologram.ProjectorBlockRenderer;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockRenderer;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierInstance;
@@ -43,7 +45,11 @@ public class BlockEntityInit {
             REGISTRATE.blockEntity("controls", RocketControlsBlockEntity::new)
             .validBlocks(BlockInit.ROCKET_CONTROLS)
             .register();
-
+    public static final BlockEntityEntry<ProjectorBlockEntity> PROJECTOR =
+            REGISTRATE.blockEntity("projector", ProjectorBlockEntity::new)
+                    .validBlocks(BlockInit.PROJECTOR)
+                    .renderer(() -> ProjectorBlockRenderer::new)
+                    .register();
     /*public static final BlockEntityEntry<GroundBuilderBlockEntity> GROUND_STATION =
             REGISTRATE.blockEntity("station", GroundBuilderBlockEntity::new)
                     .validBlocks(BlockInit.GROUND_STATION)
@@ -64,11 +70,6 @@ public class BlockEntityInit {
                     .instance(() -> ShaftInstance::new, false)
                     .validBlocks(BlockInit.ROCKET_GENERATOR)
                     .renderer(() -> RocketGeneratorBlockRenderer::new)
-                    .register();
-
-    public static final BlockEntityEntry<ChemicalSynthesizerBlockEntity> SYNTHESIZER =
-            REGISTRATE.blockEntity("synthesizer", ChemicalSynthesizerBlockEntity::new)
-                    .validBlocks(BlockInit.CHEMICAL_SYNTHESIZER)
                     .register();
 
     public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
@@ -92,14 +93,6 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<RocketEngineBlockEntity.NbtDependent> NBT_DEPENDENT_ENGINE =
             REGISTRATE.blockEntity("rocket_engine", RocketEngineBlockEntity.NbtDependent::new)
                     .validBlocks(BlockInit.ROCKET_ENGINE)
-                    .register();
-
-    public static final BlockEntityEntry<LegacyMechanicalElectrolyzerBlockEntity> LEGACY_ELECTROLIZER =
-            REGISTRATE.blockEntity(
-                            "legacy_electrolyzer", LegacyMechanicalElectrolyzerBlockEntity::new)
-                    .instance(() -> ShaftInstance::new, false)
-                    .validBlocks(BlockInit.LEGACY_MECHANICAL_ELECTROLYZER)
-                    .renderer(() -> LegacyMechanicalElectrolyserBlockRenderer::new)
                     .register();
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(

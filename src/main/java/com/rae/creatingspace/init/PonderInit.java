@@ -21,8 +21,8 @@ public class PonderInit {
         //  flowmeter
         //
 
-        HELPER.forComponents(BlockInit.CHEMICAL_SYNTHESIZER)
-                .addStoryBoard("chemical_synthesizer/chemical_synthesizer", FluidScene::chemicalSynthesizer);//AllPonderTags.FLUIDS);
+        //HELPER.forComponents(BlockInit.CHEMICAL_SYNTHESIZER)
+        //        .addStoryBoard("chemical_synthesizer/chemical_synthesizer", FluidScene::chemicalSynthesizer);//AllPonderTags.FLUIDS);
 
         HELPER.forComponents(BlockInit.SMALL_ROCKET_ENGINE,BlockInit.BIG_ROCKET_ENGINE,BlockInit.ROCKET_CONTROLS,BlockInit.FLIGHT_RECORDER)
                 .addStoryBoard("rocket/rocket_building", RocketScene::rocketBuild)

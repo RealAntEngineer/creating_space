@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderAtmosphere;
 import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderPlanet;
@@ -31,15 +32,15 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     private static final ResourceLocation MOON_LOCATION = new ResourceLocation("creatingspace", "textures/environment/moon.png");
     private static final ResourceLocation MARS_LOCATION = new ResourceLocation("creatingspace", "textures/environment/mars.png");
     private static final ResourceLocation SATURN_LOCATION = new ResourceLocation("creatingspace", "textures/environment/saturn.png");
-    private static final ResourceLocation SUN_LOCATION = new ResourceLocation("textures/environment/sun.png");
+    public static final ResourceLocation SUN_LOCATION = new ResourceLocation("textures/environment/sun.png");
     private static final ResourceLocation MOON_PHASES_LOCATION = new ResourceLocation("textures/environment/moon_phases.png");
 
     public CustomDimensionEffects(float cloudLevel, boolean hasGround, DimensionSpecialEffects.SkyType skyType, boolean forceBrightLightmap, boolean constantAmbientLight) {
         super(cloudLevel, hasGround, skyType, forceBrightLightmap, constantAmbientLight);
     }
     @Override
-    public Vec3 getBrightnessDependentFogColor(Vec3 vec, float brightness) {
-        return vec;
+    public @NotNull Vec3 getBrightnessDependentFogColor(@NotNull Vec3 vec, float brightness) {
+        return vec.multiply(brightness * 0.9f, brightness *0.9f, brightness*0.9f);
     }
     @Override
     public boolean isFoggyAt(int p_108874_, int p_108875_) {
@@ -213,6 +214,11 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
             return true;
         }
 
+        @Override
+        public void adjustLightmapColors(ClientLevel level, float partialTicks, float skyDarken, float skyLight, float blockLight, int pixelX, int pixelY, Vector3f colors) {
+            super.adjustLightmapColors(level, partialTicks, skyDarken, skyLight, blockLight, pixelX, pixelY, colors);
+        }
+
         public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
             float[] fogColor = RenderSystem.getShaderFogColor();
             RenderSystem.setShaderFogColor(0,0,0,0);
@@ -253,9 +259,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
                 BufferUploader.drawWithShader(bufferbuilder.end());
             } else {
                 renderPlanet(bodyTexture, poseStack, LightTexture.FULL_SKY, bodySize, bodyDistance,  0, 0,rotationAngle+90);
-                poseStack.popPose();
-                poseStack.pushPose();
-                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_SKY, bodySize, bodyDistance,  0,0, rotationAngle+90);
+                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_SKY, bodySize+10, bodyDistance,  0,0, rotationAngle+90);
             }
             poseStack.popPose();
 

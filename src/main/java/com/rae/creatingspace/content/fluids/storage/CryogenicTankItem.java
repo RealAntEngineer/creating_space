@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.fluids.storage;
 
+import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -20,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack.FLUID_NBT_KEY;
 
@@ -34,7 +37,6 @@ public class CryogenicTankItem extends BlockItem {
                 FluidStack.loadFluidStackFromNBT(itemStack.getOrCreateTagElement(FLUID_NBT_KEY))
                         .getDisplayName()).append(")");
     }
-
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         CompoundTag tank = stack.getOrCreateTag().getCompound(FLUID_NBT_KEY);
@@ -91,5 +93,10 @@ public class CryogenicTankItem extends BlockItem {
                 return fluid.getFluid().getFluidType().getTemperature() < 200;
             }
         };
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(SimpleCustomRenderer.create(this, new CryogenicTankItemRenderer()));
     }
 }

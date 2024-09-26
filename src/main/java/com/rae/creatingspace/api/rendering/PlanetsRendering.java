@@ -29,9 +29,9 @@ public class PlanetsRendering {
     public static void renderPlanet(ResourceLocation texture, MultiBufferSource buffer, PoseStack matrixStack,
                                     int packedLight, float size, float distance, float theta, float phi, float alpha) {
         VertexConsumer planetBuffer =  buffer.getBuffer(CSRenderTypes.getTranslucentPlanet(texture));//buffer.getBuffer(RenderType.entityTranslucent(texture));
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(phi));
-        matrixStack.mulPose(Vector3f.XP.rotationDegrees(theta));
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(alpha));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(theta));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(phi));
+        //matrixStack.mulPose(Vector3f.ZP.rotationDegrees(alpha));
         matrixStack.translate(distance, 0, 0);
         float halfSize = size / 2.0F;
 
@@ -63,6 +63,10 @@ public class PlanetsRendering {
         renderPolyTex(face4, uvs, planetBuffer, entry, packedLight);
         renderPolyTex(face5, uvs, planetBuffer, entry, packedLight);
         renderPolyTex(face6, uvs, planetBuffer, entry, packedLight);
+        matrixStack.translate(-distance, 0, 0);
+        //matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-alpha));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(-phi));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-theta));
     }
 
     /**
@@ -77,10 +81,14 @@ public class PlanetsRendering {
     public static void renderAtmosphere(MultiBufferSource buffer, PoseStack matrixStack, Color color,
                                         int packedLight, float size, float distance, float theta, float phi, float alpha) {
         VertexConsumer vertexBuilder = buffer.getBuffer(CSRenderTypes.getTranslucentAtmo());//RenderTypes.getGlowingTranslucent(AllSpecialTextures.BLANK.getLocation()));
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(phi));
-        matrixStack.mulPose(Vector3f.XP.rotationDegrees(theta));
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(alpha));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(theta));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(phi));
+        //matrixStack.mulPose(Vector3f.ZP.rotationDegrees(alpha));
         matrixStack.translate(distance, 0, 0);
-        renderCube(vertexBuilder, matrixStack, Vec3.ZERO, packedLight, size + 10, color);
+        renderCube(vertexBuilder, matrixStack, Vec3.ZERO, packedLight, size, color);
+        matrixStack.translate(-distance, 0, 0);
+        //matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-alpha));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(-phi));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-theta));
     }
 }
