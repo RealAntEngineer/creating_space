@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "axis_along_first=false,facing=down": {
+      "model": "creatingspace:block/flight_recorder/horizontal",
+      "x": 270,
+      "y": 90
+    },
+    "axis_along_first=false,facing=east": {
+      "model": "creatingspace:block/flight_recorder/horizontal",
+      "y": 270
+    },
+    "axis_along_first=false,facing=north": {
+      "model": "creatingspace:block/flight_recorder/vertical",
+      "y": 180
+    },
+    "axis_along_first=false,facing=south": {
+      "model": "creatingspace:block/flight_recorder/vertical"
+    },
+    "axis_along_first=false,facing=up": {
+      "model": "creatingspace:block/flight_recorder/horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=west": {
+      "model": "creatingspace:block/flight_recorder/horizontal",
+      "y": 90
+    },
+    "axis_along_first=true,facing=down": {
+      "model": "creatingspace:block/flight_recorder/horizontal",
+      "x": 270
+    },
+    "axis_along_first=true,facing=east": {
+      "model": "creatingspace:block/flight_recorder/vertical",
+      "y": 270
+    },
+    "axis_along_first=true,facing=north": {
+      "model": "creatingspace:block/flight_recorder/horizontal",
+      "y": 180
+    },
+    "axis_along_first=true,facing=south": {
+      "model": "creatingspace:block/flight_recorder/horizontal"
+    },
+    "axis_along_first=true,facing=up": {
+      "model": "creatingspace:block/flight_recorder/horizontal",
+      "x": 90
+    },
+    "axis_along_first=true,facing=west": {
+      "model": "creatingspace:block/flight_recorder/vertical",
+      "y": 90
+    }
+  }
+}

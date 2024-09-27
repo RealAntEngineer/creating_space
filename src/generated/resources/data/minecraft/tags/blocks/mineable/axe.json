@@ -1,0 +1,20 @@
+{
+  "values": [
+    "creatingspace:small_rocket_engine",
+    "creatingspace:rocket_engine",
+    "creatingspace:big_rocket_engine",
+    "creatingspace:big_engine_structure",
+    "creatingspace:engine_structure",
+    "creatingspace:small_engine_structure",
+    "creatingspace:rocket_casing",
+    "creatingspace:rocket_controls",
+    "creatingspace:flight_recorder",
+    "creatingspace:rocket_generator",
+    "creatingspace:mechanical_electrolyzer",
+    "creatingspace:catalyst_carrier",
+    "creatingspace:air_liquefier",
+    "creatingspace:flow_meter",
+    "creatingspace:isolated_fluid_pipe",
+    "creatingspace:isolated_fluid_pump"
+  ]
+}

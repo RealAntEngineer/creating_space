@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "active=false,facing=east": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 90
+    },
+    "active=false,facing=north": {
+      "model": "creatingspace:block/big_rocket_engine"
+    },
+    "active=false,facing=south": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 180
+    },
+    "active=false,facing=west": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 270
+    },
+    "active=true,facing=east": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 90
+    },
+    "active=true,facing=north": {
+      "model": "creatingspace:block/big_rocket_engine"
+    },
+    "active=true,facing=south": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 180
+    },
+    "active=true,facing=west": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 270
+    }
+  }
+}

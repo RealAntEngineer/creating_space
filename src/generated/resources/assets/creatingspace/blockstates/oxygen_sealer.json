@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "axis_along_first=false,facing=down": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal",
+      "x": 270,
+      "y": 90
+    },
+    "axis_along_first=false,facing=east": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal",
+      "y": 270
+    },
+    "axis_along_first=false,facing=north": {
+      "model": "creatingspace:block/oxygen_sealer/vertical",
+      "y": 180
+    },
+    "axis_along_first=false,facing=south": {
+      "model": "creatingspace:block/oxygen_sealer/vertical"
+    },
+    "axis_along_first=false,facing=up": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=west": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal",
+      "y": 90
+    },
+    "axis_along_first=true,facing=down": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal",
+      "x": 270
+    },
+    "axis_along_first=true,facing=east": {
+      "model": "creatingspace:block/oxygen_sealer/vertical",
+      "y": 270
+    },
+    "axis_along_first=true,facing=north": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal",
+      "y": 180
+    },
+    "axis_along_first=true,facing=south": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal"
+    },
+    "axis_along_first=true,facing=up": {
+      "model": "creatingspace:block/oxygen_sealer/horizontal",
+      "x": 90
+    },
+    "axis_along_first=true,facing=west": {
+      "model": "creatingspace:block/oxygen_sealer/vertical",
+      "y": 90
+    }
+  }
+}

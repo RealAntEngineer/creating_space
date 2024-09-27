@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "breathable=false": {
+      "model": "minecraft:block/air"
+    },
+    "breathable=true": {
+      "model": "minecraft:block/air"
+    }
+  }
+}

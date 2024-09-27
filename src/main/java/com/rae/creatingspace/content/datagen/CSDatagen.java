@@ -1,15 +1,14 @@
-package com.rae.creatingspace;
+package com.rae.creatingspace.content.datagen;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.datagen.client.CSBlockStateProvider;
 import com.rae.creatingspace.content.datagen.server.CSSimpleRecipeProvider;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.loot.RegistrateLootTableProvider;
 import net.minecraft.data.DataGenerator;
-import com.rae.creatingspace.content.datagen.server.CSLootTableProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 
@@ -28,10 +27,10 @@ public class CSDatagen {
 			generator.addProvider(true, new CSBlockStateProvider(generator, existingFileHelper));
 		}
 		//TODO use this to load the info for dimensions (need to be one file for each dimension)
+		//no need for loot table provider as it's already taken care by REGISTRATE
 		if (event.includeServer()) {
 			//generator.addProvider(true, new CreateRecipeSerializerTagsProvider(generator, existingFileHelper));
 			//generator.addProvider(true, new AllAdvancements(generator));
-			//generator.addProvider(true, new RegistrateLootTableProvider(CreatingSpace.REGISTRATE,generator));
 			generator.addProvider(true, new CSSimpleRecipeProvider(generator));
 			//generator.addProvider(true, new MechanicalCraftingRecipeGen(generator));
 			//generator.addProvider(true, new SequencedAssemblyRecipeGen(generator));

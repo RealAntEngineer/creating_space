@@ -2,6 +2,7 @@ package com.rae.creatingspace;
 
 import com.mojang.logging.LogUtils;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.content.datagen.CSDatagen;
 import com.rae.creatingspace.init.*;
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
