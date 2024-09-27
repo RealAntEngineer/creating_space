@@ -9,6 +9,7 @@ import com.simibubi.create.foundation.block.connected.CTType;
 public class SpriteShiftInit {
 
     public static final CTSpriteShiftEntry ROCKET_CASING = omni("rocket_casing");
+    public static final CTSpriteShiftEntry ISOLATE_CASING = omni("isolate_casing");
 
     private static CTSpriteShiftEntry omni(String name) {
         return getCT(AllCTTypes.OMNIDIRECTIONAL, name);

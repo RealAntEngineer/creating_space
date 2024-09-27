@@ -13,6 +13,7 @@ import com.rae.creatingspace.legacy.server.items.ElectrodeItem;
 import com.rae.creatingspace.legacy.server.items.UpgradableEquipment;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,8 +28,18 @@ public class ItemInit {
     static {
         smartRegisterSequencedItem("aerospike_plug");
         smartRegisterSequencedItem("bell_nozzle");
-        smartRegisterSequencedItem("power_pack");
-        smartRegisterSequencedItem("exhaust_pack");
+        //smartRegisterSequencedItem("power_pack");
+        CreatingSpace.REGISTRATE.item(
+                        "power_pack", Item::new)
+                .model(AssetLookup.existingItemModel())
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        CreatingSpace.REGISTRATE.item(
+                        "exhaust_pack", Item::new)
+                .model(AssetLookup.existingItemModel())
+                .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .register();
+        //smartRegisterSequencedItem("exhaust_pack");
         smartRegisterSequencedItem("combustion_chamber");
         EngineMaterialInit.register();
         registerStandardForMetal("reinforced_copper");
@@ -92,7 +103,7 @@ public class ItemInit {
                         name, Item::new)
                 .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register();
-        registerSequencedItem("incomplete_" + name);
+        //registerSequencedItem("incomplete_" + name);
     }
 
     private static ItemEntry<SequencedAssemblyItem> registerSequencedItem(String name) {
@@ -106,22 +117,26 @@ public class ItemInit {
                     "copper_electrode", ElectrodeItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
                     .defaultDurability(300))
+            .model(AssetLookup.existingItemModel())
             .register();
 
     public static final ItemEntry<CatalystItem> COPPER_CATALYST = CreatingSpace.REGISTRATE.item(
                     "copper_catalyst", CatalystItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB).stacksTo(1)
                     .defaultDurability(300))
+            .model(AssetLookup.existingItemModel())
             .register();
 
 
     public static final ItemEntry<DesignBlueprintItem> DESIGN_BLUEPRINT =
             CreatingSpace.REGISTRATE.item("design_blueprint", DesignBlueprintItem::new)
                     .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                    .model(AssetLookup.existingItemModel())
                     .register();
     public static final ItemEntry<EngineFabricationBlueprint> ENGINE_BLUEPRINT =
             CreatingSpace.REGISTRATE.item("engine_blueprint", EngineFabricationBlueprint::new)
                     .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                    .model(AssetLookup.existingItemModel())
                     .register();
 
     public static final ItemEntry<Item> BASIC_SPACESUIT_FABRIC = CreatingSpace.REGISTRATE.item(
@@ -292,12 +307,14 @@ public class ItemInit {
             CreatingSpace.REGISTRATE
                     .item("copper_oxygen_backtank_placeable",
                             p -> new OxygenBacktankItem.O2BacktankBlockItem(BlockInit.COPPER_OXYGEN_BACKTANK.get(), ItemInit.COPPER_OXYGEN_BACKTANK::get, p))
+                    .model((c, p) -> p.withExistingParent(c.getName(), p.mcLoc("item/barrier")))
                     .register();
     public static final ItemEntry<OxygenBacktankItem.Layered> COPPER_OXYGEN_BACKTANK =
             CreatingSpace.REGISTRATE
                     .item("copper_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit"),
                                     COPPER_BACKTANK_PLACEABLE))
+                    .model((c,p)-> p.withExistingParent(c.getName(), CreatingSpace.resource("block/oxygen_backtank/copper")))
                     .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(forgeItemTag("armors/chestplates"))
@@ -328,12 +345,14 @@ public class ItemInit {
             CreatingSpace.REGISTRATE
                     .item("netherite_oxygen_backtank_placeable",
                             p -> new OxygenBacktankItem.O2BacktankBlockItem(BlockInit.NETHERITE_OXYGEN_BACKTANK.get(), ItemInit.NETHERITE_OXYGEN_BACKTANK::get, p))
+                    .model((c, p) -> p.withExistingParent(c.getName(), p.mcLoc("item/barrier")))
                     .register();
     public static final ItemEntry<OxygenBacktankItem.Layered> NETHERITE_OXYGEN_BACKTANK =
             CreatingSpace.REGISTRATE
                     .item("netherite_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit"),
                                     NETHERITE_BACKTANK_PLACEABLE))
+                    .model((c,p)-> p.withExistingParent(c.getName(), CreatingSpace.resource("block/oxygen_backtank/netherite")))
                     .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(forgeItemTag("armors/chestplates"))
@@ -358,6 +377,7 @@ public class ItemInit {
     public static final ItemEntry<CombustibleItem> STARTER_CHARGE = CreatingSpace.REGISTRATE.item(
                     "starter_charge", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(500))
+            .model(AssetLookup.existingItemModel())
             //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
     public static final ItemEntry<Item> INJECTOR = CreatingSpace.REGISTRATE.item(

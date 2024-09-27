@@ -7,6 +7,7 @@ import com.rae.creatingspace.content.datagen.server.CSSimpleRecipeProvider;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.loot.RegistrateLootTableProvider;
 import net.minecraft.data.DataGenerator;
 import com.rae.creatingspace.content.datagen.server.CSLootTableProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -30,7 +31,7 @@ public class CSDatagen {
 		if (event.includeServer()) {
 			//generator.addProvider(true, new CreateRecipeSerializerTagsProvider(generator, existingFileHelper));
 			//generator.addProvider(true, new AllAdvancements(generator));
-			generator.addProvider(true, new CSLootTableProvider(generator));
+			//generator.addProvider(true, new RegistrateLootTableProvider(CreatingSpace.REGISTRATE,generator));
 			generator.addProvider(true, new CSSimpleRecipeProvider(generator));
 			//generator.addProvider(true, new MechanicalCraftingRecipeGen(generator));
 			//generator.addProvider(true, new SequencedAssemblyRecipeGen(generator));

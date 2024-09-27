@@ -34,18 +34,30 @@ import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketCont
 import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
+import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
+import com.simibubi.create.content.fluids.pipes.EncasedPipeBlock;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.Registry;
+import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.Tags;
 import org.checkerframework.checker.units.qual.C;
@@ -87,7 +99,8 @@ public class BlockInit {
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(SmallEngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
+            //.model((c,p)-> p.withExistingParent(c.getName(), CreatingSpace.resource("block/small_rocket_engine")))
+            .build()
             .register();
     public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
             .block("rocket_engine", SuperEngineBlock::new)
@@ -99,7 +112,8 @@ public class BlockInit {
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(EngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
+            .model((c,p)-> p.withExistingParent(c.getName(), CreatingSpace.resource("block/small_rocket_engine")))
+            .build()
             .register();
     public static final BlockEntry<BigEngineBlock> BIG_ROCKET_ENGINE = REGISTRATE
             .block("big_rocket_engine", BigEngineBlock::new)
@@ -110,7 +124,8 @@ public class BlockInit {
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(BigEngineItem::new)
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
+            //.model((c,p)-> p.withExistingParent(c.getName(), CreatingSpace.resource("block/big_rocket_engine")))
+            .build()
             .register();
 
     public static final BlockEntry<BigRocketStructuralBlock> BIG_ENGINE_STRUCTURAL =
@@ -148,7 +163,7 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
             .block("rocket_casing",CasingBlock::new)
@@ -168,7 +183,7 @@ public class BlockInit {
             .onRegister(interactionBehaviour(new RocketControlInteraction()))
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
                     "flight_recorder", FlightRecorderBlock::new)
@@ -259,7 +274,7 @@ public class BlockInit {
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .build()
+            .transform(customItemModel())
             .register();
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
@@ -279,14 +294,14 @@ public class BlockInit {
             .transform(axeOrPickaxe())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<OxygenBlock> OXYGEN = REGISTRATE
             .block("oxygen", OxygenBlock::new)
             .initialProperties(() -> Blocks.AIR)
             .properties(p -> p.noOcclusion().noCollission().dynamicShape().air())
             .blockstate((c, p) -> p.getVariantBuilder(c.get())
-                    .forAllStatesExcept(BlockStateGen.mapToAir(p), SmallRocketStructuralBlock.FACING))
+                    .forAllStatesExcept(BlockStateGen.mapToAir(p), DirectionalBlock.FACING))
             .register();
     //transform .backtank() or similar to generate some correct shit
     public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
@@ -295,6 +310,17 @@ public class BlockInit {
             .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(CreatingSpace.resource("block/oxygen_backtank/copper"))))
+            .loot((lt, block) -> lt.add(block, LootTable.lootTable().withPool(LootPool.lootPool()
+                    .when(ExplosionCondition.survivesExplosion())
+                    .setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(ItemInit.COPPER_OXYGEN_BACKTANK.get())
+                            .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+                            .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("Oxygen", "Oxygen"))
+                            .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("prevOxygen", "prevOxygen"))
+                            .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("Enchantments", "Enchantments"))))))
             .register();
 
     public static final BlockEntry<OxygenBacktankBlock> NETHERITE_OXYGEN_BACKTANK = REGISTRATE
@@ -303,6 +329,21 @@ public class BlockInit {
             .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(CreatingSpace.resource("block/oxygen_backtank/netherite"))))
+            .loot((lt, block) -> {
+                LootTable.Builder builder = LootTable.lootTable();
+                LootItemCondition.Builder survivesExplosion = ExplosionCondition.survivesExplosion();
+                lt.add(block, builder.withPool(LootPool.lootPool()
+                        .when(survivesExplosion)
+                        .setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(ItemInit.NETHERITE_OXYGEN_BACKTANK.get())
+                                .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+                                .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                        .copy("Oxygen", "Oxygen"))
+                                .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                        .copy("prevOxygen", "prevOxygen"))
+                                .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                        .copy("Enchantments", "Enchantments")))));
+            })
             .register();
 
     public static final BlockEntry<CryogenicTankBlock> CRYOGENIC_TANK = REGISTRATE
@@ -321,28 +362,28 @@ public class BlockInit {
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
             .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
             .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.SNOW))
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     public static final BlockEntry<RegolithSurfaceBlock> MOON_SURFACE_REGOLITH = REGISTRATE
@@ -350,7 +391,7 @@ public class BlockInit {
             .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.SNOW))
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     public static final BlockEntry<Block> MARS_STONE = REGISTRATE
@@ -358,21 +399,21 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> MARS_REGOLITH = REGISTRATE
             .block("mars_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.TERRACOTTA_RED))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> MARS_SURFACE_REGOLITH = REGISTRATE
             .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.strength(1.0f).sound(SoundType.SNOW).color(MaterialColor.TERRACOTTA_RED))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     //ores
@@ -397,7 +438,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
@@ -408,7 +449,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     public static final BlockEntry<Block> RAW_NICKEL_BLOCK = REGISTRATE.block(
@@ -419,7 +460,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
@@ -430,7 +471,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> RAW_COBALT_BLOCK = REGISTRATE.block(
                     "raw_cobalt_block",Block::new)
@@ -440,7 +481,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
@@ -450,7 +491,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
     public static final BlockEntry<Block> RAW_ALUMINUM_BLOCK = REGISTRATE.block(
                     "raw_aluminum_block",Block::new)
@@ -460,7 +501,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p-> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
 
@@ -483,7 +524,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     public static final BlockEntry<BurnBlock> BURN_BLOCK = REGISTRATE.block(
@@ -494,7 +535,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
     public static final BlockEntry<CasingBlock> ISOLATE_CASING = REGISTRATE.block("isolate_casing", CasingBlock::new)
@@ -504,7 +545,7 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .properties(p -> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
+            .build()
             .register();
 
 
@@ -513,10 +554,10 @@ public class BlockInit {
                     .initialProperties(SharedProperties::copperMetal)
                     .properties(p -> p.noOcclusion().color(MaterialColor.TERRACOTTA_LIGHT_GRAY))
                     .transform(axeOrPickaxe())
-                    //.blockstate(BlockStateGen.encasedPipe())
-                    //.onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.COPPER_CASING)))
-                    //.onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.COPPER_CASING,
-                    //        (s, f) -> !s.getValue(EncasedPipeBlock.FACING_TO_PROPERTY_MAP.get(f)))))
+                    .blockstate(BlockStateGen.encasedPipe())
+                    .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(SpriteShiftInit.ISOLATE_CASING)))
+                    .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, SpriteShiftInit.ISOLATE_CASING,
+                            (s, f) -> !s.getValue(EncasedPipeBlock.FACING_TO_PROPERTY_MAP.get(f)))))
                     //.onRegisterAfter(ForgeRegistries.BLOCKS.getRegistryKey(), b -> EncasingRegistry.addVariant(FLUID_PIPE.get(), b))
                     .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::new))
                     //.transform(EncasingRegistry.addVariantTo(AllBlocks.FLUID_PIPE))
