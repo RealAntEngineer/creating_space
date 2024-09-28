@@ -39,9 +39,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.FakePlayer;
+import org.lwjgl.system.NonnullDefault;
 
+import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
-
+@NonnullDefault
 public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	implements IBE<OxygenBacktankBlockEntity>, SimpleWaterloggedBlock {
 
@@ -88,7 +91,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel()
 			.getFluidState(context.getClickedPos());
-		return super.getStateForPlacement(context)
+		return Objects.requireNonNull(super.getStateForPlacement(context))
 				.setValue(FACING, context.getHorizontalDirection()
 				.getOpposite()).
 				setValue(BlockStateProperties.WATERLOGGED,
@@ -101,13 +104,11 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	}
 
 	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(worldIn, pos, state, placer, stack);
 		if (worldIn.isClientSide)
 			return;
-		if (stack == null)
-			return;
-		withBlockEntityDo(worldIn, pos, be -> {
+        withBlockEntityDo(worldIn, pos, be -> {
 			be.setCapacityEnchantLevel(stack.getEnchantmentLevel(AllEnchantments.CAPACITY.get()));
 			be.setOxygenLevel((int) stack.getOrCreateTag()
 				.getFloat("Oxygen"));
@@ -121,9 +122,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
 		BlockHitResult hit) {
-		if (player == null)
-			return InteractionResult.PASS;
-		if (player instanceof FakePlayer)
+        if (player instanceof FakePlayer)
 			return InteractionResult.PASS;
 		if (player.isShiftKeyDown())
 			return InteractionResult.PASS;
@@ -164,12 +163,9 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 			enchantmentTagList.addAll(enchants);
 			tag.put("Enchantments", enchantmentTagList);
 		}
-
-		Component customName = blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName)
-			.orElse(null);
-		if (customName != null)
-			stack.setHoverName(customName);
-		return stack;
+		stack.setTag(tag);
+        blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName).ifPresent(stack::setHoverName);
+        return stack;
 	}
 
 	@Override

@@ -255,7 +255,7 @@ public class BlockInit {
 
     public static final BlockEntry<OxygenBacktankBlock> NETHERITE_OXYGEN_BACKTANK = REGISTRATE
             .block("netherite_oxygen_backtank", OxygenBacktankBlock::new)
-            .initialProperties(SharedProperties::copperMetal)
+            .initialProperties(SharedProperties::netheriteMetal)
             .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
             .register();

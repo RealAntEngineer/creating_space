@@ -276,10 +276,10 @@ public class ItemInit {
             .properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
-    public static final ItemEntry<Item> TITANIUM_INGOT = CreatingSpace.REGISTRATE
+    /*public static final ItemEntry<Item> TITANIUM_INGOT = CreatingSpace.REGISTRATE
             .item("titanium_ingot", Item::new)
             .properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .register();
+            .register();*/
 
     public static final ItemEntry<SpacesuitHelmetItem> BASIC_SPACESUIT_HELMET =
             CreatingSpace.REGISTRATE
