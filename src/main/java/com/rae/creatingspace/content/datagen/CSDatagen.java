@@ -26,12 +26,11 @@ public class CSDatagen {
 			//generator.addProvider(true, AllSoundEvents.provider(generator))
 			generator.addProvider(true, new CSBlockStateProvider(generator, existingFileHelper));
 		}
-		//TODO use this to load the info for dimensions (need to be one file for each dimension)
 		//no need for loot table provider as it's already taken care by REGISTRATE
 		if (event.includeServer()) {
 			//generator.addProvider(true, new CreateRecipeSerializerTagsProvider(generator, existingFileHelper));
 			//generator.addProvider(true, new AllAdvancements(generator));
-			generator.addProvider(true, new CSSimpleRecipeProvider(generator));
+			//generator.addProvider(true, new CSSimpleRecipeProvider(generator));
 			//generator.addProvider(true, new MechanicalCraftingRecipeGen(generator));
 			//generator.addProvider(true, new SequencedAssemblyRecipeGen(generator));
 			//ProcessingRecipeGen.registerAll(generator);
