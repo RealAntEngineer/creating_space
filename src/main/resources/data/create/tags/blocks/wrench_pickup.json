@@ -5,6 +5,10 @@
     "creatingspace:small_engine_structure",
     "creatingspace:big_rocket_engine",
     "creatingspace:big_engine_structure",
+    "creatingspace:engine_structure",
+    "creatingspace:rocket_engine",
+    "creatingspace:chemical_synthesizer",
+    "creatingspace:mechanical_electrolyzer",
     "creatingspace:chemical_synthesizer",
     "creatingspace:catalyst_carrier",
     "creatingspace:rocket_generator",
@@ -13,6 +17,11 @@
     "creatingspace:rocket_controls",
     "creatingspace:flow_meter",
     "creatingspace:rocket_casing",
-    "creatingspace:clamps"
+    "creatingspace:clamps",
+    "creatingspace:flight_recorder",
+    "creatingspace:clamps",
+    "creatingspace:copper_oxygen_backtank",
+    "creatingspace:netherite_oxygen_backtank",
+    "creatingspace:cryogenic_tank"
   ]
 }

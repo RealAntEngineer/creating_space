@@ -38,6 +38,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.FakePlayer;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class OxygenBacktankBlock extends HorizontalDirectionalBlock
@@ -83,7 +84,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel()
 			.getFluidState(context.getClickedPos());
-		return super.getStateForPlacement(context)
+		return Objects.requireNonNull(super.getStateForPlacement(context))
 				.setValue(FACING, context.getHorizontalDirection()
 				.getOpposite()).
 				setValue(BlockStateProperties.WATERLOGGED,
@@ -116,9 +117,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
 		BlockHitResult hit) {
-		if (player == null)
-			return InteractionResult.PASS;
-		if (player instanceof FakePlayer)
+        if (player instanceof FakePlayer)
 			return InteractionResult.PASS;
 		if (player.isShiftKeyDown())
 			return InteractionResult.PASS;
@@ -159,12 +158,9 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 			enchantmentTagList.addAll(enchants);
 			tag.put("Enchantments", enchantmentTagList);
 		}
-
-		Component customName = blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName)
-			.orElse(null);
-		if (customName != null)
-			stack.setHoverName(customName);
-		return stack;
+		stack.setTag(tag);
+        blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName).ifPresent(stack::setHoverName);
+        return stack;
 	}
 
 	@Override
