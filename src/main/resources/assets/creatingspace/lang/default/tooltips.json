@@ -1,15 +1,16 @@
 {
-  "block.creatingspace.rocket_controls.tooltip.summary" : "The block that tells a rocket where to go.",
+  "block.creatingspace.rocket_controls.tooltip.summary" : "A required block that is used by the pilot to fly the rocket.",
   "block.creatingspace.rocket_generator.tooltip.summary": "A machine that burns methane and oxygen to produce SU, start with a signal of redstone if loaded with a starter charge",
-  "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin ",
+  "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin.",
 
-  "block.creatingspace.chemical_synthesizer.tooltip.summary": "Needed for producing methane, deprecated !!",
+  "block.creatingspace.chemical_synthesizer.tooltip.summary": "__[DEPRECATED]__ Needed for producing methane",
   "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split liquids in a basin",
-  "block.creatingspace.flight_recorder.tooltip.summary": "shows information when the rocket doesn't work, you need engineer googles to view the information",
-  "block.creatingspace.flow_meter.tooltip.summary": "Show the amount of fluid passing through a pipe",
+  "block.creatingspace.flight_recorder.tooltip.summary": "Displays information when the rocket fails, you'll need engineer googles to view the information",
+  "block.creatingspace.flow_meter.tooltip.summary": "Displays the amount of fluid passing through a pipe",
   "block.creatingspace.oxygen_sealer.tooltip.summary": "A machine that fill a room with oxygen",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only works on earth",
-  "block.creatingspace.rocket_engineer_table.tooltip.summary" : "This table is used to craft engine blueprint.",
+  "block.creatingspace.rocket_engineer_table.tooltip.summary" : "This table is used to create engine blueprints.",
+  "block.creatingspace.rocket_engineer_table.tooltip.behaviour1": "Enter your desired properties for your engine, It will give you a blueprint.",
 
   "block.creatingspace.clamps.tooltip.summary": "A mean for preventing a contraption from moving, movable by pistons",
 
