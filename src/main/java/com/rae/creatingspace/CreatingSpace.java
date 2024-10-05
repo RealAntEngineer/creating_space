@@ -17,7 +17,9 @@ import com.rae.creatingspace.server.event.IgniteOnPlace;
 import com.rae.creatingspace.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -42,7 +44,8 @@ public class CreatingSpace {
     public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
-            return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE);
+            return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE).
+                    andThen(TooltipModifier.mapNull(KineticStats.create(item)));
         });
     }
 

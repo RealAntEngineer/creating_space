@@ -4,16 +4,31 @@ buildscript {
     }
     dependencies {
         classpath "org.spongepowered:mixingradle:${mixingradle_version}"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0'
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:12.1.1"
     }
 }
 plugins {
     id 'eclipse'
     id 'idea'
-    id 'maven-publish'
+    //id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
-
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    // Adds the Kotlin Gradle plugin
+    id "org.jetbrains.kotlin.jvm" version "1.9.22"
+    // OPTIONAL Kotlin Serialization plugin
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.22'
 }
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: "org.jetbrains.kotlin.jvm"
+
 
 version = mod_version
 group = mod_group_id
@@ -82,6 +97,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    //mavenCentral()
     //create
     maven {
         name = 'tterrag maven'
@@ -106,6 +122,23 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top/"
     }
+    maven {
+        name = "ParchmentMC"
+        url = "https://maven.parchmentmc.org"
+    }
+
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+    //maven {
+    //    name = "Valkyrien Skies Internal"
+    //    url = "https://maven.valkyrienskies.org"
+    //    content {
+    //        excludeGroup "net.jodah"
+    //        excludeGroup "org.spongepowered"
+    //    }
+    //}
 }
 
 dependencies {
@@ -116,7 +149,6 @@ dependencies {
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
     //JEI
-    // compile against the JEI API but do not include it at runtime
     // compile against the JEI API but do not include it at runtime
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
@@ -129,6 +161,25 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
+    //implementaation files()
+    // for VS2 (doesn't work)
+    implementation 'thedarkcolour:kotlinforforge:4.10.0'
+
+    //implementation fg.deobf("org.valkyrienskies:valkyrienskies-120-forge:${vs2_version}")
+
+    //implementation ("org.valkyrienskies.core:api:${vs_core_version}")
+    //implementation ("org.valkyrienskies.core:api-game:${vs_core_version}")
+    //implementation ("org.valkyrienskies.core:util:${vs_core_version}")
+    //implementation ("org.valkyrienskies.core:impl:${vs_core_version}")
+
+
+    //api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22"
+    //api "org.jetbrains.kotlin:kotlin-reflect:1.9.22"
+
+    //implementation("org.joml:joml:1.10.4") { transitive = false }
+    //implementation("org.joml:joml-primitives:1.10.0") { transitive = false }
+
 
 }
 mixin {
