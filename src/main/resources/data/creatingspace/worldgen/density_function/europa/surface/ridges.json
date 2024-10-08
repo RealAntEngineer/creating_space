@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:clamp",
+  "input": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "minecraft:abs",
+      "argument": {
+        "type": "minecraft:flat_cache",
+        "argument": {
+          "type": "minecraft:shifted_noise",
+          "noise": "creatingspace:ridge",
+          "xz_scale": 0.125,
+          "y_scale": 0,
+          "shift_x": "creatingspace:shift_x",
+          "shift_y": 0,
+          "shift_z": "creatingspace:shift_z"
+        }
+      }
+    },
+    "argument2": 2
+  },
+  "min": 0,
+  "max": 0.1
+}

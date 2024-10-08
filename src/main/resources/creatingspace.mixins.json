@@ -18,7 +18,8 @@
     "recipe.ProcessingRecipeMixin",
     "recipe.ProcessingRecipeRecipeSerializerMixin",
     "recipe.SequencedAssemblyRecipeMixin",
-    "recipe.SequencedAssemblyRecipeSerializerMixin"
+    "recipe.SequencedAssemblyRecipeSerializerMixin",
+    "worldgen.SurfaceSystemMixin"
   ],
   "client": [
   ],

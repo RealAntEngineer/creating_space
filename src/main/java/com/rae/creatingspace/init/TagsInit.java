@@ -235,7 +235,8 @@ public class TagsInit extends AllTags {
     }
 
     public enum CustomBiomeTags {
-        NO_OXYGEN();
+        NO_OXYGEN(),
+        SPECIAL_WATER_POCKET_HANDLING;
 
         public final TagKey<Biome> tag;
         public final boolean alwaysDatagen;

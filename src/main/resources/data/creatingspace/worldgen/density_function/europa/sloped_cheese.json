@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:clamp",
+    "input": {
+      "type": "minecraft:add",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": 4,
+        "argument2": {
+          "type": "minecraft:quarter_negative",
+          "argument": {
+            "type": "minecraft:mul",
+            "argument1": "creatingspace:europa/ocean_bed/depth",
+            "argument2": "creatingspace:europa/ocean_bed/factor"
+          }
+        }
+      },
+      "argument2": "creatingspace:europa/base_3d_noise"
+    },
+    "min": -0.1,
+    "max": 100
+  },
+  "argument2": "creatingspace:europa/surface/depth"
+}

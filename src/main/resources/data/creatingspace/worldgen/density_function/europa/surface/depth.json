@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:add",
+    "argument1": {
+      "type": "minecraft:y_clamped_gradient",
+      "from_y": 160,
+      "to_y": 210,
+      "from_value": 1.5,
+      "to_value": -1.5
+    },
+    "argument2": {
+      "type": "minecraft:mul",
+      "argument1": 15,
+      "argument2": "creatingspace:europa/surface/ridges"
+    }
+  },
+  "argument2": {
+      "type": "minecraft:y_clamped_gradient",
+      "from_y": 160,
+      "to_y": 150,
+      "from_value": -0.8,
+      "to_value": -4
+  }
+}
