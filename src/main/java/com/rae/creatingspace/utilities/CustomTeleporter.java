@@ -30,11 +30,12 @@ public class CustomTeleporter implements ITeleporter {
         height = CSDimensionUtil.arrivalHeight(destWorld.dimension().location());
         Vec3 position;
         if ( entity instanceof RocketContraptionEntity rocketContraptionEntity){
-            BlockPos entryPoint = rocketContraptionEntity.getInitialPosMap().getOrDefault(rocketContraptionEntity.destination.toString(), rocketContraptionEntity.getOnPos());
+
             position = new Vec3(
-                    entryPoint.getX(),
+                    rocketContraptionEntity.rocketEntryCoordinate.getX(),
                     height,
-                    entryPoint.getZ());
+                    rocketContraptionEntity.rocketEntryCoordinate.getZ());
+
         }
         else {
             position = new Vec3(

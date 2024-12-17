@@ -255,6 +255,12 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         for (int i = 0; i < schedule.entries.size(); i++)
             horizontalScrolls.add(LerpedFloat.linear()
                     .startWithValue(0));
+
+        IconButton launchButton = new IconButton(x + 214, y + 202, AllIcons.I_CONFIRM);
+        launchButton.withCallback(
+                this::onClose
+        );
+        addRenderableWidget(launchButton);
     }
 
 
@@ -291,7 +297,6 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                     pos = this.rocketContraption.getOnPos();
                 }
                 Xinput.setValue(String.valueOf(pos.getX()));
-
                 //Yinput.setValue(String.valueOf(pos.getY()));
                 Zinput.setValue(String.valueOf(pos.getZ()));
             }

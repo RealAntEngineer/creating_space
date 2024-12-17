@@ -52,24 +52,13 @@ public class MiscInit {
             DeferredRegister.create(RocketAccessibleDimension.REGISTRY_KEY, CreatingSpace.MODID);
     public static final Supplier<IForgeRegistry<RocketAccessibleDimension>> ROCKET_ACCESSIBLE_DIMENSIONS = DEFERRED_ROCKET_ACCESSIBLE_DIMENSION.makeRegistry(
             () -> new RegistryBuilder<RocketAccessibleDimension>().allowModification().disableSaving());
-    /**
-     * use the side aware sync registry access instead
-     * @return a client side sync version of the DEFERRED_EXHAUST_PACK_TYPE
-     */
-    @OnlyIn(Dist.CLIENT)
+
     public static Registry<ExhaustPackType> getSyncedExhaustPackRegistry() {
-        return Minecraft.getInstance().getConnection().registryAccess().registry(Keys.EXHAUST_PACK_TYPE)
-                .orElseThrow();
+        return getSideAwareRegistry(Keys.EXHAUST_PACK_TYPE);
     }
 
-    /**
-     *
-     * @return a client side sync version of the DEFERRED_POWER_PACK_TYPE
-     */
-    @OnlyIn(Dist.CLIENT)
     public static Registry<PowerPackType> getSyncedPowerPackRegistry() {
-        return Minecraft.getInstance().getConnection().registryAccess().registry(Keys.POWER_PACK_TYPE)
-                .orElseThrow();
+        return getSideAwareRegistry(Keys.POWER_PACK_TYPE);
     }
 
     public static class Keys {

@@ -20,7 +20,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:basic_spacesuit_fabric"
+          "item": "create:copper_sheet"
         },
         {
           "tag": "forge:nuggets/gold"
@@ -28,14 +28,14 @@
       ],
       "results": [
         {
-          "item": "creatingspace:basic_spacesuit_fabric"
+          "item": "create:copper_sheet"
         }
       ]
     },{
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:basic_spacesuit_fabric"
+          "item": "create:copper_sheet"
         },
         {
           "item": "minecraft:red_wool"
@@ -43,21 +43,21 @@
       ],
       "results": [
         {
-          "item": "creatingspace:basic_spacesuit_fabric"
+          "item": "create:copper_sheet"
         }
       ]
     },
     {
       "type": "create:pressing",
       "ingredients": [
-        {"item": "creatingspace:basic_spacesuit_fabric"}
+        {"item": "create:copper_sheet"}
       ],
       "results": [
-        {"item": "creatingspace:basic_spacesuit_fabric"}
+        {"item": "create:copper_sheet"}
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:basic_spacesuit_fabric"
+    "item": "create:copper_sheet"
   }
 }

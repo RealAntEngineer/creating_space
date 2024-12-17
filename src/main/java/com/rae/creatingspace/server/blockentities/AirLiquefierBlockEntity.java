@@ -79,6 +79,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     }
 
 
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
@@ -91,10 +92,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
         }
         return super.getCapability(cap, side);
     }
-
-
-
-
 
     public void tick(Level level, BlockPos pos, BlockState state, AirLiquefierBlockEntity blockEntity) {
         super.tick();

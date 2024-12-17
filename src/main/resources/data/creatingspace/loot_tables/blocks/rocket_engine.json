@@ -7,7 +7,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "creatingspace:rocket_engine",
           "functions": [
             {
               "function": "minecraft:copy_name",
@@ -39,7 +38,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "name": "creatingspace:rocket_engine"
         }
       ],
       "conditions": [

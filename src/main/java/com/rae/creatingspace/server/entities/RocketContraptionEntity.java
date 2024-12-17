@@ -167,7 +167,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float totalFluidMass= 0;
         IFluidHandler fluidHandler = contraption.getSharedFluidTanks();
         int nbrOfTank = fluidHandler.getTanks();
-
+        //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
         //TODO that could be in the inventory manager of the rocket -> 1.8
         for (PropellantType combination : rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
@@ -364,13 +364,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     private static void addToConsumableFluids(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> consumedFluid) {
         rocketContraptionEntity.consumableFluids.put(consumedFluid, new ArrayList<>());
         IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getSharedFluidTanks();
-        int nbrOfTank = fluidHandler.getTanks();
-
-        for (int i = 0; i < nbrOfTank; i++) {
-            FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
-            if (fluidInTank.getFluid().is(consumedFluid)) {
-                if (!rocketContraptionEntity.consumableFluids.get(consumedFluid).contains(fluidInTank.getFluid())) {
-                    rocketContraptionEntity.consumableFluids.get(consumedFluid).add(fluidInTank.getFluid());
+        if (fluidHandler != null) {
+            int nbrOfTank = fluidHandler.getTanks();
+            for (int i = 0; i < nbrOfTank; i++) {
+                FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
+                if (fluidInTank.getFluid().is(consumedFluid)) {
+                    if (!rocketContraptionEntity.consumableFluids.get(consumedFluid).contains(fluidInTank.getFluid())) {
+                        rocketContraptionEntity.consumableFluids.get(consumedFluid).add(fluidInTank.getFluid());
+                    }
                 }
             }
         }

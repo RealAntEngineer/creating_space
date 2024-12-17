@@ -36,6 +36,7 @@ public class BlockEntityInit {
             REGISTRATE.blockEntity("cryogenic_tank", CryogenicTankBlockEntity::new)
                     .validBlocks(BlockInit.CRYOGENIC_TANK)
                     .register();
+
     public static final BlockEntityEntry<RocketGeneratorBlockEntity> ROCKET_GENERATOR =
             REGISTRATE.blockEntity("rocket_generator", RocketGeneratorBlockEntity::new )
                     .instance(() -> ShaftInstance::new, false)
@@ -50,7 +51,7 @@ public class BlockEntityInit {
 
     public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
             REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
-                    .instance(() -> CatalystCarrierInstance::new)
+                    .instance(() -> CatalystCarrierInstance::new, true)
                     .validBlocks(BlockInit.CATALYST_CARRIER)
                     .renderer(() -> CatalystCarrierRenderer::new)
                     .register();
@@ -81,7 +82,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(
                             "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
-                    .instance(() -> ElectrolyzerInstance::new, false)
+                    .instance(() -> ElectrolyzerInstance::new, true)
                     .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
                     .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
                     .register();

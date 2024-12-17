@@ -61,7 +61,7 @@ public class FluidInit {
                           /*fogColor(0.75f,0.21f,0.5f))*/
     public static final FluidEntry<VirtualFluid> LIQUID_OXYGEN =
             registrateCustomVirtualLiquid("liquid_oxygen")
-                    .properties(p -> p.viscosity(1000).temperature(90).density(1141))
+                    .properties(p -> p.viscosity(1000).temperature(90).density(1000))
                     .tag(TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag)
                     .register();
     /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_OXYGEN =

@@ -101,8 +101,6 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 		super.setPlacedBy(worldIn, pos, state, placer, stack);
 		if (worldIn.isClientSide)
 			return;
-		if (stack == null)
-			return;
 		withBlockEntityDo(worldIn, pos, be -> {
 			be.setCapacityEnchantLevel(stack.getEnchantmentLevel(AllEnchantments.CAPACITY.get()));
 			be.setOxygenLevel((int) stack.getOrCreateTag()
@@ -146,7 +144,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 		Optional<OxygenBacktankBlockEntity> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
 
 		int air = blockEntityOptional.map(OxygenBacktankBlockEntity::getOxygenLevel)
-			.orElse(0);
+                .orElse(0);
 		CompoundTag tag = stack.getOrCreateTag();
 		tag.putFloat("Oxygen", air);
 		tag.putFloat("prevOxygen",air);

@@ -56,6 +56,7 @@ public class RocketContraption extends TranslatingContraption {
         Block blockAdded = pair.getLeft().state().getBlock();
         BlockEntity blockEntityAdded = pair.getRight();
         BlockPos localPos = pos.subtract(anchor);
+
         if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity){
 
             this.thrust += engineBlockEntity.getThrust();

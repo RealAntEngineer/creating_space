@@ -28,6 +28,14 @@ public class OxygenBlockEntity extends BlockEntity {
     }
 
     @Override
+    public void onLoad() {
+        super.onLoad();
+        assert level != null;
+        level.setBlockAndUpdate(getBlockPos(), Blocks.AIR.defaultBlockState());
+        setRemoved();
+    }
+
+    @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
         masterPos = BlockPos.of(nbt.getLong("masterPos"));

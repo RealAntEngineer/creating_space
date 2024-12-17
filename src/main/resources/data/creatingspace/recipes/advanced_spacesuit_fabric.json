@@ -43,21 +43,21 @@
       ],
       "results": [
         {
-          "item": "creatingspace:advanced_spacesuit_fabric"
+          "item": "creatingspace:netherite_ingot"
         }
       ]
     },
     {
       "type": "create:pressing",
       "ingredients": [
-        {"item": "creatingspace:advanced_spacesuit_fabric"}
+        {"item": "creatingspace:netherite_ingot"}
       ],
       "results": [
-        {"item": "creatingspace:advanced_spacesuit_fabric"}
+        {"item": "creatingspace:netherite_ingot"}
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:advanced_spacesuit_fabric"
+    "item": "creatingspace:netherite_ingot"
   }
 }

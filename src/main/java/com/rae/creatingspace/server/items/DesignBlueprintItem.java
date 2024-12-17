@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -33,10 +35,11 @@ public class DesignBlueprintItem extends Item {
         ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                 nbt.get("design")).result().orElse(null);
         if (registry != null) {
-            components.add(Component.literal(registry.toString()));
-            components.add(Component.translatable(
+            components.add(Component.translatable(registry.toLanguageKey())
+                    .append(" : ")
+                    .append(Component.translatable(
                     registry.getPath() + "." +
-                            location.getNamespace() + "." + location.getPath()));
+                            location.getNamespace() + "." + location.getPath())));
         }
         super.appendHoverText(itemStack, level, components, flag);
     }
@@ -69,12 +72,27 @@ public class DesignBlueprintItem extends Item {
     }*/
 
     @Override
-    public void onUseTick(Level p_41428_, LivingEntity entity ,ItemStack stack, int count) {
-        if (entity instanceof Player player) {
-            save(stack, player);
-        }
-    }
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        ItemStack stack = player.getItemInHand(interactionHand);
+        CompoundTag nbt = stack.getOrCreateTag();
+        ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                nbt.get("design_type")).result().orElse(null);
+        ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                nbt.get("design")).result().orElse(null);
+        if (registry != null) {
+                save(stack, player);
+                player.displayClientMessage(Component.translatable("item.creatingspace.design_blueprint.message")
+                                .append(" ")
+                                .append(Component.translatable(
+                                registry.getPath() + "." +
+                                        location.getNamespace() + "." + location.getPath()))
+                                .append(" ")
+                                .append(Component.translatable(registry.toLanguageKey())),
+                        true);
 
+        }
+        return super.use(level, player, interactionHand);
+    }
 
     private static void save(ItemStack stack, Player player) {
         CompoundTag nbt = stack.getOrCreateTag();

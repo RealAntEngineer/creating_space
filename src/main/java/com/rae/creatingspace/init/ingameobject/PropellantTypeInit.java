@@ -46,10 +46,8 @@ public class PropellantTypeInit {
                     10
             ));
 
-    @OnlyIn(Dist.CLIENT)
     public static Registry<PropellantType> getSyncedPropellantRegistry() {
-        return Minecraft.getInstance().getConnection().registryAccess().registry(Keys.PROPELLANT_TYPE)
-                .orElseThrow();
+        return getSideAwareRegistry(Keys.PROPELLANT_TYPE);
     }
     public static void register(IEventBus modEventBus) {
         DEFERRED_PROPELLANT_TYPE.register(modEventBus);

@@ -27,29 +27,33 @@ public class EngineFabricationBlueprint extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         //TODO make this method static somewhere (repetition for the engine, for the engine blueprint then for every item)
         CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
-        if (recipeData != null) {
-            int size = recipeData.getInt("size");
-            int materialLevel = recipeData.getInt("materialLevel");
-            components.add(Component.literal("size : " + size));
-            components.add(Component.literal("materialLevel : " + materialLevel));
-            try {
-                ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
-                ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
+        try {
+            if (recipeData != null) {
+                int size = recipeData.getInt("size");
+                int materialLevel = recipeData.getInt("materialLevel");
+                components.add(Component.literal("size : " + size));
+                components.add(Component.literal("materialLevel : " + materialLevel));
+                try {
+                    ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
+                    ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
 
-                components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-                components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
-            } catch (Exception ignored) {
+                    components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
+                    components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
+                } catch (Exception ignored) {
+                }
             }
-        }
-        CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
-        if (engineInfo != null) {
-            components.add(Component.literal("for engine :"));
-            //TODO there is a need for a description : size and type of exhaustPack + powerPack + material level
-            PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
-                    ResourceLocation.CODEC.parse(NbtOps.INSTANCE, engineInfo.get("propellantType"))
-                            .resultOrPartial(s -> {
-                            }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
-            RocketEngineItem.appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * engineInfo.getFloat("efficiency")), engineInfo.getInt("mass"), engineInfo.getInt("thrust"));
+            CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
+            if (engineInfo != null) {
+                components.add(Component.literal("for engine :"));
+                //TODO there is a need for a description : size and type of exhaustPack + powerPack + material level
+                PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
+                        ResourceLocation.CODEC.parse(NbtOps.INSTANCE, engineInfo.get("propellantType"))
+                                .resultOrPartial(s -> {
+                                }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
+                RocketEngineItem.appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * engineInfo.getFloat("efficiency")), engineInfo.getInt("mass"), engineInfo.getInt("thrust"));
+            }
+        } catch (Exception ignored){
+
         }
         super.appendHoverText(itemStack, level, components, tooltipFlag);
     }

@@ -284,12 +284,11 @@ public class TagsInit extends AllTags {
         private static void init() {
         }
     }
-
-
     public static void init() {
         CustomBlockTags.init();
         CustomItemTags.init();
         CustomEntityTag.init();
         CustomFluidTags.init();
+        CustomBiomeTags.init();
     }
 }
