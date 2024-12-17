@@ -19,6 +19,8 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static com.rae.creatingspace.server.event.DataEventHandler.getSideAwareRegistry;
+
 public class MiscInit {
     //TODO remove slots from the exhaust and power pack, add allowedPropellants for the exhaust pack
     public static final DeferredRegister<ExhaustPackType> DEFERRED_EXHAUST_PACK_TYPE =
