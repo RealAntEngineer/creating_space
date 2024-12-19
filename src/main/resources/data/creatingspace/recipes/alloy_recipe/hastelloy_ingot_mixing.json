@@ -2,19 +2,19 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "item": "creatingspace:nickel_ingot"
+      "item": "#forge:ingots/nickel"
     },
     {
-      "item": "creatingspace:nickel_ingot"
+      "item": "#forge:ingots/nickel"
     },
     {
       "item": "minecraft:iron_ingot"
     },
     {
-      "item": "creatingspace:cobalt_ingot"
+      "item": "#forge:ingots/cobalt"
     },
     {
-      "item": "creatingspace:cobalt_ingot"
+      "item": "#forge:ingots/cobalt"
     },
     {
       "item": "minecraft:copper_ingot"
