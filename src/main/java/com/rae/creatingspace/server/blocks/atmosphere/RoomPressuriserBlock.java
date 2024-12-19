@@ -74,6 +74,10 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
     }
 */
     @Override
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        IBE.onRemove(state, world, pos, newState);
+    }
+    @Override
     public Class<RoomPressuriserBlockEntity> getBlockEntityClass() {
         return RoomPressuriserBlockEntity.class;
     }
