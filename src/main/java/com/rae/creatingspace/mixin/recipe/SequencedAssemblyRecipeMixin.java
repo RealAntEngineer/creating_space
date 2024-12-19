@@ -85,11 +85,13 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
     @Inject(method = "getRecipe(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/Container;Lnet/minecraft/world/item/crafting/RecipeType;Ljava/lang/Class;Ljava/util/function/Predicate;)Ljava/util/Optional;", at = @At(value = "RETURN"),remap = false )
     private static <C extends Container, R extends ProcessingRecipe<C>> void debugInfo(Level world, C inv, RecipeType<R> type, Class<R> recipeClass, Predicate<? super R> recipeFilter, CallbackInfoReturnable<Optional<R>> cir) {
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
-            CreatingSpace.LOGGER.info("getting possible recipe for :");
-            CreatingSpace.LOGGER.info(inv.getItem(0).serializeNBT().toString());
-            CreatingSpace.LOGGER.info(inv.getItem(1).serializeNBT().toString());
-            for (R optional : getRecipes(world, inv.getItem(0), type, recipeClass).filter(recipeFilter).toList()) {
-                CreatingSpace.LOGGER.info(optional.getId().toString());
+            if (world.getGameTime() % 10 == 0) {
+                CreatingSpace.LOGGER.info("getting possible recipe for :");
+                CreatingSpace.LOGGER.info("input : " + inv.getItem(0).serializeNBT());
+                CreatingSpace.LOGGER.info("adding : " + inv.getItem(1).serializeNBT());
+                for (R optional : getRecipes(world, inv.getItem(0), type, recipeClass).filter(recipeFilter).toList()) {
+                    CreatingSpace.LOGGER.info("recipe id : " + optional.getId());
+                }
             }
         }
     }

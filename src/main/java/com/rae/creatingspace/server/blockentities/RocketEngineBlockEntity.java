@@ -1,6 +1,7 @@
 package com.rae.creatingspace.server.blockentities;
 
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.IMass;
 import com.rae.creatingspace.api.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
@@ -75,8 +76,10 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
             try {
                 nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,
                         PropellantTypeInit.getSyncedPropellantRegistry().getKey(propellantType)).get().orThrow());
-            } catch (Exception ignored){
+            } catch (Throwable ignored){
                 nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,PropellantTypeInit.METHALOX.getId() ).get().orThrow());
+                CreatingSpace.LOGGER.warn("catch exeption will saving engine : "+propellantType);
+                CreatingSpace.LOGGER.warn("exeption : "+ignored.getMessage());
             }
             super.write(nbt, clientPacket);
         }
@@ -95,8 +98,10 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
             try {
                 propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).get().orThrow())
                         .orElse(PropellantTypeInit.METHALOX.get());
-            } catch (Exception ignored){
+            } catch (Throwable ignored){
                 propellantType = PropellantTypeInit.METHALOX.get();
+                CreatingSpace.LOGGER.warn("catch exeption will loading engine : "+propellantType);
+                CreatingSpace.LOGGER.warn("exeption : "+ignored.getMessage());
             }
         }
 

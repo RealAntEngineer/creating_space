@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 
 @Mixin(value = ProcessingRecipeSerializer.class)
-public abstract class ProcessingRecipeRecipeSerializerMixin {
+public abstract class ProcessingRecipeSerializerMixin {
     @Inject(method = "readFromJson", at = @At("RETURN"), remap = false, cancellable = true)
     public void readKeepNbtJson(ResourceLocation recipeId, JsonObject json, CallbackInfoReturnable<ProcessingRecipe> cir) {
         ProcessingRecipe<?> recipe = cir.getReturnValue();
