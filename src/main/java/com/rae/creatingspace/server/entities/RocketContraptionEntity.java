@@ -12,12 +12,12 @@ import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
+import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
 import com.rae.creatingspace.server.contraption.RocketContraption;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSNBTUtil;
 import com.rae.creatingspace.utilities.CustomTeleporter;
 import com.rae.creatingspace.utilities.data.FlightDataHelper;
-import com.rae.creatingspace.utilities.packet.RocketContraptionDisassemblePacket;
 import com.rae.creatingspace.utilities.packet.RocketContraptionUpdatePacket;
 import com.rae.creatingspace.utilities.packet.RocketEntryPosMapClientPacket;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -59,7 +59,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -112,7 +111,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     //TODO make a record and CODEC
     public HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids = new HashMap<>();//
-    private HashMap<String, BlockPos> initialPosMap;
+    private HashMap<ResourceLocation, BlockPos> initialPosMap;
     public RocketScheduleRuntime schedule;
     public static final EntityDataAccessor<RocketStatus> STATUS_DATA_ACCESSOR =
             SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializersInit.STATUS_SERIALIZER);
@@ -807,7 +806,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     protected void readAdditional(CompoundTag compound, boolean spawnData) {
         super.readAdditional(compound, spawnData);
-        this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
+        this.initialPosMap = RocketControlsBlockEntity.getPosMap((CompoundTag) compound.get("initialPosMap"));
         this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));//to remove
         this.totalThrust = compound.getFloat("thrust");
         this.initialMass = compound.getFloat("initialMass");
@@ -833,7 +832,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     @Override
     protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
-        compound.put("initialPosMap", putPosMap(this.initialPosMap, new CompoundTag()));
+        compound.put("initialPosMap", RocketControlsBlockEntity.putPosMap(this.initialPosMap));
         compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
         compound.putFloat("initialMass", this.initialMass);
         compound.put("theoreticalPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.theoreticalPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
@@ -868,37 +867,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         return this.entityData.get(STATUS_DATA_ACCESSOR).propelled_phase;
     }
 
-    public static CompoundTag putPosMap(HashMap<String, BlockPos> initialPosMap, CompoundTag compound) {
-        if (compound == null) {
-            compound = new CompoundTag();
-        }
-        for (String key : initialPosMap.keySet()) {
-            compound.putLong("dimensionInitialPosOf:" + key, initialPosMap.get(key).asLong());
-        }
-
-        return compound;
-    }
-
-    public static HashMap<String, BlockPos> getPosMap(CompoundTag compound) {
-        HashMap<String, BlockPos> initialPosMap = new HashMap<>();
-
-        if (compound != null) {
-            for (String key : compound.getAllKeys()) {
-                if (key.contains("dimensionInitialPosOf:")) {
-                    initialPosMap.put(
-                            key.substring(22),
-                            BlockPos.of(compound.getLong(key)));
-                }
-            }
-        }
-
+    public HashMap<ResourceLocation, BlockPos> getInitialPosMap() {
         return initialPosMap;
     }
-
-    public HashMap<String, BlockPos> getInitialPosMap() {
-        return initialPosMap;
-    }
-    public void setInitialPosMap(HashMap<String, BlockPos> map) {
+    public void setInitialPosMap(HashMap<ResourceLocation, BlockPos> map) {
         initialPosMap = map;
         if (level().isClientSide){
             PacketInit.getChannel()

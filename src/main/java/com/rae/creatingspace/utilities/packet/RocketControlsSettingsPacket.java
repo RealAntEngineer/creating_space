@@ -3,16 +3,16 @@ package com.rae.creatingspace.utilities.packet;
 import com.rae.creatingspace.server.blockentities.RocketControlsBlockEntity;
 import com.simibubi.create.foundation.networking.BlockEntityConfigurationPacket;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 
 public class RocketControlsSettingsPacket extends BlockEntityConfigurationPacket<RocketControlsBlockEntity> {
-    private HashMap<String, BlockPos> initialPosMap;
+    private HashMap<ResourceLocation, BlockPos> initialPosMap;
 
-    public RocketControlsSettingsPacket(BlockPos pos, HashMap<String,BlockPos> initialPosMap) {
+    public RocketControlsSettingsPacket(BlockPos pos, HashMap<ResourceLocation,BlockPos> initialPosMap) {
         super(pos);
         this.initialPosMap = initialPosMap;
     }
@@ -27,7 +27,7 @@ public class RocketControlsSettingsPacket extends BlockEntityConfigurationPacket
     }
 
 
-    public static RocketControlsSettingsPacket sendSettings(BlockPos pos, HashMap<String,BlockPos> initialPosMap) {
+    public static RocketControlsSettingsPacket sendSettings(BlockPos pos, HashMap<ResourceLocation,BlockPos> initialPosMap) {
         RocketControlsSettingsPacket packet = new RocketControlsSettingsPacket(pos);
         packet.initialPosMap = initialPosMap;
         return packet;
@@ -36,7 +36,7 @@ public class RocketControlsSettingsPacket extends BlockEntityConfigurationPacket
 
     @Override
     protected void writeSettings(FriendlyByteBuf buffer) {
-        buffer.writeNbt(RocketControlsBlockEntity.putPosMap(initialPosMap, new CompoundTag()));
+        buffer.writeNbt(RocketControlsBlockEntity.putPosMap(initialPosMap));
     }
 
     @Override

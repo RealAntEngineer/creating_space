@@ -21,7 +21,6 @@ import com.rae.creatingspace.server.entities.RocketContraptionEntity;
 import com.rae.creatingspace.utilities.CSDimensionUtil;
 import com.rae.creatingspace.utilities.CSUtil;
 import com.rae.creatingspace.utilities.packet.RocketContraptionDisassemblePacket;
-import com.rae.creatingspace.utilities.packet.RocketControlsSettingsPacket;
 import com.rae.creatingspace.utilities.packet.RocketScheduleEditPacket;
 import com.simibubi.create.content.trains.schedule.IScheduleInput;
 import com.simibubi.create.foundation.gui.*;
@@ -76,7 +75,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     //end of schedule logic
     private boolean destinationChanged;
     private Button disassembleButton;
-    HashMap<String, BlockPos> initialPosMap;
+    HashMap<ResourceLocation, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
     private final ResourceLocation currentDimension;
     private ResourceLocation destination;
@@ -173,7 +172,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         validateSetting.setToolTip(
                 Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
         validateSetting.withCallback(() -> {
-            BlockPos pos = initialPosMap.get(String.valueOf(destination));
+            BlockPos pos = initialPosMap.get(destination);
             if (pos == null) {
                 pos = this.rocketContraption.getOnPos();
             }
@@ -195,16 +194,16 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                 Zinput.setValue(String.valueOf(pos.getZ()));
             }
 
-            initialPosMap.put(String.valueOf(destination), pos);
+            initialPosMap.put(destination, pos);
             rocketContraption.setInitialPosMap(initialPosMap);//PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
         });
-
+        BlockPos pos = initialPosMap.get(destination);
         Xinput = new EditBox(font, width - 100, y + 63,
-                50, 14, Component.literal(""));
+                50, 14, pos!=null?Component.literal(String.valueOf(pos.getX())):Component.literal(""));
         /*Yinput = new EditBox(font,x + 169, y + 63,
                 50, 14, Component.literal(""));*/
         Zinput = new EditBox(font, width - 100, y + 83,
-                50, 14, Component.literal(""));
+                50, 14, pos!=null?Component.literal(String.valueOf(pos.getZ())):Component.literal(""));
 
         addRenderableWidget(Xinput);
         //addRenderableWidget(Yinput);

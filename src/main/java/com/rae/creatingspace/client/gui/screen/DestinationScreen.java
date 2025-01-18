@@ -35,7 +35,7 @@ public class DestinationScreen extends AbstractSimiScreen {
     private boolean destinationChanged;
     private Button launchButton;
     private final HashMap<ResourceLocation, RocketAccessibleDimension.AccessibilityParameter> mapOfAccessibleDimensionAndV;
-    HashMap<String, BlockPos> initialPosMap;
+    HashMap<ResourceLocation, BlockPos> initialPosMap;
     private final RocketControlsBlockEntity blockEntity;
     private final GuiTexturesInit background;
     private final ResourceLocation currentDimension;
@@ -87,7 +87,7 @@ public class DestinationScreen extends AbstractSimiScreen {
         validateSetting.setToolTip(
                 Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
         validateSetting.withCallback(() -> {
-                    BlockPos pos =  initialPosMap.get(String.valueOf(destination));
+                    BlockPos pos =  initialPosMap.get(destination);
                     if (pos == null) {
                         pos =  this.blockEntity.getBlockPos();
                     }
@@ -109,7 +109,7 @@ public class DestinationScreen extends AbstractSimiScreen {
                         Zinput.setValue(String.valueOf(pos.getZ()));
                     }
 
-                    initialPosMap.put(String.valueOf(destination),pos);
+                    initialPosMap.put(destination,pos);
                     PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.blockEntity.getBlockPos(),initialPosMap));
                 });
 
