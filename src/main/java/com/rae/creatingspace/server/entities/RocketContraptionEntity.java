@@ -99,8 +99,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             TagKey.codec(Registries.FLUID),
             Codec.FLOAT
     ).xmap(HashMap::new, i -> i);
-    //todo remove this, will be in rocket path in the future
-    public BlockPos rocketEntryCoordinate = new BlockPos(0,0,0);
     public float totalThrust = 0;
     public float initialMass;
     public ResourceLocation originDimension = Level.OVERWORLD.location();
@@ -435,7 +433,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     @Override
     public void tick() {
-        ROCKET_SOUND_LENGTH = 65;
+        ROCKET_SOUND_LENGTH = 35;
 
         //movement is bugged when in ground -> avoid collision by slowing down upon landing ? or breaking blocks
         boolean wasRunning = isInPropulsionPhase();

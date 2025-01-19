@@ -78,7 +78,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     HashMap<ResourceLocation, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
     private final ResourceLocation currentDimension;
-    private ResourceLocation destination;
+    private ResourceLocation destination;//TODO replace with a call to a getDestination calling ResourceLocation.tryParse(editingDestination.getData().getString("Text"))))
     private Orbit focusedPlanet = null;
     private final Vector<Orbit> buttonVector;
     private LabeledBoxWidget destinationCost;
@@ -171,39 +171,12 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         validateSetting = new IconButton(width - 45, y + 70, AllIcons.I_CONFIG_SAVE);
         validateSetting.setToolTip(
                 Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
-        validateSetting.withCallback(() -> {
-            BlockPos pos = initialPosMap.get(destination);
-            if (pos == null) {
-                pos = this.rocketContraption.getOnPos();
-            }
-            String X = Xinput.getValue().replace(" ", ""),/*Y = Yinput.getValue().replace(" ",""),*/
-                    Z = Zinput.getValue().replace(" ", "");
-            if (CSUtil.isInteger(X)) {
-                pos = new BlockPos(Integer.parseInt(X), pos.getY(), pos.getZ());
-            } else {
-                Xinput.setValue(String.valueOf(pos.getX()));
-            }
-                    /*if (isInteger(Y)){
-                        pos = pos.mutable().setY(Integer.parseInt(Y)).immutable();
-                    }else {
-                        Yinput.setValue(String.valueOf(pos.getY()));
-                    }*/
-            if (CSUtil.isInteger(Z)) {
-                pos = pos.mutable().setZ(Integer.parseInt(Z)).immutable();
-            } else {
-                Zinput.setValue(String.valueOf(pos.getZ()));
-            }
+        validateSetting.withCallback(this::updatePosMap);
 
-            initialPosMap.put(destination, pos);
-            rocketContraption.setInitialPosMap(initialPosMap);//PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
-        });
-        BlockPos pos = initialPosMap.get(destination);
         Xinput = new EditBox(font, width - 100, y + 63,
-                50, 14, pos!=null?Component.literal(String.valueOf(pos.getX())):Component.literal(""));
-        /*Yinput = new EditBox(font,x + 169, y + 63,
-                50, 14, Component.literal(""));*/
+                50, 14, Component.literal(""));
         Zinput = new EditBox(font, width - 100, y + 83,
-                50, 14, pos!=null?Component.literal(String.valueOf(pos.getZ())):Component.literal(""));
+                50, 14, Component.literal(""));
 
         addRenderableWidget(Xinput);
         //addRenderableWidget(Yinput);
@@ -262,6 +235,30 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         addRenderableWidget(launchButton);
     }
 
+    private void updatePosMap() {
+        if (destination!=null) {
+            BlockPos pos = initialPosMap.get(destination);
+            if (pos == null) {
+                pos = this.rocketContraption.getOnPos();
+            }
+            String X = Xinput.getValue().replace(" ", ""),/*Y = Yinput.getValue().replace(" ",""),*/
+                    Z = Zinput.getValue().replace(" ", "");
+            if (CSUtil.isInteger(X)) {
+                pos = new BlockPos(Integer.parseInt(X), pos.getY(), pos.getZ());
+            } else {
+                Xinput.setValue(String.valueOf(pos.getX()));
+            }
+            if (CSUtil.isInteger(Z)) {
+                pos = new BlockPos(pos.getX(), pos.getY(), Integer.parseInt(Z));
+            } else {
+                Zinput.setValue(String.valueOf(pos.getZ()));
+            }
+
+            initialPosMap.put(destination, pos);
+            rocketContraption.setInitialPosMap(initialPosMap);//PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
+        }
+    }
+
 
     @Override
     public void render(GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
@@ -291,13 +288,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         }
         if (editingDestination != null) {
             if (destinationChanged) {
-                BlockPos pos = initialPosMap.get(editingDestination.getData().getString("Text"));
-                if (pos == null) {
-                    pos = this.rocketContraption.getOnPos();
-                }
-                Xinput.setValue(String.valueOf(pos.getX()));
-                //Yinput.setValue(String.valueOf(pos.getY()));
-                Zinput.setValue(String.valueOf(pos.getZ()));
+                updateXZInput();
             }
             Xinput.visible = true;
             Xinput.active = true;
@@ -349,6 +340,15 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
         super.renderForeground(graphics, mouseX, mouseY, partialTicks);
         action(graphics, mouseX, mouseY, -1);
 
+    }
+
+    private void updateXZInput() {
+        BlockPos pos = initialPosMap.get(destination);
+        if (pos == null) {
+            pos = this.rocketContraption.getOnPos();
+        }
+        Xinput.setValue(String.valueOf(pos.getX()));
+        Zinput.setValue(String.valueOf(pos.getZ()));
     }
 
     @Override
@@ -899,7 +899,8 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
                                 destinationChanged = true;
                             }
                     );
-
+                    destination = CSDimensionUtil.getPlanets().get(((ScrollInput) e).getState());
+                    destinationChanged = true;
                 }
         );
 
@@ -1248,6 +1249,9 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
 
         if (editingCondition == null && editingDestination == null)
             return;
+
+        validateSetting.runCallback(validateSetting.getX()+1,validateSetting.getY()+1);
+
 
         removeWidget(scrollInput);
         removeWidget(scrollInputLabel);

@@ -126,7 +126,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
         rocketContraptionEntity.setInitialPosMap(initialPosMap);
         //we should make that a little better -> no initialisation of entry point before launch
-        rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination.toString(), this.worldPosition);
+        //rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination, this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);
 
         AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(level, worldPosition);
@@ -157,7 +157,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     }
 
     public static CompoundTag putPosMap(HashMap<ResourceLocation,BlockPos> initialPosMap) {
-        return (CompoundTag) POS_MAP_CODEC.encodeStart(NbtOps.INSTANCE,initialPosMap).resultOrPartial(
+        return initialPosMap==null?null:(CompoundTag) POS_MAP_CODEC.encodeStart(NbtOps.INSTANCE,initialPosMap).resultOrPartial(
                 (e)-> {
                     CreatingSpace.LOGGER.warn("Rocket Control failed to parse pos map : ");
                     CreatingSpace.LOGGER.error(e);
@@ -171,7 +171,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         super.read(compound, clientPacket);
     }
     public static  HashMap<ResourceLocation,BlockPos> getPosMap(CompoundTag compound) {
-        return  new HashMap<>(POS_MAP_CODEC.parse(NbtOps.INSTANCE,compound).resultOrPartial(
+        return  compound==null?null:new HashMap<>(POS_MAP_CODEC.parse(NbtOps.INSTANCE,compound).resultOrPartial(
                 (e)-> {
                     CreatingSpace.LOGGER.warn("Rocket Control failed to parse pos map : ");
                     CreatingSpace.LOGGER.error(e);
