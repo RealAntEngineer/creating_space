@@ -157,7 +157,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     }
 
     public static CompoundTag putPosMap(HashMap<ResourceLocation,BlockPos> initialPosMap) {
-        return initialPosMap==null?null:(CompoundTag) POS_MAP_CODEC.encodeStart(NbtOps.INSTANCE,initialPosMap).resultOrPartial(
+        return initialPosMap==null?new CompoundTag():(CompoundTag) POS_MAP_CODEC.encodeStart(NbtOps.INSTANCE,initialPosMap).resultOrPartial(
                 (e)-> {
                     CreatingSpace.LOGGER.warn("Rocket Control failed to parse pos map : ");
                     CreatingSpace.LOGGER.error(e);
