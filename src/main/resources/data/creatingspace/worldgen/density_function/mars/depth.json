@@ -7,5 +7,13 @@
     "from_value": 1.5,
     "to_value": -1.5
   },
-  "argument2": "creatingspace:mars/offset"
+  "argument2": {
+    "type": "minecraft:add",
+    "argument1":"creatingspace:mars/offset",
+    "argument2": {
+      "type": "minecraft:mul",
+      "argument1": "creatingspace:mars/ravines_folded",
+      "argument2": "creatingspace:mars/ravine_factor"
+    }
+  }
 }
