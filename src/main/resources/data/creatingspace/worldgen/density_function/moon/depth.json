@@ -12,7 +12,7 @@
     "argument1": "creatingspace:moon/offset",
     "argument2": {
         "type": "minecraft:mul",
-        "argument1": -0.2,
+        "argument1": -1,
         "argument2": "creatingspace:moon/crater_density"
     }
   }

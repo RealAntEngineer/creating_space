@@ -198,7 +198,7 @@
         {"type": "minecraft:condition",
         "if_true":  {
           "type": "minecraft:biome",
-          "biome_is": ["creatingspace:moon_plains"]
+          "biome_is": ["creatingspace:moon/plains"]
         },
         "then_run":   {
           "type": "minecraft:sequence",
