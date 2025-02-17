@@ -8,10 +8,7 @@
     "Name": "creatingspace:hot_stone"
   },
   "default_fluid": {
-    "Name": "minecraft:lava",
-    "Properties": {
-      "level": "0"
-    }
+    "Name": "minecraft:air"
   },
   "noise": {
     "min_y": -64,
@@ -22,8 +19,8 @@
   "noise_router": {
     "barrier": 0,
     "fluid_level_floodedness": 1,
-    "fluid_level_spread": 0,
-    "lava": 0,
+    "fluid_level_spread": 0.3,
+    "lava": 1,
     "temperature": "creatingspace:venus/volcanism",
     "vegetation": "creatingspace:venus/toxicity",
     "continents": "creatingspace:venus/volcanism",

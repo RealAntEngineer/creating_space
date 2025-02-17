@@ -6,11 +6,18 @@
       "type": "minecraft:abs",
       "argument": {
         "type": "minecraft:add",
-        "argument1": "creatingspace:venus/volcano/worley_base",
-        "argument2": -0.2
+        "argument1": {
+          "type": "minecraft:abs",
+          "argument": {
+            "type": "minecraft:add",
+            "argument1": "creatingspace:venus/volcano/worley_base",
+            "argument2": 0.2
+          }
+        },
+        "argument2": 0.2
       }
     },
-    "argument2": -0.2
+    "argument2": -0.7
   },
   "argument2": -7
 }
