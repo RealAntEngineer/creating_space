@@ -8,7 +8,10 @@
     "Name": "creatingspace:hot_stone"
   },
   "default_fluid": {
-    "Name": "minecraft:air"
+    "Name": "minecraft:water",
+    "Properties": {
+      "level": "0"
+    }
   },
   "noise": {
     "min_y": -64,
@@ -17,19 +20,19 @@
     "size_vertical": 2
   },
   "noise_router": {
-    "barrier": 0,
-    "fluid_level_floodedness": 1,
-    "fluid_level_spread": 0.3,
+    "barrier": 1,
+    "fluid_level_floodedness": 0.6,
+    "fluid_level_spread": 0.5,
     "lava": 1,
     "temperature": "creatingspace:venus/volcanism",
     "vegetation": "creatingspace:venus/toxicity",
     "continents": "creatingspace:venus/volcanism",
-    "erosion": "creatingspace:venus/volcano",
+    "erosion": "creatingspace:venus/volcano/factor",
     "depth": 0,
     "ridges": 0,
     "initial_density_without_jaggedness": {
       "type": "minecraft:add",
-      "argument1": 0.37,
+      "argument1": -2,
       "argument2": "creatingspace:venus/slopped_cheese"
     },
     "final_density": {

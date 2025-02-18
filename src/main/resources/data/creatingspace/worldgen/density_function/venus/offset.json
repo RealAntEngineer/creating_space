@@ -2,8 +2,8 @@
   "type": "minecraft:add",
   "argument1": {
     "type": "minecraft:mul",
-    "argument1": "creatingspace:venus/volcano_factor",
-    "argument2": "creatingspace:venus/volcano"
+    "argument1": "creatingspace:venus/volcano/factor",
+    "argument2": "creatingspace:venus/volcano/old_volcano"
   },
   "argument2": {
     "type": "minecraft:mul",
