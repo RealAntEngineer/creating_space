@@ -3,7 +3,7 @@
   "argument": {
     "type": "creatingspace:worley_noise",
     "xz_size": 64,
-    "y_size": 64,
+    "y_size": 100000000000,
     "scale_factor": 1
   }
 }
