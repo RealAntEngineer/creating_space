@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:interpolated",
+  "argument": {
+    "type": "minecraft:add",
+    "argument1": {
+      "type": "minecraft:y_clamped_gradient",
+      "from_y": 250,
+      "to_y": -50,
+      "from_value": -1.5,
+      "to_value": 1
+    },
+    "argument2": {
+      "type": "minecraft:range_choice",
+      "input": "creatingspace:europa/ocean_bed/bed",
+      "min_inclusive": 0,
+      "max_exclusive": 10000,
+      "when_in_range": 0,
+      "when_out_of_range": 0.2
+    }
+  }
+}

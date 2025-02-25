@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:range_choice",
+    "input": {
+      "type": "minecraft:y_clamped_gradient",
+      "from_y": 140,
+      "to_y": 150,
+      "from_value": -1,
+      "to_value": 1
+    },
+    "min_inclusive": -1,
+    "max_exclusive": 1,
+    "when_in_range": "creatingspace:europa/ocean_bed/bed",
+    "when_out_of_range": "creatingspace:europa/surface/depth"
+  },
+  "argument2": {
+    "type": "minecraft:mul",
+    "argument1": "creatingspace:europa/base_3d_noise",
+    "argument2": 0.1
+  }
+}

@@ -7,6 +7,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.api.planets.OrbitParameter;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.simibubi.create.foundation.render.RenderTypes;
 import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.Camera;
@@ -103,8 +104,10 @@ public class SmartPlanetsEffect extends DimensionSpecialEffects {
 
         bufferSource.endBatch();
         RenderSystem.restoreProjectionMatrix();
-        FogRenderer.levelFogColor();
-        setupFog.run();
+        if (CSConfigs.CLIENT.render_fog.get()) {
+            FogRenderer.levelFogColor();
+            setupFog.run();
+        }
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
         RenderSystem.depthFunc(GL11.GL_LEQUAL); // Standard depth function

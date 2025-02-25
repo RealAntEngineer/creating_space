@@ -3,186 +3,172 @@
   "argument": {
     "type": "minecraft:cache_2d",
     "argument": {
-      "type": "minecraft:add",
-      "argument1": 10,
-      "argument2": {
-        "type": "minecraft:mul",
-        "argument1": {
-          "type": "minecraft:blend_alpha"
-        },
-        "argument2": {
-          "type": "minecraft:add",
-          "argument1": -10,
-          "argument2": {
-            "type": "minecraft:spline",
-            "spline": {
-              "coordinate": "creatingspace:moon/continents",
+      "type": "minecraft:spline",
+      "spline": {
+        "coordinate": "creatingspace:moon/continents",
+        "points": [
+          {
+            "location": -0.5,
+            "derivative": 0,
+            "value": 10
+          },
+          {
+            "location": -0.2,
+            "derivative": 0,
+            "value": {
+              "coordinate": "creatingspace:moon/erosion",
               "points": [
                 {
                   "location": -0.5,
                   "derivative": 0,
-                  "value": 3.95
+                  "value": 6
                 },
                 {
-                  "location": -0.2,
+                  "location": -0.25,
                   "derivative": 0,
-                  "value": {
-                    "coordinate": "creatingspace:moon/erosion",
-                    "points": [
-                      {
-                        "location": -0.5,
-                        "derivative": 0,
-                        "value": 4
-                      },
-                      {
-                        "location": -0.25,
-                        "derivative": 0,
-                        "value": 3.95
-                      },
-                      {
-                        "location": -0.1,
-                        "derivative": 0,
-                        "value": 3.95
-                      },
-                      {
-                        "location": 0.03,
-                        "derivative": 0,
-                        "value": 3.95
-                      },
-                      {
-                        "location": 0.45,
-                        "derivative": 0,
-                        "value": 3.6
-                      },
-                      {
-                        "location": 0.55,
-                        "derivative": 0,
-                        "value": 3.6
-                      }
-                    ]
-                  }
+                  "value": 7
                 },
                 {
                   "location": -0.1,
                   "derivative": 0,
-                  "value": {
-                    "coordinate": "creatingspace:moon/erosion",
-                    "points": [
-                      {
-                        "location": -0.5,
-                        "derivative": 0,
-                        "value": 4.5
-                      },
-                      {
-                        "location": -0.25,
-                        "derivative": 0,
-                        "value": 4.5
-                      },
-                      {
-                        "location": -0.1,
-                        "derivative": 0,
-                        "value": 4.2
-                      },
-                      {
-                        "location": 0.03,
-                        "derivative": 0,
-                        "value": 4.2
-                      },
-                      {
-                        "location": 0.45,
-                        "derivative": 0,
-                        "value": 3.95
-                      },
-                      {
-                        "location": 0.55,
-                        "derivative": 0,
-                        "value": 3.8
-                      }
-                    ]
-                  }
+                  "value": 8
                 },
                 {
-                  "location": 0.3,
+                  "location": 0.03,
                   "derivative": 0,
-                  "value": {
-                    "coordinate": "creatingspace:moon/erosion",
-                    "points": [
-                      {
-                        "location": -0.5,
-                        "derivative": 0,
-                        "value": 5.2
-                      },
-                      {
-                        "location": -0.25,
-                        "derivative": 0,
-                        "value": 5.5
-                      },
-                      {
-                        "location": -0.1,
-                        "derivative": 0,
-                        "value": 4.8
-                      },
-                      {
-                        "location": 0.03,
-                        "derivative": 0,
-                        "value": 4.5
-                      },
-                      {
-                        "location": 0.45,
-                        "derivative": 0,
-                        "value": 4.2
-                      },
-                      {
-                        "location": 0.55,
-                        "derivative": 0,
-                        "value": 3.8
-                      }
-                    ]
-                  }
+                  "value": 9
                 },
                 {
-                  "location": 0.6,
+                  "location": 0.45,
                   "derivative": 0,
-                  "value": {
-                    "coordinate": "creatingspace:moon/erosion",
-                    "points": [
-                      {
-                        "location": -0.5,
-                        "derivative": 0,
-                        "value": 6
-                      },
-                      {
-                        "location": -0.25,
-                        "derivative": 0,
-                        "value": 6
-                      },
-                      {
-                        "location": -0.1,
-                        "derivative": 0,
-                        "value": 5.5
-                      },
-                      {
-                        "location": 0.03,
-                        "derivative": 0,
-                        "value": 4.5
-                      },
-                      {
-                        "location": 0.45,
-                        "derivative": 0,
-                        "value": 4
-                      },
-                      {
-                        "location": 0.55,
-                        "derivative": 0,
-                        "value": 3.7
-                      }
-                    ]
-                  }
+                  "value": 10
+                },
+                {
+                  "location": 0.55,
+                  "derivative": 0,
+                  "value": 12
+                }
+              ]
+            }
+          },
+          {
+            "location": -0.1,
+            "derivative": 0,
+            "value": {
+              "coordinate": "creatingspace:moon/erosion",
+              "points": [
+                {
+                  "location": -0.5,
+                  "derivative": 0,
+                  "value": 5
+                },
+                {
+                  "location": -0.25,
+                  "derivative": 0,
+                  "value": 5
+                },
+                {
+                  "location": -0.1,
+                  "derivative": 0,
+                  "value": 5
+                },
+                {
+                  "location": 0.03,
+                  "derivative": 0,
+                  "value": 6
+                },
+                {
+                  "location": 0.45,
+                  "derivative": 0,
+                  "value": 6
+                },
+                {
+                  "location": 0.55,
+                  "derivative": 0,
+                  "value": 7
+                }
+              ]
+            }
+          },
+          {
+            "location": 0.3,
+            "derivative": 0,
+            "value": {
+              "coordinate": "creatingspace:moon/erosion",
+              "points": [
+                {
+                  "location": -0.5,
+                  "derivative": 0,
+                  "value": 4
+                },
+                {
+                  "location": -0.25,
+                  "derivative": 0,
+                  "value": 4.3
+                },
+                {
+                  "location": -0.1,
+                  "derivative": 0,
+                  "value": 5
+                },
+                {
+                  "location": 0.03,
+                  "derivative": 0,
+                  "value": 5
+                },
+                {
+                  "location": 0.45,
+                  "derivative": 0,
+                  "value": 5
+                },
+                {
+                  "location": 0.55,
+                  "derivative": 0,
+                  "value": 5
+                }
+              ]
+            }
+          },
+          {
+            "location": 0.6,
+            "derivative": 0,
+            "value": {
+              "coordinate": "creatingspace:moon/erosion",
+              "points": [
+                {
+                  "location": -0.5,
+                  "derivative": 0,
+                  "value": 2
+                },
+                {
+                  "location": -0.25,
+                  "derivative": 0,
+                  "value": 2
+                },
+                {
+                  "location": -0.1,
+                  "derivative": 0,
+                  "value": 2.3
+                },
+                {
+                  "location": 0.03,
+                  "derivative": 0,
+                  "value": 3
+                },
+                {
+                  "location": 0.45,
+                  "derivative": 0,
+                  "value": 3.2
+                },
+                {
+                  "location": 0.55,
+                  "derivative": 0,
+                  "value": 3.7
                 }
               ]
             }
           }
-        }
+        ]
       }
     }
   }

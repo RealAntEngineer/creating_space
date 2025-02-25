@@ -2,7 +2,7 @@
   "type": "minecraft:add",
   "argument1": {
     "type": "minecraft:mul",
-    "argument1": 2,
+    "argument1": 4,
     "argument2": {
       "type": "minecraft:quarter_negative",
       "argument": {

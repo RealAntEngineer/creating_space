@@ -78,7 +78,7 @@ public class MBShape {
             Vec3i off = getOffset(facing,false);
             Vec3i size = getSize(facing);
             boolean negative = facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE;
-            for (int x = -off.getX();  x < size.getX() - off.getX() /*&& !(negative && x > off.getX() - size.getX())*/ ; x++) {
+            for (int x = -off.getX();  x < size.getX() - off.getX(); x++) {
                 for (int y = -off.getY(); y < size.getY() - off.getY(); y++) {
                     for (int z = -off.getZ(); z < size.getZ() - off.getZ(); z++) {
                         if (x != 0 || y != 0 || z != 0) {
@@ -96,7 +96,7 @@ public class MBShape {
                                                 negative?-y:y,
                                                 negative?-z:z),
 
-                                        structure.defaultBlockState().setValue(DirectionalBlock.FACING, shape.get(x + off.getX()).get(y + off.getY()).get(z + off.getZ()))
+                                        Blocks.DISPENSER.defaultBlockState().setValue(DirectionalBlock.FACING, shape.get(x + off.getX()).get(y + off.getY()).get(z + off.getZ()))
                                 );
                             }
                         }
