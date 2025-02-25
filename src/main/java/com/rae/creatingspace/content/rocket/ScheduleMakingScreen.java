@@ -202,7 +202,10 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         GuiTexturesInit.ROCKET_INFO.render(ms, width - 130, 10);
         renderSchedule(ms, partialTicks);
         //render the background of the
-        if (editingDestination!=null || editingCondition!=null) {
+        if (editingDestination!=null ) {
+            GuiTexturesInit.INSTRUCTION_BACKGROUND.render(ms, leftPos +1, topPos + 40);
+        }
+        if (editingCondition!=null){
             AllGuiTextures.SCHEDULE_EDITOR.render(ms, leftPos - 2, topPos + 40);
         }
         ms.pushPose();
@@ -494,7 +497,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         return fieldSize;
     }
 
-    //stencil on the outside of the schedule list
+    //stencil on the outside of the schedule list -> this is really dirty
     protected void startStencil(PoseStack matrixStack, float x, float y, float w, float h) {
         RenderSystem.clear(GL30.GL_STENCIL_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
 
@@ -598,7 +601,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
     protected void updateEditorSubwidgets(IScheduleInput field) {
         //destinationSuggestions = null;
-
+        //TODO look at the released version to find the bug free version of this function
         editorSubWidgets.forEach(this::removeWidget);
         editorSubWidgets.clear();
         field.initConfigurationWidgets(

@@ -31,7 +31,7 @@ public abstract class ScheduleInstruction extends ScheduleDataEntry {
                 supplier = pair.getSecond();
 
         if (supplier == null) {
-            CreatingSpace.LOGGER.warn("Could not parse schedule instruction type: " + location);
+            CreatingSpace.LOGGER.warn("Could not parse schedule instruction type: {}", location);
             return new DestinationInstruction();
         }
 

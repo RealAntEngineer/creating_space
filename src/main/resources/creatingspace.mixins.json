@@ -24,7 +24,9 @@
     "recipe.ProcessingRecipeMixin",
     "recipe.ProcessingRecipeRecipeSerializerMixin",
     "recipe.SequencedAssemblyRecipeMixin",
-    "recipe.SequencedAssemblyRecipeSerializerMixin"
+    "recipe.SequencedAssemblyRecipeSerializerMixin",
+    "worldgen.NoiseBasedAquiferMixin",
+    "worldgen.RandomStateMixin"
   ],
   "client": [
   ],

@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomDensityFunctions {
@@ -15,6 +17,7 @@ public class CustomDensityFunctions {
     //direct copy of endIsland noise to understand what it does
    public static final class WorleyDensityFunction implements DensityFunction.SimpleFunction {
         WorleyNoise noise;
+
         public static final MapCodec<WorleyDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) -> {
             return instance.group(
                     Codec.DOUBLE.fieldOf("xz_size").forGetter(i -> i.noise.getXZSize()),
@@ -47,6 +50,10 @@ public class CustomDensityFunctions {
         @Override
         public @NotNull KeyDispatchDataCodec<? extends DensityFunction> codec() {
             return CODEC;
+        }
+
+        public void setSeed(long seed) {
+            noise.setSeed(seed);
         }
     }
 }

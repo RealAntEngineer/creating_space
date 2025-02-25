@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:cache_2d",
+  "argument": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "minecraft:spline",
+      "spline": {
+        "coordinate": "creatingspace:venus/volcano/worley_base",
+        "points": [
+          {
+            "location": -1,
+            "derivative": 0,
+            "value": 0
+          },
+          {
+            "location": -0.3,
+            "derivative": 0,
+            "value": 8
+          }
+        ]
+      }
+    },
+    "argument2": 0.7
+  }
+}

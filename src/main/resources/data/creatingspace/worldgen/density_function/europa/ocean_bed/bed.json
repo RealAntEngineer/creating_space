@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:y_clamped_gradient",
+    "from_y": -40,
+    "to_y": 120,
+    "from_value": 6,
+    "to_value": -1.5
+  },
+  "argument2": {
+    "type": "minecraft:add",
+    "argument1": "creatingspace:europa/ocean_bed/offset",
+    "argument2": {
+      "type": "minecraft:clamp",
+      "input": {
+        "type": "minecraft:mul",
+        "argument1": -1,
+        "argument2": "creatingspace:europa/ocean_bed/factor"
+      },
+      "min": -1000,
+      "max": 0
+    }
+  }
+}

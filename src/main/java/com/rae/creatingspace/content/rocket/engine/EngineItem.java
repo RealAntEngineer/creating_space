@@ -35,7 +35,7 @@ public class EngineItem extends RocketEngineItem {
         RocketEngineBlock main = (RocketEngineBlock) getBlock();
         Level lvl = pContext.getLevel();
         Direction facing = pContext.getClickedFace();
-        Vec3i offset = main.getPlaceOffset(facing);
+        Vec3i offset = main.getPlaceOffset(facing);//nope this isn't the correct offset to know where to verify the blocks
         BlockPos mainPos = pContext.getClickedPos().offset(offset);
         boolean flag = true;
         Vec3i size = main.getSize(facing);

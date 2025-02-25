@@ -4,8 +4,8 @@
     "type": "minecraft:mul",
     "argument1": -3,
     "argument2": {
-      "type": "minecraft:max",
-      "argument1": {
+      "type": "minecraft:clamp",
+      "input": {
         "type": "minecraft:add",
         "argument1": -0.3,
         "argument2": {
@@ -20,15 +20,16 @@
           }
         }
       },
-      "argument2": 0
+      "min": 0,
+      "max": 0.5
     }
   },
   "argument2": {
     "type": "minecraft:mul",
     "argument1": -5,
     "argument2": {
-      "type": "minecraft:max",
-      "argument1": {
+      "type": "minecraft:clamp",
+      "input": {
         "type": "minecraft:add",
         "argument1": -0.3,
         "argument2": {
@@ -43,7 +44,8 @@
           }
         }
       },
-      "argument2": 0
+      "min": 0,
+      "max": 0.4
     }
   }
 }

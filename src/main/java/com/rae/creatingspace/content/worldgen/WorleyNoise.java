@@ -1,5 +1,7 @@
 package com.rae.creatingspace.content.worldgen;
 
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.phys.Vec3;
 
 public class WorleyNoise {
@@ -25,23 +27,43 @@ public class WorleyNoise {
     private final double XZSize;
     private final double YSize;
     private final double scaleFactor;
+    private double x0,y0,z0;
+    private int[] p = new int[289];
     public WorleyNoise(double XZSize, double YSize, double scaleFactor) {
         this.XZSize = XZSize;
         this.YSize = YSize;
         this.scaleFactor = scaleFactor;
+        setSeed(0L);
+    }
+    public void setSeed(long seed){
+        RandomSource random = new XoroshiroRandomSource(seed);
+        this.x0 = random.nextDouble() * 289.0D;
+        this.y0 = random.nextDouble() * 289.0D;
+        this.z0 = random.nextDouble() * 289.0D;
+
+        for(int i = 0; i < 289; this.p[i] = i++) {
+        }
+
+        for(int l = 0; l < 289; ++l) {
+            int j = random.nextInt(289 - l);
+            int k = this.p[l];
+            this.p[l] = this.p[j + l];
+            this.p[j + l] = k;
+        }
+
     }
 
-    private static double permute(double x) {
-        return ((34.0d * x + 1.0d) * x) % 289.0d;
+    private double permute(double x) {
+        return p[(int) (x%289.0d)];
     }
 
     public static double fract(double x) {
         return x - Math.floor(x);
     }
 
-    public static double cellular3x3x3(double px, double py, double pz) {
-        double Pix = Math.floor(px), Piy = Math.floor(py), Piz = Math.floor(pz); // Integer part
-        double Pfx = fract(px),Pfy = fract(py),Pfz = fract(pz); // Fractional part
+    public double cellular3x3x3(double px, double py, double pz) {
+        double Pix = Math.floor(px+x0), Piy = Math.floor(py+y0), Piz = Math.floor(pz+z0); // Integer part
+        double Pfx = fract(px+x0),Pfy = fract(py+y0),Pfz = fract(pz+z0); // Fractional part
 
         double minDist = Float.MAX_VALUE;
 

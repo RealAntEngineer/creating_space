@@ -107,8 +107,8 @@ public class SuperRocketStructuralBlock extends DirectionalBlock implements IWre
         if (stillValid(pLevel, pCurrentPos, pState)) {
             BlockPos masterPos = getMaster(pLevel, pCurrentPos, pState);
             if (!pLevel.getBlockTicks()
-                    .hasScheduledTick(masterPos, BlockInit.SMALL_ROCKET_ENGINE.get()))
-                pLevel.scheduleTick(masterPos, BlockInit.SMALL_ROCKET_ENGINE.get(), 1);
+                    .hasScheduledTick(masterPos, BlockInit.ROCKET_ENGINE.get()))
+                pLevel.scheduleTick(masterPos, BlockInit.ROCKET_ENGINE.get(), 1);
             return pState;
         }
         if (!(pLevel instanceof Level level) || level.isClientSide())

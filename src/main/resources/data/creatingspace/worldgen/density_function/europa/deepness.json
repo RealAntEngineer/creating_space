@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "minecraft:abs",
+      "argument": {
+        "type": "minecraft:flat_cache",
+        "argument": {
+          "type": "minecraft:shifted_noise",
+          "noise": "creatingspace:europa/deepness",
+          "xz_scale": 0.25,
+          "y_scale": 0,
+          "shift_x": "creatingspace:shift_x",
+          "shift_y": 0,
+          "shift_z": "creatingspace:shift_z"
+        }
+      }
+    },
+    "argument2": -1
+  },
+  "argument2": 0.4
+}

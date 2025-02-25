@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:y_clamped_gradient",
+    "from_y": -44,
+    "to_y": 170,
+    "from_value": 1.5,
+    "to_value": -1.5
+  },
+  "argument2": {
+    "type": "minecraft:clamp",
+    "input":{
+      "type": "minecraft:add",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": "creatingspace:venus/volcano/factor",
+        "argument2": "creatingspace:venus/volcano/volcano_initial"
+      },
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": "creatingspace:venus/folded_rivers",
+        "argument2": "creatingspace:venus/rivers_factor"
+      }
+    },
+    "min": 0,
+    "max": 10000
+  }
+}
