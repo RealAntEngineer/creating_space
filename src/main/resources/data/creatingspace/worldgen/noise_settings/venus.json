@@ -4,11 +4,18 @@
   "aquifers_enabled": true,
   "ore_veins_enabled": false,
   "legacy_random_source": false,
+  "improved_lava_gen": true,
   "default_block": {
     "Name": "creatingspace:hot_stone"
   },
   "default_fluid": {
     "Name": "minecraft:water",
+    "Properties": {
+      "level": "0"
+    }
+  },
+  "lava_fluid": {
+    "Name": "minecraft:lava",
     "Properties": {
       "level": "0"
     }
@@ -22,7 +29,7 @@
   "noise_router": {
     "barrier": 0,
     "fluid_level_floodedness": "creatingspace:venus/aquifer/floodedness",
-    "fluid_level_spread": 0,
+    "fluid_level_spread": 1,
     "lava": 1,
     "temperature": 0,
     "vegetation": "creatingspace:venus/toxicity",
