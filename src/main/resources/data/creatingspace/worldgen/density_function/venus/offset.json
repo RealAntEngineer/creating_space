@@ -5,7 +5,7 @@
     "argument1": {
       "type": "minecraft:mul",
       "argument1": "creatingspace:venus/volcano/factor",
-      "argument2": "creatingspace:venus/volcano/old_volcano"
+      "argument2": "creatingspace:venus/volcano/volcano_initial"
     },
     "argument2": {
       "type": "minecraft:mul",

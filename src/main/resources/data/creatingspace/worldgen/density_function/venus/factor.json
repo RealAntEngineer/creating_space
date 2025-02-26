@@ -1,6 +1,6 @@
 {
-  "type": "minecraft:mul",
-  "argument1": {
+  "type": "minecraft:flat_cache",
+  "argument": {
     "type": "minecraft:spline",
     "spline": {
       "coordinate": "creatingspace:venus/erosion",
@@ -37,6 +37,5 @@
         }
       ]
     }
-  },
-  "argument2": 1
+  }
 }
