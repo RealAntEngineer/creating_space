@@ -49,9 +49,7 @@
         "argument": {
           "type": "minecraft:mul",
           "argument1": 0.64,
-          "argument2": {
-            "type": "minecraft:interpolated",
-            "argument": {
+          "argument2":  {
               "type": "minecraft:blend_density",
               "argument": {
                 "type": "minecraft:add",
@@ -176,7 +174,7 @@
                 }
               }
             }
-          }
+
         }
       },
       "argument2": "minecraft:overworld/caves/noodle"
