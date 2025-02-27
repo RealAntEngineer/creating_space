@@ -20,15 +20,15 @@ public class CustomDensityFunctions {
 
         public static final MapCodec<WorleyDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) -> {
             return instance.group(
-                    Codec.DOUBLE.fieldOf("xz_size").forGetter(i -> i.noise.getXZSize()),
-                    Codec.DOUBLE.fieldOf("y_size").forGetter(i -> i.noise.getYSize()),
-                    Codec.DOUBLE.fieldOf("scale_factor").forGetter(i -> i.noise.getScaleFactor()))
+                    Codec.FLOAT.fieldOf("xz_size").forGetter(i -> i.noise.getXZSize()),
+                    Codec.FLOAT.fieldOf("y_size").forGetter(i -> i.noise.getYSize()),
+                    Codec.FLOAT.fieldOf("scale_factor").forGetter(i -> i.noise.getScaleFactor()))
                     .apply(instance, WorleyDensityFunction::new);
         });
 
         public static final KeyDispatchDataCodec<WorleyDensityFunction> CODEC = KeyDispatchDataCodec.of(DATA_CODEC);
 
-        public WorleyDensityFunction(double xz_size,double y_size,double scale_factor){
+        public WorleyDensityFunction(float xz_size,float y_size,float scale_factor){
             noise = new WorleyNoise(xz_size,y_size,scale_factor);
         }
 
