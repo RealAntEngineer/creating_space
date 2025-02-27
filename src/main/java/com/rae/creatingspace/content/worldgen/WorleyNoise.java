@@ -2,7 +2,6 @@ package com.rae.creatingspace.content.worldgen;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import net.minecraft.world.phys.Vec3;
 
 public class WorleyNoise {
     private static final double K = 0.142857142857f;
@@ -28,7 +27,7 @@ public class WorleyNoise {
     private final double YSize;
     private final double scaleFactor;
     private double x0,y0,z0;
-    private int[] p = new int[289];
+    private final int[] p = new int[289];//go to 256 rather than 289
     public WorleyNoise(double XZSize, double YSize, double scaleFactor) {
         this.XZSize = XZSize;
         this.YSize = YSize;
@@ -41,7 +40,8 @@ public class WorleyNoise {
         this.y0 = random.nextDouble() * 289.0D;
         this.z0 = random.nextDouble() * 289.0D;
 
-        for(int i = 0; i < 289; this.p[i] = i++) {
+        for(int i = 0; i < 289; this.p[i] = i++){
+
         }
 
         for(int l = 0; l < 289; ++l) {
@@ -53,8 +53,8 @@ public class WorleyNoise {
 
     }
 
-    private double permute(double x) {
-        return p[(int) (x%289.0d)];
+    private int permute(int x) {
+        return p[x%289];
     }
 
     public static double fract(double x) {
@@ -62,7 +62,7 @@ public class WorleyNoise {
     }
 
     public double cellular3x3x3(double px, double py, double pz) {
-        double Pix = Math.floor(px+x0), Piy = Math.floor(py+y0), Piz = Math.floor(pz+z0); // Integer part
+        int Pix = (int) Math.floor(px+x0), Piy = (int) Math.floor(py+y0), Piz = (int) Math.floor(pz+z0); // Integer part
         double Pfx = fract(px+x0),Pfy = fract(py+y0),Pfz = fract(pz+z0); // Fractional part
 
         double minDist = Float.MAX_VALUE;
@@ -89,7 +89,7 @@ public class WorleyNoise {
         }
         return Math.sqrt(minDist); // Return the actual distance
     }
-
+    //use int, that's lighter
     public double getValue(double x, double y, double z) {
         double F = cellular3x3x3((x) / XZSize,(y) / YSize,(z) / XZSize)*scaleFactor;
         return 1- (F * 2);  // Mapping to range [-1, 1]
