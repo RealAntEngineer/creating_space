@@ -20,19 +20,14 @@ public class WorleyNoise {
         return YSize;
     }
 
-    public float getScaleFactor() {
-        return scaleFactor;
-    }
 
     private final float XZSize;
     private final float YSize;
-    private final float scaleFactor;
     private float x0,y0,z0;
     private final int[] p = new int[289];//go to 256 rather than 289
-    public WorleyNoise(float XZSize, float YSize, float scaleFactor) {
+    public WorleyNoise(float XZSize, float YSize) {
         this.XZSize = XZSize;
         this.YSize = YSize;
-        this.scaleFactor = scaleFactor;
         setSeed(0L);
     }
     public void setSeed(long seed){

@@ -4,9 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.KeyDispatchDataCodec;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomDensityFunctions {
@@ -18,18 +16,15 @@ public class CustomDensityFunctions {
    public static final class WorleyDensityFunction implements DensityFunction.SimpleFunction {
         WorleyNoise noise;
 
-        public static final MapCodec<WorleyDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) -> {
-            return instance.group(
-                    Codec.FLOAT.fieldOf("xz_size").forGetter(i -> i.noise.getXZSize()),
-                    Codec.FLOAT.fieldOf("y_size").forGetter(i -> i.noise.getYSize()),
-                    Codec.FLOAT.fieldOf("scale_factor").forGetter(i -> i.noise.getScaleFactor()))
-                    .apply(instance, WorleyDensityFunction::new);
-        });
+        public static final MapCodec<WorleyDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+                Codec.FLOAT.fieldOf("xz_size").forGetter(i -> i.noise.getXZSize()),
+                Codec.FLOAT.fieldOf("y_size").forGetter(i -> i.noise.getYSize()))
+                .apply(instance, WorleyDensityFunction::new));
 
         public static final KeyDispatchDataCodec<WorleyDensityFunction> CODEC = KeyDispatchDataCodec.of(DATA_CODEC);
 
-        public WorleyDensityFunction(float xz_size,float y_size,float scale_factor){
-            noise = new WorleyNoise(xz_size,y_size,scale_factor);
+        public WorleyDensityFunction(float xz_size,float y_size){
+            noise = new WorleyNoise(xz_size,y_size);//scale factor is useless. maybe octaves ?
         }
 
         @Override

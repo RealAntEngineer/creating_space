@@ -1,13 +1,13 @@
 {
   "type": "minecraft:jigsaw",
 
-  "start_pool": "creatingspace:abandoned_moon_outpost/start_pool",
+  "start_pool": "creatingspace:moon/abandoned_outpost/start_pool",
 
   "size": 2,
 
   "max_distance_from_center": 80,
 
-  "biomes": "#creatingspace:has_structure/abandoned_moon_outpost",
+  "biomes": "#creatingspace:has_structure/moon/abandoned_outpost",
 
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin ",
