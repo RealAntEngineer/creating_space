@@ -1,7 +1,7 @@
 {
   "structures": [
     {
-      "structure": "creatingspace:crashed_rocket",
+      "structure": "creatingspace:moon/crashed_rocket",
       "weight": 1
     }
   ],

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:jigsaw",
 
-  "start_pool": "creatingspace:asteroids/abandoned_base",
+  "start_pool": "creatingspace:asteroids/abandoned_base/start_pool",
 
   "size": 2,
 
@@ -10,7 +10,7 @@
   "biomes": "#creatingspace:has_structure/asteroids/abandoned_base",
 
   "step": "surface_structures",
-  "terrain_adaptation": "none ",
+  "terrain_adaptation": "none",
 
   "start_height": {
     "absolute": -8
