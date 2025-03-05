@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.recipes.air_liquefying;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;

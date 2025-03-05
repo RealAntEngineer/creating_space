@@ -29,7 +29,8 @@
     "worldgen.NoiseBasedAquiferMixin",
     "worldgen.NoiseChunkMixin",
     "worldgen.NoiseGeneratorSettingsMixin",
-    "worldgen.RandomStateMixin"
+    "worldgen.RandomStateMixin",
+    "worldgen.SurfaceSystemMixin"
   ],
   "client": [
   ],

@@ -210,6 +210,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         if (editingCondition!=null){
             AllGuiTextures.SCHEDULE_EDITOR.render(ms, leftPos - 2, topPos + 40);
         }
+
         ms.pushPose();
         ms.translate(0, topPos + 87, 0);
         editorSubWidgets.renderWidgetBG(leftPos + 77, ms);

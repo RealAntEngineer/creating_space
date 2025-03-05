@@ -74,7 +74,6 @@ public class CSDimensionUtil {
         );
         travelMap = Map.copyOf(collector);
         planets = collector.keySet().stream().toList();
-
     }
 
     //TODO change resource key to resource location

@@ -51,22 +51,6 @@ public class FluidInit {
                 CustomVirtualFluid::new);
     }
 
-    /*public static final FluidEntry<ForgeFlowingFluid.Flowing> HOT_LAVA  =
-            CreatingSpace.REGISTRATE.standardFluid("hot_lava",
-                            SolidRenderedPlaceableFluidType.create(0x622020,
-                                    () -> 1f / 32f))
-                    .properties(b -> b.viscosity(1000)
-                            .density(1400).temperature(2500).lightLevel(15))
-                    .fluidProperties(p -> p.levelDecreasePerBlock(1)
-                            .tickRate(20)
-                            .slopeFindDistance(5)
-                            .explosionResistance(10f))
-                    .source(ForgeFlowingFluid.Source::new)
-                    .bucket()
-                    .tab(()-> CreativeModeTabsInit.MINERALS_TAB)
-                    .build()
-                    .register();*/
-
     public static final FluidEntry<VirtualFluid> LIQUID_METHANE =
             registrateCustomVirtualLiquid("liquid_methane")
                     .properties(p -> p.viscosity(1000).temperature(90).density(500)

@@ -1,4 +1,4 @@
-package com.rae.creatingspace.legacy.server.items;
+package com.rae.creatingspace.content.recipes.electrolysis;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;

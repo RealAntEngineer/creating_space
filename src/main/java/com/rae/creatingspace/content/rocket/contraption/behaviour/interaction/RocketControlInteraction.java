@@ -1,4 +1,4 @@
-package com.rae.creatingspace.server.contraption.behaviour.interaction;
+package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.RocketMenu;
@@ -20,14 +20,11 @@ public class RocketControlInteraction extends MovingInteractionBehaviour {
                                            AbstractContraptionEntity contraptionEntity) {
         if (contraptionEntity instanceof RocketContraptionEntity rocketContraption) {
             if ((player instanceof ServerPlayer serverPlayer)) {
-                /*serverPlayer.openMenu(
-                        new SimpleMenuProvider((id, inv, p) ->
-                        RocketMenu.create(id, inv, rocketContraption), Component.translatable("container.my_item_menu")));*/
+
                 NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((id, inv, p) -> RocketMenu.create(id, inv, rocketContraption), Component.translatable("container.my_item_menu")), buf ->
                         buf.writeVarInt(rocketContraption.getId()));
                 return true;
             }
-            CreatingSpace.LOGGER.info("client can't open gui, it's the server that does");
             return true;
         }
         return false;

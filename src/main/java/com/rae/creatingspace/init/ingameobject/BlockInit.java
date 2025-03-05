@@ -9,6 +9,9 @@ import com.rae.creatingspace.content.planets.hologram.ProjectorBlock;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlock;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
+import com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.FlightRecorderInteraction;
+import com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.RocketControlInteraction;
+import com.rae.creatingspace.content.rocket.contraption.behaviour.movement.EngineMovementBehaviour;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
 import com.rae.creatingspace.content.rocket.engine.*;
 import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlock;
@@ -29,9 +32,7 @@ import com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructural
 import com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock;
 import com.rae.creatingspace.legacy.server.items.BigEngineItem;
 import com.rae.creatingspace.legacy.server.items.SmallEngineItem;
-import com.rae.creatingspace.server.contraption.behaviour.interaction.FlightRecorderInteraction;
-import com.rae.creatingspace.server.contraption.behaviour.interaction.RocketControlInteraction;
-import com.rae.creatingspace.server.contraption.behaviour.movement.EngineMovementBehaviour;
+
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankItem;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
@@ -67,8 +68,6 @@ import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
 
 public class BlockInit {
-    //TODO setup correctly the no occlusion and dynamic shape to avoid lighting issues ?
-    // + test if it's really the issue ( see QuadLighter )
 
     //just blocks
     //TODO add geode's blocks
@@ -624,8 +623,6 @@ public class BlockInit {
             .item()
             .build()
             .register();
-
-
 
     public static void register() {}
 

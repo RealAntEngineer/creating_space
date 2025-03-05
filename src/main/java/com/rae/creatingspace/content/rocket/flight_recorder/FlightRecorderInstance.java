@@ -3,7 +3,6 @@ package com.rae.creatingspace.content.rocket.flight_recorder;
 import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
-import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlockEntity;
 import com.simibubi.create.content.kinetics.base.SingleRotatingInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
 import net.minecraft.core.Direction;

@@ -1,6 +1,5 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
-import com.rae.creatingspace.legacy.server.items.UpgradableEquipment;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,4 +1,4 @@
-package com.rae.creatingspace.server.contraption.behaviour.movement;
+package com.rae.creatingspace.content.rocket.contraption.behaviour.movement;
 
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
