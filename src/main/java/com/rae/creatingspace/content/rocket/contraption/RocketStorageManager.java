@@ -173,8 +173,8 @@ public class RocketStorageManager extends MountedStorageManager {
 
     class CargoTankWrapper extends MountedFluidStorageWrapper {
 
-        public CargoTankWrapper(IFluidHandler... fluidHandler) {
-            super(fluidHandler);
+        CargoTankWrapper(MountedFluidStorageWrapper wrapped) {
+            super(wrapped.storages);
         }
 
         @Override
