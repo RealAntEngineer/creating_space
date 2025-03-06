@@ -4,9 +4,9 @@ import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -75,14 +75,14 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 
         String tradKey = "creatingspace.overlay.flight_recorder.";
-        Lang.builder()
+        CreateLang.builder()
                 .add(Component.translatable(tradKey+"title"))
                 .forGoggles(tooltip, 1);
         //TODO : making the flight recorder show every info even when no failure ? or making a GUI for the flight info like speed and other stuff
         if (lastAssemblyData!=null) {
             if (lastAssemblyData.hasFailed()) {
                 if (lastAssemblyData.propellantStatusData().status().isFailReason) {
-                    Lang.builder()
+                    CreateLang.builder()
                             .add(Component.translatable(tradKey+"propellant_status."+
                                             String.valueOf(
                                                     lastAssemblyData.propellantStatusData()
@@ -98,7 +98,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                             fluidMass = 0;
                         }
                         if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
-                            Lang.builder()
+                            CreateLang.builder()
                                     .add(
                                             Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
                                                     .append(" ")
@@ -124,12 +124,12 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                                     }
                             );
                             if (fluidRef.get() == null) {
-                                Lang.builder()
+                                CreateLang.builder()
                                         .add(Component.literal("Warning : failed to find a fluid in game data")).forGoggles(tooltip, 2);
                                 ;
                             } else {
                                 float fluidVolume = (float) (fluidMass / fluidRef.get().getFluidType().getDensity()); //in minecraft's bucket
-                                Lang.builder()
+                                CreateLang.builder()
                                         .add(
                                                 Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
                                                         .append(" ")
@@ -149,15 +149,15 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                     }
                 }
                 if (lastAssemblyData.thrust()<lastAssemblyData.weight()){
-                    Lang.builder()
+                    CreateLang.builder()
                             .add(Component.translatable(tradKey+"not_enough_thrust"))
                             .forGoggles(tooltip, 1);
-                    Lang.builder()
+                    CreateLang.builder()
                             .add(Component.translatable("creatingspace.overlay.flight_recorder.thrust1"))
                             .add(Component.literal(" : "+ CSUtil.scientificNbrFormatting(lastAssemblyData.thrust(),3))
                                     .append(Component.translatable("creatingspace.science.unit.newton")))
                             .forGoggles(tooltip,2);
-                    Lang.builder()
+                    CreateLang.builder()
                             .add(Component.translatable("creatingspace.overlay.flight_recorder.thrust2"))
                             .add(Component.literal(" : "+CSUtil.scientificNbrFormatting(lastAssemblyData.weight(),3))
                                     .append(Component.translatable("creatingspace.science.unit.newton")))
@@ -168,12 +168,12 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
 
             }
             else {
-                Lang.builder()
+                CreateLang.builder()
                         .add(Component.translatable(tradKey+"no_failure"))
                         .forGoggles(tooltip, 1);
             }
         } else {
-            Lang.builder()
+            CreateLang.builder()
                     .add(Component.translatable(tradKey+"no_flight"))
                     .forGoggles(tooltip, 1);
         }

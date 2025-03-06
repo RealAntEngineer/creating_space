@@ -8,11 +8,9 @@ import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
 import com.rae.creatingspace.init.CSContraptionType;
 import com.rae.creatingspace.legacy.utilities.CSMassUtil;
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
-import com.simibubi.create.content.contraptions.render.ContraptionLighter;
-import com.simibubi.create.content.contraptions.render.NonStationaryLighter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -24,8 +22,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,7 +53,7 @@ public class RocketContraption extends TranslatingContraption {
     }
 
     @Override
-    protected void addBlock(BlockPos pos, Pair<StructureTemplate.StructureBlockInfo, BlockEntity> pair) {
+    protected void addBlock(Level level,BlockPos pos, Pair<StructureTemplate.StructureBlockInfo, BlockEntity> pair) {
         Block blockAdded = pair.getLeft().state().getBlock();
         BlockEntity blockEntityAdded = pair.getRight();
         BlockPos localPos = pos.subtract(anchor);
@@ -84,7 +80,7 @@ public class RocketContraption extends TranslatingContraption {
         if (blockAdded instanceof FlightRecorderBlock){
             this.localPosOfFlightRecorders.add(localPos);
         }
-        super.addBlock(pos, pair);
+        super.addBlock(level,pos, pair);
     }
 
     public static void multiplyMap(HashMap<TagKey<Fluid>, Float> map, float amount) {
@@ -106,7 +102,7 @@ public class RocketContraption extends TranslatingContraption {
 
     @Override
     public ContraptionType getType() {
-        return CSContraptionType.ROCKET;
+        return CSContraptionType.ROCKET.value();
     }
 
     @Override
@@ -141,11 +137,11 @@ public class RocketContraption extends TranslatingContraption {
         return nbt;
     }
 
-    @Override
+    /*@Override
     @OnlyIn(Dist.CLIENT)
     public ContraptionLighter<?> makeLighter() {
         return new NonStationaryLighter<>(this);
-    }
+    }*/
 
     public ArrayList<BlockPos> getLocalPosOfFlightRecorders() {
         return localPosOfFlightRecorders;

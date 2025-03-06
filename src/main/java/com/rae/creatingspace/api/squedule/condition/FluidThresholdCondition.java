@@ -5,8 +5,7 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.content.logistics.filter.FilterItemStack;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +27,7 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
 
     @Override
     protected Component getUnit() {
-        return Components.literal("b");
+        return Component.literal("b");
     }
 
     @Override
@@ -42,7 +41,7 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
         int target = getThreshold();
 
         int foundFluid = 0;
-        IFluidHandler fluids = rocket.getContraption().getSharedFluidTanks();
+        IFluidHandler fluids = rocket.getContraption().getStorage().getFluids();
             for (int i = 0; i < fluids.getTanks(); i++) {
                 FluidStack fluidInTank = fluids.getFluidInTank(i);
                 if (!compareStack.test(level, fluidInTank))
@@ -81,13 +80,13 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
     @Override
     public List<Component> getTitleAs(String type) {
         return ImmutableList.of(
-                Lang.translateDirect("schedule.condition.threshold.train_holds",
-                        Lang.translateDirect("schedule.condition.threshold." + Lang.asId(getOperator().name()))),
-                Lang.translateDirect("schedule.condition.threshold.x_units_of_item", getThreshold(),
-                                Lang.translateDirect("schedule.condition.threshold.buckets"),
-                                compareStack.isEmpty() ? Lang.translateDirect("schedule.condition.threshold.anything")
+                CreateLang.translateDirect("schedule.condition.threshold.train_holds",
+                        CreateLang.translateDirect("schedule.condition.threshold." + CreateLang.asId(getOperator().name()))),
+                CreateLang.translateDirect("schedule.condition.threshold.x_units_of_item", getThreshold(),
+                                CreateLang.translateDirect("schedule.condition.threshold.buckets"),
+                                compareStack.isEmpty() ? CreateLang.translateDirect("schedule.condition.threshold.anything")
                                         : compareStack.isFilterItem()
-                                        ? Lang.translateDirect("schedule.condition.threshold.matching_content")
+                                        ? CreateLang.translateDirect("schedule.condition.threshold.matching_content")
                                         : loadFluid().getDisplayName())
                         .withStyle(ChatFormatting.DARK_AQUA));
     }
@@ -112,7 +111,7 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {
         super.initConfigurationWidgets(builder);
         builder.addSelectionScrollInput(71, 50, (i, l) -> {
-            i.forOptions(ImmutableList.of(Lang.translateDirect("schedule.condition.threshold.buckets")))
+            i.forOptions(ImmutableList.of(CreateLang.translateDirect("schedule.condition.threshold.buckets")))
                     .titled(null);
         }, "Measure");
     }
@@ -121,10 +120,10 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
     public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity rocket, CompoundTag tag) {
         int lastDisplaySnapshot = getLastDisplaySnapshot(tag);
         if (lastDisplaySnapshot == -1)
-            return Components.empty();
+            return Component.empty();
         int offset = getOperator() == Ops.LESS ? -1 : getOperator() == Ops.GREATER ? 1 : 0;
-        return Lang.translateDirect("schedule.condition.threshold.status", lastDisplaySnapshot,
-                Math.max(0, getThreshold() + offset), Lang.translateDirect("schedule.condition.threshold.buckets"));
+        return CreateLang.translateDirect("schedule.condition.threshold.status", lastDisplaySnapshot,
+                Math.max(0, getThreshold() + offset), CreateLang.translateDirect("schedule.condition.threshold.buckets"));
     }
 
 }

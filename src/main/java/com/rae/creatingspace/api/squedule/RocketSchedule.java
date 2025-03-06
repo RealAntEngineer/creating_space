@@ -4,9 +4,8 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.*;
 import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.NBTHelper;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -50,7 +49,7 @@ public class RocketSchedule {
         return list.stream()
                 .map(Pair::getFirst)
                 .map(rl -> rl.getNamespace() + ".schedule." + langSection + rl.getPath())
-                .map(Components::translatable)
+                .map(Component::translatable)
                 .toList();
     }
 

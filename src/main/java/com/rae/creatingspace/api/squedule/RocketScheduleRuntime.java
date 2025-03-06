@@ -8,10 +8,10 @@ import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.NBTHelper;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -285,12 +285,12 @@ public class RocketScheduleRuntime {
     public MutableComponent getWaitingStatus(Level level) {
         List<List<ScheduleWaitCondition>> conditions = schedule.entries.get(currentEntry).conditions;
         if (conditions.isEmpty() || conditionProgress.isEmpty() || conditionContext.isEmpty())
-            return Components.empty();
+            return Component.empty();
 
         List<ScheduleWaitCondition> list = conditions.get(0);
         int progress = conditionProgress.get(0);
         if (progress >= list.size())
-            return Components.empty();
+            return Component.empty();
 
         CompoundTag tag = conditionContext.get(0);
         ScheduleWaitCondition condition = list.get(progress);

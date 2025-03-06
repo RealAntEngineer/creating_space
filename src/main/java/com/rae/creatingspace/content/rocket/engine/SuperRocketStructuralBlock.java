@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket.engine;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.simibubi.create.content.equipment.goggles.IProxyHoveringInformation;
+import com.simibubi.create.api.equipment.goggles.IProxyHoveringInformation;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.render.MultiPosDestructionHandler;
 import com.tterrag.registrate.util.nullness.NonnullType;

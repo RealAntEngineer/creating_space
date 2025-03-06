@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.recipes.air_liquefying;
 
 import com.rae.creatingspace.init.RecipeInit;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
@@ -10,8 +10,8 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
 import com.simibubi.create.foundation.recipe.RecipeFinder;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.LangBuilder;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -205,9 +205,9 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        LangBuilder mb = Lang.translate("generic.unit.millibuckets");
-        LangBuilder mbs = Lang.translate("generic.unit.fluidflow");
-        Lang.translate("gui.goggles.fluid_container")
+        LangBuilder mb = new LangBuilder("creatingspace").translate("generic.unit.millibuckets");
+        LangBuilder mbs = new LangBuilder("creatingspace").translate("generic.unit.fluidflow");
+        new LangBuilder("creatingspace").translate("gui.goggles.fluid_container")
                 .forGoggles(tooltip);
         IFluidHandler fluids = fluidCapability.orElse(new FluidTank(0));
         for (int i = 0; i < fluids.getTanks(); i++) {
@@ -215,16 +215,16 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
             FluidStack fluidStack = fluids.getFluidInTank(i);
             String fluidName = fluidStack.getTranslationKey();
 
-            Lang.builder().add(Component.translatable(fluidName))
+            new LangBuilder("creatingspace").add(Component.translatable(fluidName))
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
 
-            Lang.builder()
-                    .add(Lang.number(fluidStack.getAmount())
+            new LangBuilder("creatingspace")
+                    .add(CreateLang.number(fluidStack.getAmount())
                             .add(mb)
                             .style(ChatFormatting.GOLD))
                     .text(ChatFormatting.GRAY, " / ")
-                    .add(Lang.number(fluids.getTankCapacity(i))
+                    .add(CreateLang.number(fluids.getTankCapacity(i))
                             .add(mb)
                             .style(ChatFormatting.DARK_GRAY))
                     .forGoggles(tooltip, 1);

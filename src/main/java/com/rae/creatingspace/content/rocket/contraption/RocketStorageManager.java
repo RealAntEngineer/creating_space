@@ -1,8 +1,11 @@
 package com.rae.creatingspace.content.rocket.contraption;
 
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
+import com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageWrapper;
+import com.simibubi.create.api.contraption.storage.item.MountedItemStorageWrapper;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.MountedStorageManager;
+import com.simibubi.create.content.contraptions.minecart.TrainCargoManager;
 import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -62,20 +65,13 @@ public class RocketStorageManager extends MountedStorageManager {
         ticksSinceLastExchange = 0;
     }
     @Override
-    protected Contraption.ContraptionInvWrapper wrapItems(Collection<IItemHandlerModifiable> list, boolean fuel) {
-        return new CargoInvWrapper(Arrays.copyOf(list.toArray(), list.size(), IItemHandlerModifiable[].class));
-    }
-
-    @Override
-    protected CombinedTankWrapper wrapFluids(Collection<IFluidHandler> list) {
-        return new CargoTankWrapper(Arrays.copyOf(list.toArray(), list.size(), IFluidHandler[].class));
-    }
-    /**
-     * called after onContraptionAssemble
-    */
-    @Override
-    public void createHandlers() {
-        super.createHandlers();
+    public void initialize() {
+        super.initialize();
+        this.items = new CargoInvWrapper(this.items);
+        if (this.fuelItems != null) {
+            this.fuelItems = new CargoInvWrapper(this.fuelItems);
+        }
+        this.fluids = new CargoTankWrapper(this.fluids);
         IFluidHandler fluidHandler = getFluids();
         int nbrOfTank = fluidHandler.getTanks();
         //!! O(nbr_tank*nbr_prop)
@@ -103,8 +99,8 @@ public class RocketStorageManager extends MountedStorageManager {
     }
 
     @Override
-    public void read(CompoundTag nbt, Map<BlockPos, BlockEntity> presentBlockEntities, boolean clientPacket) {
-        super.read(nbt, presentBlockEntities, clientPacket);
+    public void read(CompoundTag nbt,boolean clientPacket,Contraption contraption) {
+        super.read(nbt,clientPacket, contraption);
         ticksSinceLastExchange = nbt.getInt("TicksSinceLastExchange");
         currentDeltaV = nbt.getFloat("currentDeltaV");
         dryMass = nbt.getFloat("dryMass");
@@ -144,10 +140,10 @@ public class RocketStorageManager extends MountedStorageManager {
 
 
 
-    class CargoInvWrapper extends Contraption.ContraptionInvWrapper {
+    class CargoInvWrapper extends MountedItemStorageWrapper {
 
-        public CargoInvWrapper(IItemHandlerModifiable... itemHandler) {
-            super(false, itemHandler);
+        public CargoInvWrapper(MountedItemStorageWrapper wrapped) {
+            super(wrapped.storages);
         }
 
         @Override
@@ -175,7 +171,7 @@ public class RocketStorageManager extends MountedStorageManager {
 
     }
 
-    class CargoTankWrapper extends CombinedTankWrapper {
+    class CargoTankWrapper extends MountedFluidStorageWrapper {
 
         public CargoTankWrapper(IFluidHandler... fluidHandler) {
             super(fluidHandler);

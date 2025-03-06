@@ -4,7 +4,7 @@ import com.rae.creatingspace.api.multiblock.MBController;
 import com.rae.creatingspace.api.multiblock.MBShape;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.StringRepresentable;
@@ -103,14 +103,14 @@ public class RocketEngineBlock extends MBController implements IBE<RocketEngineB
         STANDARD,MAGNETIC;
         @Override
         public @NotNull String getSerializedName() {
-            return Lang.asId(name());
+            return CreateLang.asId(name());
         }
     }
     public enum Exhaust  implements StringRepresentable {
         BELL_NOZZLE, AEROSPIKE;
         @Override
         public @NotNull String getSerializedName() {
-            return Lang.asId(name());
+            return CreateLang.asId(name());
         }
     }
 }

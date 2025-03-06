@@ -3,9 +3,10 @@ package com.rae.creatingspace.content.ponders;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
-import com.simibubi.create.foundation.ponder.SceneBuilder;
-import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
-import com.simibubi.create.foundation.ponder.Selection;
+import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+import net.createmod.ponder.api.scene.SceneBuilder;
+import net.createmod.ponder.api.scene.SceneBuildingUtil;
+import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -17,13 +18,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class FluidScene {
-    public static void chemicalSynthesizer(SceneBuilder scene, SceneBuildingUtil util) {
+    public static void chemicalSynthesizer(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
         scene.title("synthesizer", "Crafting methane");
         scene.configureBasePlate(0,0,5);
         scene.showBasePlate();
 
-        Selection pump1 = util.select.position(3,0,2);
-        Selection pump2 = util.select.position(1,0,2);
+        Selection pump1 = util.select().position(3,0,2);
+        Selection pump2 = util.select().position(1,0,2);
 
         FluidStack hydrogen = new FluidStack(FluidInit.LIQUID_HYDROGEN.getSource(),8000);
         FluidStack methane = new FluidStack(FluidInit.LIQUID_METHANE.getSource(),100);
@@ -33,36 +35,36 @@ public class FluidScene {
         Capability<IItemHandler> inventoryHandler = ForgeCapabilities.ITEM_HANDLER;
 
 
-        BlockPos hydrogen_tank_pos = util.grid.at(0,0,2);
-        BlockPos methane_tank_pos = util.grid.at(4,0,2);
-        BlockPos chest_pos = util.grid.at(2,2,2);
+        BlockPos hydrogen_tank_pos = util.grid().at(0,0,2);
+        BlockPos methane_tank_pos = util.grid().at(4,0,2);
+        BlockPos chest_pos = util.grid().at(2,2,2);
 
-        scene.world.modifyBlockEntity(hydrogen_tank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
+        scene.world().modifyBlockEntity(hydrogen_tank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
                 .ifPresent(ifh -> ifh.fill(hydrogen, IFluidHandler.FluidAction.EXECUTE)));
 
-        scene.world.setKineticSpeed(pump1,16);
-        scene.world.setKineticSpeed(pump2,16);
+        scene.world().setKineticSpeed(pump1,16);
+        scene.world().setKineticSpeed(pump2,16);
 
-        scene.overlay.showText(60).text("You need to put hydrogen in it...");
+        scene.overlay().showText(60).text("You need to put hydrogen in it...");
 
         scene.idle(60);
 
-        Selection coal_source = util.select.fromTo(2,1,2,3,3,3);
+        Selection coal_source = util.select().fromTo(2,1,2,3,3,3);
 
-        scene.world.showSection(coal_source, Direction.NORTH);
-        scene.world.modifyBlockEntity(chest_pos, ChestBlockEntity.class,be -> be.getCapability(inventoryHandler)
+        scene.world().showSection(coal_source, Direction.NORTH);
+        scene.world().modifyBlockEntity(chest_pos, ChestBlockEntity.class,be -> be.getCapability(inventoryHandler)
                 .ifPresent(ifh -> ifh.insertItem(0,coal_dust,false)));
 
-        scene.overlay.showText(60).text("...And put coal dust, then wait for methane to be produced");
+        scene.overlay().showText(60).text("...And put coal dust, then wait for methane to be produced");
 
         scene.idleSeconds(4);
-        scene.world.modifyBlockEntity(methane_tank_pos,FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
+        scene.world().modifyBlockEntity(methane_tank_pos,FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
                 .ifPresent(ifh -> ifh.fill(methane, IFluidHandler.FluidAction.EXECUTE)));
 
-        scene.overlay.showText(60).text("It produces 100mb of methane every 4 seconds");
+        scene.overlay().showText(60).text("It produces 100mb of methane every 4 seconds");
 
         scene.idleSeconds(4);
-        scene.world.modifyBlockEntity(methane_tank_pos,FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
+        scene.world().modifyBlockEntity(methane_tank_pos,FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
                 .ifPresent(ifh -> ifh.fill(methane, IFluidHandler.FluidAction.EXECUTE)));
 
     }

@@ -5,7 +5,7 @@ import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.Mth;
