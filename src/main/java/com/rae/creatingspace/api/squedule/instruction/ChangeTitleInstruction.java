@@ -2,9 +2,8 @@ package com.rae.creatingspace.api.squedule.instruction;
 
 import com.google.common.collect.ImmutableList;
 import com.rae.creatingspace.CreatingSpace;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Pair;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +16,7 @@ public class ChangeTitleInstruction extends TextScheduleInstruction {
 
     @Override
     public Pair<ItemStack, Component> getSummary() {
-        return Pair.of(icon(), Components.literal(getLabelText()));
+        return Pair.of(icon(), Component.literal(getLabelText()));
     }
 
     @Override

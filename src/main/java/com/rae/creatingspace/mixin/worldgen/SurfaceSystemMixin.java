@@ -29,17 +29,17 @@ public class SurfaceSystemMixin {
     private int cS_1_20_1$i2 = 0;
     @Unique
     Holder<Biome> cS_1_20_1$holder;
-    @ModifyVariable(method = "buildSurface",at = @At(value = "LOAD",ordinal = 0),name ="$$28")
+    @ModifyVariable(method = "buildSurface",at = @At(value = "LOAD",ordinal = 0),name ="blockstate")
     public BlockState registerBS(BlockState value){
         cS_1_20_1$blockstate = value;
         return value;
     }
-    @ModifyVariable(method = "buildSurface",at = @At(value = "LOAD",ordinal = 0),name ="$$21")
+    @ModifyVariable(method = "buildSurface",at = @At(value = "LOAD",ordinal = 0),name ="holder")
     public  Holder<Biome> registerBiome( Holder<Biome> value){
         cS_1_20_1$holder = value;
         return value;
     }
-    @ModifyVariable(method = "buildSurface",at = @At(value = "LOAD"),name ="$$23")
+    @ModifyVariable(method = "buildSurface",at = @At(value = "LOAD"),name ="i2")
     public int replaceI2(int value){
         return cS_1_20_1$i2;
     }

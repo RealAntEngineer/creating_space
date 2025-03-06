@@ -3,8 +3,8 @@ package com.rae.creatingspace.api.gui.elements;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.simibubi.create.foundation.gui.widget.BoxWidget;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.gui.widget.BoxWidget;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -159,7 +159,7 @@ public class Orbit extends BoxWidget {
     //launch lazy renderer when the orbit is bigger that the window
     private void drawCircle(GuiGraphics graphics, int x, int y, int radius) {
         if (radius > 8) {
-            int color = gradientColor1.getRGB();
+            int color = gradientColor.getFirst().getRGB();
             int startX = 0;
             int startY = radius;
             int stopY = 0;

@@ -5,8 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.rae.creatingspace.content.planets.PlanetsPositionsHandler;
 import com.simibubi.create.foundation.render.RenderTypes;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -28,7 +29,7 @@ public class PlanetsRendering {
      */
     public static void renderPlanet(ResourceLocation texture, MultiBufferSource buffer, PoseStack matrixStack,
                                     int packedLight, float size, PlanetsPositionsHandler.SkyPos planetPos, Quaternionf planetRotation, Color skyColor) {
-        VertexConsumer planetBuffer =  buffer.getBuffer(RenderTypes.getGlowingSolid(texture));//buffer.getBuffer(RenderType.entityTranslucent(texture));
+        VertexConsumer planetBuffer =  buffer.getBuffer(RenderType.entityTranslucent(texture));
 
 
         Vec3 translation = PlanetsPositionsHandler.SkyPos.toXYZ(planetPos, Vec3.ZERO);

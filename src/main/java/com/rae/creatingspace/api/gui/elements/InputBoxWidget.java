@@ -1,6 +1,6 @@
 package com.rae.creatingspace.api.gui.elements;
 
-import com.simibubi.create.foundation.gui.widget.BoxWidget;
+import net.createmod.catnip.gui.widget.BoxWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;

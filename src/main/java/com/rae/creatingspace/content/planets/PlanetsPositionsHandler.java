@@ -3,7 +3,7 @@ package com.rae.creatingspace.content.planets;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.api.planets.OrbitParameter;
 import com.rae.creatingspace.api.rendering.PlanetsRendering;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;

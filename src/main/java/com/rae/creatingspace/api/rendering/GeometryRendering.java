@@ -2,7 +2,7 @@ package com.rae.creatingspace.api.rendering;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;

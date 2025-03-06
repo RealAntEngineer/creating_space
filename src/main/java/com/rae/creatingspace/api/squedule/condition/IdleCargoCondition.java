@@ -3,8 +3,9 @@ package com.rae.creatingspace.api.squedule.condition;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.Pair;
+
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,7 @@ public class IdleCargoCondition extends TimedWaitCondition {
 
     @Override
     public Pair<ItemStack, Component> getSummary() {
-        return Pair.of(ItemStack.EMPTY, Lang.translateDirect("schedule.condition.idle_short", formatTime(true)));
+        return Pair.of(ItemStack.EMPTY, CreateLang.translateDirect("schedule.condition.idle_short", formatTime(true)));
     }
 
     @Override
