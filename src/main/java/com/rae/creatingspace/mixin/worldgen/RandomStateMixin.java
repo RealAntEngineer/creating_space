@@ -1,6 +1,7 @@
 package com.rae.creatingspace.mixin.worldgen;
 
 import com.rae.creatingspace.content.worldgen.CustomDensityFunctions;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.*;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ public class RandomStateMixin {
     @Shadow @Final private NoiseRouter router;
 
     @Inject(method = "<init>",at = @At(value = "RETURN"))
-    private void provideNoise(NoiseGeneratorSettings noiseGeneratorSettings, Registry p_224557_, long seed, CallbackInfo ci){
+    private void provideNoise(NoiseGeneratorSettings p_255668_, HolderGetter p_256663_, long seed, CallbackInfo ci){
         class NoiseWiringHelper implements DensityFunction.Visitor {
             private final Map<DensityFunction, DensityFunction> wrapped = new HashMap<>();
 

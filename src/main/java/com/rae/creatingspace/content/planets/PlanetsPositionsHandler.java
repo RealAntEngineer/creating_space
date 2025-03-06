@@ -9,8 +9,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -151,7 +149,7 @@ public class PlanetsPositionsHandler {
      */
     private static void applyRotation(PoseStack ms, OrbitParameter orbitParameter, float time) {
         float angle = (float) (2*time / orbitParameter.rotT() * Math.PI);
-        ms.mulPose(new Quaternionf().rotateAxis(angle,(Vector3fc) orbitParameter.rotationAxis()));
+        ms.mulPose(new Quaternionf().rotateAxis(angle,orbitParameter.rotationAxis().toVector3f()));
     }
 
     /**
@@ -169,7 +167,7 @@ public class PlanetsPositionsHandler {
                                      Color skyColor) {
         OrbitParameter orbitParameter = positions.get(location);
         float angle = (float) (2 * time / orbitParameter.rotT() * Math.PI);
-        Quaternionf rotation = new Quaternionf().rotateAxis(angle,(Vector3fc) orbitParameter.rotationAxis());
+        Quaternionf rotation = new Quaternionf().rotateAxis(angle,orbitParameter.rotationAxis().toVector3f());
 
         PlanetsRendering.renderPlanet(
                 new ResourceLocation(location.getNamespace(), "textures/environment/planets/" + location.getPath() + ".png"),

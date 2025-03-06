@@ -41,6 +41,6 @@ side="BOTH"
 [[dependencies.creatingspace]]
 modId="forge"
 mandatory=true
-versionRange="[43,)" # Adjust based on your Forge version
-ordering="AFTER"
+versionRange="[47.3,)" # Adjust based on your Forge version
+ordering="BEFORE"
 side="BOTH"

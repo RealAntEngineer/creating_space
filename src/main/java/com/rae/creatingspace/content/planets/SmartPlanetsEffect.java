@@ -92,7 +92,7 @@ public class SmartPlanetsEffect extends DimensionSpecialEffects {
                 1000.0f   // Far plane
         );
         RenderSystem.backupProjectionMatrix();
-        RenderSystem.setProjectionMatrix(customProjection, (VertexSorting) RenderSystem.getModelViewStack());
+        RenderSystem.setProjectionMatrix(customProjection,VertexSorting.DISTANCE_TO_ORIGIN);
 
         MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(new BufferBuilder(256));
 
@@ -102,7 +102,7 @@ public class SmartPlanetsEffect extends DimensionSpecialEffects {
 
         float timeOfDay = level.getTimeOfDay(time * dayLength);
 
-        renderSpaceSky(poseStack, new Quaternionf().rotationAxis((float) (-2 * time / orbitParameter.rotT() * Math.PI), (Vector3fc) orbitParameter.rotationAxis()), bufferSource);
+        renderSpaceSky(poseStack, new Quaternionf().rotationAxis((float) (-2 * time / orbitParameter.rotT() * Math.PI),orbitParameter.rotationAxis().toVector3f()), bufferSource);
 
         PlanetsPositionsHandler.renderForAll(time, poseStack, bufferSource, location, false, Color.WHITE);
         poseStack.popPose();
