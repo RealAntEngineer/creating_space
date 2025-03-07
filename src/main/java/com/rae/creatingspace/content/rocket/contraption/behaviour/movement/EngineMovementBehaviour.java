@@ -1,6 +1,5 @@
 package com.rae.creatingspace.content.rocket.contraption.behaviour.movement;
 
-import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -9,11 +8,12 @@ import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.simibubi.create.AllSpecialTextures;
-import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
+import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
 import com.simibubi.create.foundation.render.RenderTypes;
-import com.simibubi.create.foundation.utility.Color;
+import com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
@@ -56,7 +56,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
     @Override
     public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
         if (isActive(context)) {
-            VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.getGlowingTranslucent(AllSpecialTextures.BLANK.getLocation()));
+            VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.itemGlowingTranslucent());
             PoseStack matrixStack = matrices.getViewProjection();
 
             matrixStack.pushPose();

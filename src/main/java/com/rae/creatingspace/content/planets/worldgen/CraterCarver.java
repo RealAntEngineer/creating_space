@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.planets.worldgen;
 
 import com.mojang.serialization.Codec;
-import com.simibubi.create.foundation.utility.Couple;
+import net.createmod.catnip.data.Couple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;

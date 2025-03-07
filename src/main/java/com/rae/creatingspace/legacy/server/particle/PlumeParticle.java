@@ -1,6 +1,7 @@
 package com.rae.creatingspace.legacy.server.particle;
 
-import com.simibubi.create.foundation.utility.Color;
+
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;

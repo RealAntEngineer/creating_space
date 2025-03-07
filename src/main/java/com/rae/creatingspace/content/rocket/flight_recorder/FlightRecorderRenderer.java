@@ -1,12 +1,13 @@
 package com.rae.creatingspace.content.rocket.flight_recorder;
 
-import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
+
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -22,7 +23,7 @@ public class FlightRecorderRenderer extends KineticBlockEntityRenderer<FlightRec
     @Override
     protected void renderSafe(FlightRecorderBlockEntity  be, float partialTicks, PoseStack ms, MultiBufferSource buffer,
                               int light, int overlay) {
-        if (Backend.canUseInstancing(be.getLevel())) return;
+        if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
         //super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
         BlockState state = be.getBlockState();
@@ -31,7 +32,7 @@ public class FlightRecorderRenderer extends KineticBlockEntityRenderer<FlightRec
         VertexConsumer vb = buffer.getBuffer(RenderType.cutoutMipped());
         ms.pushPose();
         SuperByteBuffer memoryRoll =
-                CachedBufferer.partialFacing(PartialModelInit.MEMORY_ROLL, be.getBlockState(), direction.getOpposite());
+                CachedBuffers.partialFacing(PartialModelInit.MEMORY_ROLL, be.getBlockState(), direction.getOpposite());
         standardKineticRotationTransform(memoryRoll, be, light).renderInto(ms, vb);
         ms.popPose();
     }

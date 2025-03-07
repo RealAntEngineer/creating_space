@@ -42,7 +42,7 @@ public class RandomStateMixin {
             }
 
             public @NotNull DensityFunction apply(@NotNull DensityFunction p_224598_) {
-                return (DensityFunction)this.wrapped.computeIfAbsent(p_224598_, this::wrapNew);
+                return this.wrapped.computeIfAbsent(p_224598_, this::wrapNew);
             }
         }
         router = router.mapAll(new NoiseWiringHelper());

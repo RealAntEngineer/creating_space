@@ -65,8 +65,6 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
         super.requestStatusToUpdate(context);
     }
 
-    ;
-
     protected int getLastDisplaySnapshot(CompoundTag context) {
         if (!context.contains("CurrentDisplay"))
             return -1;

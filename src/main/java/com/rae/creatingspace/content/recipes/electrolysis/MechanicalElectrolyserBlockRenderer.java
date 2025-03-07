@@ -1,12 +1,13 @@
 package com.rae.creatingspace.content.recipes.electrolysis;
 
-import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
+
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -53,10 +54,10 @@ public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRende
 			}
 		}
 
-		if (Backend.canUseInstancing(be.getLevel()))
-			return;
+		if (VisualizationManager.supportsVisualization(be.getLevel())) return;
+
 		BlockState blockState = be.getBlockState();
-		SuperByteBuffer headRender = CachedBufferer.partialFacing(PartialModelInit.ELECTROLYZER_HEAD, blockState,
+		SuperByteBuffer headRender = CachedBuffers.partialFacing(PartialModelInit.ELECTROLYZER_HEAD, blockState,
 				blockState.getValue(HORIZONTAL_FACING));
 		headRender.translate(0, -renderedHeadOffset, 0)
 				.light(light)

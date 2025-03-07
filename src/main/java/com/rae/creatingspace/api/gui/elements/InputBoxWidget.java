@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 public class InputBoxWidget extends BoxWidget {
-    private EditBox editBox;
+    private final EditBox editBox;
 
     public InputBoxWidget(int x, int y, int width, int height, Component initialValue) {
         super(x, y, width, height);

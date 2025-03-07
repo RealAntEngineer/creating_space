@@ -3,11 +3,11 @@ package com.rae.creatingspace.content.life_support.spacesuit;
 import com.rae.creatingspace.init.TagsInit;
 import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
@@ -86,16 +86,16 @@ public class OxygenBacktankUtil {
 			return;
 
 		boolean depleted = threshold == 1;
-		MutableComponent component = Lang.translateDirect(depleted ? "oxygenbacktank.depleted" : "backtank.low");
+		MutableComponent component = CreateLang.translateDirect(depleted ? "oxygenbacktank.depleted" : "backtank.low");
 
 		AllSoundEvents.DENY.play(player.level(), null, player.blockPosition(), 1, 1.25f);
 		AllSoundEvents.STEAM.play(player.level(), null, player.blockPosition(), .5f, .5f);
 
 		player.connection.send(new ClientboundSetTitlesAnimationPacket(10, 40, 10));
 		player.connection.send(new ClientboundSetSubtitleTextPacket(
-			Components.literal("\u26A0 ").withStyle(depleted ? ChatFormatting.RED : ChatFormatting.GOLD)
+			Component.literal("\u26A0 ").withStyle(depleted ? ChatFormatting.RED : ChatFormatting.GOLD)
 				.append(component.withStyle(ChatFormatting.GRAY))));
-		player.connection.send(new ClientboundSetTitleTextPacket(Components.immutableEmpty()));
+		player.connection.send(new ClientboundSetTitleTextPacket(Component.empty()));
 	}
 
 	public static int maxOxygen(ItemStack backtank) {

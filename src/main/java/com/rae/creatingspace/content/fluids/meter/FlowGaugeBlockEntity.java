@@ -6,8 +6,8 @@ import com.simibubi.create.content.fluids.PipeConnection;
 import com.simibubi.create.content.kinetics.gauge.GaugeBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.Couple;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.data.Couple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -80,7 +80,7 @@ public class FlowGaugeBlockEntity extends GaugeBlockEntity {
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        tooltip.add(componentSpacing.plainCopy().append(Lang.translateDirect("gui.gauge.info_header")));
+        super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         tooltip.add(Component.literal(String.valueOf(this.flow)).append(Component.translatable("creatingspace.science.unit.flow.millibucket_by_ticks"))); // 1 mb/s *rpm for the real tick
         return true;
     }

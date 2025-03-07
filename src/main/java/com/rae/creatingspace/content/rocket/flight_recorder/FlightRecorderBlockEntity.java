@@ -126,14 +126,13 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                             if (fluidRef.get() == null) {
                                 CreateLang.builder()
                                         .add(Component.literal("Warning : failed to find a fluid in game data")).forGoggles(tooltip, 2);
-                                ;
                             } else {
                                 float fluidVolume = (float) (fluidMass / fluidRef.get().getFluidType().getDensity()); //in minecraft's bucket
                                 CreateLang.builder()
                                         .add(
                                                 Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
                                                         .append(" ")
-                                                        .append(Component.literal(CSUtil.scientificNbrFormatting((float) fluidVolume, 5))
+                                                        .append(Component.literal(CSUtil.scientificNbrFormatting(fluidVolume, 5))
                                                                 .append(Component.literal("B"))
                                                                 .withStyle(consumedMass >= fluidMass ?
                                                                         ChatFormatting.DARK_RED :

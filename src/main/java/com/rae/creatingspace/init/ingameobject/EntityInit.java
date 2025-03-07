@@ -7,7 +7,7 @@ import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -44,7 +44,7 @@ public class EntityInit {
                                                                          NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
                                                                          MobCategory group, int range, int updateFrequency, boolean sendVelocity, boolean immuneToFire,
                                                                          NonNullConsumer<EntityType.Builder<T>> propertyBuilder) {
-        String id = Lang.asId(name);
+        String id = CreateLang.asId(name);
         return (CreateEntityBuilder<T, ?>) CreatingSpace.REGISTRATE
                 .entity(id, factory, group)
                 .properties(b -> b.setTrackingRange(range)

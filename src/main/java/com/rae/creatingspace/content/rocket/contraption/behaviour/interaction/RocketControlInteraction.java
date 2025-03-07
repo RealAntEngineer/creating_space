@@ -2,8 +2,8 @@ package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
 import com.rae.creatingspace.content.rocket.RocketMenu;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.behaviour.MovingInteractionBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

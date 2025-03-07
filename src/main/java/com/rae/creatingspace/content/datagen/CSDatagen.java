@@ -4,10 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.datagen.client.CSBlockStateProvider;
-import com.rae.creatingspace.content.datagen.server.CSSimpleRecipeProvider;
-import com.simibubi.create.foundation.ponder.PonderLocalization;
+
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
+import net.createmod.ponder.foundation.registration.PonderLocalization;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -78,6 +78,6 @@ public class CSDatagen {
 		//PonderLocalization.generateSceneLang();
 
 		//GeneralText.provideLang(consumer);
-		PonderLocalization.provideLang(CreatingSpace.MODID, consumer);
+		//PonderLocalization.provideLang(CreatingSpace.MODID, consumer);
 	}
 }

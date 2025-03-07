@@ -1,15 +1,13 @@
 package com.rae.creatingspace.content.planets;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.createmod.catnip.theme.Color;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import com.rae.creatingspace.api.planets.OrbitParameter;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.simibubi.create.foundation.render.RenderTypes;
-import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -20,7 +18,6 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
-import org.joml.Vector3fc;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.NonnullDefault;
 
@@ -125,7 +122,7 @@ public class SmartPlanetsEffect extends DimensionSpecialEffects {
    //doesn't work right
     private static void renderSpaceSky(PoseStack poseStack, Quaternionf planetRotation, MultiBufferSource buffer) {
         // Prepare the vertex consumer for rendering
-        VertexConsumer planetBuffer = buffer.getBuffer(RenderTypes.getGlowingSolid(SPACE_SKY_LOCATION));
+        VertexConsumer planetBuffer = buffer.getBuffer(RenderType.text(SPACE_SKY_LOCATION));
 
         // Base size and distance values
         float size = 200.0F;

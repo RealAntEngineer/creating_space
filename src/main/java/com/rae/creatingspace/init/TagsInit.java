@@ -2,7 +2,7 @@ package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -68,7 +68,7 @@ public class TagsInit extends AllTags {
     }
 
     CustomBlockTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-        ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+        ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
         if (optional) {
             tag = optionalTag(ForgeRegistries.BLOCKS, id);
         } else {
@@ -120,7 +120,7 @@ public class TagsInit extends AllTags {
         }
 
         CustomItemTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
             if (optional) {
                 tag = optionalTag(ForgeRegistries.ITEMS, id);
             } else {
@@ -166,7 +166,7 @@ public class TagsInit extends AllTags {
         }
 
         CustomEntityTag(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
             if (optional) {
                 tag = optionalTag(ForgeRegistries.ENTITY_TYPES, id);
             } else {
@@ -211,7 +211,7 @@ public class TagsInit extends AllTags {
         }
 
         CustomFluidTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
             if (optional) {
                 tag = optionalTag(ForgeRegistries.FLUIDS, id);
             } else {
@@ -258,7 +258,7 @@ public class TagsInit extends AllTags {
         }
 
         CustomBiomeTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? Lang.asId(name()) : path);
+            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
             if (optional) {
                 tag = optionalTag(ForgeRegistries.BIOMES, id);
             } else {

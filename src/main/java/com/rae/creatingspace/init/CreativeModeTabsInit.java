@@ -52,7 +52,6 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.ROCKET_CONTROLS);
                         output.accept(BlockInit.CATALYST_CARRIER);
                         output.accept(BlockInit.MECHANICAL_ELECTROLYZER);
-                        output.accept(BlockInit.ROCKET_GENERATOR);
                         output.accept(BlockInit.FLOW_METER);
                         output.accept(BlockInit.OXYGEN_SEALER);
                         output.accept(BlockInit.AIR_LIQUEFIER);

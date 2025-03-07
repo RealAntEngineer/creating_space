@@ -5,9 +5,9 @@ import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;
 import com.rae.creatingspace.legacy.utilities.packet.NewRocketAssemblePacket;
-import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.gui.AbstractSimiScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
@@ -17,7 +17,7 @@ public class RocketAssembleScreen extends AbstractSimiScreen {
     private final GuiTexturesInit background;
 
     public RocketAssembleScreen(RocketControlsBlockEntity be) {
-        super(Lang.translateDirect("gui.destination_screen.title"));
+        super(CreateLang.translateDirect("gui.destination_screen.title"));
         this.blockEntity = be;
         this.background = GuiTexturesInit.ROCKET_ASSEMBLE;
     }

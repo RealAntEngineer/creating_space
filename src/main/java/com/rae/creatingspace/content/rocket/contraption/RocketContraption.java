@@ -102,7 +102,7 @@ public class RocketContraption extends TranslatingContraption {
 
     @Override
     public ContraptionType getType() {
-        return CSContraptionType.ROCKET.value();
+        return CSContraptionType.ROCKET.get();
     }
 
     @Override

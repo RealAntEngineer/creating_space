@@ -5,6 +5,7 @@
   "package": "com.rae.creatingspace.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "creatingspace.refmap.json",
+  "plugin": "com.rae.creatingspace.mixin.CSMixinPlugin",
   "mixins": [
     "entity.ContraptionMixin",
     "entity.PlayerMixin",

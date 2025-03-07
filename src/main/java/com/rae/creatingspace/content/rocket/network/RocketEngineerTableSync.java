@@ -34,7 +34,7 @@ public class RocketEngineerTableSync extends BlockEntityConfigurationPacket<Rock
 
     @Override
     protected void writeSettings(FriendlyByteBuf buffer) {
-        buffer.writeNbt((CompoundTag) syncData);
+        buffer.writeNbt(syncData);
     }
 
     @Override

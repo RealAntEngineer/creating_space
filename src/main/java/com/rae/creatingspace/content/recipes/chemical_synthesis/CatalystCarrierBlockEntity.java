@@ -227,8 +227,8 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
         // SoundEvents.BLOCK_STONE_BREAK
         boolean slow = Math.abs(getSpeed()) < 65;
-        if (slow && AnimationTickHolder.getTicks() % 2 == 0)
-            return;
+        if (slow && AnimationTickHolder.getTicks() % 2 == 0) {
+        }
         /*if (runningTicks == 20)
             AllSoundEvents.MIXING.playAt(level, worldPosition, .75f, 1, true);
          */

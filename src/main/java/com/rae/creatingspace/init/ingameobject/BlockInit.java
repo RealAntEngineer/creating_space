@@ -1,6 +1,7 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.configs.CSStress;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock;
 import com.rae.creatingspace.content.fluids.effect.BurnBlock;
 import com.rae.creatingspace.content.fluids.effect.FreezerBlock;
@@ -19,7 +20,6 @@ import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
-import com.rae.creatingspace.legacy.server.blocks.RocketGeneratorBlock;
 import com.rae.creatingspace.content.fluids.cassing.IsolatedFluidPipe;
 import com.rae.creatingspace.content.fluids.cassing.IsolatedFluidPump;
 import com.rae.creatingspace.legacy.server.blocks.atmosphere.OxygenBlock;
@@ -37,7 +37,6 @@ import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.fluids.PipeAttachmentModel;
 import com.simibubi.create.content.fluids.pipes.EncasedPipeBlock;
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
@@ -46,7 +45,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -57,12 +55,11 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.common.Tags;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
-import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
-import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
+import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
+import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
 
@@ -179,32 +176,12 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    public static final BlockEntry<RocketGeneratorBlock> ROCKET_GENERATOR = REGISTRATE.block(
-                    "rocket_generator", RocketGeneratorBlock::new)
-            .initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .blockstate((c,p)-> p.getVariantBuilder(c.get())
-                    .forAllStatesExcept(state ->
-                        ConfiguredModel.builder().modelFile(
-                                p.models().getExistingFile(
-                        state.getValue(RocketGeneratorBlock.CHARGED)?
-                                CreatingSpace.resource("block/rocket_generator/loaded"):
-                                CreatingSpace.resource("block/rocket_generator/empty")))
-                                .rotationY(((int) state.getValue(RocketGeneratorBlock.FACING).toYRot() + 180) % 360)
-                                .build()
-                    , BlockStateProperties.FACING, RocketGeneratorBlock.GENERATING))
-            .transform(BlockStressDefaults.setCapacity(10000))
-            .transform(BlockStressDefaults.setGeneratorSpeed(RocketGeneratorBlock::getSpeedRange))
-            .transform(axeOrPickaxe())
-            .item()
-            .transform(customItemModel())
-            .register();
 
     public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(2000))
+            .transform(CSStress.setImpact(2000))
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .item()
@@ -217,7 +194,7 @@ public class BlockInit {
             .properties(p -> p.noOcclusion())
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
-            .transform(BlockStressDefaults.setImpact(8.0))
+            .transform(CSStress.setImpact(8.0))
             .item(AssemblyOperatorBlockItem::new)
             .transform(customItemModel())
             .register();
@@ -232,7 +209,7 @@ public class BlockInit {
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(500))
+            .transform(CSStress.setImpact(500))
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .item()
@@ -506,7 +483,7 @@ public class BlockInit {
                     .initialProperties(SharedProperties::copperMetal)
                     .properties(p -> p.noOcclusion().mapColor(MapColor.TERRACOTTA_LIGHT_GRAY))
                     .transform(axeOrPickaxe())
-                    .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::new))
+                    .onRegister(CreateRegistrate.blockModel(() -> PipeAttachmentModel::withAO))
                     .register();
 
 

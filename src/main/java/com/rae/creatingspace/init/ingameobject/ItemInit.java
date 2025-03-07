@@ -28,7 +28,7 @@ import static com.simibubi.create.AllTags.forgeItemTag;
 
 public class ItemInit {
 
-    public static final ArrayList<ItemEntry<? extends Item>> AEROSPIKE_PLUG = smartRegisterSequencedItem("aerospike_plug");;
+    public static final ArrayList<ItemEntry<? extends Item>> AEROSPIKE_PLUG = smartRegisterSequencedItem("aerospike_plug");
 
     public static final ArrayList<ItemEntry<? extends Item>> BELL_NOZZLE = smartRegisterSequencedItem("bell_nozzle");
     public static final ArrayList<ItemEntry<? extends Item>> POWER_PACK = smartRegisterSequencedItem("power_pack");

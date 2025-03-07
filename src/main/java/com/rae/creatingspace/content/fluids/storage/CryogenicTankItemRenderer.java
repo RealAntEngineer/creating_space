@@ -1,13 +1,12 @@
 package com.rae.creatingspace.content.fluids.storage;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -20,11 +19,12 @@ public class CryogenicTankItemRenderer extends CustomRenderedItemModelRenderer {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         renderer.render(model.getOriginalModel(), light);
         if (transformType == ItemDisplayContext.GUI) {
-            PoseStack localMs = new PoseStack();
-            localMs.translate(-0.25, -0.25, 1.0);
-            localMs.scale(0.5F, 0.5F, 0.5F);
-            TransformStack.cast(localMs).rotateY(-34.0);
-            itemRenderer.renderStatic(Items.BUCKET.getDefaultInstance(), ItemDisplayContext.GUI, light, OverlayTexture.NO_OVERLAY, localMs, buffer,null, 0);
+            ms.pushPose();
+            ms.translate(-0.25, -0.25, 1.0);
+            ms.scale(0.5F, 0.5F, 0.5F);
+            ms.mulPose(Axis.YP.rotationDegrees(-34));
+            itemRenderer.renderStatic(Items.BUCKET.getDefaultInstance(), ItemDisplayContext.GUI, light, OverlayTexture.NO_OVERLAY, ms, buffer,null, 0);
+            ms.popPose();
         }
     }
 }

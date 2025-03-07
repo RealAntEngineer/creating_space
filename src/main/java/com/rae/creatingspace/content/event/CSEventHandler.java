@@ -108,7 +108,7 @@ public class CSEventHandler {
                 sleepFinishedEvent.getNewTime(),sleepFinishedEvent.getNewTime()*1000,1);
 */
         Objects.requireNonNull(Objects.requireNonNull(sleepFinishedEvent.getLevel().getServer()).getLevel(Level.OVERWORLD))
-                .setDayTime((long) sleepFinishedEvent.getNewTime());
+                .setDayTime(sleepFinishedEvent.getNewTime());
     }
     //@SubscribeEvent
     public static void blockChange(BlockEvent.NeighborNotifyEvent event){

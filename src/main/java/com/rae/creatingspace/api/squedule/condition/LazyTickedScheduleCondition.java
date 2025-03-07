@@ -6,7 +6,7 @@ import net.minecraft.world.level.Level;
 
 public abstract class LazyTickedScheduleCondition extends ScheduleWaitCondition {
 
-    private int tickRate;
+    private final int tickRate;
 
     public LazyTickedScheduleCondition(int tickRate) {
         this.tickRate = tickRate;

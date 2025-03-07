@@ -28,7 +28,7 @@ public class FreezerBlock extends Block {
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
         super.onPlace(state, world, pos, oldState, isMoving);
         if (!world.isClientSide()) {
-            ((ServerLevel) world).scheduleTick(pos, this, 20);
+            world.scheduleTick(pos, this, 20);
         }
     }
 }

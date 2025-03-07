@@ -71,8 +71,8 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private ScrollInput engineThrustInput;
     private Label engineThrustLabel;
     private ForgeSlider expansionRatioSlider;
-    private GuiTexturesInit background;
-    private GuiTexturesInit input;
+    private final GuiTexturesInit background;
+    private final GuiTexturesInit input;
     private IconButton confirmButton;
     private Label realISPLabel;
     private Label materialLevelLabel;
@@ -347,7 +347,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         List<ResourceLocation> propsExhaustPack = exhaustPackTypes.get(setExhaustPackType.getState()).getAllowedPropellants();
 
         List<MutableComponent> availablePropellants = new ArrayList<>();
-        propellantTypeLocations = new ArrayList<>();;
+        propellantTypeLocations = new ArrayList<>();
         propellantTypes = new ArrayList<>();
         propsPowerPack.forEach(
                 location -> {

@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket.contraption.behaviour.movement;
 
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
-import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
+import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import net.minecraft.util.RandomSource;
 
@@ -17,7 +17,8 @@ public class FlightRecorderMovementBehaviour implements MovementBehaviour {
     @Override
     public void tick(MovementContext context) {
         if (context.world == null ||  context.position == null
-                || context.disabled || !context.world.isClientSide()) return;
+                || context.disabled || !context.world.isClientSide()) {
+        }
         //TODO make an animation for the rocket flight ->  rotate the roll ?
     }
 }

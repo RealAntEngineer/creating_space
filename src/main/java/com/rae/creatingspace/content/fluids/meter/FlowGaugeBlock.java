@@ -132,7 +132,7 @@ public class FlowGaugeBlock extends KineticBlock implements IAxisPipe, IBE<FlowG
     public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level level, BlockState state, BlockEntityType<S> entityType) {
         return  ($0,pos,$1,blockEntity) -> {
             if(blockEntity instanceof FlowGaugeBlockEntity gaugeBlockEntity) {
-                gaugeBlockEntity.tick(level,pos,state, (FlowGaugeBlockEntity) blockEntity);
+                gaugeBlockEntity.tick(level,pos,state, gaugeBlockEntity);
             }
 
         };

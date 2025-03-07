@@ -11,8 +11,8 @@ import java.util.Objects;
 
 public class RocketScheduleEditPacket extends SimplePacketBase {
 
-	private RocketSchedule schedule;
-	private int rocketId;
+	private final RocketSchedule schedule;
+	private final int rocketId;
 
 	public RocketScheduleEditPacket(RocketSchedule schedule, int rocketId) {
 		this.schedule = schedule;

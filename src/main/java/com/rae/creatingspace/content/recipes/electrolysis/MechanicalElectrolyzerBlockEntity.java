@@ -8,8 +8,8 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import com.simibubi.create.foundation.utility.Couple;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.data.Couple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -240,8 +240,8 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
 
         // SoundEvents.BLOCK_STONE_BREAK
         boolean slow = Math.abs(getSpeed()) < 65;
-        if (slow && AnimationTickHolder.getTicks() % 2 == 0)
-            return;
+        if (slow && AnimationTickHolder.getTicks() % 2 == 0) {
+        }
         //replace with an electric sound
         /*if (runningTicks == 20)
             AllSoundEvents.SANDING_SHORT.playAt(level, worldPosition, .75f, 1, true);

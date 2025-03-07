@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Block;
 
 public class EncasingsInit {
     public static <B extends Block & EncasableBlock, E extends Block & EncasedBlock, P> void registerEncasings() {
-        BlockEntry<FluidPipeBlock> fluidPipeSupplier = (BlockEntry<FluidPipeBlock>) AllBlocks.FLUID_PIPE;
+        BlockEntry<FluidPipeBlock> fluidPipeSupplier = AllBlocks.FLUID_PIPE;
 
         if (fluidPipeSupplier != null) {
             EncasingRegistry.addVariant(
@@ -22,7 +22,7 @@ public class EncasingsInit {
             // Handle the error appropriately, perhaps by logging a warning
             System.out.println("FLUID_PIPE is not registered or available.");
         }
-        BlockEntry<PumpBlock> pumpSupplier = (BlockEntry<PumpBlock>) AllBlocks.MECHANICAL_PUMP;
+        BlockEntry<PumpBlock> pumpSupplier = AllBlocks.MECHANICAL_PUMP;
 
         if (pumpSupplier != null) {
             PumpBlock pumpBlock = pumpSupplier.get();

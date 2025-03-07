@@ -27,7 +27,7 @@ public abstract class TimedWaitCondition extends ScheduleWaitCondition {
         public String suffix;
         public String key;
 
-        private TimeUnit(int ticksPer, String suffix, String key) {
+        TimeUnit(int ticksPer, String suffix, String key) {
             this.ticksPer = ticksPer;
             this.suffix = suffix;
             this.key = key;

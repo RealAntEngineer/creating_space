@@ -4,14 +4,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.outliner.AABBOutline;
+import net.createmod.catnip.render.DefaultSuperRenderTypeBuffer;
+import net.createmod.catnip.render.SuperRenderTypeBuffer;
+import net.createmod.catnip.theme.Color;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.simibubi.create.foundation.outliner.AABBOutline;
-import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
-import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -44,7 +45,7 @@ public class RoomAtmosphereRenderer extends EntityRenderer<RoomAtmosphere> {
         try {
             poseStack.pushPose();
             float pt = AnimationTickHolder.getPartialTicks();
-            SuperRenderTypeBuffer superBuffer = SuperRenderTypeBuffer.getInstance();
+            SuperRenderTypeBuffer superBuffer = DefaultSuperRenderTypeBuffer.getInstance();
             List<AABB> tempCopy = List.copyOf(roomAtmosphere.getShape().getListOfBox());
             for (AABB aabb : tempCopy) {
                 AABBOutline outline = new AABBOutline(aabb);
