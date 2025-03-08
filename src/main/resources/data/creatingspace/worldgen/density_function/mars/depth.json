@@ -1,6 +1,15 @@
 {
-  "type": "minecraft:noise",
-  "noise": "creatingspace:mars/humidity.json",
-  "xz_scale": 1,
-  "y_scale": 1
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "minecraft:y_clamped_gradient",
+      "from_y": -64,
+      "to_y": 256,
+      "from_value": 1.5,
+      "to_value": -1.5
+    },
+    "argument2": 0.7
+  },
+  "argument2": "creating_space:mars/offset"
 }
