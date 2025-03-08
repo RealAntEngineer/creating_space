@@ -1,4 +1,4 @@
-package com.rae.creatingspace.server.contraption.behaviour.interaction;
+package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
 import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;

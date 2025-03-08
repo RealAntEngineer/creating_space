@@ -633,15 +633,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     //network and client only
     @Override
-    public @NotNull AABB getBoundingBoxForCulling() {
-        /*return isInPropulsionPhase() ?
+    public AABB getBoundingBoxForCulling() {
+        return isInPropulsionPhase() ?
                 new AABB(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE,
                         Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE) :
-                super.getBoundingBoxForCulling();*/
-        return new AABB(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE,
-                Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+                super.getBoundingBoxForCulling();
     }
-    //that's for knowing what direction the rocket is facing ? -> look for Create's elevator
+
     public double getAxisCoord() {
         Vec3 anchorVec = getAnchorVec();
         return  anchorVec.y;

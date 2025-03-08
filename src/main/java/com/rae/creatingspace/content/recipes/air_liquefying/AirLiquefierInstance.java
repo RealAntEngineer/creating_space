@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.recipes.air_liquefying;
 
 import com.jozufozu.flywheel.api.MaterialManager;
-import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;

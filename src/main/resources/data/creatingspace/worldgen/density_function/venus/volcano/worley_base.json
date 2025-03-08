@@ -1,13 +1,6 @@
 {
-  "type": "minecraft:max",
-  "argument1": {
-    "type": "minecraft:cache_2d",
-    "argument": {
-      "type": "creatingspace:worley_noise",
-      "xz_size": 256,
-      "y_size": 256,
-      "scale_factor": 0.5
-    }
-  },
-  "argument2": 0
+  "type": "creatingspace:worley_noise",
+  "xz_size": 64,
+  "y_size": 100000000000,
+  "scale_factor": 1
 }

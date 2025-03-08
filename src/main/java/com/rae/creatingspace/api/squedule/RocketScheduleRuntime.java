@@ -38,13 +38,12 @@ public class RocketScheduleRuntime {
     RocketContraptionEntity rocket;
     RocketSchedule schedule;
 
-    public boolean isAutoSchedule;
     public boolean paused;
     public boolean completed;
     public int currentEntry;
     public State state;
 
-    static final int INTERVAL = 40;
+    static final int INTERVAL = 40;//retry interval
     int cooldown;
     List<Integer> conditionProgress;
     List<CompoundTag> conditionContext;
@@ -214,13 +213,11 @@ public class RocketScheduleRuntime {
         return null;
     }
 
-    public void setSchedule(RocketSchedule schedule, boolean auto) {
+    public void setSchedule(RocketSchedule schedule, boolean paused) {
         reset();
         this.schedule = schedule;
         currentEntry = Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
-        paused = false;
-        isAutoSchedule = auto;
-        //train.status.newSchedule();
+        this.paused = paused;
         predictionTicks = new ArrayList<>();
         schedule.entries.forEach($ -> predictionTicks.add(TBD));
         displayLinkUpdateRequested = true;
@@ -238,7 +235,6 @@ public class RocketScheduleRuntime {
     private void reset() {
         paused = true;
         completed = false;
-        isAutoSchedule = false;
         currentEntry = 0;
         currentTitle = "";
         schedule = null;
@@ -251,7 +247,6 @@ public class RocketScheduleRuntime {
     public CompoundTag write() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("CurrentEntry", currentEntry);
-        tag.putBoolean("AutoSchedule", isAutoSchedule);
         tag.putBoolean("Paused", paused);
         tag.putBoolean("Completed", completed);
         if (schedule != null)
@@ -267,7 +262,6 @@ public class RocketScheduleRuntime {
         reset();
         paused = tag.getBoolean("Paused");
         completed = tag.getBoolean("Completed");
-        isAutoSchedule = tag.getBoolean("AutoSchedule");
         currentEntry = tag.getInt("CurrentEntry");
         if (tag.contains("Schedule"))
             schedule = RocketSchedule.fromTag(tag.getCompound("Schedule"));

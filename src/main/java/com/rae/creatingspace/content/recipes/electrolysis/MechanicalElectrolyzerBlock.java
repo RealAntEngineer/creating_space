@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.recipes.electrolysis;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.legacy.server.items.ElectrodeItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;

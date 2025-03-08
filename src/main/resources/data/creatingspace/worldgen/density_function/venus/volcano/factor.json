@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:spline",
+        "spline": {
+          "coordinate": "creatingspace:venus/volcanism",
+          "points": [
+            {
+              "location": -0.1,
+              "derivative": 0,
+              "value": 0
+            },
+            {
+              "location": 0.1,
+              "derivative": 0,
+              "value": 1
+            },
+            {
+              "location": 0.3,
+              "derivative": 0,
+              "value": 2
+            },
+            {
+              "location": 0.8,
+              "derivative": 0,
+              "value": 3
+            }
+          ]
+        }
+      },
+      "argument2": 0.04
+    }
+}

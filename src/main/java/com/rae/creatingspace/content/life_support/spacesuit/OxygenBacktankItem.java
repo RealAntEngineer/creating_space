@@ -1,6 +1,5 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
-import com.rae.creatingspace.legacy.server.items.UpgradableEquipment;
 import com.simibubi.create.foundation.item.LayeredArmorItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

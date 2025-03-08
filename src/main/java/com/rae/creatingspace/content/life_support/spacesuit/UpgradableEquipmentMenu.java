@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
-import com.rae.creatingspace.legacy.server.items.UpgradableEquipment;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

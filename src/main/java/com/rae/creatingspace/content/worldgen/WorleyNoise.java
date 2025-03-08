@@ -1,47 +1,43 @@
 package com.rae.creatingspace.content.worldgen;
 
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import net.minecraft.world.phys.Vec3;
 
 public class WorleyNoise {
-    private static final double K = 0.142857142857f;
-    private static final double Ko = 0.428571428571f;
-    private static final double K2 = 0.020408163265306f;
-    private static final double Kz = 0.166666666667f;
-    private static final double Kzo = 0.416666666667f;
-    private static final double jitter = 0.8f;
+    private static final float K = 0.142857142857f;
+    private static final float Ko = 0.428571428571f;
+    private static final float K2 = 0.020408163265306f;
+    private static final float Kz = 0.166666666667f;
+    private static final float Kzo = 0.416666666667f;
+    private static final float jitter = 0.8f;
 
-    public double getXZSize() {
+    public float getXZSize() {
         return XZSize;
     }
 
-    public double getYSize() {
+    public float getYSize() {
         return YSize;
     }
 
-    public double getScaleFactor() {
-        return scaleFactor;
-    }
 
-    private final double XZSize;
-    private final double YSize;
-    private final double scaleFactor;
-    private double x0,y0,z0;
-    private int[] p = new int[289];
-    public WorleyNoise(double XZSize, double YSize, double scaleFactor) {
+    private final float XZSize;
+    private final float YSize;
+    private float x0,y0,z0;
+    private final int[] p = new int[289];//go to 256 rather than 289
+    public WorleyNoise(float XZSize, float YSize) {
         this.XZSize = XZSize;
         this.YSize = YSize;
-        this.scaleFactor = scaleFactor;
         setSeed(0L);
     }
     public void setSeed(long seed){
         RandomSource random = new XoroshiroRandomSource(seed);
-        this.x0 = random.nextDouble() * 289.0D;
-        this.y0 = random.nextDouble() * 289.0D;
-        this.z0 = random.nextDouble() * 289.0D;
+        this.x0 = random.nextFloat() * 289.0f;
+        this.y0 = random.nextFloat() * 289.0f;
+        this.z0 = random.nextFloat() * 289.0f;
 
-        for(int i = 0; i < 289; this.p[i] = i++) {
+        for(int i = 0; i < 289; this.p[i] = i++){
+
         }
 
         for(int l = 0; l < 289; ++l) {
@@ -53,45 +49,44 @@ public class WorleyNoise {
 
     }
 
-    private double permute(double x) {
-        return p[(int) (x%289.0d)];
+    private int permute(int x) {
+        return p[x%289];
     }
 
-    public static double fract(double x) {
-        return x - Math.floor(x);
+    public static float frac(float x) {
+        return x - Mth.floor(x);
     }
 
-    public double cellular3x3x3(double px, double py, double pz) {
-        double Pix = Math.floor(px+x0), Piy = Math.floor(py+y0), Piz = Math.floor(pz+z0); // Integer part
-        double Pfx = fract(px+x0),Pfy = fract(py+y0),Pfz = fract(pz+z0); // Fractional part
-
-        double minDist = Float.MAX_VALUE;
+    public float cellular3x3x3(float px, float py, float pz) {
+        int Pix = Mth.floor(px+x0), Piy = Mth.floor(py+y0), Piz = Mth.floor(pz+z0); // Integer part
+        float Pfx = frac(px+x0),Pfy = frac(py+y0),Pfz = frac(pz+z0); // Fractional part
+        float minDist = Float.MAX_VALUE;
 
         for (int xi = -1; xi <= 1; xi++) {
             for (int yi = -1; yi <= 1; yi++) {
                 for (int zi = -1; zi <= 1; zi++) {
                     // Compute cell coordinates
                     //Vec3 cell = Pi.add(new Vec3(xi, yi, zi));
-                    double permuted = permute(permute(permute(Pix + xi)+Piy+yi)+Piz+zi);
+                    float permuted = permute(permute(permute(Pix + xi)+Piy+yi)+Piz+zi);
                     // Pseudo-random offset inside cell
-                    double jitterX = ((permuted*K-Math.floor(permuted*K))-Ko) * jitter;
-                    double jitterY = ((Math.floor(permuted*K)%7.0) * K-Ko) * jitter;
-                    double jitterZ = ((Math.floor(permuted*K2)) * Kz-Kzo) * jitter;
+                    float jitterX = ((permuted*K-Mth.floor(permuted*K))-Ko) * jitter;
+                    float jitterY = ((Mth.floor(permuted*K)%7.0f) * K-Ko) * jitter;
+                    float jitterZ = ((Mth.floor(permuted*K2)) * Kz-Kzo) * jitter;
 
 
                     // Compute squared distance
-                    double dist = Math.sqrt((jitterX+xi-Pfx)*(jitterX+xi-Pfx)+(jitterY+yi-Pfy)*(jitterY+yi-Pfy)+(jitterZ+zi-Pfz)*(jitterZ+zi-Pfz));
+                    float dist = Mth.sqrt((jitterX+xi-Pfx)*(jitterX+xi-Pfx)+(jitterY+yi-Pfy)*(jitterY+yi-Pfy)+(jitterZ+zi-Pfz)*(jitterZ+zi-Pfz));
 
                     // Track minimum distance
                     minDist = Math.min(minDist, dist);
                 }
             }
         }
-        return Math.sqrt(minDist); // Return the actual distance
+        return Mth.sqrt(minDist); // Return the actual distance
     }
-
-    public double getValue(double x, double y, double z) {
-        double F = cellular3x3x3((x) / XZSize,(y) / YSize,(z) / XZSize)*scaleFactor;
+    //use int, that's lighter
+    public double getValue(int x, int y, int z) {
+        float F = cellular3x3x3((x) / XZSize,(y) / YSize,(z) / XZSize);
         return 1- (F * 2);  // Mapping to range [-1, 1]
     }
 }

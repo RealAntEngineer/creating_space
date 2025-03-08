@@ -1,5 +1,9 @@
 {
   "values": [
-    "creatingspace:venus"
+    "creatingspace:venus/toxic",
+    "creatingspace:venus/plain",
+    "creatingspace:venus/volcanic",
+    "creatingspace:venus/cave"
+
   ]
 }

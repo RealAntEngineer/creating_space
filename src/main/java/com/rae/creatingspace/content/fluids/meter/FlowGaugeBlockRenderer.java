@@ -3,8 +3,6 @@ package com.rae.creatingspace.content.fluids.meter;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity;
-import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;

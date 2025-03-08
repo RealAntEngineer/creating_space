@@ -25,7 +25,12 @@
     "recipe.ProcessingRecipeRecipeSerializerMixin",
     "recipe.SequencedAssemblyRecipeMixin",
     "recipe.SequencedAssemblyRecipeSerializerMixin",
-    "worldgen.RandomStateMixin"
+    "worldgen.FluidStatusAccessor",
+    "worldgen.NoiseBasedAquiferMixin",
+    "worldgen.NoiseChunkMixin",
+    "worldgen.NoiseGeneratorSettingsMixin",
+    "worldgen.RandomStateMixin",
+    "worldgen.SurfaceSystemMixin"
   ],
   "client": [
   ],

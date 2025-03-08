@@ -5,7 +5,7 @@
     "settings": "creatingspace:asteroid",
     "biome_source": {
       "type": "minecraft:fixed",
-      "biome": "creatingspace:mars_plains"
+      "biome": "creatingspace:asteroids/space"
     }
   }
 }

@@ -1,4 +1,4 @@
-package com.rae.creatingspace.server.contraption.behaviour.movement;
+package com.rae.creatingspace.content.rocket.contraption.behaviour.movement;
 
 import com.jozufozu.flywheel.core.virtual.VirtualRenderWorld;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -36,10 +36,9 @@ public class EngineMovementBehaviour implements MovementBehaviour {
     public boolean isActive(MovementContext context) {
         if ((context.contraption.entity instanceof RocketContraptionEntity rocketEntity)) {
             boolean flag = rocketEntity.isInPropulsionPhase();
-            //return MovementBehaviour.super.isActive(context) && flag;
-            return true;
+            return MovementBehaviour.super.isActive(context) && flag;
         }
-        return true;
+        return false;
     }
 
     @Override
