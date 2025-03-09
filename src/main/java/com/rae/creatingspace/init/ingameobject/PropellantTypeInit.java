@@ -1,14 +1,11 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.TagsInit;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -18,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.rae.creatingspace.server.event.DataEventHandler.getSideAwareRegistry;
+import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
 
 public class PropellantTypeInit {
     //TODO use datapackRegitry(Codec,Codec)

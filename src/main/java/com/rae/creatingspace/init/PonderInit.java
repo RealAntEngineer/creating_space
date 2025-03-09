@@ -1,8 +1,8 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.client.ponders.FluidScene;
-import com.rae.creatingspace.client.ponders.RocketScene;
+import com.rae.creatingspace.content.ponders.FluidScene;
+import com.rae.creatingspace.content.ponders.RocketScene;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 

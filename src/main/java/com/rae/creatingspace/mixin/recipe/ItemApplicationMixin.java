@@ -1,6 +1,6 @@
 package com.rae.creatingspace.mixin.recipe;
 
-import com.rae.creatingspace.recipes.IMoreNbtConditions;
+import com.rae.creatingspace.content.recipes.IMoreNbtConditions;
 import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;

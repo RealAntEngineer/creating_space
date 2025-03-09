@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.rae.creatingspace.api.squedule.RocketSchedule;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
 import com.simibubi.create.foundation.utility.Pair;

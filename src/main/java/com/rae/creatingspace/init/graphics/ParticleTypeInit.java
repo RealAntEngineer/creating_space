@@ -1,7 +1,7 @@
 package com.rae.creatingspace.init.graphics;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.server.particle.RocketPlumeParticleData;
+import com.rae.creatingspace.legacy.server.particle.RocketPlumeParticleData;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.core.particles.ParticleOptions;

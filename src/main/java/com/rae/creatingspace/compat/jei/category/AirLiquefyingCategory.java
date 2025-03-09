@@ -1,8 +1,7 @@
 package com.rae.creatingspace.compat.jei.category;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.compat.jei.AnimatedAirLiquefier;
-import com.rae.creatingspace.recipes.AirLiquefyingRecipe;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.gui.AllGuiTextures;

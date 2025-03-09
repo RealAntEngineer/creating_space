@@ -2,7 +2,7 @@ package com.rae.creatingspace.api.squedule.destination;
 
 import com.google.common.collect.ImmutableList;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.utilities.CSDimensionUtil;
+import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Components;

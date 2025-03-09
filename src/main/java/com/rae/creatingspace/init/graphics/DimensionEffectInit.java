@@ -1,6 +1,6 @@
 package com.rae.creatingspace.init.graphics;
 
-import com.rae.creatingspace.client.effects.CustomDimensionEffects;
+import com.rae.creatingspace.content.planets.CustomDimensionEffects;
 import com.rae.creatingspace.init.worldgen.DimensionInit;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
