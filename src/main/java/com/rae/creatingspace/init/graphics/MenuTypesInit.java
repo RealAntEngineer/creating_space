@@ -1,12 +1,12 @@
 package com.rae.creatingspace.init.graphics;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.client.gui.menu.EngineerTableMenu;
-import com.rae.creatingspace.client.gui.menu.RocketMenu;
-import com.rae.creatingspace.client.gui.menu.UpgradableEquipmentMenu;
-import com.rae.creatingspace.client.gui.screen.EngineerTableScreen;
-import com.rae.creatingspace.client.gui.screen.NewDestinationScreen;
-import com.rae.creatingspace.client.gui.screen.UpgradableEquipementScreen;
+import com.rae.creatingspace.content.client.gui.menu.EngineerTableMenu;
+import com.rae.creatingspace.content.client.gui.menu.RocketMenu;
+import com.rae.creatingspace.content.client.gui.menu.UpgradableEquipmentMenu;
+import com.rae.creatingspace.content.client.gui.screen.EngineerTableScreen;
+import com.rae.creatingspace.content.client.gui.screen.NewDestinationScreen;
+import com.rae.creatingspace.content.client.gui.screen.UpgradableEquipementScreen;
 import com.tterrag.registrate.builders.MenuBuilder;
 import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;

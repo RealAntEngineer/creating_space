@@ -1,9 +1,9 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.recipes.AirLiquefyingRecipe;
-import com.rae.creatingspace.recipes.ChemicalSynthesisRecipe;
-import com.rae.creatingspace.recipes.MechanicalElectrolysisRecipe;
+import com.rae.creatingspace.content.recipes.AirLiquefyingRecipe;
+import com.rae.creatingspace.content.recipes.ChemicalSynthesisRecipe;
+import com.rae.creatingspace.content.recipes.MechanicalElectrolysisRecipe;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;

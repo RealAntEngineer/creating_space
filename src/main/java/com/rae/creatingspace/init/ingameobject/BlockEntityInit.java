@@ -1,12 +1,12 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.client.renderer.blockentity.*;
-import com.rae.creatingspace.client.renderer.instance.*;
-import com.rae.creatingspace.server.armor.OxygenBacktankBlockEntity;
-import com.rae.creatingspace.server.blockentities.*;
-import com.rae.creatingspace.server.blockentities.atmosphere.OxygenBlockEntity;
-import com.rae.creatingspace.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
-import com.rae.creatingspace.server.blockentities.atmosphere.SealerBlockEntity;
+import com.rae.creatingspace.content.client.renderer.blockentity.*;
+import com.rae.creatingspace.content.client.renderer.instance.*;
+import com.rae.creatingspace.content.server.armor.OxygenBacktankBlockEntity;
+import com.rae.creatingspace.content.server.blockentities.*;
+import com.rae.creatingspace.content.server.blockentities.atmosphere.OxygenBlockEntity;
+import com.rae.creatingspace.content.server.blockentities.atmosphere.RoomPressuriserBlockEntity;
+import com.rae.creatingspace.content.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
