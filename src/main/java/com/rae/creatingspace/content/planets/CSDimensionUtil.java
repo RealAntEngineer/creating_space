@@ -182,6 +182,13 @@ public class CSDimensionUtil {
         return distances;
     }
 
+    public static void updateCostMap() {
+        costAdjacentMap = new HashMap<>();
+        for (ResourceLocation location : getTravelMap().keySet()) {
+            costAdjacentMap.put(location, dijkstra(location));
+        }
+    }
+
     /**
      * if the value returned is < 0, the target dimension is unreachable
      */
@@ -193,10 +200,4 @@ public class CSDimensionUtil {
         return costAdjacentMap.getOrDefault(from, new HashMap<>()).getOrDefault(to, -1);
     }
 
-    public static void updateCostMap() {
-        costAdjacentMap = new HashMap<>();
-        for (ResourceLocation location : getTravelMap().keySet()) {
-            costAdjacentMap.put(location, dijkstra(location));
-        }
-    }
 }

@@ -4,8 +4,8 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.*;
 import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
-import com.simibubi.create.foundation.utility.NBTHelper;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -31,7 +31,7 @@ public class RocketSchedule {
         registerCondition("item_threshold", ItemThresholdCondition::new);
         //registerCondition("redstone_link", RedstoneLinkCondition::new);
         registerCondition("player_count", PlayerPassengerCondition::new);
-        registerCondition("idle", IdleCargoCondition::new);
+        //registerCondition("idle", IdleCargoCondition::new);
         //registerCondition("unloaded", StationUnloadedCondition::new);
         //registerCondition("powered", StationPoweredCondition::new);
     }

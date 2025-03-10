@@ -13,12 +13,14 @@ import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
-import com.rae.creatingspace.content.rocket.contraption.CSContraptionType;
+import com.rae.creatingspace.init.CSContraptionType;
 import com.rae.creatingspace.content.event.IgniteOnPlace;
 import com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
-import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,7 +45,8 @@ public class CreatingSpace {
     public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
-            return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE);
+            return new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE).
+                    andThen(TooltipModifier.mapNull(KineticStats.create(item)));
         });
     }
 
@@ -72,7 +75,7 @@ public class CreatingSpace {
         PaintingInit.register(modEventBus);
         RecipeInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
-        CarverInit.register(modEventBus);
+
         EntityDataSerializersInit.register(modEventBus);
         MiscInit.register(modEventBus);
         CreativeModeTabsInit.register(modEventBus);
@@ -83,12 +86,12 @@ public class CreatingSpace {
         PacketInit.registerPackets();
         IgniteOnPlace.register();
 
+        CarverInit.register(modEventBus);
 
-        CSContraptionType.prepare();
+        CSContraptionType.register(modEventBus);
 
         modEventBus.addListener(CreatingSpace::init);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
-
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 

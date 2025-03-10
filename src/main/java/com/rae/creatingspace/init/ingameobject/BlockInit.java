@@ -1,5 +1,6 @@
 package com.rae.creatingspace.init.ingameobject;
 
+import com.rae.creatingspace.configs.CSStress;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
 import com.rae.creatingspace.content.planets.RegolithSurfaceBlock;
@@ -28,8 +29,8 @@ import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsItem;
 import com.rae.creatingspace.legacy.server.items.BigEngineItem;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.legacy.server.items.SmallEngineItem;
+
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
@@ -42,8 +43,8 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.common.Tags;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
-import static com.simibubi.create.AllInteractionBehaviours.interactionBehaviour;
-import static com.simibubi.create.AllMovementBehaviours.movementBehaviour;
+import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
+import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
 
@@ -152,8 +153,7 @@ public class BlockInit {
             "rocket_generator", RocketGeneratorBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setCapacity(10000))
-            .transform(BlockStressDefaults.setGeneratorSpeed(RocketGeneratorBlock::getSpeedRange))
+            .transform(CSStress.setCapacity(10000))
             .transform(axeOrPickaxe())
             .item()
             .transform(customItemModel())
@@ -176,7 +176,7 @@ public class BlockInit {
                     "legacy_mechanical_electrolyzer", LegacyMechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(10000))
+            .transform(CSStress.setImpact(10000))
             .transform(axeOrPickaxe())
             .item()
             //.properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
@@ -187,7 +187,7 @@ public class BlockInit {
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(2000))
+            .transform(CSStress.setImpact(2000))
             .transform(axeOrPickaxe())
             .item()
             .transform(customItemModel())
@@ -199,7 +199,7 @@ public class BlockInit {
             .properties(p -> p.noOcclusion())
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
-            .transform(BlockStressDefaults.setImpact(8.0))
+            .transform(CSStress.setImpact(8.0))
             .item(AssemblyOperatorBlockItem::new)
             .transform(customItemModel())
             .register();
@@ -214,7 +214,7 @@ public class BlockInit {
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(BlockStressDefaults.setImpact(500))
+            .transform(CSStress.setImpact(500))
             .transform(axeOrPickaxe())
             .item()
             .transform(customItemModel())

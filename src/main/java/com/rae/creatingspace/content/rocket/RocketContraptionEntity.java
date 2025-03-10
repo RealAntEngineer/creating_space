@@ -24,7 +24,7 @@ import com.simibubi.create.content.contraptions.ContraptionCollider;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
-import com.simibubi.create.foundation.utility.VecHelper;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -161,7 +161,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         }
         float totalThrust =0;
         float totalFluidMass= 0;
-        IFluidHandler fluidHandler = contraption.getSharedFluidTanks();
+        IFluidHandler fluidHandler = contraption.getStorage().getFluids();
         int nbrOfTank = fluidHandler.getTanks();
         //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
@@ -283,7 +283,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //wrong because no consideration for the ratio of propellants
         float totalThrust = 0;
         float inertFluidsMass = 0;
-        IFluidHandler fluidHandler = contraption.getSharedFluidTanks();
+        IFluidHandler fluidHandler = contraption.getStorage().getFluids();
         int nbrOfTank = fluidHandler.getTanks();
         //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
@@ -325,7 +325,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     private static void addToConsumableFluids(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> consumedFluid) {
         rocketContraptionEntity.consumableFluids.put(consumedFluid, new ArrayList<>());
-        IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getSharedFluidTanks();
+        IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getStorage().getFluids();
         if (fluidHandler != null) {
             int nbrOfTank = fluidHandler.getTanks();
             for (int i = 0; i < nbrOfTank; i++) {
@@ -343,7 +343,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         HashMap<TagKey<Fluid>, Integer> massForEachPropellant = new HashMap<>();
         //remove the string from the consumableFluids
         ArrayList<TagKey<Fluid>> allPropellantTags = new ArrayList<>(rocketContraptionEntity.consumableFluids.keySet());
-        IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getSharedFluidTanks();
+        IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getStorage().getFluids();
         int nbrOfTank = fluidHandler.getTanks();
 
         for (TagKey<Fluid> consumedFluid:allPropellantTags){
@@ -527,7 +527,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         }
         RocketContraption rocketContraption = (RocketContraption) rocketContraptionEntity.contraption;
-        IFluidHandler fluidHandler = rocketContraption.getSharedFluidTanks();
+        IFluidHandler fluidHandler = rocketContraption.getStorage().getFluids();
         //need to construct a map of drainAmount and partial drain -> map of couple/record(int,float)
         //make in a loop so it look for every one ?
         for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
@@ -539,11 +539,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                     info.propellantConsumption().keySet()) {
                 Float prevPartialDrainValue = partialDrainAmountPerFluid.get(fluidTag);
                 ArrayList<Fluid> fluids = consumableFluids.get(fluidTag);
-                //ArrayList<Fluid> fuelFluids = consumableFluids.get("fuel").get(combination.get(false));
-                if (!(fluids == null || fluids.isEmpty() /*|| fuelFluids == null || fuelFluids.isEmpty())*/)) {
+                if (!(fluids == null || fluids.isEmpty())) {
 
                     Fluid oxFluid = fluids.get(0);
-                    //Fluid fuelFluid = fuelFluids.get(0);
 
                     FluidType oxFluidType = oxFluid.getFluidType();
                     float oxRo = (float) oxFluidType.getDensity() / 1000;
@@ -566,7 +564,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
                     if (consumedOx == 0) {
                         RocketContraptionEntity.addToConsumableFluids(this, fluidTag);
-                        //RocketContraptionEntity.addToConsumableFluids(this, combination.get(false), false);
 
                     }
                 }

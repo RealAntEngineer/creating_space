@@ -5,8 +5,8 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
+import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.behaviour.MovingInteractionBehaviour;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -80,7 +80,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                                         float fluidVolume = (float) (fluidMass / fluidRef.get().getFluidType().getDensity()); //in minecraft's bucket
                                         serverPlayer.sendSystemMessage(Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
                                                 .append(" ")
-                                                .append(Component.literal(CSUtil.scientificNbrFormatting((float) fluidVolume, 5))
+                                                .append(Component.literal(CSUtil.scientificNbrFormatting(fluidVolume, 5))
                                                         .append(Component.literal("B"))
                                                         .withStyle(consumedMass >= fluidMass ?
                                                                 ChatFormatting.DARK_RED :

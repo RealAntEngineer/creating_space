@@ -1,6 +1,7 @@
 package com.rae.creatingspace.api.squedule;
 
-import com.simibubi.create.foundation.gui.widget.AbstractSimiWidget;
+
+import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 
 public class ScheduleEntryWidget extends AbstractSimiWidget {
 

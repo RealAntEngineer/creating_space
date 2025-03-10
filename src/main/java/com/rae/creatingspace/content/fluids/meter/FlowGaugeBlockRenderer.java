@@ -1,11 +1,10 @@
 package com.rae.creatingspace.content.fluids.meter;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
+import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -25,8 +24,7 @@ public class FlowGaugeBlockRenderer extends SafeBlockEntityRenderer<FlowGaugeBlo
         BlockState blockState = gaugeBlockEntity.getBlockState();
         VertexConsumer vb = bufferSource.getBuffer(RenderType.solid());
         ms.pushPose();
-        TransformStack msr = TransformStack.cast(ms);
-        msr.translate(1 / 2f, 0.5, 1 / 2f);
+        ms.translate(1 / 2f, 0.5, 1 / 2f);
 
 
         float dialPivot = 5.75f / 16;
@@ -35,9 +33,9 @@ public class FlowGaugeBlockRenderer extends SafeBlockEntityRenderer<FlowGaugeBlo
 
         ms.pushPose();
 
-        CachedBufferer.partial(AllPartialModels.GAUGE_DIAL, blockState)
+        CachedBuffers.partial(AllPartialModels.GAUGE_DIAL, blockState)
                 .rotateY(((-direction.toYRot() - 90) ))
-                .unCentre()
+                .uncenter()
                 .translate((double) -1 /16, 0, 0)
                 .translate(0, dialPivot, dialPivot)
                 .rotateX(-90 * progress)

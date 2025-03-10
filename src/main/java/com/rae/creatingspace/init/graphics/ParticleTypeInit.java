@@ -3,7 +3,7 @@ package com.rae.creatingspace.init.graphics;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.legacy.server.particle.RocketPlumeParticleData;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,7 +23,7 @@ public enum ParticleTypeInit {
     private final ParticleEntry<?> entry;
 
     <D extends ParticleOptions> ParticleTypeInit(Supplier<? extends ICustomParticleData<D>> typeFactory) {
-        String name = Lang.asId(name());
+        String name = CreateLang.asId(name());
         entry = new ParticleEntry<>(name, typeFactory);
     }
 

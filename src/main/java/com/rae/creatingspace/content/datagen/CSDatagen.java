@@ -3,7 +3,7 @@ package com.rae.creatingspace.content.datagen;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
-import com.simibubi.create.foundation.ponder.PonderLocalization;
+
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.data.DataGenerator;
@@ -75,6 +75,6 @@ public class CSDatagen {
 		//PonderLocalization.generateSceneLang();
 
 		//GeneralText.provideLang(consumer);
-		PonderLocalization.provideLang(CreatingSpace.MODID, consumer);
+		//PonderLocalization.provideLang(CreatingSpace.MODID, consumer);
 	}
 }

@@ -18,8 +18,7 @@ import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
-import com.simibubi.create.foundation.utility.Color;
-import com.simibubi.create.foundation.utility.Components;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -94,20 +93,20 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
     @Override
     protected void init() {
-        setWindowSize(background.width, (background.height + 4 + AllGuiTextures.PLAYER_INVENTORY.height));
+        setWindowSize(background.width, (background.height + 4 + AllGuiTextures.PLAYER_INVENTORY.getHeight()));
         setWindowOffset(0, -8);
         super.init();
         int x = leftPos;
         int y = topPos;
 
-        exhaustPackLabel = new Label(x + 133, y + 20, Components.immutableEmpty()).withShadow();
-        exhaustPackLabel.text = Components.immutableEmpty();
+        exhaustPackLabel = new Label(x + 133, y + 20, Component.empty()).withShadow();
+        exhaustPackLabel.text = Component.empty();
         exhaustPackTypes = new ArrayList<>();
         exhaustPackTypeLocations = new ArrayList<>();
         propellantTypeLocations = new ArrayList<>();
         propellantTypes = new ArrayList<>();
-        propellantLabel = new Label(x + 7, y + 135, Components.immutableEmpty()).withShadow();
-        propellantLabel.text = Components.immutableEmpty();
+        propellantLabel = new Label(x + 7, y + 135, Component.empty()).withShadow();
+        propellantLabel.text = Component.empty();
         propellantTypes = new ArrayList<>();
         List<MutableComponent> availablePropellantType = new ArrayList<>();
         getSyncedPropellantRegistry().entrySet().forEach((ro) -> {
@@ -161,8 +160,8 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         addRenderableWidget(setExhaustPackType);
         addRenderableWidget(exhaustPackLabel);
 
-        powerPackLabel = new Label(x + 7, y + 20, Components.immutableEmpty()).withShadow();
-        powerPackLabel.text = Components.immutableEmpty();
+        powerPackLabel = new Label(x + 7, y + 20, Component.empty()).withShadow();
+        powerPackLabel.text = Component.empty();
         powerPackTypes = new ArrayList<>();
         powerPackTypeLocations = new ArrayList<>();
         List<MutableComponent> availablePowerType = new ArrayList<>();
@@ -196,8 +195,8 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
         addRenderableWidget(expansionRatioSlider);
 
-        engineSizeLabel = new Label(x + 7, y + 156, Components.immutableEmpty()).withShadow();
-        engineSizeLabel.text = Components.immutableEmpty();
+        engineSizeLabel = new Label(x + 7, y + 156, Component.empty()).withShadow();
+        engineSizeLabel.text = Component.empty();
         engineSizeInput = new ScrollInput(x + 7, y + 156,
                 50, 18)
                 .withRange(1, Integer.MAX_VALUE)
@@ -205,10 +204,10 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .writingTo(engineSizeLabel)
                 .addHint(Component.translatable("creatingspace.gui.engineer_table.engine_size_hint"))
                 .setState(getMenu().getSyncData().size())
-                .format(i -> Components.literal(i+" mb"))
+                .format(i -> Component.literal(i+" mb"))
                 .calling(state -> this.syncWithBE());
-        engineThrustLabel = new Label(x + 7, y + 178, Components.immutableEmpty()).withShadow();
-        engineThrustLabel.text = Components.immutableEmpty();
+        engineThrustLabel = new Label(x + 7, y + 178, Component.empty()).withShadow();
+        engineThrustLabel.text = Component.empty();
         engineThrustInput = new ScrollInput(x + 7, y + 178,
                 50, 18)
                 .withRange(1, Integer.MAX_VALUE)
@@ -218,7 +217,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .withShiftStep(10000)
                 .withStepFunction((c) -> (c.shift ? 100000 : 1000))
                 .setState(getMenu().contentHolder.thrust)
-                .format(i -> Components.literal(CSUtil.scientificNbrFormatting(Float.valueOf(i), 4) + "N"))
+                .format(i -> Component.literal(CSUtil.scientificNbrFormatting(Float.valueOf(i), 4) + "N"))
                 .calling(state -> this.syncWithBE());
         engineThrustInput.onChanged();
         engineSizeInput.onChanged();
@@ -245,7 +244,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
     @Override
     protected void renderBg(@NotNull GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.width) + 50;
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + 50;
         int invY = topPos + background.height + 4;
         renderPlayerInventory(graphics, invX, invY);
 
@@ -348,7 +347,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         List<ResourceLocation> propsExhaustPack = exhaustPackTypes.get(setExhaustPackType.getState()).getAllowedPropellants();
 
         List<MutableComponent> availablePropellants = new ArrayList<>();
-        propellantTypeLocations = new ArrayList<>();;
+        propellantTypeLocations = new ArrayList<>();
         propellantTypes = new ArrayList<>();
         propsPowerPack.forEach(
                 location -> {

@@ -5,8 +5,6 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import com.simibubi.create.foundation.render.SuperRenderTypeBuffer;
-import com.simibubi.create.foundation.utility.Color;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
@@ -17,9 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderAtmosphere;
-import static com.rae.creatingspace.api.rendering.PlanetsRendering.renderPlanet;
 
 public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     private static final ResourceLocation SPACE_SKY_LOCATION = new ResourceLocation("creatingspace", "textures/environment/space_sky.png");
@@ -244,11 +239,6 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
                 bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, bodySize).uv(f13, f16).endVertex();
                 bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, bodySize).uv(f15, f16).endVertex();
                 BufferUploader.drawWithShader(bufferbuilder.end());
-            } else {
-                renderPlanet(bodyTexture, poseStack, LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
-                poseStack.popPose();
-                poseStack.pushPose();
-                renderAtmosphere(SuperRenderTypeBuffer.getInstance(), poseStack, new Color(0.1f, 0.2f, 0.6f, 0.3f), LightTexture.FULL_SKY, bodySize, bodyDistance, 0, 0, rotationAngle);
             }
             poseStack.popPose();
 

@@ -1,8 +1,8 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -42,14 +42,14 @@ public class OxygenBacktankArmorLayer <T extends LivingEntity, M extends EntityM
         RenderType renderType = Sheets.cutoutBlockSheet();
         BlockState renderedState = item.getBlock().defaultBlockState()
                 .setValue(OxygenBacktankBlock.FACING, Direction.SOUTH);
-        SuperByteBuffer backtank = CachedBufferer.block(renderedState);
+        SuperByteBuffer backtank = CachedBuffers.block(renderedState);
         ms.pushPose();
 
         model.body.translateAndRotate(ms);
         ms.translate(-1 / 2f, 10 / 16f, 1f);
         ms.scale(1, -1, -1);
 
-        backtank.forEntityRender()
+        backtank
                 .light(light)
                 .renderInto(ms, buffer.getBuffer(renderType));
 

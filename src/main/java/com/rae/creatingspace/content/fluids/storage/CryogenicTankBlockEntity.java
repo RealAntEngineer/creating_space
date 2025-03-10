@@ -1,11 +1,13 @@
 package com.rae.creatingspace.content.fluids.storage;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.LangBuilder;
+
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -132,9 +134,9 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        LangBuilder mb = Lang.translate("generic.unit.millibuckets");
-        LangBuilder mbs = Lang.translate("generic.unit.fluidflow");
-        Lang.translate("gui.goggles.fluid_container")
+        LangBuilder mb = new LangBuilder("creatingspace").translate("generic.unit.millibuckets");
+        LangBuilder mbs = new LangBuilder("creatingspace").translate("generic.unit.fluidflow");
+        new LangBuilder("creatingspace").translate("gui.goggles.fluid_container")
                 .forGoggles(tooltip);
 
             FluidTank tank = TANK;
@@ -142,16 +144,16 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
 
             FluidStack fluidStack = tank.getFluidInTank(0);
 
-            Lang.builder().add(Component.translatable(fluidName))
+        new LangBuilder("creatingspace").add(Component.translatable(fluidName))
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
 
-            Lang.builder()
-                    .add(Lang.number(fluidStack.getAmount())
+        new LangBuilder("creatingspace")
+                    .add(CreateLang.number(fluidStack.getAmount())
                             .add(mb)
                             .style(ChatFormatting.GOLD))
                     .text(ChatFormatting.GRAY, " / ")
-                    .add(Lang.number(tank.getTankCapacity(0))
+                    .add(CreateLang.number(tank.getTankCapacity(0))
                             .add(mb)
                             .style(ChatFormatting.DARK_GRAY))
                     .forGoggles(tooltip, 1);

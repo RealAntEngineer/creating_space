@@ -7,14 +7,13 @@ import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.rae.creatingspace.legacy.utilities.packet.SealerSettings;
 import com.rae.creatingspace.legacy.utilities.packet.SealerTrySealing;
-import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.Indicator;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.gui.AbstractSimiScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
@@ -43,7 +42,7 @@ public class SealerScreen extends AbstractSimiScreen {
 
 
     public SealerScreen(SealerBlockEntity be) {
-        super(Lang.translateDirect("gui.destination_screen.title"));
+        super(CreateLang.translateDirect("gui.destination_screen.title"));
         this.blockEntity = be;
         this.retrySetting = be.isAutomaticRetry();
         this.rangeSetting = be.getRange();
@@ -69,7 +68,7 @@ public class SealerScreen extends AbstractSimiScreen {
         settingButton.withCallback(this::switchSetting);
         settingButton.setToolTip(Component.translatable("creatingspace.gui.sealer.settings"));
 
-        setRangeLabel = new Label(x + 80, y + 100+9-4, Components.immutableEmpty()).withShadow();
+        setRangeLabel = new Label(x + 80, y + 100+9-4, Component.empty()).withShadow();
 
 
         setRangeInput = new BackgroundScrollInput(x+70,y+100,64,18);

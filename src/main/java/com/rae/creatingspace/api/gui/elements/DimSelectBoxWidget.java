@@ -1,7 +1,7 @@
 package com.rae.creatingspace.api.gui.elements;
 
-import com.simibubi.create.foundation.gui.widget.BoxWidget;
 import com.simibubi.create.foundation.gui.widget.Label;
+import net.createmod.catnip.gui.widget.BoxWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;

@@ -3,10 +3,10 @@ package com.rae.creatingspace.legacy.server.blockentities;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.legacy.server.blocks.LegacyMechanicalElectrolyzerBlock;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.LangBuilder;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -178,9 +178,9 @@ public class LegacyMechanicalElectrolyzerBlockEntity extends KineticBlockEntity 
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        LangBuilder mb = Lang.translate("generic.unit.millibuckets");
-        LangBuilder mbs = Lang.translate("generic.unit.fluidflow");
-        Lang.translate("gui.goggles.fluid_container")
+        LangBuilder mb = CreateLang.translate("generic.unit.millibuckets");
+        LangBuilder mbs = CreateLang.translate("generic.unit.fluidflow");
+        CreateLang.translate("gui.goggles.fluid_container")
                 .forGoggles(tooltip);
 
         for (int i = 0; i <= 2; i++) {
@@ -199,16 +199,16 @@ public class LegacyMechanicalElectrolyzerBlockEntity extends KineticBlockEntity 
 
             FluidStack fluidStack = tank.getFluidInTank(0);
 
-            Lang.builder().add(Component.translatable(fluidName))
+            CreateLang.builder().add(Component.translatable(fluidName))
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
 
-            Lang.builder()
-                    .add(Lang.number(fluidStack.getAmount())
+            CreateLang.builder()
+                    .add(CreateLang.number(fluidStack.getAmount())
                             .add(mb)
                             .style(ChatFormatting.GOLD))
                     .text(ChatFormatting.GRAY, " / ")
-                    .add(Lang.number(tank.getTankCapacity(0))
+                    .add(CreateLang.number(tank.getTankCapacity(0))
                             .add(mb)
                             .style(ChatFormatting.DARK_GRAY))
                     .forGoggles(tooltip, 1);

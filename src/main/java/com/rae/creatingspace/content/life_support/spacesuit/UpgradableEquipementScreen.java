@@ -3,7 +3,8 @@ package com.rae.creatingspace.content.life_support.spacesuit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
-import com.simibubi.create.foundation.utility.Color;
+
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,13 +23,13 @@ public class UpgradableEquipementScreen extends AbstractSimiContainerScreen<Upgr
 
     @Override
     protected void init() {
-        setWindowSize(Math.max(background.width, PLAYER_INVENTORY.width), (background.height + 4 + AllGuiTextures.PLAYER_INVENTORY.height));
+        setWindowSize(Math.max(background.width, PLAYER_INVENTORY.getWidth()), (background.height + 4 + AllGuiTextures.PLAYER_INVENTORY.getHeight()));
         super.init();
     }
 
     @Override
     protected void renderBg(@NotNull GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.width);
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
         int invY = topPos + background.height + 4;
         renderPlayerInventory(graphics, invX, invY);
 

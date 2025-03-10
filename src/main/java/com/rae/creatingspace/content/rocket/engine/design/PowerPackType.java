@@ -2,8 +2,8 @@ package com.rae.creatingspace.content.rocket.engine.design;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.foundation.utility.Couple;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Couple;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.rae.creatingspace.api.gui.elements;
 
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.simibubi.create.foundation.gui.widget.AbstractSimiWidget;
-import com.simibubi.create.foundation.utility.Color;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.gui.widget.AbstractSimiWidget;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;

@@ -1,6 +1,6 @@
 package com.rae.creatingspace.api.gui.elements;
 
-import com.simibubi.create.foundation.gui.widget.BoxWidget;
+import net.createmod.catnip.gui.widget.BoxWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 public class InputBoxWidget extends BoxWidget {
-    private EditBox editBox;
+    private final EditBox editBox;
 
     public InputBoxWidget(int x, int y, int width, int height, Component initialValue) {
         super(x, y, width, height);

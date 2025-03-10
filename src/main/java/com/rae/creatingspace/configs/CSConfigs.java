@@ -1,7 +1,8 @@
 package com.rae.creatingspace.configs;
 
-import com.simibubi.create.content.kinetics.BlockStressValues;
-import com.simibubi.create.foundation.config.ConfigBase;
+import com.simibubi.create.api.stress.BlockStressValues;
+import com.simibubi.create.infrastructure.config.CStress;
+import net.createmod.catnip.config.ConfigBase;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -50,7 +51,9 @@ public class CSConfigs
         for (Map.Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
             context.registerConfig(pair.getKey(), pair.getValue().specification);
 
-        BlockStressValues.registerProvider(context.getActiveNamespace(), SERVER.kinetics.stressValues);
+        CSStress stress = SERVER.kinetics.stressValues;
+        BlockStressValues.IMPACTS.registerProvider(stress::getImpact);
+        BlockStressValues.CAPACITIES.registerProvider(stress::getCapacity);
     }
 
     @SubscribeEvent

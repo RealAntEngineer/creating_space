@@ -1,9 +1,9 @@
 package com.rae.creatingspace.api.squedule.instruction;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.RocketSchedule;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 
@@ -31,7 +31,7 @@ public abstract class ScheduleInstruction extends ScheduleDataEntry {
                 supplier = pair.getSecond();
 
         if (supplier == null) {
-            Create.LOGGER.warn("Could not parse schedule instruction type: " + location);
+            CreatingSpace.LOGGER.warn("Could not parse schedule instruction type: {}", location);
             return new DestinationInstruction();
         }
 
