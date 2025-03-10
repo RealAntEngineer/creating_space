@@ -29,9 +29,8 @@ public class RocketMenu extends MenuBase<RocketContraptionEntity> {
         //System.out.println("create on client");
         int entityID = extraData.readVarInt();
         Entity entityByID = Minecraft.getInstance().level.getEntity(entityID);
-        if (!(entityByID instanceof RocketContraptionEntity))
+        if (!(entityByID instanceof RocketContraptionEntity rocketEntity))
             return null;
-        RocketContraptionEntity rocketEntity = (RocketContraptionEntity) entityByID;
         return rocketEntity;
     }
 

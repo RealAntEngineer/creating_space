@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "create:block/train_casing"
+    "particle": "create:block/railway_casing"
   }
 }

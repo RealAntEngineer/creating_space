@@ -185,10 +185,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         if (CSConfigs.COMMON.additionalLogInfo.get()){
             CreatingSpace.LOGGER.info("finished propellants loading pass, result :");
-            CreatingSpace.LOGGER.info("thrust : " + totalThrust+ "N");
-            CreatingSpace.LOGGER.info("total theoretical consumption : " + totalTheoreticalConsumption + " Kg/s");
-            CreatingSpace.LOGGER.info("mean exhaust velocity "+ meanVe + " m/s");
-            CreatingSpace.LOGGER.info("consumable fluid found in rocket : "+ rocketContraptionEntity.consumableFluids);
+            CreatingSpace.LOGGER.info("thrust : {}N", totalThrust);
+            CreatingSpace.LOGGER.info("total theoretical consumption : {} Kg/s", totalTheoreticalConsumption);
+            CreatingSpace.LOGGER.info("mean exhaust velocity {} m/s", meanVe);
+            CreatingSpace.LOGGER.info("consumable fluid found in rocket : {}", rocketContraptionEntity.consumableFluids);
         }
 
         // massForEachPropellant is just to determine if there is enough fluid,
@@ -208,27 +208,18 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float emptyMass = totalFluidMass - initialPropellantMass + contraption.getDryMass();
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("finished mass pass, result:");
-            CreatingSpace.LOGGER.info("found mass for fluids " + massForEachPropellant);
-            CreatingSpace.LOGGER.info("total initial mass for propellants " + initialPropellantMass+"Kg");
-            CreatingSpace.LOGGER.info("inert mass "+ emptyMass + " Kg (inert fluid "+(totalFluidMass - initialPropellantMass )+ "| dry mass"+ contraption.getDryMass()+ ")");
+            CreatingSpace.LOGGER.info("total initial mass for propellants {}Kg", initialPropellantMass);
+            CreatingSpace.LOGGER.info("inert mass {} Kg (inert fluid {}| dry mass{})", emptyMass, totalFluidMass - initialPropellantMass, contraption.getDryMass());
         }
-        // to comment -> may need to calculate the deltaV of the rocket rather than
-        // the amount of propellant consumed as the user will have that info
-        // need testing -> can it be negative ?
-        // yes if there isn't enough propellant
-        // each propellant is making a contribution so it should appear here : need to write done the math...
 
         float finalPropellantMass = (float) ((emptyMass+initialPropellantMass)/Math.exp(deltaVNeeded/meanVe)-emptyMass);
 
         float consumedPropellantMass = initialPropellantMass - finalPropellantMass;
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
-            CreatingSpace.LOGGER.info("estimated propellant consumption : "+ consumedPropellantMass+ " Kg");
+            CreatingSpace.LOGGER.info("estimated propellant consumption : {} Kg", consumedPropellantMass);
         }
 
-        //mean consumption -> make the consumption diff between CH4 and 02 -> adding H2 for advanced engine ?
-        //a map of fluidTag/ Integer
-        //should rather calculate the deltaV max ?
-        rocketContraptionEntity.initialMass = emptyMass+initialPropellantMass;
+        rocketContraptionEntity.initialMass = emptyMass+initialPropellantMass ;
 
         int distance = (int) (300 - rocketContraptionEntity.position().y());
 
@@ -239,45 +230,29 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         float totalTickTime = distance / perTickSpeed;
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
-            CreatingSpace.LOGGER.info("distance :"+ distance);
-            CreatingSpace.LOGGER.info("speed : "+ perTickSpeed+ "blocks/ticks");
-            CreatingSpace.LOGGER.info("travel time : "+ totalTickTime+ " ticks");
+            CreatingSpace.LOGGER.info("distance : {}", distance);
+            CreatingSpace.LOGGER.info("speed : {}blocks/ticks", perTickSpeed);
+            CreatingSpace.LOGGER.info("travel time : {} ticks", totalTickTime);
         }
         //fill the real consumption map and fill the consumedMass map for mass verification
         HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
-
+        float realPartialConsumption = consumedPropellantMass/totalTheoreticalConsumption;
         for (PropellantType propellantType : rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
             RocketContraption.ConsumptionInfo info = rocketContraptionEntity.theoreticalPerTagFluidConsumption.get(propellantType);
-
-            float theoreticalPartialConsumption = 0;
-            for (float consumption :
-                    info.propellantConsumption().values()) {
-                theoreticalPartialConsumption += consumption;
-            }
-
-            float ponderationCoef = theoreticalPartialConsumption/totalTheoreticalConsumption;
-            float realPartialConsumption = ponderationCoef*consumedPropellantMass;
             //that's the consumed mass for the ensemble of engine with the same propellant combination
             HashMap<TagKey<Fluid>, Float> correctedConsumptions = new HashMap<>(info.propellantConsumption());
-            RocketContraption.multiplyMap(correctedConsumptions, realPartialConsumption / theoreticalPartialConsumption / totalTickTime);
+            RocketContraption.multiplyMap(correctedConsumptions, realPartialConsumption / totalTickTime);
 
-            rocketContraptionEntity.realPerTagFluidConsumption.put(propellantType,
-                    new RocketContraption.ConsumptionInfo(
-                            correctedConsumptions,
-                            info.partialThrust()));
-            for (TagKey<Fluid> fluid :
-                    correctedConsumptions.keySet()) {
-                Integer prevValue = consumedMassForEachPropellant.getOrDefault(fluid, 0);
-                consumedMassForEachPropellant.put(fluid, (int) (prevValue + correctedConsumptions.get(fluid)));
-
-            }
-
+            rocketContraptionEntity.realPerTagFluidConsumption.put(propellantType, new RocketContraption.ConsumptionInfo( correctedConsumptions,info.partialThrust()));
+            correctedConsumptions.keySet().forEach(
+                            fluid -> consumedMassForEachPropellant.put(fluid,
+                                    (int) (consumedMassForEachPropellant.getOrDefault(fluid, 0) + correctedConsumptions.get(fluid))));
         }
 
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("finished correction of consumption path :");
-            CreatingSpace.LOGGER.info("consumed mass for each fluid tag :"+ consumedMassForEachPropellant);
-            CreatingSpace.LOGGER.info("consumed mass per propellant : "+ rocketContraptionEntity.realPerTagFluidConsumption);
+            CreatingSpace.LOGGER.info("consumed mass for each fluid tag :{}", consumedMassForEachPropellant);
+            CreatingSpace.LOGGER.info("consumed mass per propellant : {}", rocketContraptionEntity.realPerTagFluidConsumption);
         }
         //verify if there is enough fluid
         FlightDataHelper.RocketAssemblyData assemblyData =
@@ -290,18 +265,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         rocketContraptionEntity.assemblyData = assemblyData;
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("determining if the rocket can go :");
-            CreatingSpace.LOGGER.info(assemblyData.toString());
+            CreatingSpace.LOGGER.info(String.valueOf(assemblyData));
         }
-        //rocketContraptionEntity.failedToLaunch = assemblyData.hasFailed();//just for the fluids
-
-        /*//may need to put that on the RocketAssemblyData ( when doing the automatic rocket : 1.7 )
-        if (acceleration <=0 ){
-            //rocketContraptionEntity.failedToLaunch = true;
-            rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
-            return;
-        }*/
         if (distance<=0){
-            //rocketContraptionEntity.failedToLaunch = true;
             rocketContraptionEntity.getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
             return;
         }
@@ -523,18 +489,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                             this.destination)
             );
 
-            if (destServerLevel!=null /*&& level.dimension() == this.originDimension*/) {
+            if (destServerLevel!=null) {
 
                 this.changeDimension(destServerLevel,new CustomTeleporter(destServerLevel));
             }
             else {
-                //put an error log with the exception thrown
-                LOGGER.info("dimension change failed at first step");
-                LOGGER.info("rocket info :");
-                LOGGER.info("destination :" + destServerLevel);
-                LOGGER.info("current dimension :" + level().dimension());
-                LOGGER.info("origin Dimension : " + this.originDimension);
-                LOGGER.info("gravity of current dimension" + CSDimensionUtil.gravity(this.level().dimensionTypeId().location()));
+                LOGGER.error("rocket failed to get server for destination : {}", this.destination);
+                this.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.ON_FINAL);
             }
         }
     }
@@ -586,32 +547,22 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
                     FluidType oxFluidType = oxFluid.getFluidType();
                     float oxRo = (float) oxFluidType.getDensity() / 1000;
-                    //FluidType fuelFluidType = fuelFluid.getFluidType();
-                    //float fuelRo = (float) fuelFluidType.getDensity() / 1000;
 
                     float oxAmount = info.propellantConsumption().get(fluidTag) / oxRo; // oxConsumption in kg, oxRo in kg/mb
-                    //float fuelAmount = info.fuelConsumption() / fuelRo;
                     if (prevPartialDrainValue == null) {
                         prevPartialDrainValue = 0f;
                     }
                     float partialOxConsumedAmount = prevPartialDrainValue;
                     partialOxConsumedAmount = partialOxConsumedAmount + oxAmount - ((int) oxAmount);
-                    //float partialFuelConsumedAmount = prevPartialDrainValue.get(false);
-                    //partialFuelConsumedAmount = partialFuelConsumedAmount + fuelAmount - ((int) fuelAmount);
 
                     if (partialOxConsumedAmount >= 1) {
                         oxAmount = oxAmount + 1;
                         partialOxConsumedAmount = partialOxConsumedAmount - 1;
                     }
-                    /*if (partialFuelConsumedAmount >= 1) {
-                        fuelAmount = fuelAmount + 1;
-                        partialFuelConsumedAmount = partialFuelConsumedAmount - 1;
-                    }*/
                     partialDrainAmountPerFluid.put(fluidTag, partialOxConsumedAmount);
 
 
                     int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
-                    //int consumedFuel = fluidHandler.drain(new FluidStack(fuelFluid, (int) fuelAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain fuel
 
                     if (consumedOx == 0) {
                         RocketContraptionEntity.addToConsumableFluids(this, fluidTag);
@@ -683,7 +634,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                 }
 
                                 destLevel.addDuringTeleport(entity);
-                                if (CSDimensionUtil.gravity(destLevel.dimensionTypeId().location()) == 0f) {
+                                if (CSDimensionUtil.isOrbit(destLevel.dimension().location())) {
                                     //entity.disassemble();
                                     entity.stopRocket();
                                     entity.schedule.destinationReached();

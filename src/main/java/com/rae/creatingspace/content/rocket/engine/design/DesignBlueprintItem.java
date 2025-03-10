@@ -1,6 +1,6 @@
 package com.rae.creatingspace.content.rocket.engine.design;
 
-import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -98,11 +98,11 @@ public class DesignBlueprintItem extends Item {
         ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                 nbt.get("design")).result().orElse(null);
         if (registry.getPath().equals(DEFERRED_EXHAUST_PACK_TYPE.getRegistryName().getPath())) {
-            CreatingSpace.DESIGN_SAVED_DATA.addExhaustForPlayer(player, location);
+            UnlockedDesignManager.addExhaustForPlayer(player, location);
 
         }
         if (registry.getPath().equals(DEFERRED_POWER_PACK_TYPE.getRegistryName().getPath())) {
-            CreatingSpace.DESIGN_SAVED_DATA.addPowerPackForPlayer(player, location);
+            UnlockedDesignManager.addPowerPackForPlayer(player, location);
         }
     }
 }
