@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -37,7 +38,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.FakePlayer;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public class OxygenBacktankBlock extends HorizontalDirectionalBlock
@@ -83,7 +83,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel()
 			.getFluidState(context.getClickedPos());
-		return Objects.requireNonNull(super.getStateForPlacement(context))
+		return super.getStateForPlacement(context)
 				.setValue(FACING, context.getHorizontalDirection()
 				.getOpposite()).
 				setValue(BlockStateProperties.WATERLOGGED,
@@ -155,7 +155,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 			enchantmentTagList.addAll(enchants);
 			tag.put("Enchantments", enchantmentTagList);
 		}
-		stack.setTag(tag);
+
         blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName).ifPresent(stack::setHoverName);
         return stack;
 	}

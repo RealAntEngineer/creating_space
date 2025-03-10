@@ -1,8 +1,8 @@
 package com.rae.creatingspace.legacy.client.gui.screen;
 
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
-import com.rae.creatingspace.api.gui.element.DimSelectBoxWidget;
-import com.rae.creatingspace.api.gui.element.LabeledBoxWidget;
+import com.rae.creatingspace.api.gui.elements.DimSelectBoxWidget;
+import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;

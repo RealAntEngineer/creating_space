@@ -5,15 +5,15 @@ import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import org.joml.Matrix4f;
-import com.rae.creatingspace.api.gui.element.Orbit;
+import com.rae.creatingspace.api.gui.elements.Orbit;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.api.squedule.RocketSchedule;
 import com.rae.creatingspace.api.squedule.ScheduleEntry;
 import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
 import com.rae.creatingspace.api.squedule.condition.ScheduledDelay;
-import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
-import com.rae.creatingspace.api.gui.element.LabeledBoxWidget;
+import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
@@ -50,7 +50,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu> {
+public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu> {
     //TODO transform hard coded schedule stuff to widgets
     //beginning of schedule logic
     private static final int CARD_HEADER = 22;
@@ -91,7 +91,7 @@ public class NewDestinationScreen extends AbstractSimiContainerScreen<RocketMenu
     int yShift = 0;
     private Orbit sun;
 
-    public NewDestinationScreen(RocketMenu container, Inventory inv, Component title) {
+    public ScheduleMakingScreen(RocketMenu container, Inventory inv, Component title) {
         //TODO this screen will swith bwn normal selection (single trip), schedule and rocket overview.
         super(container, inv, Component.translatable("gui.destination_screen.title"));
         this.rocketContraption = container.contentHolder;

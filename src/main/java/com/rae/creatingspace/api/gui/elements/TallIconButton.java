@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.gui.element;
+package com.rae.creatingspace.api.gui.elements;
 
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.element.ScreenElement;

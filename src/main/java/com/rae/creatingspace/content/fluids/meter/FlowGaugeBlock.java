@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.fluids;
+package com.rae.creatingspace.content.fluids.meter;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.content.fluids.FluidPropagator;

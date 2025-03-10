@@ -182,15 +182,15 @@ public class CSEventHandler {
                 AABB colBoxOutside = new AABB(event.getPos().relative(direction));
                 entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBoxOutside);
 
-                for (RoomAtmosphere atmosphere : entityStream) {
+                /*for (RoomAtmosphere atmosphere : entityStream) {
                     if (atmosphere.getShape().inside(colBoxOutside)) {
                         blockBreak = true;
                     }
                 }
-                if (blockBreak) {
+                if (blockBreak) {*/
                     for (RoomAtmosphere atmosphere : entityStream) {
                         atmosphere.regenerateRoom(atmosphere.getOnPos());
-                    }
+                    //}
                 }
             }
         }

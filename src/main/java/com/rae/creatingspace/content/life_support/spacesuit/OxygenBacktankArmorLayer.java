@@ -36,10 +36,9 @@ public class OxygenBacktankArmorLayer <T extends LivingEntity, M extends EntityM
             return;
 
         M entityModel = getParentModel();
-        if (!(entityModel instanceof HumanoidModel))
+        if (!(entityModel instanceof HumanoidModel<?> model))
             return;
 
-        HumanoidModel<?> model = (HumanoidModel<?>) entityModel;
         RenderType renderType = Sheets.cutoutBlockSheet();
         BlockState renderedState = item.getBlock().defaultBlockState()
                 .setValue(OxygenBacktankBlock.FACING, Direction.SOUTH);
@@ -66,9 +65,8 @@ public class OxygenBacktankArmorLayer <T extends LivingEntity, M extends EntityM
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void registerOn(EntityRenderer<?> entityRenderer) {
-        if (!(entityRenderer instanceof LivingEntityRenderer))
+        if (!(entityRenderer instanceof LivingEntityRenderer<?, ?> livingRenderer))
             return;
-        LivingEntityRenderer<?, ?> livingRenderer = (LivingEntityRenderer<?, ?>) entityRenderer;
         if (!(livingRenderer.getModel() instanceof HumanoidModel))
             return;
         OxygenBacktankArmorLayer<?, ?> layer = new OxygenBacktankArmorLayer<>(livingRenderer);

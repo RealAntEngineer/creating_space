@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.fluids;
+package com.rae.creatingspace.content.fluids.storage;
 
 import net.minecraft.world.item.Item;
 

@@ -2,16 +2,15 @@ package com.rae.creatingspace.api.squedule;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.destination.ChangeTitleInstruction;
-import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
-import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.api.squedule.instruction.ChangeTitleInstruction;
+import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -128,9 +127,6 @@ public class RocketScheduleRuntime {
             return;
         //seems like conditions aren't ticked properly
         if (state == State.POST_TRANSIT) {
-            if (CSConfigs.COMMON.additionalLogInfo.get()) {
-                CreatingSpace.LOGGER.info("tick condition");
-            }
             tickConditions(level);
             return;
         }
@@ -143,9 +139,6 @@ public class RocketScheduleRuntime {
             //only reached when your already on target
             state = State.IN_TRANSIT;
             destinationReached();
-            if (CSConfigs.COMMON.additionalLogInfo.get()) {
-                CreatingSpace.LOGGER.info("already at destination");
-            }
             return;
         }
         if (rocket.startNavigation(nextPath) != TBD) {
@@ -159,7 +152,7 @@ public class RocketScheduleRuntime {
         for (int i = 0; i < conditions.size(); i++) {
             List<ScheduleWaitCondition> list = conditions.get(i);
             if (conditionProgress.size() <= i) {
-                CreatingSpace.LOGGER.warn("error with schedule conditions");
+                CreatingSpace.LOGGER.warn("rocket entity of id {} located at {} had an index out of bound for condition", rocket.getId(),rocket.position());
                 rocket.disassemble();
                 return;
             }
@@ -294,12 +287,12 @@ public class RocketScheduleRuntime {
     public MutableComponent getWaitingStatus(Level level) {
         List<List<ScheduleWaitCondition>> conditions = schedule.entries.get(currentEntry).conditions;
         if (conditions.isEmpty() || conditionProgress.isEmpty() || conditionContext.isEmpty())
-            return Components.empty();
+            return Component.empty();
 
         List<ScheduleWaitCondition> list = conditions.get(0);
         int progress = conditionProgress.get(0);
         if (progress >= list.size())
-            return Components.empty();
+            return Component.empty();
 
         CompoundTag tag = conditionContext.get(0);
         ScheduleWaitCondition condition = list.get(progress);

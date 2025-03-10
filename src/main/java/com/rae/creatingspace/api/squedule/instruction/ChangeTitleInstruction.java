@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.squedule.destination;
+package com.rae.creatingspace.api.squedule.instruction;
 
 import com.google.common.collect.ImmutableList;
 import com.rae.creatingspace.CreatingSpace;

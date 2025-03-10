@@ -1,8 +1,8 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.content.fluids.CryogenicTankBlockEntity;
-import com.rae.creatingspace.content.fluids.FlowGaugeBlockEntity;
-import com.rae.creatingspace.content.fluids.FlowGaugeBlockRenderer;
+import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity;
+import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity;
+import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockRenderer;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserInstance;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;

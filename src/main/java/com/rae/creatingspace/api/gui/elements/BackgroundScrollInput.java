@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.gui.element;
+package com.rae.creatingspace.api.gui.elements;
 
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;

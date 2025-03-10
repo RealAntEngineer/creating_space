@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.squedule.destination;
+package com.rae.creatingspace.api.squedule.instruction;
 
 import com.rae.creatingspace.api.squedule.RocketSchedule;
 import com.simibubi.create.Create;

@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.fluids;
+package com.rae.creatingspace.content.fluids.storage;
 
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;

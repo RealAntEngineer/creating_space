@@ -1,7 +1,10 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -16,7 +19,19 @@ public class RoomShape {
     float yRot;
     float zRot;
     int volume;
-
+    static Codec<List<AABB>> LIST_CODEC = Codec.list(
+            RecordCodecBuilder.create(
+                    instance ->
+                            instance.group(
+                                    Codec.DOUBLE.fieldOf("minX").forGetter(i-> i.minX),
+                                    Codec.DOUBLE.fieldOf("minY").forGetter(i-> i.minY),
+                                    Codec.DOUBLE.fieldOf("minZ").forGetter(i-> i.minZ),
+                                    Codec.DOUBLE.fieldOf("maxX").forGetter(i-> i.maxX),
+                                    Codec.DOUBLE.fieldOf("maxY").forGetter(i-> i.maxY),
+                                    Codec.DOUBLE.fieldOf("maxZ").forGetter(i-> i.maxZ)
+                                    ).apply(instance,AABB::new)
+            )
+    );
     RoomShape(List<AABB> listOfBox) {
         this.listOfBox = new ArrayList<>(listOfBox);
         calculateVolume();
@@ -33,23 +48,13 @@ public class RoomShape {
     }
 
     public static RoomShape fromNbt(CompoundTag nbt) {
-        long[] serialized = nbt.getLongArray("listOfBox");
-        ArrayList<AABB> listOfBox = new ArrayList<>(serialized.length / 2);
-        for (int i = 0; i < serialized.length / 2; i++) {
-            listOfBox.add(new AABB(BlockPos.of(serialized[i]), BlockPos.of(serialized[i + 1])));
-        }
-        return new RoomShape(listOfBox, nbt.getInt("volume"), nbt.getBoolean("closed"));
+
+        return new RoomShape(LIST_CODEC.decode(NbtOps.INSTANCE, nbt.get("listOfBox")).result().orElseThrow().getFirst(), nbt.getInt("volume"), nbt.getBoolean("closed"));
     }
 
     public CompoundTag toNbt() {
         CompoundTag tag = new CompoundTag();
-        ArrayList<Long> listOfPos = new ArrayList<>();
-        for (AABB aabb : listOfBox) {
-            listOfPos.add((new BlockPos((int) aabb.minX, (int) aabb.minY, (int) aabb.minZ)).asLong());
-            listOfPos.add((new BlockPos((int) aabb.maxX, (int) aabb.maxY, (int) aabb.maxZ)).asLong());
-
-        }
-        tag.putLongArray("listOfBox", listOfPos);
+        tag.put("listOfBox", LIST_CODEC.encodeStart(NbtOps.INSTANCE,listOfBox).result().orElse(new CompoundTag()));
         tag.putInt("volume", volume);
         tag.putBoolean("closed", closed);
         return tag;

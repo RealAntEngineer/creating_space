@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.planets.worldgen;
+package com.rae.creatingspace.content.planets;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import net.minecraft.core.BlockPos;

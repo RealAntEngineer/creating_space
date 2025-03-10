@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -59,7 +61,7 @@ public class RoomAtmosphere extends Entity {
     // plants will filter (absorbing C02 and releasing 02, living will consume 02 and release C02)
     ArrayList<BlockPos> roomSealers = new ArrayList<>();
     HashMap<ResourceLocation, AtmosphereFilterData> passiveFilters = new HashMap<>();
-
+    Queue<BlockPos> toVist = new ArrayDeque<>();
     //TODO make a regenerateRoom and a searchFrontier methode (regenerateRoom will only initiate the call, searchFrontier will be private)
     public void regenerateRoom(BlockPos firstPos) {
         passiveFilters = new HashMap<>();
@@ -86,38 +88,43 @@ public class RoomAtmosphere extends Entity {
      */
 
     private RoomShape searchTopology(BlockPos start) {
-        Queue<BlockPos> toVist = new ArrayDeque<>();
         toVist.add(start);
-        ArrayList<AABB> tempRoom = new ArrayList<>();
-        int currentSize = 0;
-        while (!toVist.isEmpty() && currentSize < CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
+        ArrayList<AABB> tempRoom = getShape().getListOfBox();
+
+        tempRoom.removeIf(a ->a.contains(Vec3.atCenterOf(start)));
+
+        int addedSize = 0;
+
+        while (!toVist.isEmpty() && addedSize < CSConfigs.SERVER.maxBlockPerTick.get()) {
             BlockPos tempPos = toVist.poll();
             assert tempPos != null;
             if (!contains(tempRoom, tempPos)) {
                 AABB tempAabb = new AABB(tempPos);
 
-                boolean canContinue = true;
-                //make it possible to compute in batch
-                while (canContinue && tempAabb.getSize() < 10) {
+                boolean canContinue = true;//map for the 6 directions
+                while (canContinue && tempAabb.getSize() < 30) {
                     canContinue = false;
                     for (Direction dir : Direction.values()) {
-                        //make a condition here to avoid looping when no walls
-                        //verify that it's in the range of a room pressurizer ? or just size
-                        //verify for positive dir and negative ones
+
                         AABB expansion = tempAabb.expandTowards(dir.getNormal().getX(), dir.getNormal().getY(), dir.getNormal().getZ());
+                        AABB expandedPart = getExpandedPart(dir, tempAabb).contract(1,1,1);//to search only on the expanded portion
 
                         List<BlockPos> collectedPos = new ArrayList<>();
-                        //TODO filter the collected block directly with the stream
-                        BlockPos.betweenClosedStream(expansion.contract(1, 1, 1)).forEach(
-                                (pos) -> {
-                                    collectedPos.add(pos.immutable());
-                                }
-                        );
                         boolean canBeExpandedToward = true;
-                        //ensure that there is no intersecting boxs
-                        for (BlockPos pos : collectedPos) {
-                            if (!tempAabb.contains(Vec3.atCenterOf(pos)) && (!canGoThrough(level(), pos, dir) || contains(tempRoom, pos))) {
+                        for (BlockPos pos:BlockPos.betweenClosed(Mth.floor(expandedPart.minX), Mth.floor(expandedPart.minY), Mth.floor(expandedPart.minZ),
+                                Mth.floor(expandedPart.maxX), Mth.floor(expandedPart.maxY),Mth.floor( expandedPart.maxZ))) {
+                            if (!contains(tempRoom, pos)) {//ensure that there is no intersecting boxs
+                                collectedPos.add(pos.immutable());
+                            } else {
                                 canBeExpandedToward = false;
+                            }
+                        }
+                        if (canBeExpandedToward) {
+                            for (BlockPos pos : collectedPos) {
+                                if ((!canGoThrough(level(), pos, dir))) {
+                                    canBeExpandedToward = false;
+                                    break;
+                                }
                             }
                         }
                         //if we can expand toward that way we add it to the current box
@@ -127,38 +134,80 @@ public class RoomAtmosphere extends Entity {
                             canContinue = true;
                         } else {
                             for (BlockPos pos : collectedPos) {
-                                if (!tempAabb.contains(Vec3.atCenterOf(pos)) && !contains(tempRoom, pos)) {
-                                    if (canGoThrough(level(), pos, dir)) {
-                                        toVist.add(pos);
-                                        if (!level().getBlockState(pos).isAir()) {
-                                            applyOnSolidBlock(pos);
-                                        }
-                                    } else {
-                                        applyOnSolidBlock(pos);
+                                if (canGoThrough(level(), pos, dir)) {
+                                    toVist.add(pos);
+                                    if (!level().getBlockState(pos).isAir()) {
+                                        applyOnBlock(pos);
                                     }
+                                } else {
+                                    applyOnBlock(pos);
                                 }
                             }
                         }
                     }
                 }
                 tempRoom.add(tempAabb);
-                currentSize += (int) (tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize());
+                addedSize += (int) (tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize());
             }
         }
-        RoomShape shape = new RoomShape(tempRoom);
-        if (size(tempRoom) >=  CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
+
+        RoomShape shape = new RoomShape(tempRoom,getShape().volume+addedSize);
+        if (shape.volume >=  CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             shape.setOpen();
+            toVist = new ArrayDeque<>();
+        }
+        else if (toVist.isEmpty()){
+            shape.setClosed();
+            toVist = new ArrayDeque<>();
         }
         else {
-            shape.setClosed();
+            shape.setOpen();
         }
+
         return shape;
     }
 
-    private void applyOnSolidBlock(BlockPos pos) {
+    private static @NotNull AABB getExpandedPart(Direction dir, AABB tempAabb) {
+        double minX = tempAabb.minX;
+        double minY = tempAabb.minY;
+        double minZ = tempAabb.minZ;
+        double maxX = tempAabb.maxX;
+        double maxY = tempAabb.maxY;
+        double maxZ = tempAabb.maxZ;
+
+        if (dir.getNormal().getX() < 0){
+            maxX = minX;
+            minX = minX-1;
+
+        } else if (dir.getNormal().getX() > 0) {
+            minX = maxX;
+            maxX = maxX+1;
+        }
+
+        if (dir.getNormal().getY() < 0){
+            maxY =  minY;
+            minY = minY-1;
+
+
+        } else if (dir.getNormal().getY() > 0) {
+            minY = maxY;
+            maxY = maxY+1;
+        }
+
+        if (dir.getNormal().getZ() < 0){
+            maxZ =minZ;
+            minZ = minZ-1;
+        } else if (dir.getNormal().getZ() > 0) {
+            minZ = maxZ;
+            maxZ = maxZ+1;
+        }
+        return new AABB(minX,minY,minZ,maxX,maxY,maxZ);
+    }
+
+    private void applyOnBlock(BlockPos pos) {
         BlockState state = level().getBlockState(pos);
-        if (level().getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp) {
-            if (!roomSealers.contains(pos)) roomSealers.add(pos);
+        if (level().getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp && !roomSealers.contains(pos)) {
+            roomSealers.add(pos);
         }
         if (state.getBlock() instanceof LeavesBlock) {
             ResourceLocation location = state.getBlock().builtInRegistryHolder().key().location();
@@ -168,16 +217,6 @@ public class RoomAtmosphere extends Entity {
                 passiveFilters.put(location, new AtmosphereFilterData(new ArrayList<>(List.of(pos)), CSConfigs.SERVER.leafOxygenProduction.get()));
             }
         }
-    }
-
-    private int size(List<AABB> aabbs) {
-        int acc = 0;
-        for (AABB aabb :
-                aabbs) {
-            acc += (int) (aabb.getXsize() * aabb.getYsize() * aabb.getZsize());
-        }
-
-        return acc;
     }
 
     private boolean canGoThrough(Level world, BlockPos currentPos, Direction dir) {
@@ -293,6 +332,9 @@ public class RoomAtmosphere extends Entity {
         super.tick();
 
         if (!level().isClientSide()) {
+            if (!toVist.isEmpty()){
+                entityData.set(SHAPE_DATA_ACCESSOR,searchTopology(toVist.poll()));
+            }
             if (!getShape().closed){
                 entityData.set(O2_AMOUNT,0);
             }
@@ -317,9 +359,8 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void consumeO2() {
-        Integer amount = entityData.get(O2_AMOUNT);
-        if (amount >= CSConfigs.SERVER.livingO2Consumption.get()) {
-            entityData.set(O2_AMOUNT, amount - CSConfigs.SERVER.livingO2Consumption.get());
+        if (entityData.get(O2_AMOUNT) >= CSConfigs.SERVER.livingO2Consumption.get()) {
+            entityData.set(O2_AMOUNT,entityData.get(O2_AMOUNT) - CSConfigs.SERVER.livingO2Consumption.get());
         }
     }
 
