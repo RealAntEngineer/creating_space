@@ -51,7 +51,7 @@ public class SmallEngineItem extends RocketEngineItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
 
-        appendEngineDependentText(components,PropellantTypeInit.METHALOX.get(), (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f), CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get());
+        appendEngineTextDirect(components,PropellantTypeInit.METHALOX.get(), (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),1000, CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get());
         super.appendHoverText(itemStack, level, components, flag);
     }
 }
