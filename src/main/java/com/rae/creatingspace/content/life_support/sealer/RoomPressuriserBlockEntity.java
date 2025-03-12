@@ -3,9 +3,11 @@ package com.rae.creatingspace.content.life_support.sealer;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.legacy.server.blocks.atmosphere.SealerBlock;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -21,16 +23,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RoomPressuriserBlockEntity extends KineticBlockEntity {
+public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IHaveGoggleInformation {
     public RoomPressuriserBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
     }
 
     public FluidTank OXYGEN_TANK = new FluidTank(1000) {
-        @Override
-        protected void onContentsChanged() {
-
-        }
 
         @Override
         public boolean isFluidValid(FluidStack stack) {
@@ -89,8 +87,9 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity {
     @Override
     public void lazyTick() {
         super.lazyTick();
+        assert level != null;
         if (!level.isClientSide) {
-            if (getSpeed() != 0 && !OXYGEN_TANK.isEmpty()) {
+            if (getSpeed() != 0) {
                 List<RoomAtmosphere> rooms = level.getEntitiesOfClass(RoomAtmosphere.class,
                         new AABB(getBlockPos().relative(getBlockState()
                                 .getValue(RoomPressuriserBlock.FACING))));
@@ -105,4 +104,10 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity {
             }
         }
     }
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        containedFluidTooltip(tooltip,isPlayerSneaking,fluidOptional.cast());
+        return true;
+    }
+
 }
