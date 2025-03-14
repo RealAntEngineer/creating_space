@@ -3,7 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockRenderer;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity;
-import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserVisual;
+import com.rae.creatingspace.content.life_support.sealer.CSFanVisual;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
 
@@ -29,10 +29,6 @@ import com.rae.creatingspace.legacy.server.blockentities.LegacyMechanicalElectro
 import com.rae.creatingspace.legacy.server.blockentities.RocketGeneratorBlockEntity;
 import com.rae.creatingspace.legacy.server.blockentities.atmosphere.OxygenBlockEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
-import com.simibubi.create.AllPartialModels;
-import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
-import com.simibubi.create.content.fluids.pump.PumpBlockEntity;
-import com.simibubi.create.content.fluids.pump.PumpRenderer;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -116,7 +112,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<AirLiquefierBlockEntity> AIR_LIQUEFIER =
             REGISTRATE.blockEntity(
                             "air_liquefier", AirLiquefierBlockEntity::new)
-                    .visual(()-> AirLiquefierVisual::new)
+                    .visual(()-> CSFanVisual::new)
                     .validBlocks( BlockInit.AIR_LIQUEFIER)
                     .renderer(()-> AirLiquefierBlockRenderer::new)
                     .register();
@@ -135,14 +131,14 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<RoomPressuriserBlockEntity> ROOM_PRESSURIZER =
             REGISTRATE.blockEntity(
                             "room_pressurizer", RoomPressuriserBlockEntity::new)
-                    .visual(() -> RoomPressuriserVisual::new)
+                    .visual(() -> CSFanVisual::new)
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> RoomPressuriserRenderer::new)
                     .register();
     public static final BlockEntityEntry<FlightRecorderBlockEntity> FLIGHT_RECORDER =
             REGISTRATE.blockEntity(
                             "flight_recorder", FlightRecorderBlockEntity::new)
-                    .visual(()-> OrientedRotatingVisual.of(PartialModelInit.MEMORY_ROLL))
+                    .visual(()-> SingleAxisRotatingVisual.ofZ(PartialModelInit.MEMORY_ROLL))
                     .validBlocks( BlockInit.FLIGHT_RECORDER)
                     .renderer(()-> FlightRecorderRenderer::new)
                     .register();

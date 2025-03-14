@@ -24,7 +24,7 @@ public class ElectrolyzerVisual extends ShaftVisual<MechanicalElectrolyzerBlockE
     public ElectrolyzerVisual(VisualizationContext context, MechanicalElectrolyzerBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
 
-        pressHead = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(PartialModelInit.CATALYST_CARRIER_HEAD))
+        pressHead = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(PartialModelInit.ELECTROLYZER_HEAD))
                 .createInstance();
 
         Quaternionf q = Axis.YP
