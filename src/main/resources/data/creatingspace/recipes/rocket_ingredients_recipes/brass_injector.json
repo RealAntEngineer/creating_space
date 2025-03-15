@@ -15,7 +15,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_brass_injector"
                 },
                 {
                     "item": "create:brass_sheet"
@@ -23,7 +23,7 @@
             ],
             "results": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_brass_injector"
                 }
             ]
         },
@@ -31,7 +31,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_brass_injector"
                 },
                 {
                     "item": "create:brass_nugget"
@@ -39,12 +39,12 @@
             ],
             "results": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_brass_injector"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "create:sturdy_sheet"
+        "item": "creatingspace:incomplete_brass_injector"
     }
 }

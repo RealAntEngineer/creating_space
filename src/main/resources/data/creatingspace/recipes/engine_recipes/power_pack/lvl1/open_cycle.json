@@ -29,7 +29,7 @@
             ],
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_power_pack"
                 },
                 {
                     "item": "creatingspace:iron_turbine"
@@ -37,7 +37,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_power_pack"
                 }
             ]
         },
@@ -49,7 +49,7 @@
             ],
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_power_pack"
                 },
                 {
                     "item": "creatingspace:iron_injector_grid"
@@ -57,7 +57,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_power_pack"
                 }
             ]
         }

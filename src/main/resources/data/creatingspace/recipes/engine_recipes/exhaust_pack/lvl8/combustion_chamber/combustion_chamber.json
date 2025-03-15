@@ -24,7 +24,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 },
                 {
                     "item": "creatingspace:hastelloy_engine_wall"
@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         },
@@ -40,7 +40,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 },
                 {
                     "item": "creatingspace:hastelloy_rib"
@@ -48,7 +48,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         },
@@ -56,7 +56,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 },
                 {
                     "item": "creatingspace:hastelloy_engine_wall"
@@ -64,7 +64,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         },
@@ -72,7 +72,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 },
                 {
                     "item": "creatingspace:hastelloy_rib"
@@ -80,7 +80,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         }

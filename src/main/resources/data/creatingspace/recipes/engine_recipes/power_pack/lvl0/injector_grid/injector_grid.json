@@ -24,7 +24,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
                 },
                 {
                     "item": "creatingspace:andesite_injector"
@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
                 }
             ]
         },
@@ -40,7 +40,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
                 },
                 {
                     "item": "creatingspace:andesite_engine_wall"
@@ -48,7 +48,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
                 }
             ]
         },
@@ -56,7 +56,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
                 },
                 {
                     "item": "creatingspace:andesite_injector"
@@ -64,7 +64,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
                 }
             ]
         }

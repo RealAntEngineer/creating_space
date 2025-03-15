@@ -24,7 +24,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_turbine"
                 },
                 {
                     "item": "creatingspace:andesite_turbine_shaft"
@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_turbine"
                 }
             ]
         },
@@ -40,7 +40,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_turbine"
                 },
                 {
                     "item": "creatingspace:andesite_blisk"
@@ -48,7 +48,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_andesite_turbine"
                 }
             ]
         }

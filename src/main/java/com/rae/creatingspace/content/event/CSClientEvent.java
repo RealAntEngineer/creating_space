@@ -60,24 +60,30 @@ public class CSClientEvent {
         List<Component> components = event.getToolTip();
         if (!(itemStack.getItem() instanceof EngineFabricationBlueprint || itemStack.getItem() instanceof EngineItem)) {
             CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
-            if (recipeData != null) {
-                int size = recipeData.getInt("size");
-                int materialLevel = recipeData.getInt("materialLevel");
-                if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
-                if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + materialLevel));
-                try {
-                    ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
-                    ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
-
-                    components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-                    components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
-                } catch (Exception ignored) {
+            try {
+                if (recipeData != null) {
+                    int size = recipeData.getInt("size");
+                    int materialLevel = recipeData.getInt("materialLevel");
+                    if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
+                    if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + materialLevel));
+                    try {
+                        ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
+                        components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
+                        components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
+                    } catch (Exception ignored) {
+                    }
                 }
-            }
-            CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
-            if (engineInfo != null) {
-                components.add(Component.literal("for engine :"));
-                appendEngineDependentText(components, engineInfo);
+                CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
+                if (engineInfo != null) {
+                    components.add(Component.literal("for engine :"));
+                    appendEngineDependentText(components,engineInfo);
+                }
+            } catch (Exception ignored){
+
             }
         }
     }

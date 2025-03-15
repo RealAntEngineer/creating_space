@@ -36,9 +36,11 @@ public class EngineFabricationBlueprint extends Item {
                 if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + materialLevel));
                 try {
                     ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
-                    ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
-
                     components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
+                } catch (Exception ignored) {
+                }
+                try {
+                    ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
                     components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
                 } catch (Exception ignored) {
                 }
