@@ -27,7 +27,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:reinforced_copper_engine_wall"
+                    "item": "creatingspace:reinforced_copper_injector"
                 }
             ],
             "results": [
@@ -43,7 +43,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:reinforced_copper_injector"
+                    "item": "creatingspace:reinforced_copper_engine_wall"
                 }
             ],
             "results": [
@@ -70,6 +70,6 @@
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:engine_blueprint"
+        "item": "creatingspace:incomplete_reinforced_copper_injector_grid"
     }
 }

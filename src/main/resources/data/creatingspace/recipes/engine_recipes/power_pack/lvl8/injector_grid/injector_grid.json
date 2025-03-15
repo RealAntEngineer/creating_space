@@ -27,7 +27,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:hastelloy_engine_wall"
+                    "item": "creatingspace:hastelloy_injector"
                 }
             ],
             "results": [
@@ -43,7 +43,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:hastelloy_injector"
+                    "item": "creatingspace:hastelloy_engine_wall"
                 }
             ],
             "results": [
@@ -70,6 +70,6 @@
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:engine_blueprint"
+        "item": "creatingspace:incomplete_hastelloy_injector_grid"
     }
 }

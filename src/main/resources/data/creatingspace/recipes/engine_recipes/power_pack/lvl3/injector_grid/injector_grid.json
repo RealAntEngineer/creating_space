@@ -27,7 +27,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:brass_engine_wall"
+                    "item": "creatingspace:brass_injector"
                 }
             ],
             "results": [
@@ -43,7 +43,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:brass_injector"
+                    "item": "creatingspace:brass_engine_wall"
                 }
             ],
             "results": [
@@ -70,6 +70,6 @@
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:engine_blueprint"
+        "item": "creatingspace:incomplete_brass_injector_grid"
     }
 }

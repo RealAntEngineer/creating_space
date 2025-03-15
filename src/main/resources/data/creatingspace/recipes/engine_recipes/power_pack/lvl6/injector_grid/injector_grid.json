@@ -27,7 +27,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:monel_engine_wall"
+                    "item": "creatingspace:monel_injector"
                 }
             ],
             "results": [
@@ -43,7 +43,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:monel_injector"
+                    "item": "creatingspace:monel_engine_wall"
                 }
             ],
             "results": [
@@ -70,6 +70,6 @@
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:engine_blueprint"
+        "item": "creatingspace:incomplete_monel_injector_grid"
     }
 }

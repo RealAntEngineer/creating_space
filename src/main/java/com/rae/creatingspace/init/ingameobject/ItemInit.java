@@ -38,35 +38,34 @@ public class ItemInit {
     public static ArrayList<ItemEntry<? extends Item>> registerEngineIngredientForMaterial(String name) {
         ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
 
-        collector.addAll(smartRegisterSequencedItem(name + "_blisk"));
+
         collector.addAll(smartRegisterSequencedItem(name + "_injector"));
+        collector.addAll(smartRegisterSequencedItem(name + "_turbine"));
+        collector.addAll(smartRegisterSequencedItem(name + "_injector_grid"));
+
         collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_engine_wall", Item::new)
-                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .defaultModel()
+                .register());
+        collector.add(CreatingSpace.REGISTRATE.item((name + "_blisk"), Item::new)
                 .defaultModel()
                 .register());
         collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_rib", Item::new)
-                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .defaultModel()
                 .register());
         /*collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_canal", Item::new)
                 .defaultModel()
-                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register());
         collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_engine_pipe", Item::new)
                 .defaultModel()
-                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register());*/
         collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_turbine_shaft", Item::new)
                 .defaultModel()
-                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register());
-        collector.addAll(smartRegisterSequencedItem(name + "_turbine"));
-        collector.addAll(smartRegisterSequencedItem(name + "_injector_grid"));
         return collector;
     }
     public static ArrayList<ItemEntry<? extends Item>> registerMetalVariants(String name) {
@@ -106,7 +105,7 @@ public class ItemInit {
                 .register();
     }
 
-
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_ENGINE = registerSequencedItem("incomplete_rocket_engine");
     public static final ItemEntry<DesignBlueprintItem> DESIGN_BLUEPRINT =
             CreatingSpace.REGISTRATE.item("design_blueprint", DesignBlueprintItem::new)
                     //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))

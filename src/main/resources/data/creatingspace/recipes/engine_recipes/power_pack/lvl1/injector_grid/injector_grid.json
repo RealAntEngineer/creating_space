@@ -27,7 +27,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:iron_engine_wall"
+                    "item": "creatingspace:iron_injector"
                 }
             ],
             "results": [
@@ -43,7 +43,7 @@
                     "item": "creatingspace:engine_blueprint"
                 },
                 {
-                    "item": "creatingspace:iron_injector"
+                    "item": "creatingspace:iron_engine_wall"
                 }
             ],
             "results": [
@@ -70,6 +70,6 @@
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:engine_blueprint"
+        "item": "creatingspace:incomplete_iron_injector_grid"
     }
 }
