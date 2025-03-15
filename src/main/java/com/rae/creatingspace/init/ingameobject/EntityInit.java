@@ -6,6 +6,7 @@ import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphereRenderer;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.render.ContraptionVisual;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.entry.EntityEntry;
@@ -22,6 +23,7 @@ public class EntityInit {
     public static final EntityEntry<RocketContraptionEntity> ROCKET_CONTRAPTION =
             contraption("rocket_contraption", RocketContraptionEntity::new,
                     () -> RocketContraptionEntityRenderer::new, 15, 1, true)
+                    .visual(() -> ContraptionVisual::new)
                     .register();
 
     public static final EntityEntry<RoomAtmosphere> ATMOSPHERE_ENTITY =

@@ -8,6 +8,8 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankArmorL
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
+import com.rae.creatingspace.init.EngineMaterialInit;
+import com.rae.creatingspace.init.ingameobject.MaterialInit;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -65,7 +67,7 @@ public class CSClientEvent {
                     int size = recipeData.getInt("size");
                     int materialLevel = recipeData.getInt("materialLevel");
                     if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
-                    if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + materialLevel));
+                    if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + EngineMaterialInit.materials.get(materialLevel)));
                     try {
                         ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
                         components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));

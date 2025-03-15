@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class EngineMaterialInit {//will only be used for datagen
     public static HashMap<Integer, ArrayList<TagKey<Item>>> materials = new HashMap<>();
-
+    public static HashMap<Integer, String> materialNames = new HashMap<>();
     //maybe a tag for level like for tools
     public static int getLevelFor(float temperature, float pressure) {//temperature in Celsius and pressure in bar
         int pressureBonus = 0;
@@ -48,6 +48,7 @@ public class EngineMaterialInit {//will only be used for datagen
         collector.add(ItemTags.create(new ResourceLocation("creatingspace", "blisk/" + materialName)));
 
         materials.put(level, collector);
+        materialNames.put(level, materialName);
         return ItemInit.registerEngineIngredientForMaterial(materialName);
     }
 

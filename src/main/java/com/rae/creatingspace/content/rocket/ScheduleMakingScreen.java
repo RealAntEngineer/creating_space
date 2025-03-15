@@ -232,6 +232,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         if (editingDestination != null) {
             if (destinationChanged) {
                 updateXZInput();
+                destinationChanged = false;
             }
             Xinput.visible = true;
             Xinput.active = true;
@@ -285,7 +286,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
         //super.renderBg(graphics, partialTicks, mouseX, mouseY);
-        AllGuiTextures.SCHEDULE.render(graphics, leftPos, topPos);
+        GuiTexturesInit.SCHEDULE_BACKGROUND.render(graphics, leftPos, topPos);
         GuiTexturesInit.ROCKET_INFO.render(graphics, width - 130, 10);
         renderSchedule(graphics, partialTicks);
         //render the background of the
