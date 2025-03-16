@@ -2,9 +2,9 @@ package com.rae.creatingspace.content.rocket.engine.design;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,9 @@ public class PropellantType {
     Integer M;
 
     //for codec use MiscInit.PROPELLANT_TYPE.get().getCodec()
-    public static final Codec<Map<TagKey<Fluid>, Float>> MAP_CODEC = Codec.unboundedMap(TagKey.codec(ForgeRegistries.FLUIDS.getRegistryKey()), Codec.FLOAT);
+    public static final Codec<Map<TagKey<Fluid>, Float>> MAP_CODEC = Codec.unboundedMap(
+            TagKey.codec(Registries.FLUID),
+            Codec.FLOAT);
     public static final Codec<PropellantType> DIRECT_CODEC = RecordCodecBuilder.create(
             instance ->
                     instance.group(

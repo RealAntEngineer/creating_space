@@ -90,10 +90,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     HashMap<PropellantType, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<TagKey<Fluid>, Float> partialDrainAmountPerFluid = new HashMap<>();
     //end of inventory management
-    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(
-            PropellantTypeInit.PROPELLANT_TYPE.get().getCodec(),
-            RocketContraption.ConsumptionInfo.CODEC
-    ).xmap(HashMap::new, i -> i);
+    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(),
+                    RocketContraption.ConsumptionInfo.CODEC)
+            .xmap(HashMap::new, i -> i);
     public static Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
             TagKey.codec(Registries.FLUID),
             Codec.FLOAT
@@ -129,7 +128,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         entity.destination = destination;//will be set after the
 
         entity.setContraption(contraption);
-        entity.theoreticalPerTagFluidConsumption = contraption.getTPTFluidConsumption();
         entity.realPerTagFluidConsumption = new HashMap<>();
         entity.consumableFluids = new HashMap<>();
         entity.totalThrust = contraption.getThrust();
@@ -166,8 +164,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
         //TODO that could be in the inventory manager of the rocket -> 1.8
-        for (PropellantType combination : rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
-            RocketContraption.ConsumptionInfo info = rocketContraptionEntity.theoreticalPerTagFluidConsumption.get(combination);
+        for (PropellantType combination : ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().keySet()) {
+            RocketContraption.ConsumptionInfo info = ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().get(combination);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
             for (float consumption :
                     info.propellantConsumption().values()) {
@@ -237,8 +235,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //fill the real consumption map and fill the consumedMass map for mass verification
         HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
         float realPartialConsumption = consumedPropellantMass/totalTheoreticalConsumption;
-        for (PropellantType propellantType : rocketContraptionEntity.theoreticalPerTagFluidConsumption.keySet()) {
-            RocketContraption.ConsumptionInfo info = rocketContraptionEntity.theoreticalPerTagFluidConsumption.get(propellantType);
+        for (PropellantType propellantType : ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().keySet()) {
+            RocketContraption.ConsumptionInfo info = ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().get(propellantType);
             //that's the consumed mass for the ensemble of engine with the same propellant combination
             HashMap<TagKey<Fluid>, Float> correctedConsumptions = new HashMap<>(info.propellantConsumption());
             RocketContraption.multiplyMap(correctedConsumptions, realPartialConsumption / totalTickTime);
@@ -288,8 +286,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
         //TODO that could be in the inventory manager of the rocket -> 1.8
-        for (PropellantType combination : this.theoreticalPerTagFluidConsumption.keySet()) {
-            RocketContraption.ConsumptionInfo info = this.theoreticalPerTagFluidConsumption.get(combination);
+        for (PropellantType combination : ((RocketContraption) this.contraption).getTPTFluidConsumption().keySet()) {
+            RocketContraption.ConsumptionInfo info = ((RocketContraption) this.contraption).getTPTFluidConsumption().get(combination);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
             for (float consumption :
                     info.propellantConsumption().values()) {
@@ -447,7 +445,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 tickDimensionChangeLogic();
 
 
-                if (ContraptionCollider.collideBlocks(this)) {
+                if (ContraptionCollider.collideBlocks(this) && !(level().getMaxBuildHeight() < this.getBoundingBox().maxY + movementVec.y)) {
                     //stopRocket();
                     getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.BLOCKED);
                     setContraptionMotion(Vec3.ZERO);
@@ -755,7 +753,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));//to remove
         this.totalThrust = compound.getFloat("thrust");
         this.initialMass = compound.getFloat("initialMass");
-        this.theoreticalPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>());
         this.realPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
         this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
         this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
@@ -765,14 +762,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.originDimension =
                 ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).get().orThrow();
         this.schedule.read((CompoundTag) compound.get("Runtime"));
-        /*
-        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
-            for (TagKey<Fluid> fluid :
-                    combination.getPropellantRatio().keySet()) {
-                RocketContraptionEntity.addToConsumableFluids(this, fluid);
-
-            }
-        }*/
     }
 
     @Override
@@ -780,7 +769,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.put("initialPosMap", RocketControlsBlockEntity.putPosMap(this.initialPosMap));
         compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
         compound.putFloat("initialMass", this.initialMass);
-        compound.put("theoreticalPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.theoreticalPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
         compound.put("realPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
         compound.put("partialDrainAmountPerFluid", CODEC_MAP_CONSUMPTION.encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).get().left().orElse(new CompoundTag()));
 
