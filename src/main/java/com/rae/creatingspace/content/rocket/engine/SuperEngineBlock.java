@@ -18,10 +18,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.Optional;
 
-
+@NonnullDefault
 public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEngineBlockEntity.NbtDependent> {
 
 
@@ -72,8 +73,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
         Optional<RocketEngineBlockEntity.NbtDependent> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
 
         CompoundTag tag = stack.getOrCreateTag();
-        CompoundTag beData = new CompoundTag();
-        blockEntityOptional.orElse(null).setFromNbt(beData);
+        CompoundTag beData = blockEntityOptional.orElseThrow().saveWithoutMetadata();
         tag.put("blockEntity", beData);
         stack.setTag(tag);
         return stack;
@@ -94,6 +94,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState1, boolean isMoving) {
+        IBE.onRemove(blockState, level, blockPos, blockState1);
         super.onRemove(blockState, level, blockPos, blockState1, isMoving);
     }
 }

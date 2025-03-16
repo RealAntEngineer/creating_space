@@ -90,7 +90,7 @@ public class EngineItem extends RocketEngineItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         CompoundTag beTag = itemStack.getOrCreateTagElement("blockEntity");
-
+        appendEngineDependentText(components, beTag);
         super.appendHoverText(itemStack, level, components, flag);
     }
 }

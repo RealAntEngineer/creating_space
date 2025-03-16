@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.rae.creatingspace.content.planets.CSDimensionUtil.shouldHandleGravity;
+
 @Mixin(value = ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
     public ItemEntityMixin(EntityType<?> p_19870_, Level p_19871_) {
@@ -18,7 +20,7 @@ public abstract class ItemEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/ItemEntity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 0, shift = At.Shift.AFTER))
     public void gravity(CallbackInfo ci) {
-        if (!level().dimension().location().getNamespace().equals("ad_astra")) {
+        if (shouldHandleGravity(level().dimension().location())) {
             this.setDeltaMovement(getDeltaMovement().add(0, 0.04D - 0.04D * CSDimensionUtil.gravity(level().dimension().location()) / 9.81, 0));
         }
     }

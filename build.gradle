@@ -82,7 +82,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://maven.tterrag.com" } // Registrate
-
+    maven {
+        name = 'curse maven'
+        url "https://cursemaven.com"
+    }
     //JEI
 
     maven {
@@ -127,6 +130,9 @@ dependencies {
 
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+
+    //Nbt tools
+    runtimeOnly fg.deobf("curse.maven:item-nbt-viewer-514135:4578522")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
