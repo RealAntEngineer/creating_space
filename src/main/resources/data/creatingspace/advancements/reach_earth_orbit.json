@@ -1,11 +1,11 @@
 {
   "display": {
-    "background": "minecraft:textures/block/black_concrete.png",
+    "background": "creatingspace:textures/block/moon_regolith.png",
     "icon": {
       "item": "creatingspace:moon_stone"
     },
     "title": {
-      "text": "This is so nice there wasn't enough... space down there."
+      "text": "Not enough ... space down there."
     },
     "description": {
       "text": "Reach earth orbit."
