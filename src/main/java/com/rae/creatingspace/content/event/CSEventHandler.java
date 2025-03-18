@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.event;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.legacy.saved.DesignCommands;
@@ -161,7 +162,6 @@ public class CSEventHandler {
     @SubscribeEvent
     public static void onBlockPlaced(BlockEvent.NeighborNotifyEvent event) {
         boolean blockPlaced = false;
-        boolean blockBreak = false;
         Level level = (Level) event.getLevel();
         AABB colBoxInside = new AABB(event.getPos());
 
@@ -173,7 +173,12 @@ public class CSEventHandler {
         }
         if (blockPlaced) {
             for (RoomAtmosphere atmosphere : entityStream) {
-                atmosphere.regenerateRoom(atmosphere.getOnPos());
+                if (CSConfigs.SERVER.smarterSearch.get()){
+                    atmosphere.regenerateRoom(event.getPos());
+                } else {
+                    atmosphere.resetShape();
+                    atmosphere.regenerateRoom(atmosphere.getOnPos());
+                }
             }
         }
         else {
@@ -182,15 +187,13 @@ public class CSEventHandler {
                 AABB colBoxOutside = new AABB(event.getPos().relative(direction));
                 entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBoxOutside);
 
-                /*for (RoomAtmosphere atmosphere : entityStream) {
-                    if (atmosphere.getShape().inside(colBoxOutside)) {
-                        blockBreak = true;
-                    }
-                }
-                if (blockBreak) {*/
-                    for (RoomAtmosphere atmosphere : entityStream) {
+                for (RoomAtmosphere atmosphere : entityStream) {
+                    if (CSConfigs.SERVER.smarterSearch.get()) {
+                        atmosphere.regenerateRoom(event.getPos().relative(direction));
+                    } else {
+                        atmosphere.resetShape();
                         atmosphere.regenerateRoom(atmosphere.getOnPos());
-                    //}
+                    }
                 }
             }
         }

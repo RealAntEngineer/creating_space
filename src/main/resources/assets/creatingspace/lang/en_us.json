@@ -408,6 +408,9 @@
   "creatingspace.gui.engineer_table.engine_pressure": "P : %d bar",
   "creatingspace.gui.engineer_table.isp": "ISP : %d s",
   "creatingspace.gui.engineer_table.engine_size_input": "%i mb",
-  "creatingspace.gui.engineer_table.engine_thrust_input": "%iN"
+  "creatingspace.gui.engineer_table.engine_thrust_input": "%iN",
+
+  "creatingspace.entity.room_atmosphere.sealed": "Sealed",
+  "creatingspace.entity.room_atmosphere.open": "Open"
 
 }

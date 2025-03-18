@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,12 +113,14 @@ public class RoomShape {
         }
     }
 
-    private void add(AABB aabbs) {
-        add(List.of(aabbs));
-        calculateVolume();
+    private void add(AABB aabb) {
+        add(List.of(aabb));
     }
     private void add(List<AABB> aabbs) {
         listOfBox.addAll(aabbs);
+        for (AABB aabb : aabbs) {
+            volume += (int) getVolume(aabb);
+        }
     }
     public List<Entity> getEntitiesInside(Level level) {
         ArrayList<Entity> entities = new ArrayList<>();
@@ -153,11 +156,16 @@ public class RoomShape {
     }
 
     public void remove(BlockPos pos) {
-        remove(new AABB(pos));
+        listOfBox.removeIf(aabb -> aabb.contains(Vec3.atCenterOf(pos)));
+
     }
 
     public void remove(AABB toRemove) {
-
+        ArrayList<AABB> toRemoveList = new ArrayList<>();
+        for (AABB aabb:listOfBox){
+            toRemoveList.addAll(carve(toRemove, aabb));
+        }
+        listOfBox = toRemoveList;
     }
 
     public void setClosed() {

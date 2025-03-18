@@ -5,9 +5,12 @@ import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.legacy.server.blocks.atmosphere.SealerBlock;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -18,10 +21,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 
 public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IHaveGoggleInformation {
     public RoomPressuriserBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
@@ -29,6 +34,11 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
     }
 
     public FluidTank OXYGEN_TANK = new FluidTank(1000) {
+        @Override
+        protected void onContentsChanged() {
+            super.onContentsChanged();
+            notifyUpdate();
+        }
 
         @Override
         public boolean isFluidValid(FluidStack stack) {
@@ -83,6 +93,32 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
         }
         super.remove();
     }
+    @Override
+    public void sendData() {
+        if (syncCooldown > 0) {
+            queuedSync = true;
+            return;
+        }
+        super.sendData();
+        queuedSync = false;
+        syncCooldown = SYNC_RATE;
+    }
+    private static final int SYNC_RATE = 8;
+    protected int syncCooldown;
+    protected boolean queuedSync;
+
+    @Override
+    public void tick() {
+        super.tick();
+        assert level != null;
+        if (!level.isClientSide()) {
+            if (syncCooldown > 0) {
+                syncCooldown--;
+                if (syncCooldown == 0 && queuedSync)
+                    sendData();
+            }
+        }
+    }
 
     @Override
     public void lazyTick() {
@@ -107,7 +143,41 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         containedFluidTooltip(tooltip,isPlayerSneaking,fluidOptional.cast());
+        assert level != null;
+        List<RoomAtmosphere> rooms = level.getEntitiesOfClass(RoomAtmosphere.class,
+                new AABB(getBlockPos().relative(getBlockState()
+                        .getValue(RoomPressuriserBlock.FACING))));
+        for (RoomAtmosphere room : rooms) {
+            tooltip.add(Component.translatable(room.getShape().isClosed()? "creatingspace.entity.room_atmosphere.sealed":"creatingspace.entity.room_atmosphere.open"));
+            tooltip.add(Component.literal(String.format("02 concentration : %.1f mb/m3",room.getO2concentration())));
+            //TODO make a server/client sync for the code bellow to work.
+            /*
+            if (isPlayerSneaking){
+                tooltip.add(Component.literal("autonomous production : ").withStyle(ChatFormatting.GOLD));
+                for (Map.Entry<ResourceLocation, RoomAtmosphere.AtmosphereFilterData> entry: room.passiveFilters.entrySet()) {
+                    tooltip.add(Component.literal("  ").withStyle(ChatFormatting.GRAY)
+                                    .append(Component.translatable(entry.getKey().toLanguageKey("block")))
+                                    .append(" : ")
+                                    .append(String.valueOf(entry.getValue().globalImpact()))
+                                    .append(" mb/tick")
+                            );
+
+                }
+            }*/
+        }
         return true;
     }
 
+
+    @Override
+    protected void write(CompoundTag compound, boolean clientPacket) {
+        OXYGEN_TANK.writeToNBT(compound);
+        super.write(compound, clientPacket);
+    }
+
+    @Override
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
+        OXYGEN_TANK.readFromNBT(compound);
+    }
 }
