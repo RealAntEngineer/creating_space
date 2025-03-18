@@ -2,7 +2,7 @@ package com.rae.creatingspace.mixin.recipe;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.recipes.IMoreNbtConditions;
+import com.rae.creatingspace.content.recipes.IMoreNbtConditions;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import net.minecraft.nbt.CompoundTag;

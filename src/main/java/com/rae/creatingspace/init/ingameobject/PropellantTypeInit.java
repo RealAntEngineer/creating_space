@@ -15,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.rae.creatingspace.server.event.DataEventHandler.getSideAwareRegistry;
+import static com.rae.creatingspace.content.server.event.DataEventHandler.getSideAwareRegistry;
 
 public class PropellantTypeInit {
     //TODO use datapackRegitry(Codec,Codec)
