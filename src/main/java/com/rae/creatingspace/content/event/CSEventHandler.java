@@ -2,6 +2,7 @@ package com.rae.creatingspace.content.event;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.legacy.saved.DesignCommands;
@@ -135,6 +136,7 @@ public class CSEventHandler {
         if (CSDimensionUtil.hasO2Atmosphere(level.getBiome(entity.getOnPos()))) {
             return true;
         }
+        /*
         AABB colBox = entity.getBoundingBox();
         Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
         for (BlockState state : blockStateStream.toList()) {
@@ -147,8 +149,11 @@ public class CSEventHandler {
             if (atmosphere.getShape().inside(colBox) && atmosphere.breathable()) {
                 return true;
             }
-        }
-        return false;
+        }*/
+        boolean flag = ((INeedOxygen)entity).insideOxygenRoom();
+        ((INeedOxygen)entity).setInsideOxygenRoom(false);
+        return flag;
+
     }
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {

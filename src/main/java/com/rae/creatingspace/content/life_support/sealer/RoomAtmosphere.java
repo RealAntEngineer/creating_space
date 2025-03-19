@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
@@ -340,7 +341,8 @@ public class RoomAtmosphere extends Entity {
                 for (Entity entity :
                         entitiesInside) {
                     if (entity instanceof LivingEntity living && breathable()) {
-                        consumeO2();
+                        consumeO2();//cancel event ?
+                        ((INeedOxygen)living).setInsideOxygenRoom(true);
                     }
                 }
                 for (AtmosphereFilterData data : passiveFilters.values()) {
@@ -349,6 +351,14 @@ public class RoomAtmosphere extends Entity {
                 }
             }
         }
+        if (tickCount%10 == 0){
+            lazyTick();
+        }
+    }
+
+    public void lazyTick(){
+        AABB box = getShape().getEncapsulatingBox();
+        setBoundingBox(box==null? new AABB(getOnPos()): box);
     }
 
     public boolean hasShape() {
