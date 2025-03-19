@@ -4,7 +4,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.mojang.math.Vector3f;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.content.server.fluids.CustomVirtualFluid;
+import com.rae.creatingspace.legacy.server.fluids.CustomVirtualFluid;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
 import com.simibubi.create.content.fluids.VirtualFluid;

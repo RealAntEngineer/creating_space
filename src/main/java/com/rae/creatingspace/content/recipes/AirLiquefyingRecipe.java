@@ -2,8 +2,8 @@ package com.rae.creatingspace.content.recipes;
 
 import com.google.gson.JsonObject;
 import com.rae.creatingspace.init.RecipeInit;
-import com.rae.creatingspace.content.server.blockentities.AirLiquefierBlockEntity;
-import com.rae.creatingspace.content.server.blocks.AirLiquefierBlock;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.ProcessingRecipeParams;
 import com.simibubi.create.foundation.item.SmartInventory;
