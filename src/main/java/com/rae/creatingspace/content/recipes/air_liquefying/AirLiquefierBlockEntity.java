@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.recipes.air_liquefying;
 
 import com.rae.creatingspace.init.RecipeInit;
-import com.rae.creatingspace.content.recipes.AirLiquefyingRecipe;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;

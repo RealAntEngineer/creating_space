@@ -1,7 +1,7 @@
 package com.rae.creatingspace.legacy.server.items;
 
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.content.rocket.RocketEngineItem;
+import com.rae.creatingspace.content.rocket.engine.RocketEngineItem;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock;

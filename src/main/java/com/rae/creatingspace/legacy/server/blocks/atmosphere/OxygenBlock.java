@@ -2,7 +2,7 @@ package com.rae.creatingspace.legacy.server.blocks.atmosphere;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.legacy.server.blockentities.atmosphere.OxygenBlockEntity;
-import com.rae.creatingspace.legacy.client.renderer.blockentity.atmosphere.SealerBlockEntity;
+import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;

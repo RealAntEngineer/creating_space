@@ -3,7 +3,7 @@ package com.rae.creatingspace.legacy.client.renderer.blockentity;
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.rae.creatingspace.legacy.client.renderer.blockentity.atmosphere.SealerBlockEntity;
+import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;

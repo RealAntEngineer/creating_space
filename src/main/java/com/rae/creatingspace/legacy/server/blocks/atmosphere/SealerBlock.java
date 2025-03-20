@@ -1,9 +1,9 @@
 package com.rae.creatingspace.legacy.server.blocks.atmosphere;
 
-import com.rae.creatingspace.api.gui.SealerScreen;
+import com.rae.creatingspace.legacy.client.gui.screen.SealerScreen;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
-import com.rae.creatingspace.legacy.client.renderer.blockentity.atmosphere.SealerBlockEntity;
+import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.gui.ScreenOpener;

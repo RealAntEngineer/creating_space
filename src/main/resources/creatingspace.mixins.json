@@ -7,9 +7,10 @@
   "refmap": "creatingspace.refmap.json",
   "mixins": [
     "entity.ContraptionMixin",
+    "entity.LivingEntityMixin",
     "entity.PlayerMixin",
     "entity.gravity.BoatMixin",
-    "entity.gravity.FallingBlockEntityEntityMixin",
+    "entity.gravity.FallingBlockEntityMixin",
     "entity.gravity.ItemEntityMixin",
     "entity.gravity.LivingEntityMixin",
     "entity.gravity.MinecartMixin",

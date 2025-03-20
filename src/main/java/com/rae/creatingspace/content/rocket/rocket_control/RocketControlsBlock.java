@@ -1,6 +1,6 @@
 package com.rae.creatingspace.content.rocket.rocket_control;
 
-import com.rae.creatingspace.api.gui.RocketAssembleScreen;
+import com.rae.creatingspace.content.rocket.RocketAssembleScreen;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.gui.ScreenOpener;

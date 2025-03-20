@@ -10,7 +10,7 @@ import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
 import com.rae.creatingspace.init.CSContraptionType;
-import com.rae.creatingspace.legacy.client.event.event.IgniteOnPlace;
+import com.rae.creatingspace.content.event.IgniteOnPlace;
 import com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;

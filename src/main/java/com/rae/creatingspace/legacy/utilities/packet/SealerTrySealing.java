@@ -1,6 +1,6 @@
 package com.rae.creatingspace.legacy.utilities.packet;
 
-import com.rae.creatingspace.legacy.client.renderer.blockentity.atmosphere.SealerBlockEntity;
+import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.foundation.networking.BlockEntityConfigurationPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

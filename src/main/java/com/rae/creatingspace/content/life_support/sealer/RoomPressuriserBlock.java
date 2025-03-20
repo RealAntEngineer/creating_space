@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.legacy.client.renderer.blockentity.atmosphere.SealerBlockEntity;
+import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
