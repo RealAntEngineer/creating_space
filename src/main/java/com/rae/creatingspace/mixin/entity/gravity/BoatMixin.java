@@ -20,8 +20,8 @@ public abstract class BoatMixin extends Entity {
 
     @ModifyVariable(method = "floatBoat", at = @At(value = "LOAD"), name = "d1")
     private double modifyGravity(double d1) {
-        if (shouldHandleGravity(level().dimension().location())) {
-            return d1 * CSDimensionUtil.gravity(level().dimension().location()) / 9.81;
+        if (shouldHandleGravity(level.dimension().location())) {
+            return d1 * CSDimensionUtil.gravity(level.dimension().location()) / 9.81;
         }
         return d1;
     }

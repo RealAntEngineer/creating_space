@@ -20,16 +20,16 @@ public abstract class LivingEntityMixin extends Entity {
 
     @ModifyVariable(method = "travel", at = @At(value = "LOAD"), name = "d0")
     private double modifyGravity(double d0) {
-        if (shouldHandleGravity(level().dimension().location())) {
-            return d0 * CSDimensionUtil.gravity(level().dimension().location()) / 9.81;
+        if (shouldHandleGravity(level.dimension().location())) {
+            return d0 * CSDimensionUtil.gravity(level.dimension().location()) / 9.81;
         }
         return d0;
     }
 
     @ModifyVariable(method = "calculateFallDamage", at = @At(value = "LOAD"), name = "p_21237_")
     public float calculateFallDamage(float distance) {
-        if (shouldHandleGravity(level().dimension().location())) {
-            return (float) (distance * CSDimensionUtil.gravity(level().dimension().location()) / 9.81);
+        if (shouldHandleGravity(level.dimension().location())) {
+            return (float) (distance * CSDimensionUtil.gravity(level.dimension().location()) / 9.81);
         }
         return distance;
     }

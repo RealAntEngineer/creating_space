@@ -121,7 +121,7 @@ public class RoomAtmosphere extends Entity {
                         if (canBeExpandedToward) {
                             for (BlockPos pos : collectedPos) {
                                 //make this smarter. it doesn't work with stairs.
-                                if ((!(canGoThrough(level(), pos, dir) && canGoThrough(level(), tempPos, dir.getOpposite())))) {
+                                if ((!(canGoThrough(level, pos, dir) && canGoThrough(level, tempPos, dir.getOpposite())))) {
                                     canBeExpandedToward = false;
                                     break;
                                 }
@@ -134,9 +134,9 @@ public class RoomAtmosphere extends Entity {
                             canContinue = true;
                         } else {
                             for (BlockPos pos : collectedPos) {
-                                if (canGoThrough(level(), pos, dir)) {
+                                if (canGoThrough(level, pos, dir)) {
                                     toVist.add(pos);
-                                    if (!level().getBlockState(pos).isAir()) {
+                                    if (!level.getBlockState(pos).isAir()) {
                                         applyOnBlock(pos);
                                     }
                                 } else {
@@ -205,8 +205,8 @@ public class RoomAtmosphere extends Entity {
     }
 
     private void applyOnBlock(BlockPos pos) {
-        BlockState state = level().getBlockState(pos);
-        if (level().getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp && !roomSealers.contains(pos)) {
+        BlockState state = level.getBlockState(pos);
+        if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp && !roomSealers.contains(pos)) {
             roomSealers.add(pos);
         }
         if (state.getBlock() instanceof LeavesBlock) {
@@ -327,7 +327,7 @@ public class RoomAtmosphere extends Entity {
     public void tick() {
         super.tick();
 
-        if (!level().isClientSide()) {
+        if (!level.isClientSide()) {
             if (!toVist.isEmpty()){
                 entityData.set(SHAPE_DATA_ACCESSOR,searchTopology(toVist.poll()));
             }
@@ -335,7 +335,7 @@ public class RoomAtmosphere extends Entity {
                 entityData.set(O2_AMOUNT,0);
             }
             if (hasShape()) {
-                List<Entity> entitiesInside = getShape().getEntitiesInside(level());
+                List<Entity> entitiesInside = getShape().getEntitiesInside(level);
                 for (Entity entity :
                         entitiesInside) {
                     if (entity instanceof LivingEntity living && breathable()) {
