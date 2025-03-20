@@ -147,7 +147,7 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
 
-    implementation fg.deobf("curse.maven:nbt-tool-451553:3879898")
+    //implementation fg.deobf("curse.maven:item-nbt-viewer-514135:3879898")
     //if (!Boolean.getBoolean('idea.sync.active')) {
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     //}
