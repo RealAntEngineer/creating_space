@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.rae.creatingspace.content.server.event.DataEventHandler.getSideAwareRegistry;
+import static com.rae.creatingspace.legacy.client.event.event.DataEventHandler.getSideAwareRegistry;
 
 public class MiscInit {
     //TODO remove slots from the exhaust and power pack, add allowedPropellants for the exhaust pack
