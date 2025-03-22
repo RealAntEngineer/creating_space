@@ -7,6 +7,7 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
 import com.rae.creatingspace.init.CSContraptionType;
+import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.legacy.utilities.CSMassUtil;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
@@ -127,6 +128,11 @@ public class RocketContraption extends TranslatingContraption {
 
         return nbt;
     }
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public ContraptionLighter<?> makeLighter() {
+        return new NonStationaryLighter<>(this);
+    }
     public ArrayList<BlockPos> getLocalPosOfFlightRecorders() {
         return localPosOfFlightRecorders;
     }
@@ -142,7 +148,6 @@ public class RocketContraption extends TranslatingContraption {
         return theoreticalPerTagFluidConsumption;
     }
 
-    //public record ConsumptionInfo(float oxConsumption, float fuelConsumption, int partialThrust){
     public record ConsumptionInfo(Map<TagKey<Fluid>, Float> propellantConsumption, int partialThrust) {
         public static final Codec<ConsumptionInfo> CODEC = RecordCodecBuilder.create(
                 instance ->
