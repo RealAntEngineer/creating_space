@@ -348,7 +348,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         List<ResourceLocation> propsExhaustPack = exhaustPackTypes.get(setExhaustPackType.getState()).getAllowedPropellants();
 
         List<MutableComponent> availablePropellants = new ArrayList<>();
-        propellantTypeLocations = new ArrayList<>();;
+        propellantTypeLocations = new ArrayList<>();
         propellantTypes = new ArrayList<>();
         propsPowerPack.forEach(
                 location -> {

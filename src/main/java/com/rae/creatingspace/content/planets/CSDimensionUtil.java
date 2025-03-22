@@ -92,6 +92,10 @@ public class CSDimensionUtil {
         return 9.81f;
     }
 
+    public static boolean shouldHandleGravity(ResourceLocation location) {
+        return !(location.getNamespace().equals("ad_astra") || location.getNamespace().equals("ad_extendra"));
+    }
+
     @Deprecated(forRemoval = true)
     public static int arrivalHeight(ResourceKey<DimensionType> dimensionType) {
         return arrivalHeight(dimensionType.location());

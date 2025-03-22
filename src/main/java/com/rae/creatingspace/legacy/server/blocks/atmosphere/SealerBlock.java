@@ -25,8 +25,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
@@ -58,12 +56,6 @@ public class SealerBlock extends DirectionalAxisKineticBlock implements IBE<Room
         }*/
 
         return InteractionResult.PASS;
-    }
-    @OnlyIn(value = Dist.CLIENT)
-    protected void displayScreen(SealerBlockEntity be, Player player) {
-        if (!(player instanceof LocalPlayer))
-            return;
-        ScreenOpener.open(new SealerScreen(be));
     }
 
     @Override

@@ -13,7 +13,7 @@ import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
 import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
-import com.rae.creatingspace.content.rocket.contraption.CSContraptionType;
+import com.rae.creatingspace.init.CSContraptionType;
 import com.rae.creatingspace.content.event.IgniteOnPlace;
 import com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -40,7 +40,7 @@ public class CreatingSpace {
     public static final String MODID = "creatingspace" ;
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
-    public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
+    //public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
             return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE);

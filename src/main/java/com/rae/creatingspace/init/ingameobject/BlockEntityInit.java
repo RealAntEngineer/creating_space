@@ -1,8 +1,8 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.content.fluids.CryogenicTankBlockEntity;
-import com.rae.creatingspace.content.fluids.FlowGaugeBlockEntity;
-import com.rae.creatingspace.content.fluids.FlowGaugeBlockRenderer;
+import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity;
+import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity;
+import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockRenderer;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserInstance;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
@@ -23,11 +23,9 @@ import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlockE
 import com.rae.creatingspace.legacy.server.blockentities.ChemicalSynthesizerBlockEntity;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockEntity;
 import com.rae.creatingspace.legacy.client.renderer.blockentity.*;
-import com.rae.creatingspace.legacy.client.renderer.instance.*;
 import com.rae.creatingspace.legacy.server.blockentities.*;
 import com.rae.creatingspace.legacy.server.blockentities.atmosphere.OxygenBlockEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
-import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -126,13 +124,6 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.OXYGEN)
                     .register();
 
-    public static final BlockEntityEntry<SealerBlockEntity> OXYGEN_SEALER =
-            REGISTRATE.blockEntity(
-                            "oxygen_sealer", SealerBlockEntity::new)
-                    .instance(()-> OxygenSealerInstance::new)
-                    .validBlocks(BlockInit.OXYGEN_SEALER)
-                    .renderer(() -> OxygenSealerRenderer::new)
-                    .register();
     public static final BlockEntityEntry<RoomPressuriserBlockEntity> ROOM_PRESSURIZER =
             REGISTRATE.blockEntity(
                             "room_pressurizer", RoomPressuriserBlockEntity::new)
@@ -147,22 +138,6 @@ public class BlockEntityInit {
                     .validBlocks( BlockInit.FLIGHT_RECORDER)
                     .renderer(()-> FlightRecorderRenderer::new)
                     .register();
-
-
-    /*public static final BlockEntityEntry<IOBlockEntity> IO_TILE = REGISTRATE
-            .blockEntity("io", IOBlockEntity::new)
-            .validBlocks(BlockInit.IO_BLOCK)
-            .register();
-    public static final BlockEntityEntry<MultiblockBlockEntity> GHOST_TILE = REGISTRATE
-            .blockEntity("multiblock", MultiblockBlockEntity::new)
-            .validBlocks(GHOST_BLOCK)
-            .register();
-    public static final BlockEntityEntry<KineticInputBlockEntity> KINETIC_INPUT_TILE = REGISTRATE
-            .blockEntity("kinetic_input", KineticInputBlockEntity::new)
-            .instance(() -> KineticInputInstance::new)
-            .validBlocks(KINETIC_INPUT)
-            .renderer(() -> KineticInputBlockEntityRenderer::new)
-            .register();*/
 
     public static void register() {}
 }

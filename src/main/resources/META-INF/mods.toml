@@ -36,3 +36,10 @@ mandatory=true
 versionRange="[0.5.1.a,)"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.creatingspace]]
+modId="forge"
+mandatory=true
+versionRange="[47.3,)" # Adjust based on your Forge version
+ordering="NONE"
+side="BOTH"

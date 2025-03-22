@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.rae.creatingspace.content.planets.CSDimensionUtil.shouldHandleGravity;
+
 @Mixin(value = Player.class)
 abstract class PlayerMixin extends LivingEntity {
     protected PlayerMixin(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) {
@@ -19,15 +21,17 @@ abstract class PlayerMixin extends LivingEntity {
 
     @Inject(method = "aiStep", at = @At(value = "HEAD"))
     private void flying(CallbackInfo ci) {
-        if (!this.onGround() && CSDimensionUtil.gravity(level().dimension().location()) == 0) {
-            float d0 = 0;
-            if (jumping) {
-                d0 = 0.01f;
-            } else if (this.isShiftKeyDown()) {
-                d0 = -0.01f;
+        if (shouldHandleGravity(level().dimension().location())) {
+            if (!this.onGround() && CSDimensionUtil.gravity(level().dimension().location()) == 0) {
+                float d0 = 0;
+                if (jumping) {
+                    d0 = 0.01f;
+                } else if (this.isShiftKeyDown()) {
+                    d0 = -0.01f;
+                }
+                Vec3 vec3 = this.getDeltaMovement();
+                this.setDeltaMovement(vec3.x, vec3.y + d0, vec3.z);
             }
-            Vec3 vec3 = this.getDeltaMovement();
-            this.setDeltaMovement(vec3.x, vec3.y + d0, vec3.z);
         }
     }
 }

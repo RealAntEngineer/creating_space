@@ -72,8 +72,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
         Optional<RocketEngineBlockEntity.NbtDependent> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
 
         CompoundTag tag = stack.getOrCreateTag();
-        CompoundTag beData = new CompoundTag();
-        blockEntityOptional.orElse(null).setFromNbt(beData);
+        CompoundTag beData = blockEntityOptional.orElseThrow().saveWithoutMetadata();
         tag.put("blockEntity", beData);
         stack.setTag(tag);
         return stack;
@@ -94,6 +93,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
 
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState1, boolean isMoving) {
+        IBE.onRemove(blockState, level, blockPos, blockState1);
         super.onRemove(blockState, level, blockPos, blockState1, isMoving);
     }
 }

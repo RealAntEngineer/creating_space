@@ -8,6 +8,9 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public abstract class RocketEngineBlock extends HorizontalDirectionalBlock {
 
@@ -21,14 +24,14 @@ public abstract class RocketEngineBlock extends HorizontalDirectionalBlock {
     public RocketEngineBlock(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.defaultBlockState()
-                .setValue(ACTIVE, Boolean.valueOf(true))
+                .setValue(ACTIVE, Boolean.TRUE)
                 .setValue(FACING,Direction.NORTH));
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return super.getStateForPlacement(context)
-                .setValue(ACTIVE, Boolean.valueOf(true))
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+        return Objects.requireNonNull(super.getStateForPlacement(context))
+                .setValue(ACTIVE, Boolean.TRUE)
                 .setValue(FACING,context.getHorizontalDirection().getOpposite());
     }
 

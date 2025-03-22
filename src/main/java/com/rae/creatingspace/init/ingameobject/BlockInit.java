@@ -1,7 +1,7 @@
 package com.rae.creatingspace.init.ingameobject;
 
-import com.rae.creatingspace.content.fluids.CryogenicTankBlock;
-import com.rae.creatingspace.content.fluids.FlowGaugeBlock;
+import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock;
+import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
 import com.rae.creatingspace.content.planets.worldgen.RegolithSurfaceBlock;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock;
@@ -23,7 +23,7 @@ import com.rae.creatingspace.content.rocket.engine.SuperEngineBlock;
 import com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.FlightRecorderInteraction;
 import com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.RocketControlInteraction;
 import com.rae.creatingspace.content.rocket.contraption.behaviour.movement.EngineMovementBehaviour;
-import com.rae.creatingspace.content.fluids.CryogenicTankItem;
+import com.rae.creatingspace.content.fluids.storage.CryogenicTankItem;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsItem;
 import com.rae.creatingspace.legacy.server.items.BigEngineItem;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;

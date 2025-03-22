@@ -17,10 +17,7 @@ import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -82,6 +79,41 @@ public class IntRangeNbtIngredient extends AbstractIngredient {
     @Override
     public JsonElement toJson() {
         return null;
+    }
+
+    @Override
+    public ItemStack[] getItems() {
+        //make an iterator to collect the items ?
+        ItemStack[] acc = new ItemStack[2 * items.size()];
+        int i = 0;
+        if (!path.isEmpty()) {
+            for (Item item : items) {
+                ItemStack firstLimit = item.getDefaultInstance();
+                ItemStack lastLimit = item.getDefaultInstance();
+                CompoundTag minTag = new CompoundTag();
+                CompoundTag maxTag = new CompoundTag();
+                minTag.putInt(path.get(path.size()-1), min);
+                maxTag.putInt(path.get(path.size()-1), max);
+                if (path.size() > 1) {
+                    List<String> shallowCopy = path.subList(1, path.size());
+                    Collections.reverse(shallowCopy);
+                    for (String partialPath : shallowCopy) {
+                        CompoundTag tempMin = new CompoundTag();
+                        CompoundTag tempMax = new CompoundTag();
+                        tempMin.put(partialPath, minTag.copy());
+                        tempMax.put(partialPath, maxTag.copy());
+                        minTag = tempMin.copy();
+                        maxTag = tempMax.copy();
+                    }
+                }
+                firstLimit.setTag(minTag);
+                lastLimit.setTag(maxTag);
+                acc[i] = firstLimit;
+                acc[i + 1] = lastLimit;
+                i++;
+            }
+        }
+        return acc;
     }
 
     public static class Serializer implements IIngredientSerializer<IntRangeNbtIngredient> {

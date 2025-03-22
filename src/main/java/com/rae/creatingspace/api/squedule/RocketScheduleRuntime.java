@@ -2,9 +2,9 @@ package com.rae.creatingspace.api.squedule;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.destination.ChangeTitleInstruction;
-import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
+import com.rae.creatingspace.api.squedule.instruction.ChangeTitleInstruction;
+import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;

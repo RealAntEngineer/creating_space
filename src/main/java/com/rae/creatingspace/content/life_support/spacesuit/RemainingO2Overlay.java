@@ -1,6 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
-import com.rae.creatingspace.api.gui.element.SliderWidget;
+import com.rae.creatingspace.api.gui.elements.SliderWidget;
 import com.rae.creatingspace.configs.CSConfigs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

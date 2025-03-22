@@ -1,16 +1,14 @@
 package com.rae.creatingspace.content.event;
 
-import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.content.life_support.spacesuit.RemainingO2Overlay;
 import com.rae.creatingspace.content.life_support.spacesuit.CopperOxygenBacktankFirstPersonRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.NetheriteOxygenBacktankFirstPersonRenderer;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankArmorLayer;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
-import com.rae.creatingspace.content.rocket.engine.RocketEngineItem;
+import com.rae.creatingspace.init.EngineMaterialInit;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -30,6 +28,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
+
+import static com.rae.creatingspace.content.rocket.engine.RocketEngineItem.appendEngineDependentText;
 
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
@@ -61,29 +61,30 @@ public class CSClientEvent {
         List<Component> components = event.getToolTip();
         if (!(itemStack.getItem() instanceof EngineFabricationBlueprint || itemStack.getItem() instanceof EngineItem)) {
             CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
-            if (recipeData != null) {
-                int size = recipeData.getInt("size");
-                int materialLevel = recipeData.getInt("materialLevel");
-                components.add(Component.literal("size : " + size));
-                components.add(Component.literal("materialLevel : " + materialLevel));
-                try {
-                    ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
-                    ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
-
-                    components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-                    components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
-                } catch (Exception ignored) {
+            try {
+                if (recipeData != null) {
+                    int size = recipeData.getInt("size");
+                    int materialLevel = recipeData.getInt("materialLevel");
+                    if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
+                    if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + EngineMaterialInit.materials.get(materialLevel)));
+                    try {
+                        ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
+                        components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
+                    } catch (Exception ignored) {
+                    }
+                    try {
+                        ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
+                        components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
+                    } catch (Exception ignored) {
+                    }
                 }
-            }
-            CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
-            if (engineInfo != null) {
-                components.add(Component.literal("for engine :"));
-                //TODO there is a need for a description : size and type of exhaustPack + powerPack + material level
-                PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
-                        ResourceLocation.CODEC.parse(NbtOps.INSTANCE, engineInfo.get("propellantType"))
-                                .resultOrPartial(s -> {
-                                }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
-                RocketEngineItem.appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * engineInfo.getFloat("efficiency")), engineInfo.getInt("mass"), engineInfo.getInt("thrust"));
+                CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
+                if (engineInfo != null) {
+                    components.add(Component.literal("for engine :"));
+                    appendEngineDependentText(components,engineInfo);
+                }
+            } catch (Exception ignored){
+
             }
         }
     }

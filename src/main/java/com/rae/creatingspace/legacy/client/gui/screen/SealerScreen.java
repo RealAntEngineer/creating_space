@@ -1,7 +1,7 @@
 package com.rae.creatingspace.legacy.client.gui.screen;
 
-import com.rae.creatingspace.api.gui.element.BackgroundScrollInput;
-import com.rae.creatingspace.api.gui.element.SliderWidget;
+import com.rae.creatingspace.api.gui.elements.BackgroundScrollInput;
+import com.rae.creatingspace.api.gui.elements.SliderWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
