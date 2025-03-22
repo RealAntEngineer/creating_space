@@ -167,7 +167,6 @@ public class CSEventHandler {
     @SubscribeEvent
     public static void onBlockPlaced(BlockEvent.NeighborNotifyEvent event) {
         boolean blockPlaced = false;
-        boolean blockBreak = false;
         Level level = (Level) event.getLevel();
         AABB colBoxInside = new AABB(event.getPos());
 

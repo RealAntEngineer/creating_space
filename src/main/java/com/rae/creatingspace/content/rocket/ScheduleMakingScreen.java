@@ -75,19 +75,10 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     private final RocketContraptionEntity rocketContraption;
     private final ResourceLocation currentDimension;
     private ResourceLocation destination;//TODO replace with a call to a getDestination calling ResourceLocation.tryParse(editingDestination.getData().getString("Text"))))
-    private Orbit focusedPlanet = null;
-    private final Vector<Orbit> buttonVector;
     private LabeledBoxWidget destinationCost;
     private EditBox Xinput;
     private EditBox Zinput;
-    Couple<Color> red = Theme.p(Theme.Key.BUTTON_FAIL);
-    Couple<Color> green = Theme.p(Theme.Key.BUTTON_SUCCESS);
-    Couple<Color> idle = Theme.p(Theme.Key.BUTTON_IDLE);
     private IconButton validateSetting;
-    float zoom = 20f;
-    int xShift = 0;
-    int yShift = 0;
-    private Orbit sun;
 
     public ScheduleMakingScreen(RocketMenu container, Inventory inv, Component title) {
         //TODO this screen will swith bwn normal selection (single trip), schedule and rocket overview.
