@@ -27,7 +27,7 @@ public class EntityInit {
     public static final EntityEntry<RoomAtmosphere> ATMOSPHERE_ENTITY =
             register("room_atmosphere", RoomAtmosphere::new,
                     () -> RoomAtmosphereRenderer::new,
-                    MobCategory.MISC, 3, 10,
+                    MobCategory.MISC, Integer.MAX_VALUE, 10,
                     false, true, RoomAtmosphere::build)
                     .register();
 

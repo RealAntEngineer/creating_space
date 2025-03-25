@@ -692,6 +692,12 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     //network and client only
 
+
+    @Override
+    public boolean isPickable() {
+        return super.isPickable();
+    }
+
     @Override
     public AABB getBoundingBoxForCulling() {
         return isInPropulsionPhase() ?

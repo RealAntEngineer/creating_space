@@ -144,7 +144,7 @@ public class CSEventHandler {
                 return true;
             }
         }
-        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox);
+        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox); -> use getEntities instead to access the server side methode
         for (RoomAtmosphere atmosphere : entityStream) {
             if (atmosphere.getShape().inside(colBox) && atmosphere.breathable()) {
                 return true;
