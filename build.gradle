@@ -96,6 +96,11 @@ repositories {
         url = "https://modmaven.dev"
     }
 
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+
     //curios
     maven {
         url = "https://maven.theillusivec4.top/"
@@ -129,6 +134,13 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
+    //worldgen tool
+    //worldgen-devtools:4rikEHY9
+    //runtimeOnly fg.deobf("maven.modrinth:worldgen-devtools:1.0.0-bata.2+1.20.5") -> dependent on minecraft too high use it for 1.21.1
+    //runtimeOnly fg.deobf("maven.modrinth:connector:1.0.0-beta.46+1.20.1")
+    //runtimeOnly fg.deobf("maven.modrinth:forgified-fabric-api:0.92.2+1.11.12+1.20.1")
+
 
 }
 mixin {

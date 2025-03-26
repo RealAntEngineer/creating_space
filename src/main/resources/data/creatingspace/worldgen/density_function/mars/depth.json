@@ -3,13 +3,13 @@
   "argument1": {
     "type": "minecraft:y_clamped_gradient",
     "from_y": -64,
-    "to_y": 256,
+    "to_y": 320,
     "from_value": 1.5,
     "to_value": -1.5
   },
   "argument2": {
     "type": "minecraft:add",
-    "argument1":"creatingspace:mars/offset",
+    "argument1": "creatingspace:mars/offset",
     "argument2": {
       "type": "minecraft:mul",
       "argument1": "creatingspace:mars/ravines_folded",

@@ -4,8 +4,174 @@
     "type": "minecraft:noise",
     "settings": "creatingspace:mars_noise",
     "biome_source": {
-      "type": "minecraft:fixed",
-      "biome": "creatingspace:mars_plains"
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "creatingspace:mars/mountains",
+          "parameters": {
+            "temperature": [
+              0.2,
+              1
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              0.3,
+              1
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -0.3,
+              1
+            ],
+            "depth": [-1,0.2],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:mars/frozen_mountains",
+          "parameters": {
+            "temperature": [
+              -1,
+              0.1
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              0.3,
+              1
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -0.3,
+              1
+            ],
+            "depth": [-1,0.2],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:mars/plains",
+          "parameters": {
+            "temperature": [
+              -0.2,
+              1
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              -1,
+              0.3
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+             -0.3,
+              1
+            ],
+            "depth": [-1,0.2],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:mars/frozen_plains",
+          "parameters": {
+            "temperature": [
+              -1,
+              -0.3
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              -1,
+              0.3
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+             -0.3,
+              1
+            ],
+            "depth": [-1,0.2],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:mars/mossy_ravine",
+          "parameters": {
+            "temperature": [
+              -1,
+              1
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              -1,
+              0.3
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              -0.4
+            ],
+            "depth": [-1,0.2],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:mars/cave",
+          "parameters": {
+            "temperature": [
+              -1,
+              1
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              -1,
+              1
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              1
+            ],
+            "depth": [
+              0.1,
+              1
+            ],
+            "offset": 0
+          }
+        }
+      ]
     }
   }
 }

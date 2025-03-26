@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:mul",
+    "argument1": 4,
+    "argument2": {
+      "type": "minecraft:quarter_negative",
+      "argument": {
+        "type": "minecraft:mul",
+        "argument1": "creatingspace:mars/depth",
+        "argument2": "creatingspace:mars/factor"
+      }
+    }
+  },
+  "argument2":"creatingspace:mars/base_3d_noise"
+}

@@ -1,6 +1,6 @@
 {
-  "temperature": 2.5,
-  "downfall": 0,
+  "temperature": 0.5,
+  "downfall": 0.4,
   "has_precipitation": false,
   "temperature_modifier": "none",
   "effects": {
@@ -18,7 +18,7 @@
   "spawn_costs": {
   },
   "carvers": {
-    "air": "creatingspace:mars_cave"
+    "air": []
   },
   "features": [
     [
