@@ -46,7 +46,7 @@ public class RoomPressuriserRenderer extends KineticBlockEntityRenderer<RoomPres
 
         ms.pushPose();
         SuperByteBuffer shaftHalf =
-                CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, be.getBlockState(), direction.getOpposite());
+                CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, be.getBlockState(), direction);
         standardKineticRotationTransform(shaftHalf, be, lightBehind).renderInto(ms, vb);
         ms.popPose();
 

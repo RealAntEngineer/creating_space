@@ -365,6 +365,16 @@ public class BlockInit {
             .transform(tagBlockAndItem("ores/nickel", "ores_in_ground/stone"))
             .build()
             .register();
+    public static final BlockEntry<Block> MOSSY_MARS_STONE = REGISTRATE.block(
+                    "mossy_mars_stone", Block::new)
+            .initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
+            .tag(Tags.Blocks.ORES)
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
 
 
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(

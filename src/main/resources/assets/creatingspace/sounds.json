@@ -4,5 +4,11 @@
     "sounds": [
       "creatingspace:rocket_launch_sound"
     ]
+  },
+  "music.mars.flumpidis": {
+    "subtitle": "creatingspace.subtitle.rocket_launch",
+    "sounds": [
+      "creatingspace:flumpidis"
+    ]
   }
 }

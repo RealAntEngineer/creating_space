@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
 import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
@@ -15,31 +16,36 @@ import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
-public class RoomPressuriserVisual extends KineticBlockEntityVisual<RoomPressuriserBlockEntity> {
-    protected final RotatingInstance shaft;
+public class CSFanVisual extends KineticBlockEntityVisual<KineticBlockEntity> {
+    protected final RotatingInstance positiveShaft;
+    protected final RotatingInstance negativeShaft;
     protected final RotatingInstance fan;
     final Direction direction;
-    private final Direction opposite;
 
-    public RoomPressuriserVisual(VisualizationContext context, RoomPressuriserBlockEntity blockEntity, float partialTick) {
+    public CSFanVisual(VisualizationContext context, KineticBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
 
         direction = blockState.getValue(FACING);
 
-        opposite = direction.getOpposite();
-        shaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
+        positiveShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
+                .createInstance();
+        negativeShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
                 .createInstance();
         fan = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.ENCASED_FAN_INNER))
                 .createInstance();
 
-        shaft.setup(blockEntity)
+        positiveShaft.setup(blockEntity,rotationAxis(), blockEntity.getSpeed())
                 .setPosition(getVisualPosition())
-                .rotateToFace(Direction.SOUTH, opposite)
+                .rotateToFace(Direction.SOUTH, rotationAxis())
+                .setChanged();
+        negativeShaft.setup(blockEntity,rotationAxis(), blockEntity.getSpeed())
+                .setPosition(getVisualPosition())
+                .rotateToFace(Direction.NORTH, rotationAxis())
                 .setChanged();
 
-        fan.setup(blockEntity, getFanSpeed())
+        fan.setup(blockEntity,direction.getAxis(), getFanSpeed())
                 .setPosition(getVisualPosition())
-                .rotateToFace(Direction.SOUTH, opposite)
+                .rotateToFace(Direction.SOUTH, direction.getOpposite())
                 .setChanged();
     }
 
@@ -54,16 +60,21 @@ public class RoomPressuriserVisual extends KineticBlockEntityVisual<RoomPressuri
 
     @Override
     public void update(float pt) {
-        shaft.setup(blockEntity)
+        negativeShaft.setup(blockEntity,rotationAxis(), blockEntity.getSpeed())
                 .setChanged();
-        fan.setup(blockEntity, getFanSpeed())
+        positiveShaft.setup(blockEntity,rotationAxis(), blockEntity.getSpeed())
+                .setChanged();
+        fan.setup(blockEntity,direction.getAxis(), getFanSpeed())
                 .setChanged();
     }
 
     @Override
     public void updateLight(float partialTick) {
-        BlockPos behind = pos.relative(opposite);
-        relight(behind, shaft);
+        BlockPos positiveAxis = pos.relative(rotationAxis(),1);
+        relight(positiveAxis, positiveShaft);
+
+        BlockPos negativeAxis = pos.relative(rotationAxis(),-1);
+        relight(negativeAxis, negativeShaft);
 
         BlockPos inFront = pos.relative(direction);
         relight(inFront, fan);
@@ -71,13 +82,15 @@ public class RoomPressuriserVisual extends KineticBlockEntityVisual<RoomPressuri
 
     @Override
     protected void _delete() {
-        shaft.delete();
+        negativeShaft.delete();
+        positiveShaft.delete();
         fan.delete();
     }
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        consumer.accept(shaft);
+        consumer.accept(negativeShaft);
+        consumer.accept(positiveShaft);
         consumer.accept(fan);
     }
 }

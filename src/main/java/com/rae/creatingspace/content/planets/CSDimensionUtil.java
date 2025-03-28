@@ -29,6 +29,7 @@ public class CSDimensionUtil {
                     .orElseThrow());
             LOGGER.info("updating the space travel cost map");
             CSDimensionUtil.updateCostMap();
+            CSDimensionUtil.removeUnreachableDimensions();
         }
         return travelMap;
     }
@@ -41,6 +42,7 @@ public class CSDimensionUtil {
                     .orElseThrow());
             LOGGER.info("updating the space travel cost map");
             CSDimensionUtil.updateCostMap();
+            CSDimensionUtil.removeUnreachableDimensions();
         }
         return planets;
     }
@@ -89,6 +91,10 @@ public class CSDimensionUtil {
             }
         }
         return 9.81f;
+    }
+
+    public static boolean shouldHandleGravity(ResourceLocation location) {
+        return !(location.getNamespace().equals("ad_astra") || location.getNamespace().equals("ad_extendra"));
     }
 
     @Deprecated(forRemoval = true)

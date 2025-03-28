@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.api.planets.OrbitParameter;
 import com.rae.creatingspace.api.rendering.PlanetsRendering;
 import net.createmod.catnip.theme.Color;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
@@ -168,11 +170,13 @@ public class PlanetsPositionsHandler {
         OrbitParameter orbitParameter = positions.get(location);
         float angle = (float) (2 * time / orbitParameter.rotT() * Math.PI);
         Quaternionf rotation = new Quaternionf().rotateAxis(angle,orbitParameter.rotationAxis().toVector3f());
-
+        Minecraft.getInstance().gameRenderer.lightTexture().turnOffLightLayer();
         PlanetsRendering.renderPlanet(
                 new ResourceLocation(location.getNamespace(), "textures/environment/planets/" + location.getPath() + ".png"),
                 bufferSource, ms, LightTexture.FULL_BRIGHT, orbitParameter.size(), pos, rotation,skyColor
         );
+        Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+
     }
 
     /**

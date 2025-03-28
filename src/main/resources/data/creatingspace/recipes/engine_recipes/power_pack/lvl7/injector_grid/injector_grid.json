@@ -24,7 +24,23 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_injector_grid"
+                },
+                {
+                    "item": "creatingspace:inconel_injector"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:incomplete_inconel_injector_grid"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_inconel_injector_grid"
                 },
                 {
                     "item": "creatingspace:inconel_engine_wall"
@@ -32,7 +48,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_injector_grid"
                 }
             ]
         },
@@ -40,7 +56,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_injector_grid"
                 },
                 {
                     "item": "creatingspace:inconel_injector"
@@ -48,28 +64,12 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:engine_blueprint"
-                },
-                {
-                    "item": "creatingspace:inconel_injector"
-                }
-            ],
-            "results": [
-                {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_injector_grid"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:engine_blueprint"
+        "item": "creatingspace:incomplete_inconel_injector_grid"
     }
 }

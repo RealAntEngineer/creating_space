@@ -7,6 +7,7 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
 import com.rae.creatingspace.init.CSContraptionType;
+import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.legacy.utilities.CSMassUtil;
 import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
@@ -30,7 +31,7 @@ import java.util.*;
 public class RocketContraption extends TranslatingContraption {
     private int thrust = 0;
     private int dryMass = 0;
-    public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantType.DIRECT_CODEC,ConsumptionInfo.CODEC);
+    //private final HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
     private HashMap<PropellantType, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
 
     private final ArrayList<BlockPos> localPosOfFlightRecorders = new ArrayList<>();
@@ -104,22 +105,16 @@ public class RocketContraption extends TranslatingContraption {
     public ContraptionType getType() {
         return CSContraptionType.ROCKET.get();
     }
-
+    public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(), ConsumptionInfo.CODEC);
     @Override
-    public void readNBT(Level world, CompoundTag nbt, boolean spawnData) {
+    public void readNBT(Level world, CompoundTag nbt, boolean clientPacket) {
 
         //TODO add data for server/client sync (possible solution of Interactive bug)
-        if (!spawnData) {
             thrust = nbt.getInt("thrust");
             dryMass = nbt.getInt("dryMass");
             Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
-            try {
-                theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElseThrow());
-            } catch (Exception ignored) {
-
-            }
-        }
-        super.readNBT(world, nbt, spawnData);
+            theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
+        super.readNBT(world, nbt, clientPacket);
     }
 
     @Override
@@ -129,20 +124,10 @@ public class RocketContraption extends TranslatingContraption {
         nbt.putInt("thrust", thrust);
         nbt.putInt("dryMass", dryMass);
         nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
-        try {
-            nbt.put("theoreticalPerTagFluidConsumption",CODEC.encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElseThrow());
-        } catch (Exception ignored){
+        nbt.put("theoreticalPerTagFluidConsumption",CODEC.encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
 
-        }
         return nbt;
     }
-
-    /*@Override
-    @OnlyIn(Dist.CLIENT)
-    public ContraptionLighter<?> makeLighter() {
-        return new NonStationaryLighter<>(this);
-    }*/
-
     public ArrayList<BlockPos> getLocalPosOfFlightRecorders() {
         return localPosOfFlightRecorders;
     }

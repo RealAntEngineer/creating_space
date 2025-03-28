@@ -1,5 +1,5 @@
 {
-  "feature": "creatingspace:aluminum_moon_replacement",
+  "feature": "creatingspace:moon/aluminum_ore",
   "placement": [
     {
       "type": "minecraft:count",

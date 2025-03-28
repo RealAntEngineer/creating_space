@@ -8,7 +8,7 @@
       "item": "minecraft:copper_ingot"
     },
     {
-      "item": "creatingspace:nickel_ingot"
+      "tag": "forge:ingots/nickel"
     }
   ],
   "results": [

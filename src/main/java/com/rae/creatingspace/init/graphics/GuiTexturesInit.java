@@ -15,6 +15,7 @@ public enum GuiTexturesInit implements ScreenElement {
     ROCKET_CONTROLS("rocket_controls",13,0,226,226),
     ROCKET_ASSEMBLE("rocket_assemble", 0, 0, 192, 76),
     ROCKET_ICON("rocket_assemble", 1, 231, 16, 24),
+    SCHEDULE_BACKGROUND("schedule/schedule",256,226),
     LAUNCH_BUTTON("rocket_controls",155,202,77,18),//clean
     INSTRUCTION_BACKGROUND("schedule/schedule_2",3,0,318,89,512,512),
     SEALER_BACKGROUND("oxygen_sealer",13,0,256,124),
@@ -66,7 +67,7 @@ public enum GuiTexturesInit implements ScreenElement {
 
     @OnlyIn(Dist.CLIENT)
     public void render(GuiGraphics graphics, int x, int y) {
-        graphics.blit(location, x, y, startX, startY, width, height);
+        graphics.blit(location, x, y, startX, startY, width, height, sheet_width, sheet_height);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -1,11 +1,9 @@
 package com.rae.creatingspace.content.rocket.engine;
 
-import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -94,7 +92,9 @@ public class EngineItem extends RocketEngineItem {
         beTag.putInt("thrust", thrust);
         beTag.putInt("mass", mass);
         beTag.putFloat("efficiency", efficiency);
-        beTag.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
+        try {
+            beTag.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
+        } catch (Exception ignored) {}
         nbt.put("blockEntity", beTag);
         defaultInstance.setTag(nbt);
         return defaultInstance;
@@ -103,15 +103,7 @@ public class EngineItem extends RocketEngineItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
         CompoundTag beTag = itemStack.getOrCreateTagElement("blockEntity");
-        try {
-            PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
-                    ResourceLocation.CODEC.parse(NbtOps.INSTANCE, beTag.get("propellantType"))
-                            .resultOrPartial(s -> {
-                            }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow();
-            appendEngineDependentText(components, propellantType, (int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")), beTag.getInt("thrust"));
-        } catch (Exception ignored){
-
-        }
+        appendEngineDependentText(components, beTag);
         super.appendHoverText(itemStack, level, components, flag);
     }
 }

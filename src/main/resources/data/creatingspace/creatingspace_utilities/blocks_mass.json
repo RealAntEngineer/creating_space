@@ -12,7 +12,10 @@
     "minecraft:iron_block": 7800,
     "create:fluid_pipe": 300,
     "create:fluid_tank": 40,
+    "creatingspace:big_rocket_engine": 3000,
+    "creatingspace:small_rocket_engine": 1000,
     "creatingspace:small_engine_structure": 0,
+    "creatingspace:super_engine_structure": 0,
     "creatingspace:big_engine_structure": 0
   }
 }

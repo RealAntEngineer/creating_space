@@ -3,7 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockRenderer;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity;
-import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserVisual;
+import com.rae.creatingspace.content.life_support.sealer.CSFanVisual;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.content.planets.hologram.ProjectorBlockEntity;
@@ -112,7 +112,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<RoomPressuriserBlockEntity> ROOM_PRESSURIZER =
             REGISTRATE.blockEntity(
                             "room_pressurizer", RoomPressuriserBlockEntity::new)
-                    .visual(() -> RoomPressuriserVisual::new)
+                    .visual(() -> CSFanVisual::new)
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> RoomPressuriserRenderer::new)
                     .register();

@@ -1,8 +1,10 @@
 package com.rae.creatingspace.content.rocket.rocket_control;
 
+import com.mojang.serialization.Codec;
+import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
@@ -11,6 +13,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Nameable;
@@ -19,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RocketControlsBlockEntity extends SmartBlockEntity implements Nameable, IDisplayAssemblyExceptions/*implements MenuProvider*/ {
     private final Component defaultName;
@@ -28,9 +32,9 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     private boolean assembleNextTick = false;
     private ResourceLocation destination;
 
-    public HashMap<String,BlockPos> initialPosMap = new HashMap<>();
+    public HashMap<ResourceLocation,BlockPos> initialPosMap = new HashMap<>();
 
-
+    public static Codec<Map<ResourceLocation,BlockPos>> POS_MAP_CODEC = Codec.unboundedMap(ResourceLocation.CODEC,BlockPos.CODEC);
     public RocketControlsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type,pos, state);
         defaultName = getDefaultName();
@@ -128,8 +132,9 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     public void tick() {
         super.tick();
 
-        if (!this.initialPosMap.containsKey(this.level.dimension().toString())) {
-            this.initialPosMap.put(this.level.dimension().toString(),this.getBlockPos());
+        assert this.level != null;
+        if (!this.initialPosMap.containsKey(this.level.dimension().location())) {
+            this.initialPosMap.put(this.level.dimension().location(),this.getBlockPos());
         }
 
 
@@ -143,19 +148,16 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     @Override
     protected void write(CompoundTag compound, boolean clientPacket) {
         AssemblyException.write(compound, lastException);
-        compound.put("initialPosMap", putPosMap(this.initialPosMap, new CompoundTag()));
+        compound.put("initialPosMap", putPosMap(this.initialPosMap));
         super.write(compound, clientPacket);
     }
 
-    public static CompoundTag putPosMap(HashMap<String,BlockPos> initialPosMap, CompoundTag compound) {
-        if (compound==null){
-            compound = new CompoundTag();
-        }
-        for (String key : initialPosMap.keySet()) {
-                compound.putLong("dimensionInitialPosOf:" + key,initialPosMap.get(key).asLong());
-        }
-
-        return compound;
+    public static CompoundTag putPosMap(HashMap<ResourceLocation,BlockPos> initialPosMap) {
+        return initialPosMap==null?new CompoundTag():(CompoundTag) POS_MAP_CODEC.encodeStart(NbtOps.INSTANCE,initialPosMap).resultOrPartial(
+                (e)-> {
+                    CreatingSpace.LOGGER.warn("Rocket Control failed to parse pos map : ");
+                    CreatingSpace.LOGGER.error(e);
+                }).orElse(new CompoundTag());
     }
 
     @Override
@@ -164,32 +166,23 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
         super.read(compound, clientPacket);
     }
-
-    public static  HashMap<String,BlockPos> getPosMap(CompoundTag compound) {
-        HashMap<String,BlockPos> initialPosMap = new HashMap<>();
-
-        if (compound!=null){
-            for (String key: compound.getAllKeys()) {
-                if(key.contains("dimensionInitialPosOf:")){
-                    initialPosMap.put(
-                        key.substring(22),
-                        BlockPos.of(compound.getLong(key)));
-                }
-            }
-        }
-
-        return initialPosMap;
+    public static  HashMap<ResourceLocation,BlockPos> getPosMap(CompoundTag compound) {
+        return  compound==null?null:new HashMap<>(POS_MAP_CODEC.parse(NbtOps.INSTANCE,compound).resultOrPartial(
+                (e)-> {
+                    CreatingSpace.LOGGER.warn("Rocket Control failed to parse pos map : ");
+                    CreatingSpace.LOGGER.error(e);
+                }).orElse(new HashMap<>()));
     }
 
     public boolean noLocalisation() {
         return initialPosMap.isEmpty();
     }
 
-    public HashMap<String, BlockPos> getInitialPosMap() {
+    public HashMap<ResourceLocation, BlockPos> getInitialPosMap() {
         return initialPosMap;
     }
 
-    public void setInitialPosMap(HashMap<String, BlockPos> initialPosMap) {
+    public void setInitialPosMap(HashMap<ResourceLocation, BlockPos> initialPosMap) {
         this.initialPosMap = new HashMap<>(initialPosMap);
         notifyUpdate();
     }

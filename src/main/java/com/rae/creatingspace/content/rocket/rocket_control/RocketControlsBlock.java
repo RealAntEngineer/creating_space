@@ -9,6 +9,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -129,11 +130,10 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         Optional<RocketControlsBlockEntity> blockEntityOptional = getBlockEntityOptional(blockGetter, pos);
 
         CompoundTag tag = stack.getOrCreateTag();
-        HashMap<String, BlockPos> blockPosHashMap = blockEntityOptional.map(RocketControlsBlockEntity::getInitialPosMap).orElse(null);
+        HashMap<ResourceLocation, BlockPos> blockPosHashMap = blockEntityOptional.map(RocketControlsBlockEntity::getInitialPosMap).orElse(null);
         if(blockPosHashMap!= null){
-            CompoundTag compoundTag = new CompoundTag();
 
-            tag.put("initialPosMap", RocketControlsBlockEntity.putPosMap(blockPosHashMap, compoundTag));
+            tag.put("initialPosMap", RocketControlsBlockEntity.putPosMap(blockPosHashMap));
         }
         Component customName = blockEntityOptional.map(RocketControlsBlockEntity::getCustomName).orElse(null);
         if (customName != null)

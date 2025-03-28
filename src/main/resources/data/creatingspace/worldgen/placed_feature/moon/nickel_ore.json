@@ -1,5 +1,5 @@
 {
-  "feature": "creatingspace:nickel_moon_replacement",
+  "feature": "creatingspace:moon/nickel_ore",
   "placement": [
     {
       "type": "minecraft:count",

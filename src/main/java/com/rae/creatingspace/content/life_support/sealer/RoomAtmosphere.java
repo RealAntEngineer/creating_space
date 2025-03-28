@@ -3,8 +3,8 @@ package com.rae.creatingspace.content.life_support.sealer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
-import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.decoration.copycat.CopycatBlock;
@@ -33,7 +33,6 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RoomAtmosphere extends Entity {
 
@@ -75,13 +74,12 @@ public class RoomAtmosphere extends Entity {
 
 
     private boolean contains(List<AABB> tempRoom, BlockPos tempPos) {
-        boolean contain = false;
         for (AABB aabb : tempRoom) {
             if (aabb.contains(Vec3.atCenterOf(tempPos))) {
-                contain = true;
+                return true;
             }
         }
-        return contain;
+        return false;
     }
 
     /**
@@ -123,7 +121,8 @@ public class RoomAtmosphere extends Entity {
                         }
                         if (canBeExpandedToward) {
                             for (BlockPos pos : collectedPos) {
-                                if ((!canGoThrough(level(), pos, dir))) {
+                                //make this smarter. it doesn't work with stairs.
+                                if ((!(canGoThrough(level(), pos, dir) && canGoThrough(level(), tempPos, dir.getOpposite())))) {
                                     canBeExpandedToward = false;
                                     break;
                                 }
@@ -316,11 +315,7 @@ public class RoomAtmosphere extends Entity {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public void addBlockToFrontier(BlockPos pos) {
-        RoomShape shape = getShape();
-        shape.add(pos);
-        this.entityData.set(SHAPE_DATA_ACCESSOR, shape);
-    }
+
 
     public static EntityType.Builder<?> build(EntityType.Builder<?> builder) {
         @SuppressWarnings("unchecked")
@@ -345,7 +340,8 @@ public class RoomAtmosphere extends Entity {
                 for (Entity entity :
                         entitiesInside) {
                     if (entity instanceof LivingEntity living && breathable()) {
-                        consumeO2();
+                        consumeO2();//cancel event ?
+                        ((INeedOxygen)living).setInsideOxygenRoom(true);
                     }
                 }
                 for (AtmosphereFilterData data : passiveFilters.values()) {
@@ -354,6 +350,14 @@ public class RoomAtmosphere extends Entity {
                 }
             }
         }
+        if (tickCount%10 == 0){
+            lazyTick();
+        }
+    }
+
+    public void lazyTick(){
+        AABB box = getShape().getEncapsulatingBox();
+        setBoundingBox(box==null? new AABB(getOnPos()): box);
     }
 
     public boolean hasShape() {
@@ -369,9 +373,16 @@ public class RoomAtmosphere extends Entity {
     public boolean breathable() {
         return (float) entityData.get(O2_AMOUNT) / getShape().getVolume() > 10 && getShape().isClosed();
     }
+    @Override
+    protected boolean updateInWaterStateAndDoFluidPushing() {
+        return false;
+    }
 
     public RoomShape getShape() {
         return this.entityData.get(SHAPE_DATA_ACCESSOR);
+    }
+    public void resetShape(){
+        this.entityData.set(SHAPE_DATA_ACCESSOR,new RoomShape(List.of()));
     }
 
     private static final UnboundedMapCodec<ResourceLocation, AtmosphereFilterData> PASSIVE_FILTER_CODEC =

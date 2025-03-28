@@ -18,7 +18,6 @@ public class RocketContraptionEntityRenderer extends ContraptionEntityRenderer<R
             return false;
         if (!entity.isReadyForRender())
             return false;
-
         return super.shouldRender(entity, clippingHelper, cameraX, cameraY, cameraZ);
     }
 }

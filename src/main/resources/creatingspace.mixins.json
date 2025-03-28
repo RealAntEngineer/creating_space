@@ -15,6 +15,7 @@
     "entity.gravity.LivingEntityMixin",
     "entity.gravity.MinecartMixin",
     "entity.gravity.PrimedTntMixin",
+    "fluids.FluidInteractionRegistryMixin",
     "fluids.MixinFluidTransportBehaviour",
     "fluids.pump.FluidPropagatorMixin",
     "fluids.pump.MixinPumpBlock",

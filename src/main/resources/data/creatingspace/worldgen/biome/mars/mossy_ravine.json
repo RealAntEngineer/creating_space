@@ -9,20 +9,35 @@
     "water_color": 4159204,
     "water_fog_color": 329011,
     "grass_color_modifier": "none",
-    "mood_sound": {
-    },
-    "particle": {
+    "music": {
+      "sound": "creatingspace:music.mars.flumpidis",
+      "min_delay": 2,
+      "max_delay": 4,
+      "replace_current_music": true
     }
   },
   "spawners": {},
-  "spawn_costs": {
-  },
+  "spawn_costs": {},
   "carvers": {
     "air": []
   },
   "features": [
+    [],
+    [],
     [
       "creatingspace:mars/crystal_geode"
-    ]
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "creatingspace:mars/spring_water"
+    ],
+    [
+      "minecraft:patch_grass_jungle"
+    ],
+    []
   ]
 }
