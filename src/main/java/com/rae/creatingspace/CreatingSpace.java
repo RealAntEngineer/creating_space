@@ -114,7 +114,7 @@ public class CreatingSpace {
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
         //datagen, and tag provider
-        event.addListener(MassOfBlockReader.MASS_HOLDER);
+        event.addListener(MassOfBlockReader.MASS_MAP);
     }
 
     public static ResourceLocation resource(String path){

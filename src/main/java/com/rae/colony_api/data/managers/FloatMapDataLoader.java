@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.slf4j.Logger;
@@ -24,18 +26,20 @@ public class FloatMapDataLoader<T> extends SimpleJsonResourceReloadListener {
     private final ResourceKey<Registry<T>> registryKey;
     private final ResourceLocation FILE_NAME;
     private final HashMap<ResourceLocation, Float> FLOAT_MAP = new HashMap<>();
-
+    public static final Logger LOGGER = LogUtils.getLogger();
+    private final HashMap<TagKey<T>, Float> TAG_FLOAT_MAP = new HashMap<>();
     public FloatMapDataLoader(String modId, String fileName, ResourceKey<Registry<T>> registryKey) {
         super(GSON, FOLDER);
         FILE_NAME = new ResourceLocation(modId, fileName);
         this.registryKey = registryKey;
     }
-    public static final Logger LOGGER = LogUtils.getLogger();
+
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profiler) {
-        LOGGER.info("Reloading FloatMapDataLoader for: " + FILE_NAME);
+        LOGGER.info("Reloading FloatMapDataLoader for: {}", FILE_NAME);
         boolean replace = false;
-        Map<ResourceLocation, Float> newTemperatures = new HashMap<>();
+        Map<ResourceLocation, Float> newValues = new HashMap<>();
+        Map<TagKey<T>, Float> newTagValues = new HashMap<>();
 
         for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
             if (!entry.getKey().equals(FILE_NAME)) continue;
@@ -45,8 +49,17 @@ public class FloatMapDataLoader<T> extends SimpleJsonResourceReloadListener {
                 JsonObject values = GsonHelper.getAsJsonObject(json, "values");
 
                 for (Map.Entry<String, JsonElement> valueEntry : values.entrySet()) {
-                    float temperature = valueEntry.getValue().getAsFloat();
-                    newTemperatures.put(new ResourceLocation(valueEntry.getKey()), temperature);
+                    String key = valueEntry.getKey();
+                    float value = valueEntry.getValue().getAsFloat();
+
+                    if (key.startsWith("#")) {
+                        // Handle tags
+                        ResourceLocation tagId = new ResourceLocation(key.substring(1)); // Remove '#'
+                        newTagValues.put(TagKey.create(registryKey, tagId), value);
+                    } else {
+                        // Handle normal entries
+                        newValues.put(new ResourceLocation(key), value);
+                    }
                 }
             } catch (Exception e) {
                 LOGGER.error("Failed to load float data from {}", entry.getKey(), e);
@@ -56,11 +69,8 @@ public class FloatMapDataLoader<T> extends SimpleJsonResourceReloadListener {
         if (replace) {
             FLOAT_MAP.clear();
         }
-        FLOAT_MAP.putAll(newTemperatures);
-    }
-
-    private float getValue(ResourceLocation id, float defaultValue) {
-        return FLOAT_MAP.getOrDefault(id, defaultValue);
+        FLOAT_MAP.putAll(newValues);
+        TAG_FLOAT_MAP.putAll(newTagValues);
     }
 
     public float getValue(T registryEntry, float defaultValue) {
@@ -68,7 +78,19 @@ public class FloatMapDataLoader<T> extends SimpleJsonResourceReloadListener {
         if (registry != null) {
             ResourceLocation id = registry.getKey(registryEntry);
             if (id != null) {
-                return getValue(id, defaultValue);
+                Float value = FLOAT_MAP.get(id);
+                if (value != null) {
+                    return value;
+                }
+                else {
+                    Holder<T>holder = registry.getHolder(ResourceKey.create(registryKey, id)).orElseThrow();
+                    for (TagKey<T>tag : holder.getTagKeys().toList()){
+                        if (TAG_FLOAT_MAP.containsKey(tag)){
+                            return TAG_FLOAT_MAP.get(tag);
+                        }
+                        return defaultValue;
+                    }
+                }
             }
         }
         return defaultValue;

@@ -1,33 +1,22 @@
 package com.rae.creatingspace.legacy.utilities.data;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mojang.serialization.codecs.UnboundedMapCodec;
+import com.rae.colony_api.data.managers.FloatMapDataLoader;
 import com.rae.creatingspace.CreatingSpace;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.rae.creatingspace.CreatingSpace.LOGGER;
-
 public class MassOfBlockReader {
 
-    //here to manage the reading of data and translation of matrix
-    public static final UnboundedMapCodec<String, Integer> BLOCKS_MASS_CODEC =
-            Codec.unboundedMap(Codec.STRING,Codec.INT);
 
-    public static final Codec<PartialMassMap> PARTIAL_BLOCKS_MASS_CODEC = RecordCodecBuilder.create(
-            instance -> instance.group(
-                    Codec.BOOL.optionalFieldOf("replace", false).forGetter(i->i.replace),
-                    BLOCKS_MASS_CODEC.fieldOf("values").forGetter(i->i.massMap)
-            ).apply(instance, PartialMassMap::new));
+    public static final FloatMapDataLoader<Block> MASS_MAP =
+            new FloatMapDataLoader<>(CreatingSpace.MODID, "blocks_mass", ForgeRegistries.BLOCKS.getRegistryKey());
 
-
-    public static final SingleFileCodecJsonDataManager<PartialMassMap> MASS_HOLDER = new SingleFileCodecJsonDataManager<>("creatingspace_utilities", CreatingSpace.resource("blocks_mass"), PARTIAL_BLOCKS_MASS_CODEC, LOGGER);
 
     public static Map<TagKey<Block>, Integer> getOnlyTags(PartialMassMap data) {
         Map<String, Integer> rawMap = data.massMap();

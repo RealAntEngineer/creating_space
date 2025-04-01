@@ -17,8 +17,8 @@ public class CSMassUtil {
         if (blockEntity instanceof IMass hasAMass) {
             return (int) hasAMass.getMass();
         }
-        MassOfBlockReader.PartialMassMap data = MassOfBlockReader.MASS_HOLDER.getData();
-        if( data!=null){
+        return (int) MassOfBlockReader.MASS_MAP.getValue(state.getBlock(), 1000);
+        /*if( data!=null){
             ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
             Map<TagKey<Block>, Integer> massOfTaggedBlocks = MassOfBlockReader.getOnlyTags(data);
             Map<ResourceLocation, Integer> massOfBlocks = MassOfBlockReader.getWithoutTags(data);
@@ -35,7 +35,7 @@ public class CSMassUtil {
                 }
             }
         }
-        return 1000;
+        return 1000;*/
     }
 
 
