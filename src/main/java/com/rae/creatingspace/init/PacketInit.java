@@ -32,7 +32,7 @@ public enum PacketInit {
     DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket::new, PLAY_TO_SERVER),
     SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
     SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
-    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT),
+    UPDATE_ROCKET(SpeedPosRotUpdatePacket.class, SpeedPosRotUpdatePacket::new, PLAY_TO_CLIENT),
     ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER),
     /*UPDATE_UNLOCKED_DESIGN_SERVER(PlayerUpdateUnlockedDesignClientPacket.class, PlayerUpdateUnlockedDesignClientPacket::new, PLAY_TO_SERVER),
     UPDATE_UNLOCKED_DESIGN_CLIENT(PlayerUpdateUnlockedDesignServerPacket.class, PlayerUpdateUnlockedDesignServerPacket::new, PLAY_TO_CLIENT),*/

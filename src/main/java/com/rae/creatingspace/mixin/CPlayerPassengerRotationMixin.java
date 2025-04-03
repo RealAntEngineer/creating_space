@@ -1,6 +1,6 @@
 package com.rae.creatingspace.mixin;
 
-import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.api.contraption.Synced2AxisContraptionEntity;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.actors.seat.ContraptionPlayerPassengerRotation;
 import net.createmod.catnip.animation.AnimationTickHolder;
@@ -41,17 +41,13 @@ public class CPlayerPassengerRotationMixin {
         }
 
         Entity vehicle = player.getVehicle();
-        if (!(vehicle instanceof AbstractContraptionEntity contraptionEntity))
+        if (!(vehicle instanceof Synced2AxisContraptionEntity contraptionEntity))
             return;
 
         AbstractContraptionEntity.ContraptionRotationState rotationState = contraptionEntity.getRotationState();
 
-        float yaw = AngleHelper.wrapAngle180((contraptionEntity instanceof RocketContraptionEntity cce)
-                ? cce.getViewYRot(AnimationTickHolder.getPartialTicks())
-                : rotationState.yRotation);
-        float pitch = (contraptionEntity instanceof RocketContraptionEntity cce)
-                ? cce.getViewXRot(AnimationTickHolder.getPartialTicks())
-                : 0;
+        float yaw = contraptionEntity.getViewYRot(AnimationTickHolder.getPartialTicks());
+        float pitch =contraptionEntity.getViewXRot(AnimationTickHolder.getPartialTicks());
 
         if (prevId != contraptionEntity.getId()) {
             prevId = contraptionEntity.getId();
@@ -73,7 +69,7 @@ public class CPlayerPassengerRotationMixin {
 
         player.setYRot((float) (player.getYRot() + yawDiff));
         player.setXRot((float) (player.getXRot() + pitchDiff));
-
         ci.cancel();
+
     }
 }

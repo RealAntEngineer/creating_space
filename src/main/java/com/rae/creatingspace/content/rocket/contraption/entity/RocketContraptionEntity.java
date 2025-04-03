@@ -4,25 +4,21 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.api.contraption.Synced2AxisContraptionEntity;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.CustomTeleporter;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.api.squedule.RocketPath;
 import com.rae.creatingspace.api.squedule.RocketScheduleRuntime;
 import com.rae.creatingspace.init.EntityDataSerializersInit;
-import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.legacy.utilities.CSNBTUtil;
 import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
-import com.rae.creatingspace.content.rocket.network.RocketContraptionUpdatePacket;
 import com.simibubi.create.content.contraptions.*;
-import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
-import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.math.VecHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -46,6 +42,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,7 +51,6 @@ import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -67,7 +63,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.rae.creatingspace.init.ingameobject.SoundInit.ROCKET_LAUNCH;
 
-public class RocketContraptionEntity extends OrientedContraptionEntity {
+public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
     //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
     // (spaceport block ? to define where the rocket will go)
     // for a normal rocket a path an action will be generated without the player knowing ?
@@ -76,8 +72,6 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
     // to avoid player falling out of the rocket ( do we force the player to be transported to where the rocket is
     // (it may move while the player is away)
     private static final Logger LOGGER = LogUtils.getLogger();
-    Vec3 clientOffsetDiff = Vec3.ZERO;
-    Vec3 speed = Vec3.ZERO;
     int soundEffectTickCount = 0;
     static int ROCKET_SOUND_LENGTH = 35;
     boolean shouldHandleCalculation = false;
@@ -372,8 +366,6 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
     public void tick() {
         //movement is bugged when in ground -> avoid collision by slowing down upon landing ? or breaking blocks
         boolean wasRunning = isInPropulsionPhase();
-        lerpedPitch.tickChaser();
-        lerpedYaw.tickChaser();
         if (isInPropulsionPhase()) {
             if (soundEffectTickCount <= 0) {
                 //level.playSeededSound(null, this, SoundEvents.ALLAY_HURT, SoundSource.MASTER, 1, 1,0);
@@ -395,6 +387,7 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
             schedule.destinationReached();
         }
 
+
     }
 
     @Override
@@ -402,15 +395,7 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
         if (!(contraption instanceof RocketContraption))
             return;
 
-        if (level().isClientSide) {
-            clientOffsetDiff.scale(.75f);
-            updateClientMotion();
-            if (isInPropulsionPhase()){
-                pitch +=0.1f;
-            }
-        }
-
-        tickActors();
+        super.tickContraption();
         if (!level().isClientSide) {
             if (isInPropulsionPhase()) {
                 tickConsumptionAndSpeed();
@@ -421,15 +406,14 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
                 if (ContraptionCollider.collideBlocks(this) && !(level().getMaxBuildHeight() < this.getBoundingBox().maxY + movementVec.y)) {
                     //stopRocket();
                     getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
-                    setContraptionMotion(Vec3.ZERO);
+                    //setContraptionMotion(Vec3.ZERO);
 
                 } else if (tickCount > 2) {//that means the rocket takes 2 ticks more than expected to go up
                     movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
                     move(movementVec.x, movementVec.y, movementVec.z);
                 }
             }
-            setContraptionMotion(getDeltaMovement().scale(0.8));
-            sendPacket();
+            //setContraptionMotion(getDeltaMovement().scale(0.8));
         }
         /*
         if (!isInPropulsionPhase()) {
@@ -449,42 +433,29 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
         if (isInPropulsionPhase())
             return false;
         float speedModificator = 1f;
+        Vec3 speed = Vec3.ZERO;
+        Vec2 rotSpeed = Vec2.ZERO;
         if (heldControls.contains(5)){
             speedModificator = 0.1f;
         }
         if (heldControls.contains(2)){
-            prevYaw = yaw;
-            yaw -= 3f*speedModificator;
+            rotSpeed = new Vec2(3f*speedModificator,0);
         }
         if (heldControls.contains(3)){
-            prevYaw = yaw;
-            yaw += 3f*speedModificator;
+            rotSpeed = new Vec2(-3f*speedModificator,0);
         }
         if (heldControls.contains(0)){
-            speed = Vec3.atLowerCornerOf(getInitialOrientation().getNormal()).yRot((float) (-yaw/180f*Math.PI));
-            if (ContraptionCollider.collideBlocks(this)) {
-                //stopRocket();
-                setContraptionMotion(Vec3.ZERO);
-                speed = Vec3.ZERO;
-
-            } else {
-                speed = VecHelper.clampComponentWise(speed, 0.8f).scale(speedModificator);
-                move(speed.x, speed.y, speed.z);
-            }
+            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
         }
 
         if (heldControls.contains(1)){
-            speed = Vec3.atLowerCornerOf(getInitialOrientation().getOpposite().getNormal()).yRot((float) (-yaw/180*Math.PI));
-            if (ContraptionCollider.collideBlocks(this)) {
-                //stopRocket();
-                setContraptionMotion(Vec3.ZERO);
-                speed = Vec3.ZERO;
-
-            } else {
-                speed = VecHelper.clampComponentWise(speed, 0.8f).scale(speedModificator);
-                move(speed.x, speed.y, speed.z);
-            }
+            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getOpposite().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
         }
+        setSpeeds(
+                speed, rotSpeed
+        );
         return true;
     }
 
@@ -493,7 +464,6 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
         super.stopControlling(controlsLocalPos);
         if (!isInPropulsionPhase()){
             setContraptionMotion(Vec3.ZERO);
-            speed = Vec3.ZERO;
         }
     }
 
@@ -544,8 +514,6 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
 
         float speed = getPerTickSpeed(acceleration);
         movementVec = new Vec3(0,speed,0);
-
-        this.speed = new Vec3(0,speed,0);
         setContraptionMotion(movementVec);
     }
 
@@ -679,45 +647,6 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
         }
     }
 
-    @Override
-    public Vec3 getAnchorVec() {
-        return super.getAnchorVec().add(0.5f,0,0.5f);
-    }
-
-    @Override
-    public Vec3 getPrevAnchorVec() {
-        return super.getPrevAnchorVec().add(0.5f,0,0.5f);
-    }
-
-    LerpedFloat lerpedYaw = LerpedFloat.linear();
-    LerpedFloat lerpedPitch = LerpedFloat.linear();
-    @Override
-    public float getViewXRot(float partialTicks) {
-        return lerpedPitch.getValue(partialTicks);
-    }
-
-    @Override
-    public float getViewYRot(float partialTicks) {
-        return lerpedYaw.getValue(partialTicks);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
-        float angleInitialYaw = getInitialYaw();
-        float angleYaw = getViewYRot(partialTicks);
-        float anglePitch = getViewXRot(partialTicks);
-
-        TransformStack.of(matrixStack)
-                .nudge(getId())
-                .center()
-                .rotateYDegrees(angleYaw)
-                .rotateZDegrees(anglePitch)
-                .rotateYDegrees(angleInitialYaw)
-                .uncenter();
-    }
-
-
 
     public static float getAcceleration(float initialMass, int thrust, float gravity, boolean reentry) {
         if (!reentry) {
@@ -734,42 +663,6 @@ public class RocketContraptionEntity extends OrientedContraptionEntity {
                 new AABB(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE,
                         Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE) :
                 super.getBoundingBoxForCulling();
-    }
-
-    public Vec3 getCoord() {
-        return getAnchorVec();
-    }
-    //only works if the rocket is moving straight up or down
-    public void updateClientMotion() {
-        Vec3 motion = speed.add(clientOffsetDiff.scale(ServerSpeedProvider.get()/2f));
-
-        motion = VecHelper.clampComponentWise(motion, 1);
-        //setContraptionMotion(motion);
-        move(motion.x, motion.y, motion.z);
-    }
-    public void sendPacket() {
-        PacketInit.getChannel()
-                .send(PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                        new RocketContraptionUpdatePacket(getId(), getCoord(), speed,yaw,prevYaw,pitch,prevPitch));
-    }
-    @OnlyIn(Dist.CLIENT)
-    public static void handlePacket(RocketContraptionUpdatePacket packet) {
-        assert Minecraft.getInstance().level != null;
-        Entity entity = Minecraft.getInstance().level.getEntity(packet.entityID);
-        if (!(entity instanceof RocketContraptionEntity ce))
-            return;
-        ce.speed = packet.speed;
-        ce.lerpedYaw.updateChaseTarget(packet.yaw);
-        ce.lerpedPitch.updateChaseTarget(packet.pitch);
-        ce.clientOffsetDiff = packet.coord.subtract(ce.getCoord());
-    }
-
-    /**
-     * necessary to avoid "vibration" the  updateClientMotion() is used to sync client to server entity
-     */
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void lerpTo(double x, double y, double z, float yw, float pt, int inc, boolean t) {
     }
 
     //saving and getters
