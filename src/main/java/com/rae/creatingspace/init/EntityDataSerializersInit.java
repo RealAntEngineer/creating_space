@@ -1,6 +1,6 @@
 package com.rae.creatingspace.init;
 
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomShapeSerializer;
 import com.simibubi.create.Create;
 import net.minecraft.network.syncher.EntityDataSerializer;

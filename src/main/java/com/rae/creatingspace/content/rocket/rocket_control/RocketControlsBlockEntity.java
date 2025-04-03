@@ -2,9 +2,9 @@ package com.rae.creatingspace.content.rocket.rocket_control;
 
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
@@ -120,7 +120,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         }
 
         RocketContraptionEntity rocketContraptionEntity =
-                RocketContraptionEntity.create(level, contraption);
+                RocketContraptionEntity.create(level, contraption,getBlockState().getValue(RocketControlsBlock.FACING).getOpposite());
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
         level.addFreshEntity(rocketContraptionEntity);

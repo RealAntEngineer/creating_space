@@ -15,13 +15,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = SurfaceSystem.class)
+//@Mixin(value = SurfaceSystem.class)
 public class SurfaceSystemMixin {
     //the goal of this mixin is to allow pocket of water to be affected by the stone depth check normally
     //i2 represent the stone depth for the floor mod, it's not reset when there is water
     //+ tag because why not
-
-
+    //TODO fix it for europa to work (1.9)
+/*
     boolean face;
     @Unique
     private BlockState cS_1_20_1$blockstate;
@@ -29,6 +29,7 @@ public class SurfaceSystemMixin {
     private int cS_1_20_1$i2 = 0;
     @Unique
     Holder<Biome> cS_1_20_1$holder;
+
     @ModifyVariable(method = "buildSurface",at = @At(value = "LOAD",ordinal = 0),name ="blockstate")
     public BlockState registerBS(BlockState value){
         cS_1_20_1$blockstate = value;
@@ -57,5 +58,5 @@ public class SurfaceSystemMixin {
         else {
             ++cS_1_20_1$i2;
         }
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.rocket.contraption;
+package com.rae.creatingspace.content.rocket.contraption.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,6 +35,8 @@ public class RocketContraption extends TranslatingContraption {
     private HashMap<PropellantType, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
 
     private final ArrayList<BlockPos> localPosOfFlightRecorders = new ArrayList<>();
+    public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(), ConsumptionInfo.CODEC);
+
     public RocketContraption() {
         storage = new RocketStorageManager();
     }
@@ -52,7 +54,6 @@ public class RocketContraption extends TranslatingContraption {
         getStorage().onContraptionAssemble(this);
         return true;
     }
-
     @Override
     protected void addBlock(Level level,BlockPos pos, Pair<StructureTemplate.StructureBlockInfo, BlockEntity> pair) {
         Block blockAdded = pair.getLeft().state().getBlock();
@@ -83,29 +84,18 @@ public class RocketContraption extends TranslatingContraption {
         }
         super.addBlock(level,pos, pair);
     }
-
-    public static void multiplyMap(HashMap<TagKey<Fluid>, Float> map, float amount) {
-        for (TagKey<Fluid> fluid :
-                map.keySet()) {
-            map.put(fluid, map.get(fluid) * amount);
-        }
-    }
-
     @Override
     protected boolean moveBlock(Level world, @Nullable Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited) throws AssemblyException {
         return super.moveBlock(world, forcedDirection, frontier, visited);
     }
-
-    @Override //to allow the intial block to be a part of the contraption
+    @Override
     protected boolean isAnchoringBlockAt(BlockPos pos) {
         return false;
     }
-
     @Override
     public ContraptionType getType() {
         return CSContraptionType.ROCKET.get();
     }
-    public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(), ConsumptionInfo.CODEC);
     @Override
     public void readNBT(Level world, CompoundTag nbt, boolean clientPacket) {
 
@@ -116,7 +106,6 @@ public class RocketContraption extends TranslatingContraption {
             theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
         super.readNBT(world, nbt, clientPacket);
     }
-
     @Override
     public CompoundTag writeNBT(boolean spawnPacket) {
         //TODO add data for server/client sync
@@ -128,6 +117,16 @@ public class RocketContraption extends TranslatingContraption {
 
         return nbt;
     }
+
+    //Custom logic
+    public static void multiplyMap(HashMap<TagKey<Fluid>, Float> map, float amount) {
+        for (TagKey<Fluid> fluid :
+                map.keySet()) {
+            map.put(fluid, map.get(fluid) * amount);
+        }
+    }
+
+    @Deprecated
     public ArrayList<BlockPos> getLocalPosOfFlightRecorders() {
         return localPosOfFlightRecorders;
     }

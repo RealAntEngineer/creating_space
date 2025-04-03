@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket.network;
 
 import com.rae.creatingspace.api.squedule.RocketSchedule;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;

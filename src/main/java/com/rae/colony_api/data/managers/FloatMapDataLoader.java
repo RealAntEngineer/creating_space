@@ -13,6 +13,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class FloatMapDataLoader<T> extends SimpleJsonResourceReloadListener {
     private final HashMap<ResourceLocation, Float> FLOAT_MAP = new HashMap<>();
     public static final Logger LOGGER = LogUtils.getLogger();
     private final HashMap<TagKey<T>, Float> TAG_FLOAT_MAP = new HashMap<>();
+    private boolean tagLoaded = false;
     public FloatMapDataLoader(String modId, String fileName, ResourceKey<Registry<T>> registryKey) {
         super(GSON, FOLDER);
         FILE_NAME = new ResourceLocation(modId, fileName);
@@ -73,23 +75,24 @@ public class FloatMapDataLoader<T> extends SimpleJsonResourceReloadListener {
         TAG_FLOAT_MAP.putAll(newTagValues);
     }
 
-    public float getValue(T registryEntry, float defaultValue) {
+    public float getValue(@NotNull T registryEntry, float defaultValue)
+    {
         Registry<T> registry = getSideAwareRegistry(registryKey);
+        if (!tagLoaded){
+            for (Map.Entry<TagKey<T>, Float> entry : TAG_FLOAT_MAP.entrySet()){
+                for (Holder<T>holder : registry.getTagOrEmpty(entry.getKey())){
+                    ResourceLocation id = registry.getKey(holder.get());
+                    FLOAT_MAP.putIfAbsent(id, entry.getValue());
+                }
+            }
+            tagLoaded = true;
+        }
         if (registry != null) {
             ResourceLocation id = registry.getKey(registryEntry);
             if (id != null) {
                 Float value = FLOAT_MAP.get(id);
                 if (value != null) {
                     return value;
-                }
-                else {
-                    Holder<T>holder = registry.getHolder(ResourceKey.create(registryKey, id)).orElseThrow();
-                    for (TagKey<T>tag : holder.getTagKeys().toList()){
-                        if (TAG_FLOAT_MAP.containsKey(tag)){
-                            return TAG_FLOAT_MAP.get(tag);
-                        }
-                        return defaultValue;
-                    }
                 }
             }
         }

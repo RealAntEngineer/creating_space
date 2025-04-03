@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.multiblock;
+package com.rae.colony_api.multiblock;
 
 import com.simibubi.create.api.equipment.goggles.IProxyHoveringInformation;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;

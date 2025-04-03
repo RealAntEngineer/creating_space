@@ -20,7 +20,7 @@ import java.util.Map;
 @Mixin(FluidInteractionRegistry.class)
 public class FluidInteractionRegistryMixin {
     @Mutable
-    @Shadow @Final private static Map<FluidType, List<FluidInteractionRegistry.InteractionInformation>> INTERACTIONS;
+    @Shadow(remap = false) @Final private static Map<FluidType, List<FluidInteractionRegistry.InteractionInformation>> INTERACTIONS;
 
     @Inject(method = "<clinit>", at = @At("HEAD"), cancellable = true)
     private static void redirectFluidInteractionRegistry(CallbackInfo ci) {

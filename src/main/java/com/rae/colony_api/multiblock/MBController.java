@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.multiblock;
+package com.rae.colony_api.multiblock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

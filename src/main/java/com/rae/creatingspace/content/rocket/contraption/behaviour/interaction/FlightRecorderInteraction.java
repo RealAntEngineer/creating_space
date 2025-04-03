@@ -2,7 +2,7 @@ package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
 import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;

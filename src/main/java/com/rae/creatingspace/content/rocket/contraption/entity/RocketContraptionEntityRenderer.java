@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.rocket;
+package com.rae.creatingspace.content.rocket.contraption.entity;
 
 import com.simibubi.create.content.contraptions.render.ContraptionEntityRenderer;
 import net.minecraft.client.renderer.culling.Frustum;

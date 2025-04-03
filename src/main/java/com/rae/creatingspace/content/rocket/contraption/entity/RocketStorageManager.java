@@ -1,22 +1,17 @@
-package com.rae.creatingspace.content.rocket.contraption;
+package com.rae.creatingspace.content.rocket.contraption.entity;
 
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageWrapper;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageWrapper;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.MountedStorageManager;
-import com.simibubi.create.content.contraptions.minecart.TrainCargoManager;
-import com.simibubi.create.foundation.fluid.CombinedTankWrapper;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;

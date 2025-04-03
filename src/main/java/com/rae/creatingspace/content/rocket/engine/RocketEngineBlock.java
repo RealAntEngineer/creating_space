@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket.engine;
 
-import com.rae.creatingspace.api.multiblock.MBController;
-import com.rae.creatingspace.api.multiblock.MBShape;
+import com.rae.colony_api.multiblock.MBController;
+import com.rae.colony_api.multiblock.MBShape;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.CreateLang;
