@@ -54,6 +54,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,7 +72,7 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
     //TODO prevent the rocket from consuming fuel when world is loading ? correct gestion of client player loading
     // to avoid player falling out of the rocket ( do we force the player to be transported to where the rocket is
     // (it may move while the player is away)
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LoggerFactory.getLogger("CS/RocketContraptionEntity");
     int soundEffectTickCount = 0;
     static int ROCKET_SOUND_LENGTH = 35;
     boolean shouldHandleCalculation = false;
@@ -435,27 +436,35 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
         float speedModificator = 1f;
         Vec3 speed = Vec3.ZERO;
         Vec2 rotSpeed = Vec2.ZERO;
-        if (heldControls.contains(5)){
+        if (heldControls.contains(5)){//shift -> this will change (normal being 0.1 and sprinting being 1f
             speedModificator = 0.1f;
         }
-        if (heldControls.contains(2)){
-            rotSpeed = new Vec2(3f*speedModificator,0);
-        }
-        if (heldControls.contains(3)){
-            rotSpeed = new Vec2(-3f*speedModificator,0);
-        }
+
         if (heldControls.contains(0)){
             speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getNormal())
                     .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
         }
-
         if (heldControls.contains(1)){
             speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getOpposite().getNormal())
                     .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
         }
-        setSpeeds(
-                speed, rotSpeed
-        );
+        if (heldControls.contains(2)){
+            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getCounterClockWise().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
+        }
+        if (heldControls.contains(3)){
+            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getClockWise().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
+        }
+        if (heldControls.contains(8)){
+            rotSpeed = new Vec2(0,-3f*speedModificator);
+        }
+        if (heldControls.contains(9)){
+            rotSpeed = new Vec2(0,3f*speedModificator);
+        }
+        if (!heldControls.isEmpty()) System.out.println(heldControls);
+        setRotSpeed(rotSpeed);
+        setContraptionMotion(speed);
         return true;
     }
 

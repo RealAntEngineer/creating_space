@@ -1,4 +1,4 @@
-package com.rae.creatingspace.mixin;
+package com.rae.creatingspace.mixin.contraption;
 
 import com.rae.creatingspace.api.contraption.Synced2AxisContraptionEntity;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -30,7 +30,7 @@ public class CPlayerPassengerRotationMixin {
     @Shadow(remap = false)
     static float prevPitch;
 
-    @Inject(method = "tick", at = @At("HEAD"), remap = false, cancellable = true)
+    @Inject(method = "tick", at = @At("HEAD"), remap = false)
     private static void frame(CallbackInfo ci){
         Player player = Minecraft.getInstance().player;
         if (!active)
@@ -67,9 +67,11 @@ public class CPlayerPassengerRotationMixin {
         else if (yawRelativeToTrain > 60)
             pitchDiff *= 0;
 
-        player.setYRot((float) (player.getYRot() + yawDiff));
-        player.setXRot((float) (player.getXRot() + pitchDiff));
-        ci.cancel();
+        //player.setYRot((float) (player.getYRot() + yawDiff));
+        //player.setXRot((float) (player.getXRot() + pitchDiff));
+
+
+        //ci.cancel();
 
     }
 }

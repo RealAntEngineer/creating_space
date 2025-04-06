@@ -5,7 +5,10 @@ import com.rae.creatingspace.content.rocket.network.SpeedPosRotUpdatePacket;
 import com.rae.creatingspace.init.PacketInit;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.client.Minecraft;
@@ -15,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -31,8 +35,9 @@ import org.jetbrains.annotations.NotNull;
 public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEntity {
     private float yaw;
     private float pitch;
-    private @NotNull Vec3 speed = Vec3.ZERO;
+    private @NotNull Vec3 posClientDiff = Vec3.ZERO;
     private @NotNull Vec2 rotSpeed = Vec2.ZERO;
+    private @NotNull Vec2 rotClientDiff = Vec2.ZERO;
     private boolean dirty = false;
 
     //Quaternion for rotation ?
@@ -43,42 +48,61 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
     public Synced2AxisContraptionEntity(EntityType<?> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
     }
-
+    LerpedFloat lerpedPith = LerpedFloat.angular().startWithValue(0);
+    LerpedFloat lerpedYaw = LerpedFloat.angular().startWithValue(0);
     @Override
     public void tick() {
         // TODO put chasers on the client
         super.tick();
         if (!level().isClientSide()) {
-            /*if (dirty){
 
-            }*/
+
+            Vec3 motion =  getDeltaMovement();
+            move(motion.x, motion.y, motion.z);
+            //System.out.println(motion);
+            yaw += rotSpeed.y;
+            pitch += rotSpeed.x;
+            yaw = AngleHelper.wrapAngle180(yaw);
+            pitch = AngleHelper.wrapAngle180(pitch);
+            pitch = Mth.clamp(pitch,-90,90);
+
+            lerpedPith.setValue(pitch);
+            lerpedYaw.setValue(yaw);
             sendPacket();
-            move(speed.x, speed.y, speed.z);
-            pitch += rotSpeed.y;
-            yaw += rotSpeed.x;
-            System.out.println(speed);
-
+        } else {
+            posClientDiff.scale(0.75f);
+            rotClientDiff.scale(0.75f);
+            updateClientMotion();
+            lerpedYaw.tickChaser();
+            lerpedPith.tickChaser();
         }
 
     }
-    public Vec3 getCoord() {
-        return getAnchorVec();
-    }
-    /*
-    to avoid drifting.
+
     public void updateClientMotion() {
-        Vec3 motion = speed.add(clientOffsetDiff.scale(ServerSpeedProvider.get()/2f));
+        Vec3 motion = getDeltaMovement().add(posClientDiff.scale(ServerSpeedProvider.get()/2f));
 
         motion = VecHelper.clampComponentWise(motion, 1);
         //setContraptionMotion(motion);
         move(motion.x, motion.y, motion.z);
-    }*/
+        setContraptionMotion(motion);
+
+
+        pitch += rotSpeed.x + rotClientDiff.x * ServerSpeedProvider.get()/2f;
+        yaw += rotSpeed.y + rotClientDiff.y * ServerSpeedProvider.get()/2f;
+        pitch =  AngleHelper.wrapAngle180(pitch);
+        yaw =  AngleHelper.wrapAngle180(yaw);
+        lerpedPith.chase( pitch ,Math.abs(rotSpeed.x)+1, LerpedFloat.Chaser.LINEAR);
+        lerpedYaw.chase( yaw ,Math.abs(rotSpeed.y)+1, LerpedFloat.Chaser.LINEAR);
+    }
 
     public void sendPacket() {
+        //System.out.println("server | time :"+ (level().getGameTime())+" | " + yaw + " | " + rotSpeed.y);
+
         if (!level().isClientSide()) {
             PacketInit.getChannel()
                     .send(PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                            new SpeedPosRotUpdatePacket(getId(), getAnchorVec(), speed, yaw, pitch, rotSpeed));
+                            new SpeedPosRotUpdatePacket(getId(), getAnchorVec(), getDeltaMovement(), yaw, pitch, rotSpeed));
         }
     }
     //go back to client offset for both pos and rot, it was better.
@@ -88,16 +112,13 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
         Entity entity = Minecraft.getInstance().level.getEntity(packet.entityID);
         if (!(entity instanceof Synced2AxisContraptionEntity ce))
             return;
-        ce.moveTo(packet.coord);
-        ce.speed = packet.speed;
+        ce.posClientDiff = packet.coord.subtract(ce.getAnchorVec());
         ce.setContraptionMotion(packet.speed);
+        ce.rotClientDiff = new Vec2( AngleHelper.getShortestAngleDiff(packet.pitch , ce.pitch),
+                AngleHelper.getShortestAngleDiff(packet.yaw , ce.yaw));
         ce.yaw = packet.yaw;
         ce.pitch = packet.pitch;
         ce.rotSpeed = packet.rotSpeed;
-        System.out.println("packed received on the client with : "+packet.coord + " | " + packet.yaw + " | " + packet.pitch);
-        //ce.lerpedYaw.chase(packet.yaw, packet.yaw - ce.yaw, LerpedFloat.Chaser.LINEAR);
-        //ce.lerpedPitch.chase(packet.pitch, packet.pitch - ce.pitch, LerpedFloat.Chaser.LINEAR); -> chasers are better
-        //ce.clientPosDiff = packet.coord.subtract(ce.getCoord());
     }
     /**
      * necessary to avoid "vibration" the  updateClientMotion() is used to sync client to server entity
@@ -105,24 +126,6 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
     @Override
     @OnlyIn(Dist.CLIENT)
     public final void lerpTo(double p_19896_, double p_19897_, double p_19898_, float p_19899_, float p_19900_, int p_19901_, boolean p_19902_) {
-    }
-
-    public void setSpeeds(Vec3 speed, Vec2 rotSpeed) {
-        if (!level().isClientSide()) {
-            if (speed!=null)this.speed = speed;
-            if (rotSpeed !=null)this.rotSpeed = rotSpeed;
-            this.dirty = true;
-        }
-    }
-
-    @Override
-    public void setContraptionMotion(Vec3 vec) {
-        super.setContraptionMotion(vec);
-        setSpeeds(vec, null);
-    }
-
-    public @NotNull Vec3 getSpeed() {
-        return speed;
     }
 
     @Override
@@ -159,11 +162,21 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
         ContraptionRotationState crs = new ContraptionRotationState();
 
         float yawOffset = getYawOffset();
-        crs.zRotation = pitch;
-        crs.yRotation = -yaw + yawOffset;
+        float syncedYaw;
+        float syncedPitch;
+        if (level().isClientSide()) {
+            syncedPitch = lerpedPith.getValue(Minecraft.getInstance().getPartialTick());
+            syncedYaw = lerpedYaw.getValue(Minecraft.getInstance().getPartialTick());
+        }
+        else {
+            syncedPitch = pitch;
+            syncedYaw = yaw;
+        }
+        crs.zRotation = syncedPitch;
+        crs.yRotation = -syncedYaw + yawOffset;
 
         if (pitch != 0 && yaw != 0) {
-            crs.secondYRotation = -yaw;
+            crs.secondYRotation = -syncedYaw;
             crs.yRotation = yawOffset;
         }
 
@@ -178,8 +191,9 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
             setInitialOrientation(NBTHelper.readEnum(compound, "InitialOrientation", Direction.class));
 
         yaw = compound.getFloat("Yaw");
+        lerpedYaw.setValue(yaw);
         pitch = compound.getFloat("Pitch");
-
+        lerpedPith.setValue(pitch);
 
     }
 
@@ -200,7 +214,7 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
 
     public void startAtYaw(float yaw) {
         this.yaw = yaw;
-        this.rotSpeed = new Vec2(0, 0);
+        lerpedYaw.setValue(yaw);
     }
 
     @Override
@@ -220,19 +234,11 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
     }
 
     public float getViewYRot(float partialTicks) {
-        if (level().isClientSide()) {
-            return - (yaw + rotSpeed.x * partialTicks);
-        } else {
-            return yaw;
-        }
+        return -lerpedYaw.getValue(partialTicks);
     }
 
     public float getViewXRot(float partialTicks) {
-        if (level().isClientSide()) {
-            return (pitch + rotSpeed.y * partialTicks);
-        } else {
-            return pitch;
-        }
+        return lerpedPith.getValue(partialTicks);
     }
 
     @Override
@@ -250,7 +256,7 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
     protected void handleStallInformation(double x, double y, double z, float angle) {
         yaw = angle;
     }
-
+    //why do lerp doesn't work ?
     @Override
     @OnlyIn(Dist.CLIENT)
     public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
@@ -258,8 +264,9 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
         float angleYaw = getViewYRot(partialTicks);
         float anglePitch = getViewXRot(partialTicks);
         //first order interpolation, for a better interpolation there should also be acceleration.
-        matrixStack.translate(speed.x * partialTicks, speed.y * partialTicks, speed.z*partialTicks);
-        System.out.println(speed.x * partialTicks +" | "+ speed.y * partialTicks + " | " + speed.z*partialTicks);
+        //Still jagged as fuck.
+        //System.out.println("client | time :"+ (level().getGameTime() + partialTicks)+ " | " +yaw+" | "+ lerpedYaw.getValue(partialTicks));
+
         TransformStack.of(matrixStack)
                 .nudge(getId())
                 .center()
@@ -267,5 +274,10 @@ public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEn
                 .rotateZDegrees(anglePitch)
                 .rotateYDegrees(angleInitialYaw)
                 .uncenter();
+    }
+
+
+    public void setRotSpeed(@NotNull Vec2 rotSpeed) {
+        this.rotSpeed = rotSpeed;
     }
 }

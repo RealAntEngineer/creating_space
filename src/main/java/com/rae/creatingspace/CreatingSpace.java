@@ -43,6 +43,7 @@ public class CreatingSpace {
     public static final String MODID = "creatingspace" ;
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
+    public static final String NAME = "Creating Space";
 
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
