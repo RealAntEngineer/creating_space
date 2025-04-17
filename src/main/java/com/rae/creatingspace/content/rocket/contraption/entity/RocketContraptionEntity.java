@@ -1,7 +1,5 @@
 package com.rae.creatingspace.content.rocket.contraption.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.contraption.Synced2AxisContraptionEntity;
@@ -17,7 +15,6 @@ import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.legacy.utilities.CSNBTUtil;
 import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
 import com.simibubi.create.content.contraptions.*;
-import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -44,8 +41,6 @@ import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fluids.FluidStack;
@@ -100,6 +95,7 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
     private static final EntityDataAccessor<Direction> INITIAL_ORIENTATION =
             SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializers.DIRECTION);
     public RocketPath nextPath;
+    private ControlMode controlMode = ControlMode.DOCKING;
 
     //rotations
 
@@ -433,28 +429,36 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
             return false;
         if (isInPropulsionPhase())
             return false;
-        float speedModificator = 1f;
+        float speedModificator = 0.2f;
         Vec3 speed = Vec3.ZERO;
         Vec2 rotSpeed = Vec2.ZERO;
-        if (heldControls.contains(5)){//shift -> this will change (normal being 0.1 and sprinting being 1f
-            speedModificator = 0.1f;
+        if (heldControls.contains(11)){
+            speedModificator = 2f;
+        }
+        if (heldControls.contains(5)){
+            speed =  speed.add(VecHelper.clampComponentWise( Vec3.atLowerCornerOf(Direction.DOWN.getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator));
+        }
+        if (heldControls.contains(4)){
+            speed =  speed.add(VecHelper.clampComponentWise( Vec3.atLowerCornerOf(Direction.UP.getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator));
         }
 
         if (heldControls.contains(0)){
-            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getNormal())
-                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
+            speed =  speed.add(VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator));
         }
         if (heldControls.contains(1)){
-            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getOpposite().getNormal())
-                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
+            speed =  speed.add(VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getOpposite().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator));
         }
         if (heldControls.contains(2)){
-            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getCounterClockWise().getNormal())
-                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
+            speed =  speed.add(VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getCounterClockWise().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator));
         }
         if (heldControls.contains(3)){
-            speed =  VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getClockWise().getNormal())
-                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator);
+            speed =  speed.add(VecHelper.clampComponentWise( Vec3.atLowerCornerOf(getInitialOrientation().getClockWise().getNormal())
+                    .yRot((float) (getViewYRot(1)/180*Math.PI)), 0.8f).scale(speedModificator));
         }
         if (heldControls.contains(8)){
             rotSpeed = new Vec2(0,-3f*speedModificator);
@@ -462,7 +466,6 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
         if (heldControls.contains(9)){
             rotSpeed = new Vec2(0,3f*speedModificator);
         }
-        if (!heldControls.isEmpty()) System.out.println(heldControls);
         setRotSpeed(rotSpeed);
         setContraptionMotion(speed);
         return true;
@@ -757,6 +760,10 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
     private void stopRocket() {
         getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.IDLE);
         setContraptionMotion(Vec3.ZERO);
+    }
+    public enum ControlMode {
+        FIGHTER,
+        DOCKING
     }
     public enum RocketStatus {
         IDLE(false),
