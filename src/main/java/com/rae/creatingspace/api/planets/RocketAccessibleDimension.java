@@ -31,9 +31,6 @@ public class RocketAccessibleDimension {
                     )
                     .apply(instance, RocketAccessibleDimension::new));
 
-    public OrbitParameter getOrbitParameter() {
-        return orbitParameter;
-    }
 
     OrbitParameter orbitParameter;
     //in what ? km will be too much, Mm : 400 for the mun 1500000 for the sun ?
@@ -42,47 +39,39 @@ public class RocketAccessibleDimension {
     float gravity;
     //mostly used for the DestinationScreen and for falling out of an orbit
     ResourceLocation orbitedBody;
-
-    public boolean isRenderAsPlanet() {
-        return renderAsPlanet;
-    }
-
     boolean renderAsPlanet;
-
-    public RocketAccessibleDimension() {
-
-    }
-
-    public Map<ResourceLocation, AccessibilityParameter> adjacentDimensions() {
-        return adjacentDimensions;
-    }
-
-    // is orbit should be more than just gravity = 0 no ?
     Map<ResourceLocation, AccessibilityParameter> adjacentDimensions;
+
     @NonnullDefault
     public RocketAccessibleDimension(OrbitParameter orbitParameter, int arrivalHeight, float gravity,boolean renderAsPlanet, Map<ResourceLocation, AccessibilityParameter> adjacentDimensions) {
         this.orbitParameter = orbitParameter;
         this.arrivalHeight = arrivalHeight;
         this.gravity = gravity;
-        this.orbitedBody = orbitParameter.orbitedBody();
+        this.orbitedBody = orbitParameter.getOrbitedBody();
         this.adjacentDimensions = adjacentDimensions;
         this.renderAsPlanet = renderAsPlanet;
     }
-
+    public OrbitParameter getOrbitParameter() {
+        return orbitParameter;
+    }
+    public Map<ResourceLocation, AccessibilityParameter> adjacentDimensions() {
+        return adjacentDimensions;
+    }
     public float gravity() {
         return gravity;
     }
-
     public int arrivalHeight() {
         return arrivalHeight;
     }
-
     public ResourceLocation orbitedBody() {
         return orbitedBody;
     }
     @Deprecated
     public int distanceToOrbitedBody() {
-        return (int) orbitParameter.r();
+        return (int) orbitParameter.getR();
+    }
+    public boolean isRenderAsPlanet() {
+        return renderAsPlanet;
     }
 
     //TODO remove the duplicated arrivalHeight or rename it if it's used

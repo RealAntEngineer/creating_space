@@ -19,6 +19,7 @@
     "orbitedBody": "minecraft:overworld",
     "r": 0.8,
     "orbT": 1,
-    "rotT": 1
+    "rotT": 1,
+    "i": 0
   }
 }

@@ -98,10 +98,8 @@ public class FluidInit {
     }
     public static void registerFluidInteractions() {
         FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
-                ((level, currentPos, relativePos, currentState) -> {
-                        System.out.println("beans : "+(level.getFluidState(relativePos).getFluidType() == ForgeMod.WATER_TYPE.get()));
-                        return level.getFluidState(relativePos).getFluidType() == ForgeMod.WATER_TYPE.get();
-                }),
+                ((level, currentPos, relativePos, currentState) ->
+                        level.getFluidState(relativePos).getFluidType() == ForgeMod.WATER_TYPE.get()),
                 (level, currentPos, relativePos, currentState) -> {
                     if (currentState.isSource()) {
                         level.setBlockAndUpdate(currentPos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, currentPos, currentPos, Blocks.OBSIDIAN.defaultBlockState()));

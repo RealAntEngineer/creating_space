@@ -32,7 +32,7 @@ public class ProjectorBlockRenderer extends SafeBlockEntityRenderer<ProjectorBlo
     protected void renderSafe(ProjectorBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
         ms.pushPose();
         ms.translate(0.5,4,0.5);
-        PlanetsPositionsHandler.renderForAll( (Objects.requireNonNull(be.getLevel()).getDayTime()+ partialTicks)/240,ms,bufferSource, be.getLevel().dimension().location(), true, Color.WHITE);
+        PlanetsPositionsHandler.renderForAll( (Objects.requireNonNull(be.getLevel()).getDayTime()+ partialTicks)/240,ms,bufferSource, be.getLevel().dimension().location(), true, Color.WHITE,false);
         ms.popPose();
 
     }

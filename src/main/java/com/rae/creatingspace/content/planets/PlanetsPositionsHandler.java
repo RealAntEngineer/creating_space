@@ -5,12 +5,13 @@ import com.rae.creatingspace.api.planets.OrbitParameter;
 import com.rae.creatingspace.api.rendering.PlanetsRendering;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Quaternionf;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -28,7 +29,7 @@ public class PlanetsPositionsHandler {
 
     static {
         // Initialize decorative planets
-        positions.put(BASE_BODY, new OrbitParameter(BASE_BODY, 20, 0, 0, 0, 10, new Vec3(0, 1, 0), 10));
+        positions.put(BASE_BODY, new OrbitParameter(BASE_BODY, 20, 0, 0, 0, 10,0, new Vec3(0, 1, 0), 10,0));
     }
 
     /**
@@ -80,15 +81,36 @@ public class PlanetsPositionsHandler {
     private static Vec3 calculateCartesianCoordinate(ResourceLocation planet, float time) {
         Vec3 cartesian = Vec3.ZERO;
         OrbitParameter current = positions.get(planet);
+        if (current == null) {
+            return Vec3.ZERO;
+        }
         int depth = 0;
 
         // Traverse through orbital bodies up to a certain depth to calculate the position
-        while (current.orbitedBody() != null && depth < 10) {
-            float d = current.r();
-            float theta = (float) ( time / current.orbT()*2* Math.PI);
-            cartesian = cartesian.add(Math.sin(theta) * d, 0, Math.cos(theta) * d);
-            if (current.orbitedBody().equals(BASE_BODY)) break;
-            current = positions.get(current.orbitedBody());
+        while (!current.getOrbitedBody().equals(planet) && depth < 10) {
+            float d = current.getR();
+            float theta = current.getOrbAngle(time);
+            float omega = current.getOmega() * 2 * Mth.PI; // assuming omega is in [0, 1)
+            float inclination = current.getI() / 180f * Mth.PI;
+
+            float cosOmega = Mth.cos(omega);
+            float sinOmega = Mth.sin(omega);
+            float cosTheta = Mth.cos(theta);
+            float sinTheta = Mth.sin(theta);
+            float cosI = Mth.cos(inclination);
+            float sinI = Mth.sin(inclination);
+            if (planet.equals(new ResourceLocation("creatingspace:the_moon"))){
+                //System.out.println("sinTheta : "+sinTheta+ "cosTheta : "+cosTheta);
+            }
+            // Correct 3D orbital position
+            float x = d * (-sinOmega * cosTheta + cosOmega * sinTheta * cosI);
+            float y = d * (sinTheta * sinI);
+            float z = d * (cosOmega * cosTheta +  sinOmega * sinTheta * cosI);
+
+            cartesian = cartesian.add(x, y, z);
+            if (current.getOrbitedBody().equals(BASE_BODY)) break;
+            current = positions.get(current.getOrbitedBody());
+            if (current == null) break;
             depth++;
         }
         return cartesian;
@@ -99,31 +121,36 @@ public class PlanetsPositionsHandler {
      * This includes applying rotations and drawing the planets at the correct positions.
      * The time is in Overworld days.
      *
-     * @param skyColor
+     * @param skyColor     The color of the sky
      * @param time         The current time in Overworld days.
      * @param ms           The matrix stack used for transformations.
      * @param bufferSource The buffer source to store the rendered planets.
      * @param center       The location of the center planet.
      * @param renderCenter Whether to render the center planet or not.
      */
-    public static void renderForAll(float time, PoseStack ms, MultiBufferSource bufferSource, ResourceLocation center, boolean renderCenter, Color skyColor) {
+    public static void renderForAll(float time, PoseStack ms, MultiBufferSource bufferSource, ResourceLocation center, boolean renderCenter, Color skyColor, boolean squeezeMode) {
         if (positions.containsKey(center)) {
             applyRotation(ms, positions.get(center), -time);
         }
+        try {
+            // Collect the positions of all planets that need to be rendered
+            Map<ResourceLocation, SkyPos> collectedPos = positions.entrySet().stream()
+                    .filter(entry -> shouldRender(entry.getKey(), center, renderCenter))
+                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> getSkyPos(center, entry.getKey(), time)));
 
-        // Collect the positions of all planets that need to be rendered
-        Map<ResourceLocation, SkyPos> collectedPos = positions.entrySet().stream()
-                .filter(entry -> shouldRender(entry.getKey(), center, renderCenter))
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> getSkyPos(center, entry.getKey(), time)));
+            // Sort planets by distance and render them in order
+            List<ResourceLocation> sortedByDistance = collectedPos.entrySet().stream()
+                    .sorted(Comparator.comparingDouble(e -> -e.getValue().radius))
+                    .map(Map.Entry::getKey)
+                    .toList();
+            Vector3f viewDir = Minecraft.getInstance().gameRenderer.getMainCamera().getLookVector();
+            sortedByDistance.forEach(location -> {
+                if (location.equals(BASE_BODY)) renderSun(ms, bufferSource, time, location, collectedPos.get(location));
+                else renderPlanet(ms, bufferSource, time, location, collectedPos.get(location), skyColor, squeezeMode);
+            });
+        } catch (NullPointerException ignored) {//catch if center is not on the
 
-        // Sort planets by distance and render them in order
-        List<ResourceLocation> sortedByDistance = collectedPos.entrySet().stream()
-                .sorted(Comparator.comparingDouble(e -> -e.getValue().radius))
-                .map(Map.Entry::getKey)
-                .toList();
-
-        sortedByDistance.forEach(location -> renderPlanet(ms, bufferSource, time, location, collectedPos.get(location),skyColor));
-
+        }
         if (positions.containsKey(center)) {
             applyRotation(ms, positions.get(center), time);
         }
@@ -138,7 +165,7 @@ public class PlanetsPositionsHandler {
      * @return True if the planet should be rendered, false otherwise.
      */
     private static boolean shouldRender(ResourceLocation location, ResourceLocation center, boolean renderCenter) {
-        return (CSDimensionUtil.shouldRenderAsPlanet(location) && (!location.equals(center) || renderCenter)||location.equals(BASE_BODY));
+        return (CSDimensionUtil.shouldRenderAsPlanet(location) && (!location.equals(center) || renderCenter)||location.equals(BASE_BODY) && positions.containsKey(location));
     }
 
     /**
@@ -149,9 +176,8 @@ public class PlanetsPositionsHandler {
      * @param orbitParameter The orbit parameter of the planet.
      * @param time The time factor to determine the rotation angle.
      */
-    private static void applyRotation(PoseStack ms, OrbitParameter orbitParameter, float time) {
-        float angle = (float) (2*time / orbitParameter.rotT() * Math.PI);
-        ms.mulPose(new Quaternionf().rotateAxis(angle,orbitParameter.rotationAxis().toVector3f()));
+    private static void applyRotation(PoseStack ms, @NotNull OrbitParameter orbitParameter, float time) {
+        ms.mulPose(orbitParameter.getRotQuad(time));
     }
 
     /**
@@ -163,22 +189,27 @@ public class PlanetsPositionsHandler {
      * @param time         The current time in Overworld days.
      * @param location     The location (ID) of the planet.
      * @param pos          The calculated position of the planet.
-     * @param skyColor
+     * @param skyColor     The color of the sky
      */
     private static void renderPlanet(PoseStack ms, MultiBufferSource bufferSource, float time, ResourceLocation location, SkyPos pos,
-                                     Color skyColor) {
+                                     Color skyColor, boolean squeezeMode) {
         OrbitParameter orbitParameter = positions.get(location);
-        float angle = (float) (2 * time / orbitParameter.rotT() * Math.PI);
-        Quaternionf rotation = new Quaternionf().rotateAxis(angle,orbitParameter.rotationAxis().toVector3f());
-        Minecraft.getInstance().gameRenderer.lightTexture().turnOffLightLayer();
+
         PlanetsRendering.renderPlanet(
                 new ResourceLocation(location.getNamespace(), "textures/environment/planets/" + location.getPath() + ".png"),
-                bufferSource, ms, LightTexture.FULL_BRIGHT, orbitParameter.size(), pos, rotation,skyColor
-        );
-        Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+                bufferSource, ms, LightTexture.FULL_BRIGHT, orbitParameter.getSize(), pos, orbitParameter.getRotQuad(time), skyColor, squeezeMode);
+
 
     }
 
+    private static void renderSun(PoseStack ms, MultiBufferSource bufferSource, float time, ResourceLocation location, SkyPos pos) {
+        OrbitParameter orbitParameter = positions.get(location);
+
+        PlanetsRendering.renderSun(
+                bufferSource, ms, new Color(250,239,11,128), orbitParameter.getSize(), pos, orbitParameter.getRotQuad(time));
+
+
+    }
     /**
      * Represents a position in 3D space using cylindrical coordinates.
      * Y-axis is assumed to be pointing upwards.
@@ -235,6 +266,10 @@ public class PlanetsPositionsHandler {
 
         public float getTheta() {
             return theta;
+        }
+
+        public float getRadius() {
+            return radius;
         }
     }
 }

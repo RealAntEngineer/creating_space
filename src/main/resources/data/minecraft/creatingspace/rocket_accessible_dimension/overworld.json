@@ -8,6 +8,7 @@
   "gravity": 9.81,
   "renderAsPlanet": true,
   "orbitParameters": {
+    "rotationAxis": [0,1,0],
     "size": 1.0,
     "r": 150,
     "orbT": 365,

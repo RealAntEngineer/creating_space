@@ -59,7 +59,7 @@ public class SmartPlanetsEffect extends DimensionSpecialEffects {
         return true;
     }
 
-    //TODO implement alpha channel for the fog
+    //TODO implement alpha channel for the fog + implement correct rotation of the screen when walking
     @Override
     public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
         float[] fogColor = RenderSystem.getShaderFogColor();
@@ -82,16 +82,18 @@ public class SmartPlanetsEffect extends DimensionSpecialEffects {
         float time = (level.getDayTime() + partialTick) / dayLength;
 
         // Fix projection matrix handling for 1.20.1
-        Matrix4f customProjection = new Matrix4f().perspective(
+        Matrix4f skyProjectionMatrix = //new Matrix4f().orthoSymmetric(10f, 10f/aspectRatio,0f,1000.0f);
+
+                new Matrix4f().perspective(
                 (float) Math.toRadians(FovHandler.getCurrentFov()), // Convert FOV to radians
                 aspectRatio,
-                0.0001f, // Near plane
+                0, // Near plane
                 1000.0f   // Far plane
         );
         RenderSystem.backupProjectionMatrix();
-        RenderSystem.setProjectionMatrix(customProjection,VertexSorting.DISTANCE_TO_ORIGIN);
+        RenderSystem.setProjectionMatrix(skyProjectionMatrix,VertexSorting.DISTANCE_TO_ORIGIN);
 
-        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(new BufferBuilder(256));
+        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(new BufferBuilder(1048));//size should be able to handle every planets.
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
@@ -99,9 +101,11 @@ public class SmartPlanetsEffect extends DimensionSpecialEffects {
 
         float timeOfDay = level.getTimeOfDay(time * dayLength);
 
-        renderSpaceSky(poseStack, new Quaternionf().rotationAxis((float) (-2 * time / orbitParameter.rotT() * Math.PI),orbitParameter.rotationAxis().toVector3f()), bufferSource);
+        renderSpaceSky(poseStack,orbitParameter.getRotQuad(-time), bufferSource);
 
-        PlanetsPositionsHandler.renderForAll(time, poseStack, bufferSource, location, false, Color.WHITE);
+        bufferSource.endBatch();//to change the projection matrix we need to end the batch
+
+        PlanetsPositionsHandler.renderForAll(time, poseStack, bufferSource, location, false, Color.WHITE, true);
         poseStack.popPose();
 
         bufferSource.endBatch();
