@@ -1,41 +1,22 @@
 package com.rae.creatingspace.legacy.utilities;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.IMass;
-import com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
+import com.rae.formicapi.data.managers.FloatMapDataLoader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.Map;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class CSMassUtil {
+    public static final FloatMapDataLoader<Block> MASS_MAP =
+            new FloatMapDataLoader<>(CreatingSpace.MODID, "blocks_mass", ForgeRegistries.BLOCKS.getRegistryKey());
 
     public static int mass(BlockState state, BlockEntity blockEntity) {
         if (blockEntity instanceof IMass hasAMass) {
             return (int) hasAMass.getMass();
         }
-        return (int) MassOfBlockReader.MASS_MAP.getValue(state.getBlock(), 1000);
-        /*if( data!=null){
-            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
-            Map<TagKey<Block>, Integer> massOfTaggedBlocks = MassOfBlockReader.getOnlyTags(data);
-            Map<ResourceLocation, Integer> massOfBlocks = MassOfBlockReader.getWithoutTags(data);
-            Integer mass = massOfBlocks.get(id);
-            if (mass!=null){
-                return mass;
-            }
-            else {
-                for (TagKey<Block> tagKey : state.getTags().toList()) {
-                    mass = massOfTaggedBlocks.get(tagKey);
-                    if (mass != null) {
-                        return mass;
-                    }
-                }
-            }
-        }
-        return 1000;*/
+        return (int) MASS_MAP.getValue(state.getBlock(), 1000);
     }
 
 

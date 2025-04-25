@@ -1,4 +1,4 @@
-package com.rae.creatingspace.legacy.utilities.data;
+package com.rae.creatingspace.content.rocket.flight_recorder;
 
 import com.rae.creatingspace.legacy.utilities.CSNBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -6,7 +6,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 
 import java.util.HashMap;
-
+//TODO make this more understandable + graph utilities from formic api.
 public class FlightDataHelper {
 
     //replace that on the rocket creation -> cleaner

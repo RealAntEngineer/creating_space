@@ -16,7 +16,7 @@ import com.rae.creatingspace.init.worldgen.DensityFunctionInit;
 import com.rae.creatingspace.init.worldgen.FeatureInit;
 import com.rae.creatingspace.init.CSContraptionType;
 import com.rae.creatingspace.content.event.IgniteOnPlace;
-import com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader;
+import com.rae.creatingspace.legacy.utilities.CSMassUtil;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
@@ -115,7 +115,7 @@ public class CreatingSpace {
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
         //datagen, and tag provider
-        event.addListener(MassOfBlockReader.MASS_MAP);
+        event.addListener(CSMassUtil.MASS_MAP);
     }
 
     public static ResourceLocation resource(String path){

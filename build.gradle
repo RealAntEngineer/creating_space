@@ -107,6 +107,9 @@ repositories {
     }
 
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
+    maven {
+        url = uri("file:///D:/maven") // maven sur le disc extern -> à mettre en variable d'environement.
+    }
 
 }
 
@@ -132,6 +135,8 @@ dependencies {
 
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+
+    implementation(fg.deobf("com.rae.formicapi:formic-api-${minecraft_version}:${formicapi_version}"))
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 

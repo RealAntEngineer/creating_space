@@ -4,7 +4,7 @@ import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
-import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
+import com.rae.creatingspace.content.rocket.flight_recorder.FlightDataHelper;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import net.minecraft.ChatFormatting;

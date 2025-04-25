@@ -13,7 +13,7 @@ import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.legacy.utilities.CSNBTUtil;
-import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
+import com.rae.creatingspace.content.rocket.flight_recorder.FlightDataHelper;
 import com.simibubi.create.content.contraptions.*;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;

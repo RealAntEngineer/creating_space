@@ -3,7 +3,6 @@ package com.rae.creatingspace.content.rocket.flight_recorder;
 import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
-import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
