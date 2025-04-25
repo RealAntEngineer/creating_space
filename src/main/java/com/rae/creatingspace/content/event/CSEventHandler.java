@@ -5,9 +5,8 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.legacy.saved.DesignCommands;
+import com.rae.creatingspace.content.rocket.engine.design.DesignCommands;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.CustomTeleporter;
@@ -33,7 +32,6 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static java.lang.Math.abs;
 
@@ -121,7 +119,7 @@ public class CSEventHandler {
                 }
         );
     }
-
+    //TODO put in the formic API
     private static float dichotomy(Function<Float, Float> function, float a, float b, float epsilon) {
         try {
             if (function.apply(a) * function.apply(b) > 0) {  //On vérifie l 'encadrement de la fonction
@@ -197,10 +195,6 @@ public class CSEventHandler {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         DesignCommands.register(event.getDispatcher());
-    }
-    //for legacy purpose
-    private static boolean isStateBreathable(BlockState state) {
-        return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
     }
 
     @SubscribeEvent
