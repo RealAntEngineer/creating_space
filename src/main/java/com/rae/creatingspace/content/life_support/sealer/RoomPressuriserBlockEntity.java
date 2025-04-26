@@ -2,13 +2,13 @@ package com.rae.creatingspace.content.life_support.sealer;
 
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.SealerBlock;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -47,7 +47,7 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
-            Direction localDir = this.getBlockState().getValue(SealerBlock.FACING);
+            Direction localDir = this.getBlockState().getValue(DirectionalBlock.FACING);
 
             if (side == localDir.getOpposite()) {
                 return this.fluidOptional.cast();

@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
@@ -90,8 +89,8 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide() ? null : ($0, pos, $1, blockEntity) -> {
-            if (blockEntity instanceof SealerBlockEntity sealerBlockEntity) {
-                sealerBlockEntity.tick(level, pos, state);
+            if (blockEntity instanceof RoomPressuriserBlockEntity sealerBlockEntity) {
+                sealerBlockEntity.tick();
             }
         };
     }

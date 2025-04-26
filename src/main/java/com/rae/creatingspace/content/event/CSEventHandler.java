@@ -168,25 +168,9 @@ public class CSEventHandler {
 
     public static boolean inO2(LivingEntity entity) {
         Level level = entity.level();
-        //TODO use this instead, with tags for the biome
-        //  level.getBiome(entity.getOnPos()).getTagKeys().toList();
         if (CSDimensionUtil.hasO2Atmosphere(level.getBiome(entity.getOnPos()))) {
             return true;
         }
-        /*
-        AABB colBox = entity.getBoundingBox();
-        Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
-        for (BlockState state : blockStateStream.toList()) {
-            if (isStateBreathable(state)){
-                return true;
-            }
-        }
-        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox);
-        for (RoomAtmosphere atmosphere : entityStream) {
-            if (atmosphere.getShape().inside(colBox) && atmosphere.breathable()) {
-                return true;
-            }
-        }*/
         boolean flag = ((INeedOxygen)entity).insideOxygenRoom();
         ((INeedOxygen)entity).setInsideOxygenRoom(false);
         return flag;

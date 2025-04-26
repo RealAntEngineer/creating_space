@@ -23,7 +23,6 @@ import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
 import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
-import com.rae.creatingspace.legacy.server.blockentities.atmosphere.OxygenBlockEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.fluids.pipes.FluidPipeBlockEntity;
@@ -103,11 +102,7 @@ public class BlockEntityInit {
                     .validBlocks( BlockInit.FLOW_METER)
                     .renderer(()-> FlowGaugeBlockRenderer::new)
                     .register();
-    public static final BlockEntityEntry<OxygenBlockEntity> OXYGEN =
-            REGISTRATE.blockEntity(
-                            "oxygen", OxygenBlockEntity::new)
-                    .validBlocks(BlockInit.OXYGEN)
-                    .register();
+
 
     public static final BlockEntityEntry<RoomPressuriserBlockEntity> ROOM_PRESSURIZER =
             REGISTRATE.blockEntity(

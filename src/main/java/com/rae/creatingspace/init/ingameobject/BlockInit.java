@@ -5,6 +5,7 @@ import com.rae.creatingspace.configs.CSStress;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock;
 import com.rae.creatingspace.content.fluids.effect.BurnBlock;
 import com.rae.creatingspace.content.fluids.effect.FreezerBlock;
+import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlock;
 import com.rae.creatingspace.content.planets.RegolithSurfaceBlock;
 import com.rae.creatingspace.content.planets.hologram.ProjectorBlock;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock;
@@ -22,8 +23,6 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
 import com.rae.creatingspace.content.fluids.cassing.IsolatedFluidPipe;
 import com.rae.creatingspace.content.fluids.cassing.IsolatedFluidPump;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.OxygenBlock;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.SealerBlock;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.engines.BigEngineBlock;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlock;
@@ -199,8 +198,8 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    public static final BlockEntry<SealerBlock> OXYGEN_SEALER = REGISTRATE
-            .block("oxygen_sealer", SealerBlock::new)
+    public static final BlockEntry<RoomPressuriserBlock> OXYGEN_SEALER = REGISTRATE
+            .block("oxygen_sealer", RoomPressuriserBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .item()
             .build()
@@ -223,13 +222,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
-    public static final BlockEntry<OxygenBlock> OXYGEN = REGISTRATE
-            .block("oxygen", OxygenBlock::new)
-            .initialProperties(() -> Blocks.AIR)
-            .properties(p -> p.noOcclusion().noCollission().dynamicShape().air())
-            .blockstate((c, p) -> p.getVariantBuilder(c.get())
-                    .forAllStatesExcept(BlockStateGen.mapToAir(p), DirectionalBlock.FACING))
-            .register();
+
     public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
             .block("copper_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
