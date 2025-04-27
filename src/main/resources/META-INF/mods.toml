@@ -34,6 +34,13 @@ test version for the europa worldgen
 [[dependencies.creatingspace]]
 modId="create"
 mandatory=true
-versionRange="[0.5.1.a,)"
+versionRange="[0.6.0.1,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.creatingspace]]
+modId="forge"
+mandatory=true
+versionRange="[47.3,)" # Adjust based on your Forge version
 ordering="NONE"
 side="BOTH"

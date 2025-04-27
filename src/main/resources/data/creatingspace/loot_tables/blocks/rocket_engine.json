@@ -18,14 +18,29 @@
             },
             {
               "function": "minecraft:copy_nbt",
+              "source": "block_entity",
               "ops": [
                 {
                   "op": "replace",
-                  "source": "blockEntity",
-                  "target": "blockEntity"
+                  "source": "thrust",
+                  "target": "blockEntity.thrust"
+                },
+                {
+                  "op": "replace",
+                  "source": "efficiency",
+                  "target": "blockEntity.efficiency"
+                },
+                {
+                  "op": "replace",
+                  "source": "propellantType",
+                  "target": "blockEntity.propellantType"
+                },
+                {
+                  "op": "replace",
+                  "source": "mass",
+                  "target": "blockEntity.mass"
                 }
-              ],
-              "source": "block_entity"
+              ]
             }
           ],
           "name": "creatingspace:rocket_engine"

@@ -2,7 +2,7 @@ package com.rae.creatingspace.api.rendering;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
@@ -33,7 +33,12 @@ public class GeometryRendering {
             //renderPoly(interiorFaces, vertexBuilder, entry, packedLight, color);
         }
     }
-
+    public static void renderCylinderFakeVol(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, Color centerColor, Color exteriorColor, int packedLight, float baseRadius, float topRadius, float height, int segments, boolean exterior, float precision){
+        for (int i = 0; i <= precision; i++) {
+            Color newCol = centerColor.setImmutable().setAlpha((float) centerColor.getAlpha() /255 / (precision)).mixWith(exteriorColor, 1- i /precision);
+            renderCylinder(vertexBuilder, matrixStack, offset, newCol, packedLight, baseRadius * i / precision, topRadius * i / precision, height, segments, exterior);
+        }
+    }
     public static void renderCube(VertexConsumer vertexBuilder, PoseStack matrixStack, Vec3 offset, int packedLight, float size, Color color) {
         float halfSize = size / 2.0F;
 
@@ -83,7 +88,7 @@ public class GeometryRendering {
         }
     }
 
-    public static void renderPolyTex(List<Vec3> pos, List<Vec2> uvVector, VertexConsumer vertexBuilder, PoseStack.Pose entry, int packedLight) {
+    public static void renderPolyTex(List<Vec3> pos, List<Vec2> uvVector, VertexConsumer vertexBuilder, PoseStack.Pose entry, int packedLight,Color color) {
         Vec3 centerPos = new Vec3(0, 0, 0);
         for (Vec3 coord : pos) {
             centerPos = centerPos.add(coord);
@@ -94,7 +99,7 @@ public class GeometryRendering {
             Vec2 uv = uvVector.get(i);
             Vec3 normal = coord.subtract(centerPos);
             vertexBuilder.vertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
-                    .color(255, 255, 255, 255)
+                    .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
                     .uv(uv.x, uv.y)
                     .overlayCoords(OverlayTexture.NO_OVERLAY)
                     .uv2(packedLight)

@@ -117,7 +117,7 @@
               "if_true": {
                 "type": "minecraft:biome",
                 "biome_is": [
-                  "creatingspace:europa_plains"
+                  "creatingspace:europa/plains"
                 ]
               },
               "then_run": {
@@ -132,7 +132,7 @@
               "if_true": {
                 "type": "minecraft:biome",
                 "biome_is": [
-                  "creatingspace:europa_volcanic_rift"
+                  "creatingspace:europa/volcanic_rift"
                 ]
               },
               "then_run": {

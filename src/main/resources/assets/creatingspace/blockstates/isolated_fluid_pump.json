@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "creatingspace:block/isolate_fluid_pump",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "creatingspace:block/isolate_fluid_pump",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "creatingspace:block/isolate_fluid_pump",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "creatingspace:block/isolate_fluid_pump",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "creatingspace:block/isolate_fluid_pump"
+    },
+    "facing=west": {
+      "model": "creatingspace:block/isolate_fluid_pump",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

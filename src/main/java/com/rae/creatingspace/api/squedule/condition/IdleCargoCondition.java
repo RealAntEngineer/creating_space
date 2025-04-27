@@ -1,9 +1,11 @@
 package com.rae.creatingspace.api.squedule.condition;
 
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import com.simibubi.create.Create;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.Pair;
+import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption;
+
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,22 +16,20 @@ public class IdleCargoCondition extends TimedWaitCondition {
 
     @Override
     public Pair<ItemStack, Component> getSummary() {
-        return Pair.of(ItemStack.EMPTY, Lang.translateDirect("schedule.condition.idle_short", formatTime(true)));
+        return Pair.of(ItemStack.EMPTY, CreateLang.translateDirect("schedule.condition.idle_short", formatTime(true)));
     }
 
     @Override
     public ResourceLocation getId() {
-        return Create.asResource("idle");
+        return CreatingSpace.resource("idle");
     }
 
     @Override
-    public boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context) {
-    /*    int idleTime = Integer.MAX_VALUE;
-            idleTime = Math.min(idleTime, train.getContraption().getSharedFuelInventory().getTicksSinceLastExchange());
+    public boolean tickCompletion(Level level, RocketContraptionEntity rocket, CompoundTag context) {
+        int idleTime = Integer.MAX_VALUE;
+            idleTime = Math.min(idleTime, ((RocketContraption)rocket.getContraption()).getStorage().getTicksSinceLastExchange());
         context.putInt("Time", idleTime);
         requestDisplayIfNecessary(context, idleTime);
-        return idleTime > totalWaitTicks();*/
-        return false;
+        return idleTime > totalWaitTicks();
     }
-
 }

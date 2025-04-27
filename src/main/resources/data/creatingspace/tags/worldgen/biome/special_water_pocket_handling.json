@@ -1,7 +1,7 @@
 {
   "values": [
-    "creatingspace:europa_plains",
-    "creatingspace:europa_volcanic_rift",
-    "creatingspace:europa_surface"
+    "creatingspace:europa/plains",
+    "creatingspace:europa/volcanic_rift",
+    "creatingspace:europa/surface"
   ]
 }

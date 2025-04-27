@@ -1,15 +1,17 @@
 package com.rae.creatingspace.api.squedule;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.destination.ChangeTitleInstruction;
-import com.rae.creatingspace.api.squedule.destination.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import com.rae.creatingspace.utilities.CSDimensionUtil;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.NBTHelper;
+import com.rae.creatingspace.api.squedule.instruction.ChangeTitleInstruction;
+import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.content.planets.CSDimensionUtil;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -34,13 +36,12 @@ public class RocketScheduleRuntime {
     RocketContraptionEntity rocket;
     RocketSchedule schedule;
 
-    public boolean isAutoSchedule;
     public boolean paused;
     public boolean completed;
     public int currentEntry;
     public State state;
 
-    static final int INTERVAL = 40;
+    static final int INTERVAL = 40;//retry interval
     int cooldown;
     List<Integer> conditionProgress;
     List<CompoundTag> conditionContext;
@@ -126,7 +127,6 @@ public class RocketScheduleRuntime {
             return;
         //seems like conditions aren't ticked properly
         if (state == State.POST_TRANSIT) {
-            System.out.println("tick condition");
             tickConditions(level);
             return;
         }
@@ -139,7 +139,6 @@ public class RocketScheduleRuntime {
             //only reached when your already on target
             state = State.IN_TRANSIT;
             destinationReached();
-            System.out.println("already at destination");
             return;
         }
         if (rocket.startNavigation(nextPath) != TBD) {
@@ -153,7 +152,7 @@ public class RocketScheduleRuntime {
         for (int i = 0; i < conditions.size(); i++) {
             List<ScheduleWaitCondition> list = conditions.get(i);
             if (conditionProgress.size() <= i) {
-                System.out.println("error with conditions");
+                CreatingSpace.LOGGER.warn("rocket entity of id {} located at {} had an index out of bound for condition", rocket.getId(),rocket.position());
                 rocket.disassemble();
                 return;
             }
@@ -177,6 +176,9 @@ public class RocketScheduleRuntime {
 
             displayLinkUpdateRequested |= i == 0 && prevVersion != tag.getInt("StatusVersion");
         }
+        if (rocket.getContraption() instanceof RocketContraption rc && rc.getStorage() != null){
+            rc.getStorage().tickIdleCargoTracker();
+        }
     }
 
     public RocketPath startCurrentInstruction() {
@@ -196,7 +198,7 @@ public class RocketScheduleRuntime {
             if (cost <= 0) {
                 return null;
             } else {
-                return new RocketPath(currentWorld, destinationWorld, cost);
+                return new RocketPath(currentWorld, destinationWorld, destination.getXYCoord(),cost);
             }
         }
 
@@ -209,13 +211,11 @@ public class RocketScheduleRuntime {
         return null;
     }
 
-    public void setSchedule(RocketSchedule schedule, boolean auto) {
+    public void setSchedule(RocketSchedule schedule, boolean paused) {
         reset();
         this.schedule = schedule;
         currentEntry = Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
-        paused = false;
-        isAutoSchedule = auto;
-        //train.status.newSchedule();
+        this.paused = paused;
         predictionTicks = new ArrayList<>();
         schedule.entries.forEach($ -> predictionTicks.add(TBD));
         displayLinkUpdateRequested = true;
@@ -233,7 +233,6 @@ public class RocketScheduleRuntime {
     private void reset() {
         paused = true;
         completed = false;
-        isAutoSchedule = false;
         currentEntry = 0;
         currentTitle = "";
         schedule = null;
@@ -246,7 +245,6 @@ public class RocketScheduleRuntime {
     public CompoundTag write() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("CurrentEntry", currentEntry);
-        tag.putBoolean("AutoSchedule", isAutoSchedule);
         tag.putBoolean("Paused", paused);
         tag.putBoolean("Completed", completed);
         if (schedule != null)
@@ -262,7 +260,6 @@ public class RocketScheduleRuntime {
         reset();
         paused = tag.getBoolean("Paused");
         completed = tag.getBoolean("Completed");
-        isAutoSchedule = tag.getBoolean("AutoSchedule");
         currentEntry = tag.getInt("CurrentEntry");
         if (tag.contains("Schedule"))
             schedule = RocketSchedule.fromTag(tag.getCompound("Schedule"));
@@ -288,12 +285,12 @@ public class RocketScheduleRuntime {
     public MutableComponent getWaitingStatus(Level level) {
         List<List<ScheduleWaitCondition>> conditions = schedule.entries.get(currentEntry).conditions;
         if (conditions.isEmpty() || conditionProgress.isEmpty() || conditionContext.isEmpty())
-            return Components.empty();
+            return Component.empty();
 
         List<ScheduleWaitCondition> list = conditions.get(0);
         int progress = conditionProgress.get(0);
         if (progress >= list.size())
-            return Components.empty();
+            return Component.empty();
 
         CompoundTag tag = conditionContext.get(0);
         ScheduleWaitCondition condition = list.get(progress);

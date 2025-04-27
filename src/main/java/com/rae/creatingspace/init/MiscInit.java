@@ -1,8 +1,8 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.design.ExhaustPackType;
-import com.rae.creatingspace.api.design.PowerPackType;
+import com.rae.creatingspace.content.rocket.engine.design.ExhaustPackType;
+import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;

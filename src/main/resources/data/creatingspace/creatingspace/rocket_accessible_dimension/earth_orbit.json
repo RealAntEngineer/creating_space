@@ -9,12 +9,17 @@
     "creatingspace:mars_orbit": {
       "deltaV": 1000
     },
-    "creatingspace:venus": {
-      "deltaV": 2200
+    "creatingspace:venus_orbit": {
+      "deltaV": 2000
     }
   },
   "arrivalHeight": 64,
   "gravity": 0,
-  "orbitedBody": "minecraft:overworld",
-  "distanceToOrbitingBody": 100
+  "orbitParameters": {
+    "orbitedBody": "minecraft:overworld",
+    "r": 0.8,
+    "orbT": 1,
+    "rotT": 1,
+    "i": 0
+  }
 }

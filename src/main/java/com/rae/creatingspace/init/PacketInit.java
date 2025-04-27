@@ -1,7 +1,10 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.utilities.packet.*;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketAssemblePacket;
+import com.rae.creatingspace.content.rocket.engine.table.EngineerTableCraft;
+import com.rae.creatingspace.content.rocket.network.*;
+import com.rae.creatingspace.legacy.utilities.packet.*;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,13 +27,10 @@ public enum PacketInit {
     CRAFT_ENGINE(EngineerTableCraft.class, EngineerTableCraft::new, PLAY_TO_SERVER),
     SYNC_ROCKET_ENGINEER_BE(RocketEngineerTableSync.class, RocketEngineerTableSync::new, PLAY_TO_SERVER),
     ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket::new, PLAY_TO_SERVER),
-    ASSEMBLE_ROCKET_2(NewRocketAssemblePacket.class, NewRocketAssemblePacket::new, PLAY_TO_SERVER),
-    ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
+    //ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
     LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket::new, PLAY_TO_SERVER),
     DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket::new, PLAY_TO_SERVER),
-    SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
-    SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
-    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT),
+    UPDATE_ROCKET(SpeedPosRotUpdatePacket.class, SpeedPosRotUpdatePacket::new, PLAY_TO_CLIENT),
     ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER),
     /*UPDATE_UNLOCKED_DESIGN_SERVER(PlayerUpdateUnlockedDesignClientPacket.class, PlayerUpdateUnlockedDesignClientPacket::new, PLAY_TO_SERVER),
     UPDATE_UNLOCKED_DESIGN_CLIENT(PlayerUpdateUnlockedDesignServerPacket.class, PlayerUpdateUnlockedDesignServerPacket::new, PLAY_TO_CLIENT),*/

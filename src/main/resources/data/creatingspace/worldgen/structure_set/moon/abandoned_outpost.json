@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "creatingspace:moon/abandoned_outpost",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1642136475,
+
+    "spacing": 80,
+
+    "separation": 16,
+
+    "type": "minecraft:random_spread"
+  }
+}

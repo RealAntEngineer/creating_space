@@ -1,8 +1,8 @@
 package com.rae.creatingspace.api.squedule;
 
 import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.destination.ScheduleInstruction;
-import com.simibubi.create.foundation.utility.NBTHelper;
+import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;

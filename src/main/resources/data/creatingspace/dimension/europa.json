@@ -7,7 +7,7 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
-          "biome": "creatingspace:europa_surface",
+          "biome": "creatingspace:europa/surface",
           "parameters": {
             "temperature": [-2,-0.4],
             "humidity": [-2, 2],
@@ -19,7 +19,7 @@
           }
         },
         {
-          "biome": "creatingspace:europa_plains",
+          "biome": "creatingspace:europa/plains",
           "parameters": {
             "temperature": [-0.5, 0.5],
             "humidity": [-2, 2],
@@ -31,7 +31,7 @@
           }
         },
         {
-          "biome": "creatingspace:europa_volcanic_rift",
+          "biome": "creatingspace:europa/volcanic_rift",
           "parameters": {
             "temperature": [0.6,2],
             "humidity": [-2, 2],

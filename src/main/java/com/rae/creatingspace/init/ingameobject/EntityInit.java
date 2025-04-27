@@ -1,13 +1,14 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.client.renderer.entity.RocketContraptionEntityRenderer;
-import com.rae.creatingspace.client.renderer.entity.RoomAtmosphereRenderer;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import com.rae.creatingspace.server.entities.RoomAtmosphere;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntityRenderer;
+import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphereRenderer;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.render.ContraptionVisual;
 import com.simibubi.create.foundation.data.CreateEntityBuilder;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -22,12 +23,13 @@ public class EntityInit {
     public static final EntityEntry<RocketContraptionEntity> ROCKET_CONTRAPTION =
             contraption("rocket_contraption", RocketContraptionEntity::new,
                     () -> RocketContraptionEntityRenderer::new, 15, 1, true)
+                    .visual(() -> ContraptionVisual::new)
                     .register();
 
     public static final EntityEntry<RoomAtmosphere> ATMOSPHERE_ENTITY =
             register("room_atmosphere", RoomAtmosphere::new,
                     () -> RoomAtmosphereRenderer::new,
-                    MobCategory.MISC, 3, 10,
+                    MobCategory.MISC, Integer.MAX_VALUE, 10,
                     false, true, RoomAtmosphere::build)
                     .register();
 
@@ -44,7 +46,7 @@ public class EntityInit {
                                                                          NonNullSupplier<NonNullFunction<EntityRendererProvider.Context, EntityRenderer<? super T>>> renderer,
                                                                          MobCategory group, int range, int updateFrequency, boolean sendVelocity, boolean immuneToFire,
                                                                          NonNullConsumer<EntityType.Builder<T>> propertyBuilder) {
-        String id = Lang.asId(name);
+        String id = CreateLang.asId(name);
         return (CreateEntityBuilder<T, ?>) CreatingSpace.REGISTRATE
                 .entity(id, factory, group)
                 .properties(b -> b.setTrackingRange(range)

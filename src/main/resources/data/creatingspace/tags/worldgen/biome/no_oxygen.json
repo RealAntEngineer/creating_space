@@ -1,5 +1,7 @@
 {
   "values": [
+    "#creatingspace:is_asteroid_belt",
+    "#creatingspace:is_europa",
     "#creatingspace:is_moon",
     "#creatingspace:is_mars",
     "#creatingspace:is_venus",

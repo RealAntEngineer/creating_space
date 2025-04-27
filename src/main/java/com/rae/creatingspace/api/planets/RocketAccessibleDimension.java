@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.UnboundedMapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.Map;
 
@@ -16,55 +17,61 @@ import java.util.Map;
 public class RocketAccessibleDimension {
     public static final ResourceKey<Registry<RocketAccessibleDimension>> REGISTRY_KEY =
             ResourceKey.createRegistryKey(new ResourceLocation("creatingspace:rocket_accessible_dimension"));
-    public static final ResourceLocation BASE_BODY = new ResourceLocation("sun");
+
     public static final UnboundedMapCodec<ResourceLocation, AccessibilityParameter> ADJACENT_DIMENSIONS_CODEC =
             Codec.unboundedMap(ResourceLocation.CODEC, AccessibilityParameter.CODEC);
     //use ResourceLocation rather than ResourceKey
     public static final Codec<RocketAccessibleDimension> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                            Codec.INT.fieldOf("distanceToOrbitingBody").forGetter(i -> i.distanceToOrbitingBody),
-                            ResourceLocation.CODEC.optionalFieldOf("orbitedBody", BASE_BODY).forGetter(i -> i.orbitedBody),
+                            OrbitParameter.CODEC.fieldOf("orbitParameters").forGetter(i -> i.orbitParameter),
                             Codec.INT.fieldOf("arrivalHeight").forGetter(i -> i.arrivalHeight),
                             Codec.FLOAT.fieldOf("gravity").forGetter(i -> i.gravity),
+                            Codec.BOOL.optionalFieldOf("renderAsPlanet", false).forGetter(i->i.renderAsPlanet),
                             ADJACENT_DIMENSIONS_CODEC.fieldOf("adjacentDimensions").forGetter(i -> i.adjacentDimensions)
                     )
                     .apply(instance, RocketAccessibleDimension::new));
-    int distanceToOrbitingBody;
+
+
+    OrbitParameter orbitParameter;
     //in what ? km will be too much, Mm : 400 for the mun 1500000 for the sun ?
     // (with changes for visibility ?)
     int arrivalHeight;
     float gravity;
-    ResourceLocation orbitedBody;//mostly used for the DestinationScreen and for falling out of an orbit
+    //mostly used for the DestinationScreen and for falling out of an orbit
+    ResourceLocation orbitedBody;
+    boolean renderAsPlanet;
+    Map<ResourceLocation, AccessibilityParameter> adjacentDimensions;
 
+    @NonnullDefault
+    public RocketAccessibleDimension(OrbitParameter orbitParameter, int arrivalHeight, float gravity,boolean renderAsPlanet, Map<ResourceLocation, AccessibilityParameter> adjacentDimensions) {
+        this.orbitParameter = orbitParameter;
+        this.arrivalHeight = arrivalHeight;
+        this.gravity = gravity;
+        this.orbitedBody = orbitParameter.getOrbitedBody();
+        this.adjacentDimensions = adjacentDimensions;
+        this.renderAsPlanet = renderAsPlanet;
+    }
+    public OrbitParameter getOrbitParameter() {
+        return orbitParameter;
+    }
     public Map<ResourceLocation, AccessibilityParameter> adjacentDimensions() {
         return adjacentDimensions;
     }
-
-    // is orbit should be more than just gravity = 0 no ?
-    Map<ResourceLocation, AccessibilityParameter> adjacentDimensions;
-
-    public RocketAccessibleDimension(int distanceToOrbitingBody, ResourceLocation orbitedBody, int arrivalHeight, float gravity, Map<ResourceLocation, AccessibilityParameter> adjacentDimensions) {
-        this.distanceToOrbitingBody = distanceToOrbitingBody;
-        this.arrivalHeight = arrivalHeight;
-        this.gravity = gravity;
-        this.orbitedBody = orbitedBody;
-        this.adjacentDimensions = adjacentDimensions;
-    }
-
     public float gravity() {
         return gravity;
     }
-
     public int arrivalHeight() {
         return arrivalHeight;
     }
-
     public ResourceLocation orbitedBody() {
         return orbitedBody;
     }
-
+    @Deprecated
     public int distanceToOrbitedBody() {
-        return distanceToOrbitingBody;
+        return (int) orbitParameter.getR();
+    }
+    public boolean isRenderAsPlanet() {
+        return renderAsPlanet;
     }
 
     //TODO remove the duplicated arrivalHeight or rename it if it's used

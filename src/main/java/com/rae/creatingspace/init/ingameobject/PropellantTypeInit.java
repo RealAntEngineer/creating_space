@@ -1,7 +1,7 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.TagsInit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -17,6 +17,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Map;
 import java.util.function.Supplier;
+
+import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
 
 public class PropellantTypeInit {
     //TODO use datapackRegitry(Codec,Codec)
@@ -46,10 +48,8 @@ public class PropellantTypeInit {
                     10
             ));
 
-    @OnlyIn(Dist.CLIENT)
     public static Registry<PropellantType> getSyncedPropellantRegistry() {
-        return Minecraft.getInstance().getConnection().registryAccess().registry(Keys.PROPELLANT_TYPE)
-                .orElseThrow();
+        return getSideAwareRegistry(Keys.PROPELLANT_TYPE);
     }
     public static void register(IEventBus modEventBus) {
         DEFERRED_PROPELLANT_TYPE.register(modEventBus);

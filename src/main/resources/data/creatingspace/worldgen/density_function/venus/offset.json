@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:cache_2d",
+  "argument": {
+    "type": "minecraft:add",
+    "argument1": {
+      "type": "minecraft:mul",
+      "argument1": "creatingspace:venus/volcano/factor",
+      "argument2": "creatingspace:venus/volcano/volcano_initial"
+    },
+    "argument2": {
+      "type": "minecraft:mul",
+      "argument1": "creatingspace:venus/folded_rivers",
+      "argument2": "creatingspace:venus/rivers_factor"
+    }
+  }
+}

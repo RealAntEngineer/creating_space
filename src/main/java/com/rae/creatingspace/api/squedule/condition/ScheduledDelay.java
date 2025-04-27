@@ -1,9 +1,10 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.Pair;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.data.Pair;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,7 @@ public class ScheduledDelay extends TimedWaitCondition {
 
     @Override
     public Pair<ItemStack, Component> getSummary() {
-        return Pair.of(ItemStack.EMPTY, Lang.translateDirect("schedule.condition.delay_short", formatTime(true)));
+        return Pair.of(ItemStack.EMPTY, CreateLang.translateDirect("schedule.condition.delay_short", formatTime(true)));
     }
 
     @Override

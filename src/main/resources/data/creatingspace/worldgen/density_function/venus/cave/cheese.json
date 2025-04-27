@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:range_choice",
+  "input": "creatingspace:venus/depth",
+  "min_inclusive": 2,
+  "max_exclusive": 100000,
+  "when_in_range": {
+    "type": "minecraft:range_choice",
+    "input": "minecraft:y",
+    "min_inclusive": -50,
+    "max_exclusive": 2000,
+    "when_in_range": {
+      "type": "minecraft:mul",
+      "argument1": -1,
+      "argument2": {
+        "type": "minecraft:max",
+        "argument1": {
+          "type": "minecraft:add",
+          "argument1": -0.6,
+          "argument2": {
+            "type": "minecraft:interpolated",
+            "argument": {
+              "type": "minecraft:noise",
+              "noise": "creatingspace:venus/cave_cheese",
+              "xz_scale": 1,
+              "y_scale": 1
+            }
+          }
+        },
+        "argument2": 0
+      }
+    },
+    "when_out_of_range": 0
+  },
+  "when_out_of_range": 0
+}

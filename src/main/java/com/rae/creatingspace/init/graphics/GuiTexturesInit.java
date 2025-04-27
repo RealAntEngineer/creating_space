@@ -2,9 +2,9 @@ package com.rae.creatingspace.init.graphics;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.rae.creatingspace.CreatingSpace;
-import com.simibubi.create.foundation.gui.UIRenderHelper;
-import com.simibubi.create.foundation.gui.element.ScreenElement;
-import com.simibubi.create.foundation.utility.Color;
+import net.createmod.catnip.gui.UIRenderHelper;
+import net.createmod.catnip.gui.element.ScreenElement;
+import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,7 +15,9 @@ public enum GuiTexturesInit implements ScreenElement {
     ROCKET_CONTROLS("rocket_controls",13,0,226,226),
     ROCKET_ASSEMBLE("rocket_assemble", 0, 0, 192, 76),
     ROCKET_ICON("rocket_assemble", 1, 231, 16, 24),
+    SCHEDULE_BACKGROUND("schedule/schedule",256,226),
     LAUNCH_BUTTON("rocket_controls",155,202,77,18),//clean
+    INSTRUCTION_BACKGROUND("schedule/schedule_2",3,0,318,89,512,512),
     SEALER_BACKGROUND("oxygen_sealer",13,0,256,124),
     ROCKET_ENGINEER_TABLE("rocket_engineer_table/background", 0, 0, 382, 126, 512, 512),
     ROCKET_ENGINEER_TABLE_INPUT("rocket_engineer_table/background", 0, 125, 131, 126, 512, 512),
@@ -24,12 +26,6 @@ public enum GuiTexturesInit implements ScreenElement {
     O2_GAUGE_FRAME("o2_gauge/frame",0,0,32,64,64,64),
     O2_GAUGE_SLIDER("o2_gauge/slider",0,0,32,64,64,64),
     O2_GAUGE_SHADOW("o2_gauge/shadow",0,0,32,64,64,64),
-    UP_ARROW("rocket_controls",159,231,16,23),//clean
-    DOWN_ARROW("rocket_controls",211,232,16,23),//clean
-
-    ON_EARTH("near_planets",0,339,220,173,512,512),//clean
-    ON_EARTH_ORBIT("near_planets",0,250,220,173,512,512),//clean
-    OVERWORLD("overworld", 0, 83, 220, 173),
     ROCKET_INFO("rocket_info", 0, 0, 111, 143);//clean
 
     //copy of allGuiTexture's methods
@@ -71,7 +67,7 @@ public enum GuiTexturesInit implements ScreenElement {
 
     @OnlyIn(Dist.CLIENT)
     public void render(GuiGraphics graphics, int x, int y) {
-        graphics.blit(location, x, y, startX, startY, width, height);
+        graphics.blit(location, x, y, startX, startY, width, height, sheet_width, sheet_height);
     }
 
     @OnlyIn(Dist.CLIENT)

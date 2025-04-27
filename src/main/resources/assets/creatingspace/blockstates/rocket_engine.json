@@ -1,19 +1,32 @@
+
 {
   "variants": {
+    "facing=up": {
+      "model": "creatingspace:block/small_rocket_engine"
+    },
+    "facing=down": {
+      "model": "creatingspace:block/small_rocket_engine",
+      "x": 180
+    },
     "facing=north": {
-      "model": "creatingspace:block/super_rocket_engine"
+      "model": "creatingspace:block/small_rocket_engine",
+      "x": 90
     },
     "facing=south": {
-      "model": "creatingspace:block/super_rocket_engine",
-      "y": 180
+      "model": "creatingspace:block/small_rocket_engine",
+      "y": 180,
+      "x": 90
     },
     "facing=west": {
-      "model": "creatingspace:block/super_rocket_engine",
-      "y": 270
+      "model": "creatingspace:block/small_rocket_engine",
+      "y": 270,
+      "x": 90
+
     },
     "facing=east": {
-      "model": "creatingspace:block/super_rocket_engine",
-      "y": 90
+      "model": "creatingspace:block/small_rocket_engine",
+      "y": 90,
+      "x": 90
     }
   }
 }

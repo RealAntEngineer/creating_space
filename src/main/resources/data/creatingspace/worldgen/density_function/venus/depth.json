@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:y_clamped_gradient",
+    "from_y": -44,
+    "to_y": 170,
+    "from_value": 1.5,
+    "to_value": -1.5
+  },
+  "argument2": "creatingspace:venus/offset"
+}

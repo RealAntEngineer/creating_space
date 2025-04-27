@@ -1,7 +1,7 @@
 package com.rae.creatingspace.mixin.entity;
 
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.server.blocks.multiblock.BigRocketStructuralBlock;
+import com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.simibubi.create.content.contraptions.Contraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

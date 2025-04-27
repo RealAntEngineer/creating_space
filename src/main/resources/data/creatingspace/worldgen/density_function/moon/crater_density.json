@@ -1,33 +1,28 @@
 {
   "type": "minecraft:cache_2d",
   "argument": {
-    "type": "minecraft:range_choice",
-    "input": {
-      "type": "minecraft:add",
-      "argument1": 0.1,
-      "argument2": {
-        "type": "minecraft:noise",
-        "noise": "creatingspace:crater",
-        "xz_scale": 0.5,
-        "y_scale": 0.5
-      }
+    "type": "minecraft:add",
+    "argument1": {
+      "type": "minecraft:clamp",
+      "input":{
+        "type": "creatingspace:worley_noise",
+        "xz_size": 64,
+        "y_size": 1000000000,
+        "scale_factor": 1
+      },
+      "min": 0,
+      "max": 0.5
     },
-    "min_inclusive": -10000,
-    "max_exclusive": 0,
-    "when_in_range": {
-      "type": "minecraft:mul",
-      "argument1": 10,
-      "argument2": {
-        "type": "minecraft:add",
-        "argument1": 0.1,
-        "argument2": {
-          "type": "minecraft:noise",
-          "noise": "creatingspace:crater",
-          "xz_scale": 0.5,
-          "y_scale": 0.5
-        }
-      }
-    },
-    "when_out_of_range": 0
+    "argument2": {
+      "type": "minecraft:clamp",
+      "input":{
+        "type": "creatingspace:worley_noise",
+        "xz_size": 256,
+        "y_size": 1000000000,
+        "scale_factor": 1
+      },
+      "min": 0,
+      "max": 0.8
+    }
   }
 }

@@ -6,6 +6,14 @@
   },
   "arrivalHeight": 200,
   "gravity": 1.6,
-  "orbitedBody": "minecraft:overworld",
-  "distanceToOrbitingBody": 400
+  "renderAsPlanet": true,
+  "orbitParameters": {
+    "orbitedBody": "minecraft:overworld",
+    "size": 0.3,
+    "r": 2.5,
+    "orbT": 30,
+    "rotT": 30,
+    "i": 10,
+    "rotStart": 0.5
+  }
 }

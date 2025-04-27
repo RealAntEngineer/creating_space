@@ -15,7 +15,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_inconel_injector"
                 },
                 {
                     "item": "create:iron_sheet"
@@ -23,7 +23,7 @@
             ],
             "results": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_inconel_injector"
                 }
             ]
         },
@@ -31,7 +31,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_inconel_injector"
                 },
                 {
                     "item": "minecraft:iron_nugget"
@@ -39,12 +39,12 @@
             ],
             "results": [
                 {
-                    "item": "create:sturdy_sheet"
+                    "item": "creatingspace:incomplete_inconel_injector"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "create:sturdy_sheet"
+        "item": "creatingspace:incomplete_inconel_injector"
     }
 }

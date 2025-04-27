@@ -1,5 +1,5 @@
 {
-  "type": "creatingspace:mars_orbit",
+  "type": "creatingspace:orbit",
   "generator": {
     "type": "minecraft:flat",
     "settings": {

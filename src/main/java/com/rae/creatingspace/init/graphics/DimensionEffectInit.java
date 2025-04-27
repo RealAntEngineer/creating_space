@@ -1,9 +1,8 @@
 package com.rae.creatingspace.init.graphics;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.client.effects.CustomDimensionEffects;
-import com.rae.creatingspace.init.worldgen.DimensionInit;
-import net.minecraft.resources.ResourceLocation;
+import com.rae.creatingspace.content.planets.AtmosphericPlanetsEffect;
+import com.rae.creatingspace.content.planets.SmartPlanetsEffect;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
@@ -16,29 +15,8 @@ public class DimensionEffectInit {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
-        registerDimensionEffects(event,
-                DimensionInit.EARTH_ORBIT_TYPE.location(),
-                new CustomDimensionEffects.EarthOrbitEffects(), true);
-        registerDimensionEffects(event,
-                DimensionInit.MOON_ORBIT_TYPE.location(),
-                new CustomDimensionEffects.MoonOrbitEffect(), true);
-        registerDimensionEffects(event,
-                DimensionInit.MOON_TYPE.location(),
-                new CustomDimensionEffects.MoonEffect(), true);
-        registerDimensionEffects(event,
-                DimensionInit.MARS_ORBIT_TYPE.location(),
-                new CustomDimensionEffects.MarsOrbitEffects(), true);
-        registerDimensionEffects(event,
-                DimensionInit.MARS_TYPE.location(),
-                new CustomDimensionEffects.MarsEffect(), true);
-
-        registerDimensionEffects(event,
-                CreatingSpace.resource("europa"),
-                new CustomDimensionEffects.EuropaEffect(), true);
-    }
-
-    private static void registerDimensionEffects(RegisterDimensionSpecialEffectsEvent event, ResourceLocation location, CustomDimensionEffects.GenericCelestialOrbitEffect effects, boolean renderSun) {
-        effects.setRenderSun(renderSun);
-        event.register(location, effects);
+        event.register(CreatingSpace.resource("mars"),new AtmosphericPlanetsEffect());
+        event.register(CreatingSpace.resource("venus"),new AtmosphericPlanetsEffect());
+        event.register(CreatingSpace.resource("smart"),new SmartPlanetsEffect());
     }
 }

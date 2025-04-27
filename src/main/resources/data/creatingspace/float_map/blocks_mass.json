@@ -1,0 +1,21 @@
+{
+  "values": {
+    "#forge:stone": 3000,
+    "#forge:ores": 4000,
+    "minecraft:gold_block": 19000,
+    "minecraft:diamond_block": 2500,
+    "minecraft:raw_gold_block": 18000,
+    "minecraft:raw_copper_block": 8000,
+    "minecraft:copper_block": 8600,
+    "creatingspace:raw_aluminum_block": 2300,
+    "creatingspace:raw_cobalt_block": 5000,
+    "minecraft:iron_block": 7800,
+    "create:fluid_pipe": 300,
+    "create:fluid_tank": 40,
+    "creatingspace:big_rocket_engine": 3000,
+    "creatingspace:small_rocket_engine": 1000,
+    "creatingspace:small_engine_structure": 0,
+    "creatingspace:super_engine_structure": 0,
+    "creatingspace:big_engine_structure": 0
+  }
+}

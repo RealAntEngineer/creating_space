@@ -7,5 +7,9 @@
     "from_value": 1.5,
     "to_value": -1.5
   },
-  "argument2": "creatingspace:moon/offset"
+  "argument2": {
+    "type": "minecraft:add",
+    "argument1": "creatingspace:moon/offset",
+    "argument2": 0
+  }
 }

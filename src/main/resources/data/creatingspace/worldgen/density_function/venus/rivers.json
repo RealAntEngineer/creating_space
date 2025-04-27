@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:cache_2d",
+    "argument": {
+      "type": "minecraft:shifted_noise",
+      "noise": "creatingspace:venus/rivers",
+      "xz_scale": 0.5,
+      "y_scale": 0,
+      "shift_x": "creatingspace:shift_x",
+      "shift_y": 0,
+      "shift_z": "creatingspace:shift_z"
+    }
+}

@@ -9,12 +9,15 @@
     "creatingspace:mars_orbit": {
       "deltaV": 400
     },
-    "creatingspace:venus": {
-      "deltaV": 1600
+    "creatingspace:venus_orbit": {
+      "deltaV": 1400
     }
   },
   "arrivalHeight": 64,
   "gravity": 0,
-  "orbitedBody": "creatingspace:the_moon",
-  "distanceToOrbitingBody": 10
-}
+  "orbitParameters": {
+    "orbitedBody": "creatingspace:the_moon",
+    "r": 0.3,
+    "orbT": 5,
+    "rotT": 5
+  }}

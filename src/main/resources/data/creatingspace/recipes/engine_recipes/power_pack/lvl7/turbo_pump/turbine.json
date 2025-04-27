@@ -24,7 +24,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_turbine"
                 },
                 {
                     "item": "creatingspace:inconel_turbine_shaft"
@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_turbine"
                 }
             ]
         },
@@ -40,7 +40,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_turbine"
                 },
                 {
                     "item": "creatingspace:inconel_blisk"
@@ -48,12 +48,12 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:engine_blueprint"
+                    "item": "creatingspace:incomplete_inconel_turbine"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:engine_blueprint"
+        "item": "creatingspace:incomplete_inconel_turbine"
     }
 }

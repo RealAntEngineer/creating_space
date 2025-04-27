@@ -3,8 +3,8 @@ package com.rae.creatingspace.init;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
-import com.rae.creatingspace.server.armor.OxygenBacktankUtil;
-import com.rae.creatingspace.server.items.engine.EngineItem;
+import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
+import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -52,7 +52,6 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.ROCKET_CONTROLS);
                         output.accept(BlockInit.CATALYST_CARRIER);
                         output.accept(BlockInit.MECHANICAL_ELECTROLYZER);
-                        output.accept(BlockInit.ROCKET_GENERATOR);
                         output.accept(BlockInit.FLOW_METER);
                         output.accept(BlockInit.OXYGEN_SEALER);
                         output.accept(BlockInit.AIR_LIQUEFIER);

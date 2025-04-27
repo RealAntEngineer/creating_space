@@ -1,11 +1,11 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.Pair;
+import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.lang.Lang;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,12 +18,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class CargoThresholdCondition extends LazyTickedScheduleCondition {
-    public static enum Ops {
+    public enum Ops {
         GREATER(">"), LESS("<"), EQUAL("=");
 
         public String formatted;
 
-        private Ops(String formatted) {
+        Ops(String formatted) {
             this.formatted = formatted;
         }
 
@@ -38,7 +38,7 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
 
         public static List<? extends Component> translatedOptions() {
             return Arrays.stream(values())
-                    .map(op -> Lang.translateDirect("schedule.condition.threshold." + Lang.asId(op.name())))
+                    .map(op -> CreateLang.translateDirect("schedule.condition.threshold." + Lang.asId(op.name())))
                     .toList();
         }
     }
@@ -65,8 +65,6 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
         super.requestStatusToUpdate(context);
     }
 
-    ;
-
     protected int getLastDisplaySnapshot(CompoundTag context) {
         if (!context.contains("CurrentDisplay"))
             return -1;
@@ -81,7 +79,7 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
 
     @Override
     public Pair<ItemStack, Component> getSummary() {
-        return Pair.of(getIcon(), Components.literal(getOperator().formatted + " " + getThreshold()).append(getUnit()));
+        return Pair.of(getIcon(), Component.literal(getOperator().formatted + " " + getThreshold()).append(getUnit()));
     }
 
     @Override
@@ -108,10 +106,10 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
 
     @Override
     public List<Component> getSecondLineTooltip(int slot) {
-        return ImmutableList.of(Lang.translateDirect("schedule.condition.threshold.place_item"),
-                Lang.translateDirect("schedule.condition.threshold.place_item_2")
+        return ImmutableList.of(CreateLang.translateDirect("schedule.condition.threshold.place_item"),
+                CreateLang.translateDirect("schedule.condition.threshold.place_item_2")
                         .withStyle(ChatFormatting.GRAY),
-                Lang.translateDirect("schedule.condition.threshold.place_item_3")
+                CreateLang.translateDirect("schedule.condition.threshold.place_item_3")
                         .withStyle(ChatFormatting.GRAY));
     }
 
@@ -120,8 +118,8 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {
         builder.addSelectionScrollInput(0, 24, (i, l) -> {
             i.forOptions(Ops.translatedOptions())
-                    .titled(Lang.translateDirect("schedule.condition.threshold.train_holds"))
-                    .format(state -> Components.literal(" " + Ops.values()[state].formatted));
+                    .titled(CreateLang.translateDirect("schedule.condition.threshold.train_holds"))
+                    .format(state -> Component.literal(" " + Ops.values()[state].formatted));
         }, "Operator");
         builder.addIntegerTextInput(29, 41, (e, t) -> {
         }, "Threshold");

@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:flat_cache",
+  "argument": {
+    "type": "minecraft:spline",
+    "spline": {
+      "coordinate": "creatingspace:venus/erosion",
+      "points": [
+        {
+          "location": -0.5,
+          "derivative": 0,
+          "value": 3
+        },
+        {
+          "location": -0.25,
+          "derivative": 0,
+          "value": 4
+        },
+        {
+          "location": -0.1,
+          "derivative": 0,
+          "value": 5
+        },
+        {
+          "location": 0.03,
+          "derivative": 0,
+          "value": 7
+        },
+        {
+          "location": 0.45,
+          "derivative": 0,
+          "value": 8
+        },
+        {
+          "location": 0.55,
+          "derivative": 0,
+          "value": 10
+        }
+      ]
+    }
+  }
+}

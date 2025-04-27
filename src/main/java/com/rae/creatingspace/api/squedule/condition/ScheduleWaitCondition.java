@@ -1,10 +1,10 @@
 package com.rae.creatingspace.api.squedule.condition;
 
 import com.rae.creatingspace.api.squedule.RocketSchedule;
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;

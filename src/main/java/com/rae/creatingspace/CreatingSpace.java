@@ -1,25 +1,27 @@
 package com.rae.creatingspace;
 
 import com.mojang.logging.LogUtils;
-import com.rae.creatingspace.api.design.ExhaustPackType;
-import com.rae.creatingspace.api.design.PowerPackType;
-import com.rae.creatingspace.api.design.PropellantType;
+import com.rae.creatingspace.content.rocket.engine.design.ExhaustPackType;
+import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
+import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.content.datagen.CSDatagen;
 import com.rae.creatingspace.init.*;
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import com.rae.creatingspace.init.ingameobject.*;
 import com.rae.creatingspace.init.worldgen.CarverInit;
-import com.rae.creatingspace.saved.UnlockedDesignManager;
-import com.rae.creatingspace.server.contraption.CSContraptionType;
-import com.rae.creatingspace.server.event.IgniteOnPlace;
-import com.rae.creatingspace.utilities.data.MassOfBlockReader;
+import com.rae.creatingspace.init.worldgen.DensityFunctionInit;
+import com.rae.creatingspace.init.worldgen.FeatureInit;
+import com.rae.creatingspace.init.CSContraptionType;
+import com.rae.creatingspace.content.event.IgniteOnPlace;
+import com.rae.creatingspace.legacy.utilities.CSMassUtil;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,10 +43,11 @@ public class CreatingSpace {
     public static final String MODID = "creatingspace" ;
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
-    public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
+    public static final String NAME = "Creating Space";
+
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
-            return new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE).
+            return new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE).
                     andThen(TooltipModifier.mapNull(KineticStats.create(item)));
         });
     }
@@ -74,7 +77,7 @@ public class CreatingSpace {
         PaintingInit.register(modEventBus);
         RecipeInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
-        CarverInit.register(modEventBus);
+
         EntityDataSerializersInit.register(modEventBus);
         MiscInit.register(modEventBus);
         CreativeModeTabsInit.register(modEventBus);
@@ -85,14 +88,19 @@ public class CreatingSpace {
         PacketInit.registerPackets();
         IgniteOnPlace.register();
 
+        CarverInit.register(modEventBus);
+        DensityFunctionInit.register(modEventBus);
 
-        CSContraptionType.prepare();
+        FeatureInit.register(modEventBus);
+
+        CSContraptionType.register(modEventBus);
 
         modEventBus.addListener(CreatingSpace::init);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
-
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus,forgeEventBus));
+
+
 
     }
     public static void init(final FMLCommonSetupEvent event) {
@@ -100,14 +108,14 @@ public class CreatingSpace {
 
         event.enqueueWork(() -> {
 
-            FluidInit.registerFluidInteractions();
+            //FluidInit.registerFluidInteractions();
             FluidInit.registerOpenEndedEffect();
         });
     }
     public static void onAddReloadListeners(AddReloadListenerEvent event)
     {
         //datagen, and tag provider
-        event.addListener(MassOfBlockReader.MASS_HOLDER);
+        event.addListener(CSMassUtil.MASS_MAP);
     }
 
     public static ResourceLocation resource(String path){

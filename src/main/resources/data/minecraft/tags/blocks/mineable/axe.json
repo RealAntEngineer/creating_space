@@ -6,11 +6,10 @@
   "creatingspace:big_rocket_engine",
   "creatingspace:big_engine_structure",
   "creatingspace:rocket_controls",
-  "creatingspace:rocket_generator",
+  "creatingspace:rocket_engineer_table",
   "creatingspace:flight_recorder",
   "creatingspace:air_liquefier",
   "creatingspace:oxygen_sealer",
-  "creatingspace:chemical_synthesizer",
   "creatingspace:catalyst_carrier",
   "creatingspace:mechanical_electrolyzer",
   "creatingspace:flow_meter"

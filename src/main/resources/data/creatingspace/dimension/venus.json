@@ -7,25 +7,109 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
-          "biome": "creatingspace:venus",
+          "biome": "creatingspace:venus/cave",
           "parameters": {
-            "temperature": 0,
-            "humidity": 0,
-            "continentalness": 1,
-            "erosion": 0,
-            "weirdness": 0,
+            "temperature": [
+              -1,
+              1
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              0.3,
+              1
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              1
+            ],
+            "depth": [0.1,1],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:venus/volcano",
+          "parameters": {
+            "temperature": [
+              -1,
+              1
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              0.3,
+              1
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              1
+            ],
             "depth": 0,
             "offset": 0
           }
         },
         {
-          "biome": "creatingspace:venus_hellground",
+          "biome": "creatingspace:venus/toxic",
           "parameters": {
-            "temperature": 0,
-            "humidity": 0,
-            "continentalness": 0,
-            "erosion": 1,
-            "weirdness": 1,
+            "temperature": [
+              -1,
+              1
+            ],
+            "humidity": [
+              0.2,
+              1
+            ],
+            "continentalness": [
+              -1,
+              -0.2
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              1
+            ],
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:venus/plain",
+          "parameters": {
+            "temperature": [
+              -1,
+              1
+            ],
+            "humidity": [
+              -1,
+              0.1
+            ],
+            "continentalness": [
+              -1,
+              0.2
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              1
+            ],
             "depth": 0,
             "offset": 0
           }

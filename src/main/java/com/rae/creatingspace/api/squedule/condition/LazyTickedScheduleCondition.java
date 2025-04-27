@@ -1,12 +1,12 @@
 package com.rae.creatingspace.api.squedule.condition;
 
-import com.rae.creatingspace.server.entities.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 
 public abstract class LazyTickedScheduleCondition extends ScheduleWaitCondition {
 
-    private int tickRate;
+    private final int tickRate;
 
     public LazyTickedScheduleCondition(int tickRate) {
         this.tickRate = tickRate;

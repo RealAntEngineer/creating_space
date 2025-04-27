@@ -1,0 +1,33 @@
+package com.rae.creatingspace.mixin.fluids;
+
+import com.rae.creatingspace.init.ingameobject.FluidInit;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fluids.FluidInteractionRegistry;
+import net.minecraftforge.fluids.FluidType;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Mixin(FluidInteractionRegistry.class)
+public class FluidInteractionRegistryMixin {
+    @Mutable
+    @Shadow(remap = false) @Final private static Map<FluidType, List<FluidInteractionRegistry.InteractionInformation>> INTERACTIONS;
+
+    @Inject(method = "<clinit>", at = @At("HEAD"), cancellable = true)
+    private static void redirectFluidInteractionRegistry(CallbackInfo ci) {
+        INTERACTIONS = new HashMap<>();
+        FluidInit.registerFluidInteractions();
+        FluidInteractionRegistry.addInteraction((FluidType) ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation((level, currentPos, relativePos, currentState) -> level.getBlockState(currentPos.below()).is(Blocks.SOUL_SOIL) && level.getBlockState(relativePos).is(Blocks.BLUE_ICE), Blocks.BASALT.defaultBlockState()));
+
+        ci.cancel();
+    }
+}

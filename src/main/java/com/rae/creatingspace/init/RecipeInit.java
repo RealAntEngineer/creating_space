@@ -1,14 +1,14 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.recipes.AirLiquefyingRecipe;
-import com.rae.creatingspace.recipes.ChemicalSynthesisRecipe;
-import com.rae.creatingspace.recipes.MechanicalElectrolysisRecipe;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe;
+import com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe;
+import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolysisRecipe;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
-import com.simibubi.create.foundation.utility.Lang;
+import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;

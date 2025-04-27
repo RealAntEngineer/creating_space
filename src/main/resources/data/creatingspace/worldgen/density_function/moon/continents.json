@@ -2,7 +2,7 @@
   "type": "minecraft:flat_cache",
   "argument": {
     "type": "minecraft:shifted_noise",
-    "noise": "creatingspace:continentalness",
+    "noise": "creatingspace:moon/continentalness",
     "xz_scale": 0.25,
     "y_scale": 0,
     "shift_x": "creatingspace:shift_x",
