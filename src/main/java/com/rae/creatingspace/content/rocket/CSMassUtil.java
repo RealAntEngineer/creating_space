@@ -1,4 +1,4 @@
-package com.rae.creatingspace.legacy.utilities;
+package com.rae.creatingspace.content.rocket;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.IMass;

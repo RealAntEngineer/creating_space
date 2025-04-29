@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.squedule;
+package com.rae.creatingspace.content.rocket.squedule;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

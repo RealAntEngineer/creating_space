@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.rocket.engine.design;
 
-import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
+import com.rae.creatingspace.content.saved.UnlockedDesignManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;

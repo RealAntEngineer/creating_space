@@ -16,7 +16,7 @@ import com.rae.creatingspace.init.worldgen.DensityFunctionInit;
 import com.rae.creatingspace.init.worldgen.FeatureInit;
 import com.rae.creatingspace.init.CSContraptionType;
 import com.rae.creatingspace.content.event.IgniteOnPlace;
-import com.rae.creatingspace.legacy.utilities.CSMassUtil;
+import com.rae.creatingspace.content.rocket.CSMassUtil;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;

@@ -1,4 +1,4 @@
-package com.rae.creatingspace.legacy.saved;
+package com.rae.creatingspace.content.saved;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;

@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.squedule.condition;
+package com.rae.creatingspace.content.rocket.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
 import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;

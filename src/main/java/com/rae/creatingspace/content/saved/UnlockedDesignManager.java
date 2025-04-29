@@ -1,8 +1,7 @@
-package com.rae.creatingspace.legacy.saved;
+package com.rae.creatingspace.content.saved;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.PacketInit;
-import com.rae.creatingspace.legacy.utilities.packet.UpdateSavedDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;

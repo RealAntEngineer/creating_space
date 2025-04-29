@@ -4,13 +4,11 @@ import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.contraption.Synced2AxisContraptionEntity;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.content.rocket.CustomTeleporter;
-import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
-import com.rae.creatingspace.api.squedule.RocketPath;
-import com.rae.creatingspace.api.squedule.RocketScheduleRuntime;
+import com.rae.creatingspace.content.rocket.RocketTeleporter;
+import com.rae.creatingspace.content.rocket.squedule.RocketPath;
+import com.rae.creatingspace.content.rocket.squedule.RocketScheduleRuntime;
 import com.rae.creatingspace.init.EntityDataSerializersInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
-import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.legacy.utilities.CSNBTUtil;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightDataHelper;
@@ -70,14 +68,12 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
     private static final Logger LOGGER = LoggerFactory.getLogger("CS/RocketContraptionEntity");
     int soundEffectTickCount = 0;
     static int ROCKET_SOUND_LENGTH = 35;
-    boolean shouldHandleCalculation = false;
     //inventory management
     // maybe we could make it simpler ?
-    HashMap<PropellantType, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
+    HashMap<TagKey<Fluid>, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<TagKey<Fluid>, Float> partialDrainAmountPerFluid = new HashMap<>();
     //end of inventory management
-    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(),
-                    RocketContraption.ConsumptionInfo.CODEC)
+    public static Codec<HashMap<TagKey<Fluid>, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = RocketContraption.TPTF_CODEC
             .xmap(HashMap::new, i -> i);
     public static Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
             TagKey.codec(Registries.FLUID),
@@ -148,12 +144,8 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
         //TODO that could be in the inventory manager of the rocket -> 1.8
         //hmmmm, maybe do that elsewhere ?
         float totalThrust =rocketContraptionEntity.totalThrust;
-        for (PropellantType combination : ((RocketContraption)rocketContraptionEntity.contraption).getTPTFluidConsumption().keySet()) {
-            //initialise if not present
-            for (TagKey<Fluid> fluid :
-                    combination.getPropellantRatio().keySet()) {
-                searchForFluid(rocketContraptionEntity, fluid);
-            }
+        for (TagKey<Fluid> fluid  : ((RocketContraption)rocketContraptionEntity.contraption).getTPTFluidConsumption().keySet()) {
+            searchForFluid(rocketContraptionEntity, fluid);
         }
 
 
@@ -202,18 +194,16 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
             CreatingSpace.LOGGER.info("travel time : {} ticks", totalTickTime);
         }
         //fill the real consumption map and fill the consumedMass map for mass verification
-        HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
+        HashMap<TagKey<Fluid>,Float> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
         float realPartialConsumption = consumedPropellantMass/totalTheoreticalConsumption;
-        for (PropellantType propellantType : ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().keySet()) {
-            RocketContraption.ConsumptionInfo info = ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().get(propellantType);
+        for (TagKey<Fluid> fluidTagKey : ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().keySet()) {
+            RocketContraption.ConsumptionInfo info = ((RocketContraption) rocketContraptionEntity.contraption).getTPTFluidConsumption().get(fluidTagKey);
             //that's the consumed mass for the ensemble of engine with the same propellant combination
-            HashMap<TagKey<Fluid>, Float> correctedConsumptions = new HashMap<>(info.propellantConsumption());
-            RocketContraption.multiplyMap(correctedConsumptions, realPartialConsumption / totalTickTime);
+            Float correctedConsumptions = info.fluidConsumption() * realPartialConsumption / totalTickTime;
 
-            rocketContraptionEntity.realPerTagFluidConsumption.put(propellantType, new RocketContraption.ConsumptionInfo( correctedConsumptions,info.partialThrust()));
-            correctedConsumptions.keySet().forEach(
-                            fluid -> consumedMassForEachPropellant.put(fluid,
-                                    (int) (consumedMassForEachPropellant.getOrDefault(fluid, 0) + correctedConsumptions.get(fluid))));
+            rocketContraptionEntity.realPerTagFluidConsumption.put(fluidTagKey, new RocketContraption.ConsumptionInfo( correctedConsumptions ,info.partialThrust()));
+             consumedMassForEachPropellant.put(fluidTagKey,
+                     consumedMassForEachPropellant.getOrDefault(fluidTagKey, 0f) + correctedConsumptions);
         }
 
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
@@ -253,19 +243,16 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
         //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
         //TODO that could be in the inventory manager of the rocket -> 1.8
-        for (PropellantType combination : ((RocketContraption) this.contraption).getTPTFluidConsumption().keySet()) {
-            RocketContraption.ConsumptionInfo info = ((RocketContraption) this.contraption).getTPTFluidConsumption().get(combination);
+        for (TagKey<Fluid> fluidTagKey : ((RocketContraption) this.contraption).getTPTFluidConsumption().keySet()) {
+            //PropellantType combination = PropellantTypeInit.getSyncedPropellantRegistry().get(location);
+            RocketContraption.ConsumptionInfo info = ((RocketContraption) this.contraption).getTPTFluidConsumption().get(fluidTagKey);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
-            for (float consumption :
-                    info.propellantConsumption().values()) {
-                totalTheoreticalConsumption += consumption;
-            }
+            totalTheoreticalConsumption += info.fluidConsumption();
+
             totalThrust += info.partialThrust();
             //initialise if not present
-            for (TagKey<Fluid> fluid :
-                    combination.getPropellantRatio().keySet()) {
-                searchForFluid(this, fluid);
-            }
+            searchForFluid(this, fluidTagKey);
+
         }
 
         float meanVe = totalThrust > 0 ? totalThrust / totalTheoreticalConsumption : 0;
@@ -370,12 +357,6 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
                 soundEffectTickCount = ROCKET_SOUND_LENGTH;
             } else {
                 soundEffectTickCount--;
-            }
-            //put the handleTrajectory calculation on the start path
-            if (!level().isClientSide() && shouldHandleCalculation) {
-                //so the pos is initialized
-                handelTrajectoryCalculation(this);
-                shouldHandleCalculation = false;
             }
         }
         schedule.tick(level());
@@ -500,7 +481,7 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
 
             if (destServerLevel!=null) {
 
-                this.changeDimension(destServerLevel,new CustomTeleporter(destServerLevel));
+                this.changeDimension(destServerLevel,new RocketTeleporter(destServerLevel));
             }
             else {
                 LOGGER.error("rocket failed to get server for destination : {}", this.nextPath.destination);
@@ -512,7 +493,7 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
         if (level().isClientSide())
             return;
 
-        float gravity = CSDimensionUtil.gravity(this.level().dimensionTypeId().location());
+        float gravity = CSDimensionUtil.gravity(this.level().dimension().location());
 
         if (!isReentry() ){
             if (!level().isClientSide())
@@ -537,12 +518,8 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
         IFluidHandler fluidHandler = rocketContraption.getStorage().getFluids();
         //need to construct a map of drainAmount and partial drain -> map of couple/record(int,float)
         //make in a loop so it look for every one ?
-        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
-            RocketContraption.ConsumptionInfo info = realPerTagFluidConsumption.get(combination);
-
-            //temporary fix : don't consume if the list is empty. It should never happen though
-            for (TagKey<Fluid> fluidTag :
-                    info.propellantConsumption().keySet()) {
+        for (TagKey<Fluid> fluidTag : realPerTagFluidConsumption.keySet()) {
+            RocketContraption.ConsumptionInfo info = realPerTagFluidConsumption.get(fluidTag);
                 Float prevPartialDrainValue = partialDrainAmountPerFluid.get(fluidTag);
                 ArrayList<Fluid> fluids = consumableFluids.get(fluidTag);
                 if (!(fluids == null || fluids.isEmpty())) {
@@ -550,27 +527,26 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
                     Fluid oxFluid = fluids.get(0);
 
                     FluidType oxFluidType = oxFluid.getFluidType();
-                    float oxRo = (float) oxFluidType.getDensity() / 1000;
+                    float rho = (float) oxFluidType.getDensity() / 1000;
 
-                    float oxAmount = info.propellantConsumption().get(fluidTag) / oxRo; // oxConsumption in kg, oxRo in kg/mb
+                    float amount = info.fluidConsumption() / rho; // oxConsumption in kg, rho in kg/mb
                     if (prevPartialDrainValue == null) {
                         prevPartialDrainValue = 0f;
                     }
-                    float partialOxConsumedAmount = prevPartialDrainValue;
-                    partialOxConsumedAmount = partialOxConsumedAmount + oxAmount - ((int) oxAmount);
+                    float partialConsumedAmount = prevPartialDrainValue;
+                    partialConsumedAmount = partialConsumedAmount + amount - ((int) amount);
 
-                    if (partialOxConsumedAmount >= 1) {
-                        oxAmount = oxAmount + 1;
-                        partialOxConsumedAmount = partialOxConsumedAmount - 1;
+                    if (partialConsumedAmount >= 1) {
+                        amount = amount + 1;
+                        partialConsumedAmount = partialConsumedAmount - 1;
                     }
-                    partialDrainAmountPerFluid.put(fluidTag, partialOxConsumedAmount);
+                    partialDrainAmountPerFluid.put(fluidTag, partialConsumedAmount);
 
 
-                    int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
+                    int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) amount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
 
                     if (consumedOx == 0) {
                         RocketContraptionEntity.searchForFluid(this, fluidTag);
-                    }
                 }
             }
         }
@@ -612,11 +588,11 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
                                     passenger.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, passenger.getYRot(), passenger.getXRot());
 
                                     if (passenger instanceof ServerPlayer player) {
-                                        player.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                        player.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                         entity.addSittingPassenger(player, i);
                                     } else {
                                         if (!(passenger instanceof Player)) {
-                                            passenger.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                            passenger.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                             entity.addSittingPassenger(passenger, i);
                                         }
                                     }
@@ -626,10 +602,10 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
                                     movedEntity.moveTo(portalinfo.pos.x + posDif.getX(), portalinfo.pos.y + posDif.getY(), portalinfo.pos.z + posDif.getZ(), movedEntity.getYRot(), movedEntity.getXRot());
 
                                     if (movedEntity instanceof ServerPlayer player) {
-                                        player.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                        player.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                     } else {
                                         if (!(movedEntity instanceof Player)) {
-                                            movedEntity.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                            movedEntity.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                         }
                                     }
                                 }
@@ -691,12 +667,9 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
 
         this.nextPath = RocketPath.parse((CompoundTag) compound.get("nextPath"));
         this.schedule.read((CompoundTag) compound.get("Runtime"));
-        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
-            for (TagKey<Fluid> fluid :
-                    combination.getPropellantRatio().keySet()) {
+        for (TagKey<Fluid> fluid  : realPerTagFluidConsumption.keySet())  {
                 RocketContraptionEntity.searchForFluid(this, fluid);
 
-            }
         }
     }
     @Override
@@ -748,7 +721,6 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
             //this.rocketEntryCoordinate = new BlockPos(nextPath.XZCoord.x,CSDimensionUtil.arrivalHeight(nextPath.destination),nextPath.XZCoord.y);
             getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.TRAVELING);
 
-            shouldHandleCalculation = false;
             handelTrajectoryCalculation(this);
             if (getEntityData().get(STATUS_DATA_ACCESSOR).equals(RocketStatus.COLLISION)) {
                 return -1;

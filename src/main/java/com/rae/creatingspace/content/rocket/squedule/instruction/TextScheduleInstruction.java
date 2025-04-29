@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.squedule.instruction;
+package com.rae.creatingspace.content.rocket.squedule.instruction;
 
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;

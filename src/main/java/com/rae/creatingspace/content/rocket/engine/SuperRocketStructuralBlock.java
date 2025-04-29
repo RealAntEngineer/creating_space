@@ -129,9 +129,9 @@ public class SuperRocketStructuralBlock extends DirectionalBlock implements IWre
         while (!posDiscovered.contains(pos) && posDiscovered.size() < 10) {
             targetedState = level.getBlockState(targetedPos);
 
-            if (targetedState.is(BlockInit.SMALL_ENGINE_STRUCTURAL.get())) {
+            if (targetedState.is(BlockInit.ENGINE_STRUCTURAL.get())) {
                 posDiscovered.add(targetedPos);
-            } else if (targetedState.is(BlockInit.SMALL_ROCKET_ENGINE.get())) {
+            } else if (targetedState.is(BlockInit.ROCKET_ENGINE.get())) {
                 return targetedPos;
             }
             if (targetedState.hasProperty(FACING)) {

@@ -1,7 +1,5 @@
-package com.rae.creatingspace.legacy.utilities.packet;
+package com.rae.creatingspace.content.saved;
 
-import com.rae.creatingspace.legacy.saved.UnlockabledDesignSavedData;
-import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

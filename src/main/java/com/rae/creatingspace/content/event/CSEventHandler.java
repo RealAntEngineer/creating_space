@@ -9,7 +9,7 @@ import com.rae.creatingspace.content.rocket.engine.design.DesignCommands;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.rae.creatingspace.content.rocket.CustomTeleporter;
+import com.rae.creatingspace.content.rocket.RocketTeleporter;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -46,7 +45,7 @@ public class CSEventHandler {
         Level level = entityLiving.level();
         ResourceLocation dimension = level.dimension().location();
         //fall from orbit
-        if (CSDimensionUtil.isOrbit(level.dimensionTypeId())){
+        if (CSDimensionUtil.isOrbit(level.dimension().location())){
             if (!level.isClientSide){
                 if (entityLiving instanceof ServerPlayer player){
                     if (player.getY() < level.dimensionType().minY()+10){
@@ -60,11 +59,11 @@ public class CSEventHandler {
                                 Entity vehicle = player.getVehicle();
                                 assert vehicle != null;
                                 vehicle.ejectPassengers();
-                                vehicle.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
-                                player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                vehicle.changeDimension(destServerLevel, new RocketTeleporter(destServerLevel));
+                                player.changeDimension(destServerLevel, new RocketTeleporter(destServerLevel));
                                 player.startRiding(vehicle,true);
                             } else {
-                                player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                player.changeDimension(destServerLevel, new RocketTeleporter(destServerLevel));
 
                             }
                         }

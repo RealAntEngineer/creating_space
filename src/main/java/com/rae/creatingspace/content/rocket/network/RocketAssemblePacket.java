@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.rocket.contraption.entity;
+package com.rae.creatingspace.content.rocket.network;
 
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;
 import com.simibubi.create.foundation.networking.BlockEntityConfigurationPacket;

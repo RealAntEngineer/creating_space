@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketStorageManager;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Pair;
@@ -13,12 +14,12 @@ import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.theme.Color;
 import org.joml.Matrix4f;
-import com.rae.creatingspace.api.squedule.RocketSchedule;
-import com.rae.creatingspace.api.squedule.ScheduleEntry;
-import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.condition.ScheduledDelay;
-import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.content.rocket.squedule.RocketSchedule;
+import com.rae.creatingspace.content.rocket.squedule.ScheduleEntry;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondition;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduledDelay;
+import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
 import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
@@ -659,7 +660,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                 Component.literal(
                         String.valueOf(CSDimensionUtil.cost(currentDimension, CSDimensionUtil.getPlanets().get(e)))),
                 true, 112);
-        destinationCost.withBorderColors(rocketContraption.deltaV() < CSDimensionUtil.cost(currentDimension, CSDimensionUtil.getPlanets().get(e)) ? Couple.create(Color.RED, Color.RED) : Couple.create(Color.GREEN, Color.GREEN));
+        destinationCost.withBorderColors(((RocketStorageManager)rocketContraption.getContraption().getStorage()).getCurrentDeltaV() < CSDimensionUtil.cost(currentDimension, CSDimensionUtil.getPlanets().get(e)) ? Couple.create(Color.RED, Color.RED) : Couple.create(Color.GREEN, Color.GREEN));
     }
 
     private final Component clickToEdit = CreateLang.translateDirect("gui.schedule.lmb_edit")
@@ -981,7 +982,8 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     // (there is a need for a sync on the entity side : sync data ?)
     @Override
     public void removed() {
-        PacketInit.getChannel().sendToServer(new RocketScheduleEditPacket(schedule, getMenu().contentHolder.getId()));
+        //set the server side schedule -> Schedule / paused / entityId
+        PacketInit.getChannel().sendToServer(new RocketScheduleEditPacket(schedule,pauseIndicator.state == Indicator.State.ON, getMenu().contentHolder.getId()));
         //set the client side schedule
         getMenu().contentHolder.schedule.setSchedule(schedule, pauseIndicator.state == Indicator.State.ON);
         super.removed();

@@ -127,9 +127,6 @@ public class CSDimensionUtil {
     public static boolean hasO2Atmosphere(Holder<Biome> biome) {
         return !TagsInit.CustomBiomeTags.NO_OXYGEN.matches(biome);
     }
-    public static boolean isOrbit(ResourceKey<DimensionType> dimensionType) {
-        return isOrbit(dimensionType.location());
-    }
 
     public static boolean isOrbit(ResourceLocation dimension) {
         return gravity(dimension) == 0;

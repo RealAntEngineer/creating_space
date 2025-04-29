@@ -11,7 +11,7 @@ public class FlightDataHelper {
 
     //replace that on the rocket creation -> cleaner
     public record RocketAssemblyData(PropellantStatusData propellantStatusData, float thrust, float weight, boolean hasFailed){
-        public static RocketAssemblyData create(HashMap<TagKey<Fluid>, Integer> massForEachPropellant, HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant, float finalPropellantMass, float thrust,float weight){
+        public static RocketAssemblyData create(HashMap<TagKey<Fluid>, Integer> massForEachPropellant, HashMap<TagKey<Fluid>, Float> consumedMassForEachPropellant, float finalPropellantMass, float thrust, float weight){
             PropellantStatusData data = PropellantStatusData.createFromPropellantMap(massForEachPropellant, consumedMassForEachPropellant, finalPropellantMass);
             boolean hasFailed = data.status.isFailReason;
             hasFailed = hasFailed || thrust < weight;
@@ -22,7 +22,7 @@ public class FlightDataHelper {
             if (tag==null) return null;
             if (tag.isEmpty()) return null;
             HashMap<TagKey<Fluid>, Integer> massForEachPropellant = CSNBTUtil.fromNBTtoMapFluidTagsInteger(tag.getCompound("massForEachPropellant"));
-            HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = CSNBTUtil.fromNBTtoMapFluidTagsInteger(tag.getCompound("consumedMassForEachPropellant"));
+            HashMap<TagKey<Fluid>,Float> consumedMassForEachPropellant = CSNBTUtil.fromNBTtoMapFluidTagsFloat(tag.getCompound("consumedMassForEachPropellant"));
             float finalPropellantMass = tag.getFloat("finalPropellantMass");
             float thrust = tag.getFloat("thrust");
             float weight = tag.getFloat("weight");
@@ -32,7 +32,7 @@ public class FlightDataHelper {
             CompoundTag newTag = new CompoundTag();
             if (data!=null) {
                 newTag.put("massForEachPropellant", CSNBTUtil.fromMapFluidTagsIntegerToNBT(data.propellantStatusData().massForEachPropellant));
-                newTag.put("consumedMassForEachPropellant", CSNBTUtil.fromMapFluidTagsIntegerToNBT(data.propellantStatusData().consumedMassForEachPropellant));
+                newTag.put("consumedMassForEachPropellant", CSNBTUtil.fromMapFluidTagsFloatToNBT(data.propellantStatusData().consumedMassForEachPropellant));
                 newTag.putFloat("finalPropellantMass", data.propellantStatusData().finalPropellantMass);
                 newTag.putFloat("thrust",data.thrust);
                 newTag.putFloat("weight",data.weight);
@@ -68,11 +68,11 @@ public class FlightDataHelper {
         }
     }
     public record PropellantStatusData(
-            PropellantStatus status,HashMap<TagKey<Fluid>,
+            PropellantStatus status, HashMap<TagKey<Fluid>,
             Integer> massForEachPropellant,
-            HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant,
+            HashMap<TagKey<Fluid>, Float> consumedMassForEachPropellant,
             float finalPropellantMass){
-        public static PropellantStatusData createFromPropellantMap(HashMap<TagKey<Fluid>, Integer> massForEachPropellant, HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant, float finalPropellantMass){
+        public static PropellantStatusData createFromPropellantMap(HashMap<TagKey<Fluid>, Integer> massForEachPropellant, HashMap<TagKey<Fluid>, Float> consumedMassForEachPropellant, float finalPropellantMass){
             PropellantStatus status = PropellantStatus.ENOUGH_PROPELLANT;
             if (finalPropellantMass < 0){
                 status = PropellantStatus.NOT_ENOUGH_PROPELLANT;

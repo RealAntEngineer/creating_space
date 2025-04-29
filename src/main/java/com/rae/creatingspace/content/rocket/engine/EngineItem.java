@@ -80,7 +80,7 @@ public class EngineItem extends RocketEngineItem {
         int thrust = 1000;
         float efficiency = 1f;
         int mass = 3000;
-        return getItemStackFromInfo(thrust, efficiency, mass, PropellantTypeInit.METHALOX.getId());
+        return getItemStackFromInfo(thrust, efficiency, mass, new ResourceLocation("creatingspace:methalox"));
     }
 
     @NotNull

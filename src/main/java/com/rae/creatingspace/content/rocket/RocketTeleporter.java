@@ -12,10 +12,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
-public class CustomTeleporter implements ITeleporter {
+public class RocketTeleporter implements ITeleporter {
     protected final ServerLevel level;
 
-    public CustomTeleporter(ServerLevel level) {
+    public RocketTeleporter(ServerLevel level) {
         this.level = level;
     }
 

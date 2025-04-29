@@ -1,9 +1,9 @@
-package com.rae.creatingspace.api.squedule;
+package com.rae.creatingspace.content.rocket.squedule;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.squedule.condition.*;
-import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.content.rocket.squedule.condition.*;
+import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;

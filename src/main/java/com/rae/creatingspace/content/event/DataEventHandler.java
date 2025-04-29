@@ -3,7 +3,7 @@ package com.rae.creatingspace.content.event;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.planets.RocketAccessibleDimension;
 import com.rae.creatingspace.init.ingameobject.EncasingsInit;
-import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
+import com.rae.creatingspace.content.saved.UnlockedDesignManager;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
