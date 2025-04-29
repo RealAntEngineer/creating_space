@@ -108,7 +108,11 @@ repositories {
 
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
     maven {
-        url = uri("file:///D:/maven") // maven sur le disc extern -> à mettre en variable d'environement.
+        url = "https://maven.pkg.github.com/RealAntEngineer/Formic_API" // maven for Formic_API (temporary)
+        credentials {
+            username = "RealAntEngineer"
+            password = "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"// this is a read only token
+        }
     }
 
 }
