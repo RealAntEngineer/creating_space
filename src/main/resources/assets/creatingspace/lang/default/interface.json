@@ -27,9 +27,6 @@
   "creatingspace.ponder.rocket_debugging.text_10": "not enough thrust",
   "creatingspace.ponder.rocket_debugging.text_11": "add more engines to solve the issue",
 
-
-
-
   "creatingspace.ponder.synthesizer.header": "Crafting Methane",
   "creatingspace.ponder.synthesizer.text_1": "You need to put hydrogen in it...",
   "creatingspace.ponder.synthesizer.text_2": "...And put coal dust, then wait for methane to be produced",
@@ -75,7 +72,6 @@
   "creatingspace.biome.moon_cave": "Moon Cave",
   "creatingspace.biome.venus_hellground": "Venus Hellground",
 
-
   "adastra:earth_orbit": "Earth Orbit",
   "adastra:moon_orbit": "Moon Orbit",
   "adastra:the_moon": "The Moon",
@@ -98,11 +94,12 @@
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
-  "creatingspace.recipe.chemical": "chemical",
-  "creatingspace.recipe.electrolysis": "electrolysis",
+  "creatingspace.recipe.chemical": "Chemical Reaction",
+  "creatingspace.recipe.electrolysis": "Electrolysis",
+  "creatingspace.recipe.air_liquefying": "Air Liquefying",
   "propellant_type.creatingspace.methalox": "Metha/LOX",
   "propellant_type.creatingspace.lh2lox": "LH2/LOX",
-  "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
+  "propellant_type.creatingspace.metalic_hydrogen": "Metallic Hydrogen",
   "exhaust_pack_type.creatingspace.bell_nozzle": "Bell Nozzle",
   "exhaust_pack_type.creatingspace.aerospike": "Aerospike",
   "power_pack_type.creatingspace.open_cycle": "Open Cycle",
@@ -138,5 +135,4 @@
   "creatingspace.gui.engineer_table.isp": "ISP : %d s",
   "creatingspace.gui.engineer_table.engine_size_input": "%i mb",
   "creatingspace.gui.engineer_table.engine_thrust_input": "%iN"
-
 }
