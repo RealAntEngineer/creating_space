@@ -91,7 +91,7 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
     public static final BlockEntry<SuperRocketStructuralBlock> ENGINE_STRUCTURAL =
-            REGISTRATE.block("engine_structure", SuperRocketStructuralBlock::new)
+            REGISTRATE.block("engine_structure",SuperRocketStructuralBlock::new)
                     //.initialProperties(SharedProperties::copperMetal)
                     .properties(p -> p.strength(1.0f))
                     .blockstate((c, p) -> p.getVariantBuilder(c.get())
