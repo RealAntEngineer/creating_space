@@ -119,29 +119,6 @@ public class CSEventHandler {
         );
     }
     //TODO put in the formic API
-    private static float dichotomy(Function<Float, Float> function, float a, float b, float epsilon) {
-        try {
-            if (function.apply(a) * function.apply(b) > 0) {  //On vérifie l 'encadrement de la fonction
-                throw new RuntimeException("Mauvais choix de a ou b.");
-            } else {
-                float m = (float) ((a + b) / 2.);
-                while (abs(a - b) > epsilon) {
-                    if (function.apply(m) == 0.0) {
-                        return m;
-                    } else if (function.apply(a) * function.apply(m) > 0) {
-                        a = m;
-                    } else {
-                        b = m;
-                    }
-                    m = (a + b) / 2;
-                }
-                return m;
-            }
-        } catch (RuntimeException e) {
-            System.out.println(e);
-            return 0;
-        }
-    }
 
 
     public static boolean checkPlayerO2Equipment(ServerPlayer player){

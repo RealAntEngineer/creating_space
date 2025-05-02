@@ -3,6 +3,7 @@ package com.rae.creatingspace.content.rocket.engine;
 import com.rae.formicapi.multiblock.MBController;
 import com.rae.formicapi.multiblock.MBShape;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
+import com.rae.formicapi.multiblock.MBStructureBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.core.BlockPos;
@@ -39,8 +40,8 @@ public class RocketEngineBlock extends MBController implements IBE<RocketEngineB
     }
 
     @Override
-    protected MBShape makeShapes(DirectionalBlock structure) {
-        return MBShape.make2x1x1(structure);
+    protected MBShape makeShapes(DirectionalBlock structure) {//this is a bug in the API
+        return MBShape.make2x1x1((MBStructureBlock) structure);
     }
 
     @Override
