@@ -8,7 +8,7 @@ import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
-import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
+import com.rae.creatingspace.content.saved.UnlockedDesignManager;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.rae.creatingspace.content.rocket.network.RocketEngineerTableSync;
 import com.simibubi.create.foundation.gui.AllGuiTextures;

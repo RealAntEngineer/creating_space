@@ -28,7 +28,7 @@ public class EngineItem extends RocketEngineItem {
     }
 
     @Override
-    protected boolean canPlace(BlockPlaceContext pContext, BlockState pState) {
+    protected boolean canPlace(BlockPlaceContext pContext, @NotNull BlockState pState) {
         RocketEngineBlock main = (RocketEngineBlock) getBlock();
         Level lvl = pContext.getLevel();
         Direction facing = pContext.getClickedFace();
@@ -56,7 +56,7 @@ public class EngineItem extends RocketEngineItem {
     }
 
     @Override
-    protected boolean placeBlock(BlockPlaceContext pContext, BlockState pState) {
+    protected boolean placeBlock(BlockPlaceContext pContext, @NotNull BlockState pState) {
         RocketEngineBlock main = (RocketEngineBlock) getBlock();
         Level lvl = pContext.getLevel();
         Direction facing = pContext.getClickedFace();
@@ -75,12 +75,12 @@ public class EngineItem extends RocketEngineItem {
     }
 
     @Override
-    public ItemStack getDefaultInstance() {
+    public @NotNull ItemStack getDefaultInstance() {
 
         int thrust = 1000;
         float efficiency = 1f;
         int mass = 3000;
-        return getItemStackFromInfo(thrust, efficiency, mass, PropellantTypeInit.METHALOX.getId());
+        return getItemStackFromInfo(thrust, efficiency, mass, new ResourceLocation("creatingspace:methalox"));
     }
 
     @NotNull
@@ -101,7 +101,7 @@ public class EngineItem extends RocketEngineItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
         CompoundTag beTag = itemStack.getOrCreateTagElement("blockEntity");
         appendEngineDependentText(components, beTag);
         super.appendHoverText(itemStack, level, components, flag);

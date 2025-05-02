@@ -1,17 +1,21 @@
 package com.rae.creatingspace.content.rocket.contraption.entity;
 
-import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.simibubi.create.api.contraption.storage.fluid.MountedFluidStorageWrapper;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageWrapper;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.MountedStorageManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,8 +25,9 @@ public class RocketStorageManager extends MountedStorageManager {
 
     int ticksSinceLastExchange;
     AtomicInteger version;
-    private HashMap<PropellantType, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
-    private final ArrayList<TagKey<Fluid>> listOfPropellantFluid = new ArrayList<>();
+    //you shouldn't calculate DeltaV if this is null.
+    private HashMap<TagKey<Fluid>, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption = null;
+    //private final ArrayList<TagKey<Fluid>> listOfPropellantFluid = new ArrayList<>();
 
     float currentDeltaV;
     float dryMass;
@@ -35,7 +40,13 @@ public class RocketStorageManager extends MountedStorageManager {
      */
     public void onContraptionAssemble(RocketContraption rocketContraption) {
         this.theoreticalPerTagFluidConsumption = rocketContraption.getTPTFluidConsumption();
-        this.theoreticalPerTagFluidConsumption.keySet().forEach( p -> listOfPropellantFluid.addAll(p.getPropellantRatio().keySet()));
+        /*this.theoreticalPerTagFluidConsumption.keySet().forEach(location -> {
+             if (location != null) {
+                        listOfPropellantFluid.add( location);
+                    }
+
+        });*/
+
         dryMass = rocketContraption.getDryMass();
 
     }
@@ -75,38 +86,42 @@ public class RocketStorageManager extends MountedStorageManager {
             FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
             onFilled(fluidInTank);
         }
-        calculateVe();
-    }
-
-    @Override
-    public void write(CompoundTag nbt, boolean clientPacket) {
-        super.write(nbt, clientPacket);
-        nbt.putInt("TicksSinceLastExchange", ticksSinceLastExchange);
-        nbt.putFloat("currentDeltaV",currentDeltaV);
-        nbt.putFloat("dryMass",dryMass);
-        nbt.putFloat("inertFluidMass",inertFluidMass);
-        nbt.putFloat("propellantMass",propellantMass);
-        try {
-            nbt.put("theoreticalPerTagFluidConsumption",RocketContraption.CODEC.encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElseThrow());
-        } catch (Exception ignored){
-
+        if (theoreticalPerTagFluidConsumption != null) {
+            calculateVe();
         }
     }
 
     @Override
-    public void read(CompoundTag nbt,boolean clientPacket,Contraption contraption) {
-        super.read(nbt,clientPacket, contraption);
+    public void write(CompoundTag nbt, boolean spawnPacket) {
+        super.write(nbt, spawnPacket);
+        nbt.putInt("TicksSinceLastExchange", ticksSinceLastExchange);
+        if  (!spawnPacket) {
+            nbt.putFloat("currentDeltaV", currentDeltaV);
+            nbt.putFloat("dryMass", dryMass);
+            nbt.putFloat("inertFluidMass", inertFluidMass);
+            nbt.putFloat("propellantMass", propellantMass);
+            nbt.put("theoreticalPerTagFluidConsumption", RocketContraption.TPTF_CODEC.encodeStart(NbtOps.INSTANCE, theoreticalPerTagFluidConsumption).result().orElseThrow());
+        }
+    }
+
+    @Override
+    public void addBlock(Level level, BlockState state, BlockPos globalPos, BlockPos localPos, @Nullable BlockEntity be) {
+        super.addBlock(level, state, globalPos, localPos, be);
+        //TODO put the initialisation of the mass, and of the thrust, consumptions... here instead of the contraption.
+    }
+
+    @Override
+    public void read(CompoundTag nbt,boolean spawnPacket,Contraption contraption) {//lookup and write here what spawnPacket actually means
+        super.read(nbt,spawnPacket, contraption);
         ticksSinceLastExchange = nbt.getInt("TicksSinceLastExchange");
         currentDeltaV = nbt.getFloat("currentDeltaV");
         dryMass = nbt.getFloat("dryMass");
         inertFluidMass = nbt.getFloat("inertFluidMass");
         propellantMass = nbt.getFloat("propellantMass");
-        try {
-            theoreticalPerTagFluidConsumption = new HashMap<>(RocketContraption.CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElseThrow());
-            theoreticalPerTagFluidConsumption.keySet().forEach( p -> listOfPropellantFluid.addAll(p.getPropellantRatio().keySet()));
+        //Should we do a sync with the client ?
+        if (!spawnPacket){
+            theoreticalPerTagFluidConsumption = new HashMap<>(RocketContraption.TPTF_CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElseThrow());
             calculateVe();
-        } catch (Exception ignored) {
-
         }
     }
 
@@ -205,44 +220,51 @@ public class RocketStorageManager extends MountedStorageManager {
     }
 
     private void onFilled(FluidStack filled) {
-        if (isProp(filled)){
-            propellantMass += (float) (filled.getAmount() * filled.getFluid().getFluidType().getDensity()) /1000;
-        } else {
-            inertFluidMass += (float) (filled.getAmount() * filled.getFluid().getFluidType().getDensity()) /1000;
-
+        if (theoreticalPerTagFluidConsumption!=null) {
+            if (isProp(filled)) {
+                propellantMass += (float) (filled.getAmount() * filled.getFluid().getFluidType().getDensity()) / 1000;
+            } else {
+                inertFluidMass += (float) (filled.getAmount() * filled.getFluid().getFluidType().getDensity()) / 1000;
+            }
         }
     }
     private void onDrained(FluidStack drained) {
-        if (isProp(drained)){
-            propellantMass -= (float) (drained.getAmount() * drained.getFluid().getFluidType().getDensity()) /1000;
-        } else {
-            inertFluidMass -= (float) (drained.getAmount() * drained.getFluid().getFluidType().getDensity()) /1000;
+        if (theoreticalPerTagFluidConsumption!=null) {
+            if (isProp(drained)) {
+                propellantMass -= (float) (drained.getAmount() * drained.getFluid().getFluidType().getDensity()) / 1000;
+            } else {
+                inertFluidMass -= (float) (drained.getAmount() * drained.getFluid().getFluidType().getDensity()) / 1000;
 
+            }
         }
     }
-    private boolean isProp(FluidStack stack){
-        AtomicBoolean flag = new AtomicBoolean(false);
-        listOfPropellantFluid.forEach(p -> {
+    //should only be called on the server.
+    private boolean isProp(FluidStack stack) {
+        assert theoreticalPerTagFluidConsumption != null;
+        for (TagKey<Fluid> p : theoreticalPerTagFluidConsumption.keySet()){
             if (stack.getFluid().is(p)){
-                flag.set(true);
+                return true;
             }
-        });
-        return flag.get();
+        }
+        return false;
     }
+    //Only on the server.... -> should be called each times the fluid inventory changed
     private void calculateVe(){
         float totalThrust = 0;
         float totalTheoreticalConsumption = 0;
-        for (PropellantType combination : theoreticalPerTagFluidConsumption.keySet()) {
-            RocketContraption.ConsumptionInfo info = theoreticalPerTagFluidConsumption.get(combination);
+        for (TagKey<Fluid> fluidTagKey : theoreticalPerTagFluidConsumption.keySet()) {
+            RocketContraption.ConsumptionInfo info = theoreticalPerTagFluidConsumption.get(fluidTagKey);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
-            for (float consumption :
-                    info.propellantConsumption().values()) {
-                totalTheoreticalConsumption += consumption;
-            }
+
+            totalTheoreticalConsumption += info.fluidConsumption();
             totalThrust += info.partialThrust();
         }
-        meanVe = totalThrust/totalTheoreticalConsumption;
+        //TODO, would probably be better if we have the ISP and the thrust -> no division so less possibility of errors
+        meanVe = totalTheoreticalConsumption>0?totalThrust/totalTheoreticalConsumption:0;
         currentDeltaV = (float) (meanVe * Math.log((dryMass+propellantMass+inertFluidMass)/(dryMass+inertFluidMass)));
+        System.out.println("propellant mass : "+ propellantMass);
+        System.out.println("inert fluids mass : "+ inertFluidMass);
+        System.out.println("meanVe : "+meanVe);
         System.out.println("deltaV : "+currentDeltaV);
     }
 }
