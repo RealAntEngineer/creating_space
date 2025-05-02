@@ -123,7 +123,7 @@ dependencies {
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
-    implementation fg.deobf("blank:formic-api-${minecraft_version}:${formicapi_version}")
+    implementation fg.deobf("blank:formic-api-${minecraft_version}:${formicapi_version}") // Needs to be placed in libs folder (temporary solution)
 
     //curios
 
