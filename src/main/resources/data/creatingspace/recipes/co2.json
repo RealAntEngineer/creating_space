@@ -1,0 +1,12 @@
+{
+  "type": "creatingspace:air_liquefying",
+  "blockInFront": "minecraft:campfire",
+  "ingredients": [
+  ],
+  "results": [
+    {
+      "amount": 100,
+      "fluid": "creatingspace:liquid_co2"
+    }
+  ]
+}

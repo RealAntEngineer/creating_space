@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "creatingspace:aluminum_sheet"
+    },
+    "C": {
+      "item": "creatingspace:cobalt_ingot"
+    }
+  },
+  "pattern": [
+    "CSC",
+    "SCS",
+    "CSC"
+  ],
+  "result": {
+    "item": "creatingspace:rocket_casing"
+  }
+}

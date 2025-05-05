@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "create:andesite_alloy"
+        },
+        "N": {
+            "item": "minecraft:iron_nugget"
+        }
+    },
+    "pattern": [
+        "   ",
+        "NIN",
+        " N "
+    ],
+    "result": {
+        "item": "creatingspace:andesite_rib"
+    }
+}

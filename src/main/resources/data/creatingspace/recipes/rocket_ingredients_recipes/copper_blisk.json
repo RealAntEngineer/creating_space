@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "P": {
+            "item": "create:copper_sheet"
+        },
+        "I": {
+            "item": "minecraft:copper_ingot"
+        },
+        "N": {
+            "item": "create:copper_nugget"
+        }
+    },
+    "pattern": [
+        "NPN",
+        "PIP",
+        "NPN"
+    ],
+    "result": {
+        "item": "creatingspace:copper_blisk"
+    }
+}

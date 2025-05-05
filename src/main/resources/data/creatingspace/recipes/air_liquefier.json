@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "create:encased_fan"
+    },
+    "T" : {
+      "item": "create:fluid_tank"
+    },
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "S": {
+      "item": "create:brass_sheet"
+    }
+  },
+  "pattern": [
+    " S ",
+    "CPC",
+    " T "
+  ],
+  "result": {
+    "item": "creatingspace:air_liquefier"
+  }
+}

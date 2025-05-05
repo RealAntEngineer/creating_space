@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "creatingspace:moon_aluminum_ore"
+  },
+  "result": "creatingspace:aluminum_ingot",
+  "cookingtime": 20
+}

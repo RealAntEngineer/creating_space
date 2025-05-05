@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "I": {
+            "item": "creatingspace:inconel_ingot"
+        },
+        "N": {
+            "item": "creatingspace:inconel_nugget"
+        }
+    },
+    "pattern": [
+        "   ",
+        "NIN",
+        " N "
+    ],
+    "result": {
+        "item": "creatingspace:inconel_rib"
+    }
+}

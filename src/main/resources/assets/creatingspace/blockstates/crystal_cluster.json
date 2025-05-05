@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "creatingspace:block/crystal_cluster",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "creatingspace:block/crystal_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "creatingspace:block/crystal_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "creatingspace:block/crystal_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "creatingspace:block/crystal_cluster"
+    },
+    "facing=west": {
+      "model": "creatingspace:block/crystal_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

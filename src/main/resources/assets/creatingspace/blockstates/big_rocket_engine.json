@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "creatingspace:block/big_rocket_engine"
+    },
+    "facing=south": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "creatingspace:block/big_rocket_engine",
+      "y": 90
+    }
+  }
+}

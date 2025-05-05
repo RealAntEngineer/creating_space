@@ -1,0 +1,42 @@
+
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+
+[[mods]]
+modId="creatingspace"
+version = "1.7.10"
+displayName="Creating Space"
+logoFile = "logo.png"
+credits='''
+Source code:
+RealAntEngineer
+Icicles
+Bream
+
+Translation :
+RealAntEngineer -> English and French
+PopCorn -> Russian and Ukrainian
+
+Textures :
+RealAntEngineer
+TheTntExpress
+Mr.Sodium
+Cosmos
+'''
+authors="Real Ant Engineer"
+
+description='''
+'''
+
+[[dependencies.creatingspace]]
+modId="create"
+mandatory=true
+versionRange="[0.6.0.1,)"
+ordering="NONE"
+side="BOTH"
+
+
+[[mixins]]
+config = "creatingspace.mixins.json"

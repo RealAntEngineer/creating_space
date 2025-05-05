@@ -1,0 +1,50 @@
+{
+    "type": "create:sequenced_assembly",
+    "ingredient": {
+        "item": "create:sturdy_sheet"
+    },
+    "loops": 1,
+    "results": [
+        {
+            "count": 1,
+            "item": "creatingspace:copronickel_injector"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_copronickel_injector"
+                },
+                {
+                    "item": "creatingspace:copronickel_sheet"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:incomplete_copronickel_injector"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_copronickel_injector"
+                },
+                {
+                    "item": "creatingspace:copronickel_nugget"
+                }
+            ],
+            "results": [
+                {
+                    "item": "creatingspace:incomplete_copronickel_injector"
+                }
+            ]
+        }
+    ],
+    "transitionalItem": {
+        "item": "creatingspace:incomplete_copronickel_injector"
+    }
+}

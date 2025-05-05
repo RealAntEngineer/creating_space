@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "creatingspace:advanced_spacesuit_fabric"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "F F",
+    "F F"
+  ],
+  "result": {
+    "item": "creatingspace:advanced_spacesuit_leggings"
+  }
+}

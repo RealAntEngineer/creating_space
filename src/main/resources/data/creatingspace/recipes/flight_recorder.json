@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "K" : {
+      "item": "minecraft:dried_kelp_block"
+    },
+    "A" : {
+      "item": "create:shaft"
+    },
+    "B" : {
+      "item": "create:brass_casing"
+    }
+
+  },
+  "pattern": [
+    " B ",
+    "AKA",
+    " B "
+  ],
+  "result": {
+    "item": "creatingspace:flight_recorder"
+  }
+}
