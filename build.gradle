@@ -3,7 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-     id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 //Load local environement variables
@@ -72,6 +72,9 @@ minecraft {
         gameTestServer {
             property 'forge.enabledGameTestNamespaces', mod_id
         }
+
+        
+        accessTransformer = file('src/main/resources/META-INF/accesstransformers.cfg')
 
         data {
             // example of overriding the workingDirectory set in configureEach above
