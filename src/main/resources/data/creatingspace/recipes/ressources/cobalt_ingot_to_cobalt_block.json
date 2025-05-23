@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "creatingspace:cobalt_ingot"}
+      "tag": "forge:ingots/cobalt"}
   },
   "pattern": [
     "###",

@@ -3,7 +3,7 @@
   "type": "create:crushing",
   "ingredients": [
     {
-      "item": "creatingspace:nickel_ingot"
+      "tag": "forge:ingots/nickel"
     }
   ],
   "processingTime": 400,

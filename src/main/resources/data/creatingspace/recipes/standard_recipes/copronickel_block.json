@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "creatingspace:copronickel_ingot"
+      "tag": "forge:ingots/copronickel"
     }
   },
   "pattern": [
