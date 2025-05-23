@@ -127,6 +127,14 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.RAW_COBALT_BLOCK);
                         output.accept(BlockInit.MOON_ALUMINUM_ORE);
                         output.accept(BlockInit.RAW_ALUMINUM_BLOCK);
+                        output.accept(BlockInit.ALUMINUM_BLOCK);
+                        output.accept(BlockInit.COBALT_BLOCK);
+                        output.accept(BlockInit.NICKEL_BLOCK);
+                        output.accept(BlockInit.COPRONICKEL_BLOCK);
+                        output.accept(BlockInit.HASTELLOY_BLOCK);
+                        output.accept(BlockInit.INCONEL_BLOCK);
+                        output.accept(BlockInit.MONEL_BLOCK);
+                        output.accept(BlockInit.REINFORCED_COPPER_BLOCK);
                         //output.accept(FluidInit.CREATIVE_BUCKET_HYDROGEN);
                         //output.accept(FluidInit.CREATIVE_BUCKET_OXYGEN);
                         //output.accept(FluidInit.CREATIVE_BUCKET_METHANE);

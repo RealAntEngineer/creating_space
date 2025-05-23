@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "creatingspace:moon_cobalt_ore",
-    "creatingspace:raw_cobalt_block"
+    "creatingspace:raw_cobalt_block",
+    "creatingspace:cobalt_block",
+    "creatingspace:hastelloy_block"
   ]
 }

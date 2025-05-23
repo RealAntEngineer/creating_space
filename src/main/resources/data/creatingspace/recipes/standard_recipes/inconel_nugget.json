@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "creatingspace:inconel_ingot"
+      "tag": "forge:ingots/inconel"
     }
   ],
   "result": {
