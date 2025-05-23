@@ -1,0 +1,15 @@
+{
+  "values": [
+    "creatingspace:aluminum_nugget",
+    "creatingspace:raw_aluminum_nugget",
+    "creatingspace:cobalt_nugget",
+    "creatingspace:raw_cobalt_nugget",
+    "creatingspace:nickel_nugget",
+    "creatingspace:raw_nickel_nugget",
+    "creatingspace:copronickel_nugget",
+    "creatingspace:hastelloy_nugget",
+    "creatingspace:inconel_nugget",
+    "creatingspace:monel_nugget",
+    "creatingspace:reinforced_copper_nugget"
+  ]
+}

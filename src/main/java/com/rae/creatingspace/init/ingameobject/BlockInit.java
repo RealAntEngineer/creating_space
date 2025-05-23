@@ -437,6 +437,86 @@ public class BlockInit {
             .build()
             .register();
 
+    public static final BlockEntry<Block> ALUMINUM_BLOCK = REGISTRATE.block(
+                    "aluminum_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<Block> NICKEL_BLOCK = REGISTRATE.block(
+                    "nickel_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<Block> COBALT_BLOCK = REGISTRATE.block(
+                    "cobalt_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<Block> COPRONICKEL_BLOCK = REGISTRATE.block(
+                    "copronickel_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<Block> REINFORCED_COPPER_BLOCK = REGISTRATE.block(
+                    "reinforced_copper_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<Block> INCONEL_BLOCK = REGISTRATE.block(
+                    "inconel_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<Block> HASTELLOY_BLOCK = REGISTRATE.block(
+                    "hastelloy_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<Block> MONEL_BLOCK = REGISTRATE.block(
+                    "monel_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
     //machinery
 
     public static final BlockEntry<FreezerBlock> FREEZER_BLOCK = REGISTRATE.block(

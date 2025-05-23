@@ -4,6 +4,14 @@
     "creatingspace:nickel_ore",
     "creatingspace:deepslate_nickel_ore",
     "creatingspace:moon_aluminum_ore",
-    "creatingspace:moon_nickel_ore"
+    "creatingspace:moon_nickel_ore",
+    "creatingspace:raw_nickel_block",
+    "creatingspace:raw_aluminum_block",
+    "creatingspace:aluminum_block",
+    "creatingspace:nickel_block",
+    "creatingspace:copronickel_block",
+    "creatingspace:inconel_block",
+    "creatingspace:monel_block",
+    "creatingspace:reinforced_copper_block"
   ]
 }
