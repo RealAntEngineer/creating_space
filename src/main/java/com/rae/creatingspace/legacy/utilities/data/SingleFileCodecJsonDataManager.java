@@ -50,7 +50,7 @@ public class SingleFileCodecJsonDataManager<T> extends AbstractCodecJsonDataMana
             // if we fail to parse json, log an error and continue
             // if we succeeded, add the resulting T to the map
             this.codec.decode(JsonOps.INSTANCE, element)
-                    .get()
+                    .getPartialOrThrow()
                     .ifLeft(result -> newMap.put(this.location, result.getFirst()))
                     .ifRight(partial -> this.logger.error("Failed to parse data json for {} due to: {}", this.location.toString(), partial.message()));
         }

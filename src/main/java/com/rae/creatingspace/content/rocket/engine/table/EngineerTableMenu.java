@@ -6,13 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
+
 
 import java.util.Objects;
 
@@ -26,7 +29,7 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
     RocketEngineerTableBlockEntity.SyncData syncData;
     private Slot outputSlot;
 
-    public EngineerTableMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
+    public EngineerTableMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
@@ -43,14 +46,15 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
         return new EngineerTableMenu(MenuTypesInit.ENGINEER_TABLE.get(), id, inv, be);
     }
 
+
     @Override
-    protected RocketEngineerTableBlockEntity createOnClient(FriendlyByteBuf extraData) {
+    protected RocketEngineerTableBlockEntity createOnClient(RegistryFriendlyByteBuf extraData) {
         //System.out.println("create on client");
         ClientLevel world = Minecraft.getInstance().level;
         assert world != null;
         BlockEntity blockEntity = world.getBlockEntity(extraData.readBlockPos());
         if (blockEntity instanceof RocketEngineerTableBlockEntity engineerTable) {
-            engineerTable.readClient(Objects.requireNonNull(extraData.readNbt()));
+            engineerTable.readClient(Objects.requireNonNull(extraData.readNbt()), world.registryAccess());
             return engineerTable;
         }
         //System.out.println("fail");
@@ -60,13 +64,13 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
     @Override
     protected void initAndReadInventory(RocketEngineerTableBlockEntity contentHolder) {
         syncData = RocketEngineerTableBlockEntity.SyncData.getCoded()
-                .parse(NbtOps.INSTANCE, contentHolder.saveScreenData()).get().orThrow();
+                .parse(NbtOps.INSTANCE, contentHolder.saveScreenData()).getOrThrow();
 
     }
 
     @Override
     protected void addSlots() {
-        outputSlot = new SlotItemHandler(contentHolder.inventory, 0, 316, 100) {
+        outputSlot = new SlotItemHandler((IItemHandler) contentHolder.inventory, 0, 316, 100) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;

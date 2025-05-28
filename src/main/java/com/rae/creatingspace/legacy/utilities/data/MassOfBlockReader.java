@@ -26,7 +26,8 @@ public class MassOfBlockReader {
                     BLOCKS_MASS_CODEC.fieldOf("values").forGetter(i->i.massMap)
             ).apply(instance, PartialMassMap::new));
 
-
+    //TODO change to the FormicAPI version : float map reader -> better datapack compat and cleaner implementation
+    // but will require setting up the maven for it
     public static final SingleFileCodecJsonDataManager<PartialMassMap> MASS_HOLDER = new SingleFileCodecJsonDataManager<>("creatingspace_utilities", CreatingSpace.resource("blocks_mass"), PARTIAL_BLOCKS_MASS_CODEC, LOGGER);
 
     public static Map<TagKey<Block>, Integer> getOnlyTags(PartialMassMap data) {
@@ -35,7 +36,7 @@ public class MassOfBlockReader {
         for (String key : rawMap.keySet()){
             if (key.contains("#")){
                 String location = key.replace("#","");
-                ResourceLocation tagLocation = new ResourceLocation(location);
+                ResourceLocation tagLocation = ResourceLocation.parse(location);
                 TagKey<Block> blockTag = BlockTags.create(tagLocation);
                 finalMap.put(blockTag,rawMap.get(key));
             }
@@ -48,7 +49,7 @@ public class MassOfBlockReader {
         HashMap<ResourceLocation, Integer> finalMap = new HashMap<>();
         for (String key : rawMap.keySet()){
             if (!key.contains("#")){
-                ResourceLocation blockLocation = new ResourceLocation(key);
+                ResourceLocation blockLocation = ResourceLocation.parse(key);
                 finalMap.put(blockLocation,rawMap.get(key));
             }
         }

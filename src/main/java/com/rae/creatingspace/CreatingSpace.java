@@ -65,7 +65,7 @@ public class CreatingSpace {
 
         TagsInit.init();
 
-        SoundInit.register();
+        SoundInit.register(modEventBus);
         ItemInit.register();
         BlockInit.register();
         BlockEntityInit.register();

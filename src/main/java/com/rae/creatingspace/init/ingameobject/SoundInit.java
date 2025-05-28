@@ -3,6 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.rae.creatingspace.CreatingSpace;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -19,8 +20,8 @@ public class SoundInit {
         return SOUNDS.register(id,
                 () -> SoundEvent.createVariableRangeEvent(CreatingSpace.resource(id)));
     }
-    public static void register() {
-        SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
+    public static void register(IEventBus modEventBus) {
+        SOUNDS.register(modEventBus);
     }
 
 }
