@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.rocket.engine.design;
 
 import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -11,7 +12,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -24,21 +27,25 @@ public class DesignBlueprintItem extends Item {
         super(properties);
     }
 
+
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        CompoundTag nbt = itemStack.getOrCreateTag();
-        ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
-                nbt.get("design_type")).result().orElse(null);
-        ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
-                nbt.get("design")).result().orElse(null);
-        if (registry != null) {
-            components.add(Component.translatable(registry.toLanguageKey())
-                    .append(" : ")
-                    .append(Component.translatable(
-                    registry.getPath() + "." +
-                            location.getNamespace() + "." + location.getPath())));
+    public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> components, TooltipFlag flag) {
+        CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
+        if ( data!=null) {
+            CompoundTag nbt =data.copyTag();
+            ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                    nbt.get("design_type")).result().orElse(null);
+            ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                    nbt.get("design")).result().orElse(null);
+            if (registry != null) {
+                components.add(Component.translatable(registry.toLanguageKey())
+                        .append(" : ")
+                        .append(Component.translatable(
+                                registry.getPath() + "." +
+                                        location.getNamespace() + "." + location.getPath())));
+            }
+            super.appendHoverText(itemStack, context, components, flag);
         }
-        super.appendHoverText(itemStack, level, components, flag);
     }
 
     /*@Override
@@ -71,7 +78,7 @@ public class DesignBlueprintItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
-        CompoundTag nbt = stack.getOrCreateTag();
+        CompoundTag nbt = stack.getOrCreateTag();//TODO replace with a data component call with  null check -> same as in first methode
         ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                 nbt.get("design_type")).result().orElse(null);
         ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
@@ -92,7 +99,7 @@ public class DesignBlueprintItem extends Item {
     }
 
     private static void save(ItemStack stack, Player player) {
-        CompoundTag nbt = stack.getOrCreateTag();
+        CompoundTag nbt = stack.getOrCreateTag();//TODO replace with a data component call with  null check
         ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                 nbt.get("design_type")).result().orElse(null);
         ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,

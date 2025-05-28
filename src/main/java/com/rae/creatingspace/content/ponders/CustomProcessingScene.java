@@ -18,7 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class CustomProcessingScene {
     public static void electrolysis(SceneBuilder builder, SceneBuildingUtil util) {
@@ -64,8 +64,8 @@ public class CustomProcessingScene {
             nbt.put("VisualizedFluids",
                     NBTHelper.writeCompoundList(ImmutableList.of(
                             IntAttached.with(10, new FluidStack(FluidInit.LIQUID_HYDROGEN.get(), 160)),
-                            IntAttached.with(10, new FluidStack(FluidInit.LIQUID_OXYGEN.get(), 80))), ia -> ia.getValue()
-                            .writeToNBT(new CompoundTag())));
+                            IntAttached.with(10, new FluidStack(FluidInit.LIQUID_OXYGEN.get(), 80))), ia -> (CompoundTag) ia.getValue()
+                            .saveOptional(scene.world().getHolderLookupProvider())));
         });
         scene.idle(4);
         //scene.world.createItemOnBelt(util.grid.at(1, 1, 1), Direction.UP, purple);
@@ -146,8 +146,8 @@ public class CustomProcessingScene {
             nbt.put("VisualizedFluids",
                     NBTHelper.writeCompoundList(ImmutableList.of(
                             IntAttached.with(10, new FluidStack(FluidInit.LIQUID_HYDROGEN.get(), 286)),
-                            IntAttached.with(10, new FluidStack(FluidInit.LIQUID_CO2.get(), 100))), ia -> ia.getValue()
-                            .writeToNBT(new CompoundTag())));
+                            IntAttached.with(10, new FluidStack(FluidInit.LIQUID_CO2.get(), 100))), ia ->
+                            (CompoundTag) ia.getValue().saveOptional(scene.world().getHolderLookupProvider())));
         });
         scene.idle(4);
         //scene.world.createItemOnBelt(util.grid.at(1, 1, 1), Direction.UP, purple);

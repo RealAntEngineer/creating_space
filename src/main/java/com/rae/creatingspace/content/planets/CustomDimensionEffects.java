@@ -3,6 +3,8 @@ package com.rae.creatingspace.content.planets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import net.minecraft.client.Camera;
@@ -13,10 +15,9 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
+    //TODO replace with ResourceLocation.parse(), or CreatingSpace.resource()
     private static final ResourceLocation SPACE_SKY_LOCATION = new ResourceLocation("creatingspace", "textures/environment/space_sky.png");
     private static final ResourceLocation EARTH_LOCATION = new ResourceLocation("creatingspace", "textures/environment/earth.png");
     private static final ResourceLocation MOON_LOCATION = new ResourceLocation("creatingspace", "textures/environment/moon.png");
@@ -44,9 +45,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, SPACE_SKY_LOCATION);
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.getBuilder();
-
-
+        BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);//Only position and uv to set.
         for(int i = 0; i < 6; ++i) {
             poseStack.pushPose();
             //make all the face
@@ -79,13 +78,14 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
 
             float size = 100.0F;
             float distance = 100.0F;
+            //this is the standard brut force way to draw a square with a texture
+            // uv is the coordinates on the texture and the addVertex takes the perspective matrix and the 3 position
             Matrix4f matrix4f = poseStack.last().pose();
-            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-            bufferbuilder.vertex(matrix4f, -size, -distance, -size).uv(col_end, l_end).color(255,255,255,255).endVertex();
-            bufferbuilder.vertex(matrix4f, -size, -distance, size).uv(col_begin, l_end).color(255,255,255,255).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -distance, size).uv(col_begin, l_begin).color(255,255,255,255).endVertex();
-            bufferbuilder.vertex(matrix4f, size, -distance, -size).uv(col_end, l_begin).color(255,255,255,255).endVertex();
-            BufferUploader.drawWithShader(bufferbuilder.end());
+            bufferbuilder.addVertex(matrix4f, -size, -distance, -size).setUv(col_end, l_end);
+            bufferbuilder.addVertex(matrix4f, -size, -distance, size).setUv(col_begin, l_end);
+            bufferbuilder.addVertex(matrix4f, size, -distance, size).setUv(col_begin, l_begin);
+            bufferbuilder.addVertex(matrix4f, size, -distance, -size).setUv(col_end, l_begin);
+            BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
             //tesselator.end();
             poseStack.popPose();
         }
@@ -233,6 +233,7 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
                 Matrix4f matrix4f = poseStack.last().pose();
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, bodyTexture);
+                //TODO same as end of renderSpaceSky
                 bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
                 bufferbuilder.vertex(matrix4f, -bodySize, bodyDistance, -bodySize).uv(f15, f14).endVertex();
                 bufferbuilder.vertex(matrix4f, bodySize, bodyDistance, -bodySize).uv(f13, f14).endVertex();
