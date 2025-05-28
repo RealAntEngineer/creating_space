@@ -7,8 +7,8 @@ import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;

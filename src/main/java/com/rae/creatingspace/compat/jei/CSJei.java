@@ -27,6 +27,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 
@@ -34,6 +36,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -43,6 +46,7 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 public class CSJei implements IModPlugin {
+    //TODO look at CreateJei (REA will do it)
     private static final ResourceLocation ID = CreatingSpace.resource("jei_plugin");
     private final List<CreateRecipeCategory<?>> allCategories = new ArrayList<>();
     private IIngredientManager ingredientManager;
@@ -105,17 +109,23 @@ public class CSJei implements IModPlugin {
             return this;
         }
 
-        public CategoryBuilder<T> addRecipeListConsumer(Consumer<List<T>> consumer) {
-            recipeListConsumers.add(consumer);
+        public CategoryBuilder<T> addRecipeListConsumer(Consumer<List<RecipeHolder<T>>> consumer) {
+            this.recipeListConsumers.add(consumer);
             return this;
         }
 
         public CategoryBuilder<T> addTypedRecipes(IRecipeTypeInfo recipeTypeEntry) {
-            return addTypedRecipes(recipeTypeEntry::getType);
+            Objects.requireNonNull(recipeTypeEntry);
+            return this.addTypedRecipes(recipeTypeEntry::getType);
         }
 
-        public CategoryBuilder<T> addTypedRecipes(Supplier<RecipeType<? extends T>> recipeType) {
-            return addRecipeListConsumer(recipes -> CreateJEI.<T>consumeTypedRecipes(recipes::add, recipeType.get()));
+        public <I extends RecipeInput, R extends Recipe<I>> CategoryBuilder<T> addTypedRecipes(Supplier<RecipeType<R>> recipeType) {
+            return this.addRecipeListConsumer((recipes) -> CreateJEI.consumeTypedRecipes((recipe) -> {
+                if (this.recipeClass.isInstance(recipe.value())) {
+                    recipes.add(recipe);
+                }
+
+            }, (RecipeType)recipeType.get()));
         }
 
         public CategoryBuilder<T> catalystStack(Supplier<ItemStack> supplier) {
@@ -204,7 +214,7 @@ public class CSJei implements IModPlugin {
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         CryoSubtypeInterpreter interpreter = new CryoSubtypeInterpreter();
-        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, BlockInit.CRYOGENIC_TANK.get().asItem(),interpreter);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, BlockInit.CRYOGENIC_TANK.get().asItem(), interpreter);
     }
 
     @Override

@@ -24,13 +24,17 @@ import com.simibubi.create.content.contraptions.ContraptionCollider;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
+import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
@@ -40,6 +44,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -47,8 +52,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -492,7 +501,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         if (level().isClientSide())
             return;
 
-        float gravity = CSDimensionUtil.gravity(this.level().dimensionTypeId().location());
+        float gravity = CSDimensionUtil.gravity(this.level().dimension().location());
 
         if (!isReentry() ){
             if (!level().isClientSide())
@@ -561,21 +570,23 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     //merge that with the static method ?
 
-    @Nullable
-    @Override
-    public Entity changeDimension(ServerLevel destLevel, @NotNull ITeleporter teleporter) {
-        //rewrite so passengers get teleported with it
-        if (!ForgeHooks.onTravelToDimension(this, destLevel.dimension())) return null;
-        if (this.level() instanceof ServerLevel && !this.isRemoved()) {
-            this.level().getProfiler().push("changeDimension");
 
+    @Override
+    public @Nullable Entity changeDimension(DimensionTransition transition) {
+        //rewrite so passengers get teleported with it
+        if (!CommonHooks.onTravelToDimension(this, transition.newLevel().dimension())) {
+            return null;
+        }
+        if (this.level() instanceof ServerLevel serverLevel && !this.isRemoved()) {
+            serverLevel.getProfiler().push("changeDimension");
+            ServerLevel destLevel = transition.newLevel();
             List<Entity> passengers = this.getPassengers();
             List<Entity> collidingEntities = level().getEntities(this, this.getBoundingBox());
             collidingEntities.removeAll(passengers);
             this.unRide();
             BlockPos previousRocketPos = this.getOnPos();
             this.level().getProfiler().push("reposition");
-            PortalInfo portalinfo = teleporter.getPortalInfo(this, destLevel, this::findDimensionEntryPoint);
+            PortalInfo portalinfo = transition.getPortalInfo(this, destLevel, this::findDimensionEntryPoint);
             if (portalinfo == null) {
                 return null;
             } else {
@@ -589,32 +600,32 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                             if (entity != null) {
 
                                 entity.restoreFrom(this);//copy the contraption first
-                                entity.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, portalinfo.yRot, entity.getXRot());
-                                entity.setDeltaMovement(portalinfo.speed);
+                                entity.moveTo(transition.pos().x, transition.pos().y, transition.pos().z, entity.getYRot(), entity.getXRot());
+                                entity.setDeltaMovement(transition.speed());
                                 //adding previously riding passengers and collidingEntities ( separated, so they keep riding when arriving)
                                 for (int i = 0; i < passengers.size(); i++) {
                                     Entity passenger = passengers.get(i);
-                                    passenger.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, passenger.getYRot(), passenger.getXRot());
+                                    passenger.moveTo(transition.pos().x, transition.pos().y, transition.pos().z, passenger.getYRot(), passenger.getXRot());
 
                                     if (passenger instanceof ServerPlayer player) {
-                                        player.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                        player.changeDimension(transition);
                                         entity.addSittingPassenger(player, i);
                                     } else {
                                         if (!(passenger instanceof Player)) {
-                                            passenger.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                            passenger.changeDimension(transition);
                                             entity.addSittingPassenger(passenger, i);
                                         }
                                     }
                                 }
                                 for (Entity movedEntity : collidingEntities) {
                                     BlockPos posDif = movedEntity.getOnPos().subtract(previousRocketPos);
-                                    movedEntity.moveTo(portalinfo.pos.x + posDif.getX(), portalinfo.pos.y + posDif.getY(), portalinfo.pos.z + posDif.getZ(), movedEntity.getYRot(), movedEntity.getXRot());
+                                    movedEntity.moveTo(transition.pos().x + posDif.getX(), transition.pos().y + posDif.getY(), transition.pos().z + posDif.getZ(), movedEntity.getYRot(), movedEntity.getXRot());
 
                                     if (movedEntity instanceof ServerPlayer player) {
-                                        player.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                        player.changeDimension(transition);
                                     } else {
                                         if (!(movedEntity instanceof Player)) {
-                                            movedEntity.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                            movedEntity.changeDimension(transition);
                                         }
                                     }
                                 }
@@ -727,13 +738,12 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     @Override
     public void applyLocalTransforms(PoseStack matrixStack, float partialTicks) {
     }
-
     /**
      * necessary to avoid "vibration" the  updateClientMotion() is used to sync client to server entity
      */
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void lerpTo(double x, double y, double z, float yw, float pt, int inc, boolean t) {
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps) {
     }
 
     //saving and getters
@@ -748,29 +758,30 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
         this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
         this.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.valueOf(compound.getString("status")));
-        this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).get().orThrow();
+        this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).getOrThrow();
 
         this.originDimension =
-                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).get().orThrow();
+                ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).getOrThrow();
         this.schedule.read((CompoundTag) compound.get("Runtime"));
     }
 
     @Override
-    protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
+    protected void writeAdditional(CompoundTag compound, HolderLookup.Provider registries, boolean spawnPacket) {
+
         compound.put("initialPosMap", RocketControlsBlockEntity.putPosMap(this.initialPosMap));
         compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
         compound.putFloat("initialMass", this.initialMass);
-        compound.put("realPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).get().left().orElse(new CompoundTag()));
-        compound.put("partialDrainAmountPerFluid", CODEC_MAP_CONSUMPTION.encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).get().left().orElse(new CompoundTag()));
+        compound.put("realPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).resultOrPartial().orElseGet(CompoundTag::new));
+        compound.put("partialDrainAmountPerFluid", CODEC_MAP_CONSUMPTION.encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).resultOrPartial().orElseGet(CompoundTag::new));
 
         compound.put("assemblyData", FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
         compound.putFloat("thrust", this.totalThrust);
         compound.putString("status", this.entityData.get(STATUS_DATA_ACCESSOR).toString());
-        compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension).get().orThrow());
-        compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).get().orThrow());
+        compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension).getOrThrow());
+        compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).getOrThrow());
         compound.put("Runtime", schedule.write());
 
-        super.writeAdditional(compound, spawnPacket);
+        super.writeAdditional(compound,registries, spawnPacket);
     }
 
     @Override
@@ -838,16 +849,24 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         setContraptionMotion(Vec3.ZERO);
     }
 
-    public enum RocketStatus {
+    public enum RocketStatus implements StringRepresentable {
+
         //replacement for the RUNNING_ENTITY_DATA_ACCESSOR and REENTRY_ENTITY_DATA_ACCESSOR
         IDLE(false),
         TRAVELING(true),//going up to the next dimension
         BLOCKED(false),//used when physically blocked and when not enough fuel, -> separate into several cases ?
         ON_FINAL(true);
         final boolean propelled_phase;
+        public static final Codec<RocketStatus> CODEC = StringRepresentable.fromEnum(RocketStatus::values);
+        public static final StreamCodec<ByteBuf, RocketStatus> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
         RocketStatus(boolean propelled_phase) {
             this.propelled_phase = propelled_phase;
+        }
+
+        @Override
+        public @NotNull String getSerializedName() {
+            return this.name().toLowerCase();
         }
     }
 }

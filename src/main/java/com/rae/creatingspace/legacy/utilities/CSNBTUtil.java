@@ -83,6 +83,8 @@ public class CSNBTUtil {
         return returnNBT;
     }
 */
+    //TODO replace calls of those 2 methodes with calls to the apropriated codec
+    @Deprecated
     public static HashMap<TagKey<Fluid>, Integer> fromNBTtoMapFluidTagsInteger(CompoundTag perTagFluidMap) {
         HashMap<TagKey<Fluid>, Integer> returnedMap = new HashMap<>();
         for (String stringCouple:perTagFluidMap.getAllKeys()){
@@ -93,14 +95,14 @@ public class CSNBTUtil {
                     .replace("TagKey[","")
                     .replace("]","");
 
-            TagKey<Fluid> fluidTagKey = FluidTags.create(new ResourceLocation(stringTag.split(" / ")[1]));
+            TagKey<Fluid> fluidTagKey = FluidTags.create(ResourceLocation.parse(stringTag.split(" / ")[1]));
 
             returnedMap.put(fluidTagKey,integerValue);
 
         }
         return returnedMap;
     }
-
+    @Deprecated
     public static CompoundTag fromMapFluidTagsIntegerToNBT(HashMap<TagKey<Fluid>, Integer> map) {
         CompoundTag returnedMap = new CompoundTag();
         for (TagKey<Fluid> fluidTagKey:map.keySet()){

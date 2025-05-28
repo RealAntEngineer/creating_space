@@ -1,6 +1,7 @@
 package com.rae.creatingspace.legacy.server.blockentities;
 
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.legacy.server.blocks.ChemicalSynthesizerBlock;
@@ -12,6 +13,7 @@ import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -21,16 +23,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -70,7 +69,7 @@ public class ChemicalSynthesizerBlockEntity extends SmartBlockEntity implements 
         }
     };
 
-    private final LazyOptional<IItemHandlerModifiable> itemOptional = LazyOptional.of(() -> this.inventory);
+    //private final LazyOptional<IItemHandlerModifiable> itemOptional = LazyOptional.of(() -> this.inventory);
 
     private int progress = 0;
     private int maxProgress = 80;
@@ -140,20 +139,20 @@ public class ChemicalSynthesizerBlockEntity extends SmartBlockEntity implements 
     }
 
     @Override
-    public void read(CompoundTag nbt,boolean clientPacket) {
-        super.read(nbt,clientPacket);
-        inventory.deserializeNBT(nbt.getCompound("inventory"));
+    public void read(CompoundTag nbt, HolderLookup.Provider registries,boolean clientPacket) {
+        super.read(nbt,registries,clientPacket);
+        inventory.deserializeNBT(registries,nbt.getCompound("inventory"));
         HYDROGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_HYDROGEN.get(), nbt.getInt("hydrogenAmount")));
         METHANE_TANK.setFluid(new FluidStack(FluidInit.LIQUID_METHANE.get(), nbt.getInt("methaneAmount")));
     }
 
 
     @Override
-    protected void write(CompoundTag nbt,boolean clientPacket) {
-        nbt.put("inventory", inventory.serializeNBT());
+    protected void write(CompoundTag nbt, HolderLookup.Provider registries,boolean clientPacket) {
+        nbt.put("inventory", inventory.serializeNBT(registries));
         nbt.putInt("hydrogenAmount", HYDROGEN_TANK.getFluidAmount());
         nbt.putInt("methaneAmount", METHANE_TANK.getFluidAmount());
-        super.write(nbt,clientPacket);
+        super.write(nbt,registries,clientPacket);
     }
 
     public void drop() {
@@ -161,27 +160,31 @@ public class ChemicalSynthesizerBlockEntity extends SmartBlockEntity implements 
         for(int i = 0; i < this.inventory.getSlots(); i++){
             inventory.setItem(i, this.inventory.getStackInSlot(i));
         }
+        assert this.level != null;
         Containers.dropContents(this.level,this.worldPosition,inventory);
     }
 
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) {
-            return this.itemOptional.cast();
-        }
-        if (cap == ForgeCapabilities.FLUID_HANDLER){
-            //only south for hydrogen input and north for methane output
-            Direction localDir = this.getBlockState().getValue(ChemicalSynthesizerBlock.FACING);
-
-            if (localDir == side.getOpposite()){
-                return this.hydrogenFluidOptional.cast();
-            }
-            if (localDir == side){
-                return this.methaneFluidOptional.cast();
-            }
-        }
-        return super.getCapability(cap, side);
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                BlockEntityInit.SYNTHESIZER.get(),
+                (be, context) -> {
+                    Direction localDir = be.getBlockState().getValue(ChemicalSynthesizerBlock.FACING);
+                    assert context != null;
+                    if (localDir == context.getOpposite()){
+                        return be.HYDROGEN_TANK;
+                    }
+                    if (localDir == context){
+                        return be.METHANE_TANK;
+                    }
+                    return null;
+                }
+                );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                BlockEntityInit.SYNTHESIZER.get(),
+                (be,context) -> be.getInventory()
+        );
     }
 
 
@@ -192,7 +195,7 @@ public class ChemicalSynthesizerBlockEntity extends SmartBlockEntity implements 
     //fluid
 
 
-    private final LazyOptional<IFluidHandler> hydrogenFluidOptional = LazyOptional.of(()-> this.HYDROGEN_TANK);
+    //private final LazyOptional<IFluidHandler> hydrogenFluidOptional = LazyOptional.of(()-> this.HYDROGEN_TANK);
     private final FluidTank HYDROGEN_TANK  = new FluidTank(2000){
         @Override
         protected void onContentsChanged() {
@@ -206,7 +209,7 @@ public class ChemicalSynthesizerBlockEntity extends SmartBlockEntity implements 
         }
     };
 
-    private final LazyOptional<IFluidHandler> methaneFluidOptional = LazyOptional.of(()-> this.METHANE_TANK);
+    //private final LazyOptional<IFluidHandler> methaneFluidOptional = LazyOptional.of(()-> this.METHANE_TANK);
     private final FluidTank METHANE_TANK  = new FluidTank(2000){
         @Override
         protected void onContentsChanged() {

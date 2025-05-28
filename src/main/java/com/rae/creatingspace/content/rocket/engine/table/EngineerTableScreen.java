@@ -28,7 +28,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.widget.ForgeSlider;
+import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

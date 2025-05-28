@@ -5,10 +5,13 @@ import com.rae.creatingspace.init.graphics.DimensionEffectInit;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.rae.creatingspace.init.graphics.ParticleTypeInit;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
 
+@Mod(value = CreatingSpace.MODID, dist = Dist.CLIENT)
 public class CreatingSpaceClient {
-    public static void clientRegister(IEventBus modEventBus) {
+    public CreatingSpaceClient(IEventBus modEventBus) {
         modEventBus.addListener(ParticleTypeInit::registerFactories);
         modEventBus.register(DimensionEffectInit.class);
         PartialModelInit.init();

@@ -1,14 +1,21 @@
 package com.rae.creatingspace.content.rocket.network;
 
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
+import io.netty.buffer.ByteBuf;
+import net.createmod.catnip.net.base.ClientboundPacketPayload;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 
-public class RocketContraptionUpdatePacket  extends SimplePacketBase {
 
+public class RocketContraptionUpdatePacket  implements ClientboundPacketPayload {
+    public static final StreamCodec<ByteBuf, RocketContraptionUpdatePacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, packet -> packet.entityID,
+            ByteBufCodecs.DOUBLE, packet -> packet.coord,
+            ByteBufCodecs.DOUBLE, packet -> packet.speed,
+            RocketContraptionUpdatePacket::new
+    );
     public int entityID;
     public double coord;
     public double speed;
@@ -26,16 +33,12 @@ public class RocketContraptionUpdatePacket  extends SimplePacketBase {
     }
 
     @Override
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeInt(entityID);
-        buffer.writeFloat((float) coord);
-        buffer.writeFloat((float) speed);
+    public void handle(LocalPlayer player) {
+        RocketContraptionEntity.handlePacket(this);
     }
 
     @Override
-    public boolean handle(NetworkEvent.Context context) {
-        context.enqueueWork(
-                () -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> RocketContraptionEntity.handlePacket(this)));
-        return true;
+    public PacketTypeProvider getTypeProvider() {
+        return null;
     }
 }

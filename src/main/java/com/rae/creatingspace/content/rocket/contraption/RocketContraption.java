@@ -14,6 +14,7 @@ import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -23,8 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -116,9 +116,9 @@ public class RocketContraption extends TranslatingContraption {
     }
 
     @Override
-    public CompoundTag writeNBT(boolean spawnPacket) {
+    public CompoundTag writeNBT(HolderLookup.Provider registries,boolean spawnPacket) {
         //TODO add data for server/client sync
-        CompoundTag nbt = super.writeNBT(spawnPacket);
+        CompoundTag nbt = super.writeNBT(registries,spawnPacket);
         nbt.putInt("thrust", thrust);
         nbt.putInt("dryMass", dryMass);
         nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());

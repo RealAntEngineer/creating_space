@@ -20,6 +20,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import com.simibubi.create.foundation.utility.DistExecutor;
 import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceLocation;
 
@@ -79,10 +80,10 @@ public class CreatingSpace {
         MiscInit.register(modEventBus);
         CreativeModeTabsInit.register(modEventBus);
 
-        CSConfigs.registerConfigs(modLoadingContext);
+        CSConfigs.registerConfigs(modLoadingContext,modContainer);
 
         MenuTypesInit.register();
-        PacketInit.registerPackets();
+        PacketInit.register();
         IgniteOnPlace.register();
 
         CarverInit.register(modEventBus);
@@ -92,7 +93,7 @@ public class CreatingSpace {
         modEventBus.addListener(CreatingSpace::init);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
+        //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 
     }
     public static void init(final FMLCommonSetupEvent event) {

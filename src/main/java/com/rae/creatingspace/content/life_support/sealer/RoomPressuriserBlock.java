@@ -23,6 +23,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Function;
+
 import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
 
 public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements IBE<RoomPressuriserBlockEntity> {
@@ -45,7 +47,7 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
 
     //only for debugging -> this machine will have no GUI to comply with create
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         ItemStack held = player.getMainHandItem();
         if (!level.isClientSide && held.isEmpty()) {
             if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity be) {
@@ -53,8 +55,9 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
                 return InteractionResult.sidedSuccess(!level.isClientSide());
             }
         }
-        return super.use(state, level, pos, player, hand, hitResult);
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
+
     /*
     @OnlyIn(value = Dist.CLIENT)
     protected void displayScreen(SealerBlockEntity be, Player player) {

@@ -8,16 +8,17 @@ import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 
@@ -54,17 +55,18 @@ public class FluidThresholdCondition extends CargoThresholdCondition {
         return operator.test(foundFluid, target * 1000);
     }
 
+
     @Override
-    protected void writeAdditional(CompoundTag tag) {
-        super.writeAdditional(tag);
-        tag.put("Bucket", compareStack.serializeNBT());
+    protected void writeAdditional(HolderLookup.Provider registries, CompoundTag tag) {
+        super.writeAdditional(registries,tag);
+        tag.put("Bucket", compareStack.serializeNBT(registries));
     }
 
     @Override
-    protected void readAdditional(CompoundTag tag) {
-        super.readAdditional(tag);
+    protected void readAdditional(HolderLookup.Provider registries, CompoundTag tag) {
+        super.readAdditional(registries,tag);
         if (tag.contains("Bucket"))
-            compareStack = FilterItemStack.of(tag.getCompound("Bucket"));
+            compareStack = FilterItemStack.of(registries,tag.getCompound("Bucket"));
     }
 
     @Override

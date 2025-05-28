@@ -9,6 +9,7 @@ import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
 import net.createmod.catnip.nbt.NBTHelper;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -243,14 +244,14 @@ public class RocketScheduleRuntime {
         predictionTicks = new ArrayList<>();
     }
 
-    public CompoundTag write() {
+    public CompoundTag write(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         tag.putInt("CurrentEntry", currentEntry);
         tag.putBoolean("AutoSchedule", isAutoSchedule);
         tag.putBoolean("Paused", paused);
         tag.putBoolean("Completed", completed);
         if (schedule != null)
-            tag.put("Schedule", schedule.write());
+            tag.put("Schedule", schedule.write(registries));
         NBTHelper.writeEnum(tag, "State", state);
         tag.putIntArray("ConditionProgress", conditionProgress);
         tag.put("ConditionContext", NBTHelper.writeCompoundList(conditionContext, CompoundTag::copy));
@@ -258,14 +259,14 @@ public class RocketScheduleRuntime {
         return tag;
     }
 
-    public void read(CompoundTag tag) {
+    public void read(HolderLookup.Provider registries,CompoundTag tag) {
         reset();
         paused = tag.getBoolean("Paused");
         completed = tag.getBoolean("Completed");
         isAutoSchedule = tag.getBoolean("AutoSchedule");
         currentEntry = tag.getInt("CurrentEntry");
         if (tag.contains("Schedule"))
-            schedule = RocketSchedule.fromTag(tag.getCompound("Schedule"));
+            schedule = RocketSchedule.fromTag(registries,tag.getCompound("Schedule"));
         state = NBTHelper.readEnum(tag, "State", State.class);
         for (int i : tag.getIntArray("ConditionProgress"))
             conditionProgress.add(i);

@@ -5,6 +5,7 @@ import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
 import net.createmod.catnip.data.Pair;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -20,17 +21,17 @@ public abstract class ScheduleWaitCondition extends ScheduleDataEntry {
         context.putInt("StatusVersion", context.getInt("StatusVersion") + 1);
     }
 
-    public final CompoundTag write() {
+    public final CompoundTag write(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         CompoundTag dataCopy = data.copy();
-        writeAdditional(dataCopy);
+        writeAdditional(registries,dataCopy);
         tag.putString("Id", getId().toString());
         tag.put("Data", dataCopy);
         return tag;
     }
 
-    public static ScheduleWaitCondition fromTag(CompoundTag tag) {
-        ResourceLocation location = new ResourceLocation(tag.getString("Id"));
+    public static ScheduleWaitCondition fromTag(HolderLookup.Provider registries,CompoundTag tag) {
+        ResourceLocation location = ResourceLocation.tryParse(tag.getString("Id"));
         Supplier<? extends ScheduleWaitCondition> supplier = null;
         for (Pair<ResourceLocation, Supplier<? extends ScheduleWaitCondition>> pair : RocketSchedule.CONDITION_TYPES)
             if (pair.getFirst()
@@ -44,9 +45,9 @@ public abstract class ScheduleWaitCondition extends ScheduleDataEntry {
 
         ScheduleWaitCondition condition = supplier.get();
         // Left around for migration purposes. Data added in writeAdditional has moved into the "Data" tag
-        condition.readAdditional(tag);
+        condition.readAdditional(registries,tag);
         CompoundTag data = tag.getCompound("Data");
-        condition.readAdditional(data);
+        condition.readAdditional(registries,data);
         condition.data = data;
         return condition;
     }

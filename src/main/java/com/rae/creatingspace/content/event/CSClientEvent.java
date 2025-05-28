@@ -18,22 +18,19 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+
 
 import java.util.List;
 
 import static com.rae.creatingspace.content.rocket.engine.RocketEngineItem.appendEngineDependentText;
 
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT)
+@EventBusSubscriber(value = Dist.CLIENT)
 public class CSClientEvent {
     protected static boolean isGameActive() {
         return !(Minecraft.getInstance().level == null || Minecraft.getInstance().player == null);
@@ -90,8 +87,9 @@ public class CSClientEvent {
         }
     }
 
-    @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ModBusEvents {
+        //TODO look at Create's client events handler
         @SubscribeEvent
         public static void addEntityRendererLayers(EntityRenderersEvent.AddLayers event) {
             EntityRenderDispatcher dispatcher = Minecraft.getInstance()

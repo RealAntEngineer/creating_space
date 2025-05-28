@@ -1,27 +1,29 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
+import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class UpgradableEquipmentMenu extends MenuBase<ItemStack> {
-    private Slot upgradeItem;
 
-    public UpgradableEquipmentMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
+    public UpgradableEquipmentMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
     public UpgradableEquipmentMenu(MenuType<?> type, int id, Inventory inv, ItemStack be) {
         super(type, id, inv, be);
     }
+
 
     public boolean canWrite() {
         return true;
@@ -32,9 +34,9 @@ public class UpgradableEquipmentMenu extends MenuBase<ItemStack> {
     }
 
     @Override
-    protected ItemStack createOnClient(FriendlyByteBuf extraData) {
+    protected ItemStack createOnClient(RegistryFriendlyByteBuf extraData) {
         //System.out.println("create on client");
-        return extraData.readItem();
+        return ItemStack.STREAM_CODEC.decode(extraData);
     }
 
     @Override
@@ -44,15 +46,14 @@ public class UpgradableEquipmentMenu extends MenuBase<ItemStack> {
     @Override
     protected void addSlots() {
         //temporary false container
-        upgradeItem = new SlotItemHandler(new ItemStackHandler(1),
+        Slot upgradeItem = new SlotItemHandler(new ItemStackHandler(1),
                 0, 24, 23) {
             @Override
-            public boolean mayPlace(ItemStack stack) {
+            public boolean mayPlace(@NotNull ItemStack stack) {
                 return stack.canEquip(((UpgradableEquipment) contentHolder.getItem()).getEquipmentSlot(), player);
             }
         };
-        CompoundTag nbt = contentHolder.getOrCreateTag();
-        ItemStack upgradeStack = ItemStack.of(nbt.getCompound("upgradeElement"));
+        ItemStack upgradeStack = contentHolder.getOrDefault(AllDataComponents.FILTER_ITEMS,ItemContainerContents.EMPTY).getStackInSlot(0);
         upgradeItem.set(upgradeStack);
         addSlot(upgradeItem);
 
@@ -70,13 +71,11 @@ public class UpgradableEquipmentMenu extends MenuBase<ItemStack> {
 
     @Override
     protected void saveData(ItemStack contentHolder) {
-        CompoundTag nbt = contentHolder.getOrCreateTag();
-        nbt.put("upgradeElement", upgradeItem.getItem().serializeNBT());
-        contentHolder.setTag(nbt);
+        contentHolder.set(AllDataComponents.FILTER_ITEMS, ItemContainerContents.fromItems(getItems()));
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         Slot clickedSlot = getSlot(index);
         if (!clickedSlot.hasItem())
             return ItemStack.EMPTY;

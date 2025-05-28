@@ -3,7 +3,7 @@ package com.rae.creatingspace.init;
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.foundation.damageTypes.DamageTypeBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageScaling;
@@ -18,7 +18,7 @@ public class DamageSourceInit {
         return ResourceKey.create(Registries.DAMAGE_TYPE, CreatingSpace.resource(name));
     }
 
-    public static void bootstrap(BootstapContext<DamageType> ctx) {
+    public static void bootstrap(BootstrapContext<DamageType> ctx) {
         new DamageTypeBuilder(NO_OXYGEN)
                 .scaling(DamageScaling.NEVER)
                 .effects(DamageEffects.DROWNING)

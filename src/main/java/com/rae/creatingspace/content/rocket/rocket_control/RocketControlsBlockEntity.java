@@ -12,6 +12,7 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -19,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +46,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         return BlockInit.ROCKET_CONTROLS.get().getName();
     }
     @Override
-    public Component getName() {
+    public @NotNull Component getName() {
         return this.customName != null ? this.customName
                 : defaultName;
     }
@@ -90,6 +92,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
 
     private void assemble() {
 
+        assert level != null;
         if (!(level.getBlockState(worldPosition)
                 .getBlock() instanceof RocketControlsBlock)) {
             return;
@@ -149,10 +152,10 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     }
 
     @Override
-    protected void write(CompoundTag compound, boolean clientPacket) {
-        AssemblyException.write(compound, lastException);
+    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        AssemblyException.write(compound, registries,lastException);
         compound.put("initialPosMap", putPosMap(this.initialPosMap));
-        super.write(compound, clientPacket);
+        super.write(compound,registries, clientPacket);
     }
 
     public static CompoundTag putPosMap(HashMap<ResourceLocation,BlockPos> initialPosMap) {
@@ -164,10 +167,10 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
-        lastException = AssemblyException.read(compound);
+    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        lastException = AssemblyException.read(compound,registries);
         this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
-        super.read(compound, clientPacket);
+        super.read(compound,registries, clientPacket);
     }
     public static  HashMap<ResourceLocation,BlockPos> getPosMap(CompoundTag compound) {
         return  compound==null?null:new HashMap<>(POS_MAP_CODEC.parse(NbtOps.INSTANCE,compound).resultOrPartial(

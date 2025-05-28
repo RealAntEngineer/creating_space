@@ -1,5 +1,7 @@
 package com.rae.creatingspace.legacy.server.blocks.multiblock.engines;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.SmallEngine;
@@ -11,15 +13,23 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.system.NonnullDefault;
 
 
 public class SmallEngineBlock extends RocketEngineBlock implements IBE<SmallEngine> {
 
-
+	MapCodec<SmallEngineBlock> CODEC = simpleCodec(SmallEngineBlock::new);
 	public SmallEngineBlock(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	protected @NotNull MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -48,7 +58,7 @@ public class SmallEngineBlock extends RocketEngineBlock implements IBE<SmallEngi
 
 
 	@Override
-	public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+	public void tick(@NotNull BlockState pState, ServerLevel pLevel, BlockPos pPos, @NotNull RandomSource pRandom) {
 		Direction targetSide = Direction.DOWN;
 		BlockPos structurePos = pPos.relative(targetSide);
 		BlockState occupiedState = pLevel.getBlockState(structurePos);
@@ -61,6 +71,7 @@ public class SmallEngineBlock extends RocketEngineBlock implements IBE<SmallEngi
 	}
 
 	@Override
+	@NonnullDefault
 	public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState1, boolean isMoving) {
 		super.onRemove(blockState, level, blockPos, blockState1, isMoving);
 	}

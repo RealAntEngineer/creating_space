@@ -1,45 +1,29 @@
 package com.rae.creatingspace.content.rocket.network;
 
 import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity;
+import com.rae.creatingspace.init.PacketInit;
 import com.simibubi.create.foundation.networking.BlockEntityConfigurationPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 
 public class RocketEngineerTableSync extends BlockEntityConfigurationPacket<RocketEngineerTableBlockEntity> {
     private CompoundTag syncData;
-
+    public static final StreamCodec<RegistryFriendlyByteBuf, RocketEngineerTableSync> STREAM_CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC, packet -> packet.pos,
+            ByteBufCodecs.COMPOUND_TAG, packet -> packet.syncData,
+            RocketEngineerTableSync::new
+    );
     public RocketEngineerTableSync(BlockPos pos, CompoundTag syncData) {
         super(pos);
         this.syncData = syncData;
     }
 
-
-    public RocketEngineerTableSync(BlockPos pos) {
-        super(pos);
-    }
-
-    public RocketEngineerTableSync(FriendlyByteBuf buffer) {
-        super(buffer);
-    }
-
-
     public static RocketEngineerTableSync sendSettings(BlockPos pos, CompoundTag syncData) {
-        RocketEngineerTableSync packet = new RocketEngineerTableSync(pos);
-        packet.syncData = syncData;
-        return packet;
-    }
-
-
-    @Override
-    protected void writeSettings(FriendlyByteBuf buffer) {
-        buffer.writeNbt((CompoundTag) syncData);
-    }
-
-    @Override
-    protected void readSettings(FriendlyByteBuf buffer) {
-        syncData = buffer.readNbt();
+        return new RocketEngineerTableSync(pos,syncData);
     }
 
     @Override
@@ -48,6 +32,7 @@ public class RocketEngineerTableSync extends BlockEntityConfigurationPacket<Rock
     }
 
     @Override
-    protected void applySettings(RocketEngineerTableBlockEntity be) {
+    public PacketTypeProvider getTypeProvider() {
+        return PacketInit.SYNC_ROCKET_ENGINEER_BE;
     }
 }

@@ -11,24 +11,20 @@ import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack.FLUID_NBT_KEY;
 
 public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameable, IHaveGoggleInformation {
     private final Component defaultName;
@@ -87,21 +83,21 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
+    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         CompoundTag tankTag = new CompoundTag();
-        tag.put(FLUID_NBT_KEY, TANK.writeToNBT(tankTag));
-        super.write(tag, clientPacket);
+        tag.put("Fluids", TANK.writeToNBT(registries,tankTag));
+        super.write(tag,registries, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
-        TANK.readFromNBT((CompoundTag) tag.get(FLUID_NBT_KEY));
+    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        super.read(tag,registries, clientPacket);
+        TANK.readFromNBT(registries,(CompoundTag) tag.get("Fluids"));
     }
 
 
-    public void setTank(CompoundTag tag) {
-        TANK.readFromNBT(tag);
+    public void setTank(HolderLookup.Provider registries, CompoundTag tag) {
+        TANK.readFromNBT(registries, tag);
     }
 
     public FluidTank getTank() {

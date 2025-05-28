@@ -4,102 +4,64 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.engine.table.EngineerTableCraft;
 import com.rae.creatingspace.content.rocket.network.*;
 import com.rae.creatingspace.legacy.utilities.packet.*;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
+import com.simibubi.create.AllPackets;
+import com.simibubi.create.Create;
+import net.createmod.catnip.net.base.BasePacketPayload;
+import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
 
+import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT;
-import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
-public enum PacketInit {
-    CRAFT_ENGINE(EngineerTableCraft.class, EngineerTableCraft::new, PLAY_TO_SERVER),
-    SYNC_ROCKET_ENGINEER_BE(RocketEngineerTableSync.class, RocketEngineerTableSync::new, PLAY_TO_SERVER),
-    ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket::new, PLAY_TO_SERVER),
-    ASSEMBLE_ROCKET_2(NewRocketAssemblePacket.class, NewRocketAssemblePacket::new, PLAY_TO_SERVER),
-    ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
-    LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket::new, PLAY_TO_SERVER),
-    SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket::new,PLAY_TO_SERVER),
-    DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket::new, PLAY_TO_SERVER),
-    SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing::new,PLAY_TO_SERVER),
-    SEALER_SETTINGS(SealerSettings.class,SealerSettings::new,PLAY_TO_SERVER),
-    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket::new, PLAY_TO_CLIENT),
-    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER),
-    /*UPDATE_UNLOCKED_DESIGN_SERVER(PlayerUpdateUnlockedDesignClientPacket.class, PlayerUpdateUnlockedDesignClientPacket::new, PLAY_TO_SERVER),
-    UPDATE_UNLOCKED_DESIGN_CLIENT(PlayerUpdateUnlockedDesignServerPacket.class, PlayerUpdateUnlockedDesignServerPacket::new, PLAY_TO_CLIENT),*/
-    UPDATE_SAVED_DATA(UpdateSavedDataPacket.class, UpdateSavedDataPacket::new,PLAY_TO_CLIENT);
+public enum PacketInit implements BasePacketPayload.PacketTypeProvider {
+    // C2S
+    CRAFT_ENGINE(EngineerTableCraft.class, EngineerTableCraft.STREAM_CODEC),
+    SYNC_ROCKET_ENGINEER_BE(RocketEngineerTableSync.class, RocketEngineerTableSync.STREAM_CODEC),
+    //ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket.STREAM_CODEC),
+    ASSEMBLE_ROCKET_2(NewRocketAssemblePacket.class, NewRocketAssemblePacket.STREAM_CODEC),
+    ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket.STREAM_CODEC),
+    LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket.STREAM_CODEC),
+    SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket.STREAM_CODEC),
+    DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket.STREAM_CODEC),
+    SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing.STREAM_CODEC),
+    SEALER_SETTINGS(SealerSettings.class,SealerSettings.STREAM_CODEC),
+    ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket.STREAM_CODEC),
 
-    public static final ResourceLocation CHANNEL_NAME = CreatingSpace.resource("main");
-    public static final int NETWORK_VERSION = 3;
-    public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
-    private static SimpleChannel channel;
+    // S2C
+    UPDATE_SAVED_DATA(UpdateSavedDataPacket.class, UpdateSavedDataPacket.STREAM_CODEC),
+    UPDATE_ROCKET(RocketContraptionUpdatePacket.class, RocketContraptionUpdatePacket.STREAM_CODEC);
 
-    private final PacketType<?> packetType;
+    private final CatnipPacketRegistry.PacketType<?> type;
 
-    <T extends SimplePacketBase> PacketInit(Class<T> type, Function<FriendlyByteBuf, T> factory,
-                                            NetworkDirection direction) {
-        packetType = new PacketType<>(type, factory, direction);
-    }
-    public static void registerPackets() {
-        channel = NetworkRegistry.ChannelBuilder.named(CHANNEL_NAME)
-                .serverAcceptedVersions(NETWORK_VERSION_STR::equals)
-                .clientAcceptedVersions(NETWORK_VERSION_STR::equals)
-                .networkProtocolVersion(() -> NETWORK_VERSION_STR)
-                .simpleChannel();
-
-        for (PacketInit packet : values())
-            packet.packetType.register();
+    <T extends BasePacketPayload> PacketInit(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
+        String name = this.name().toLowerCase(Locale.ROOT);
+        this.type = new CatnipPacketRegistry.PacketType<>(
+                new CustomPacketPayload.Type<>(Create.asResource(name)),
+                clazz, codec
+        );
     }
 
-    public static SimpleChannel getChannel() {
-        return channel;
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends CustomPacketPayload> CustomPacketPayload.Type<T> getType() {
+        return (CustomPacketPayload.Type<T>) this.type.type();
     }
 
-    public static void sendToNear(Level world, BlockPos pos, int range, Object message) {
-        getChannel().send(
-                PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), range, world.dimension())),
-                message);
-    }
-
-    private static class PacketType<T extends SimplePacketBase> {
-        private static int index = 0;
-
-        private final BiConsumer<T, FriendlyByteBuf> encoder;
-        private final Function<FriendlyByteBuf, T> decoder;
-        private final BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
-        private final Class<T> type;
-        private final NetworkDirection direction;
-
-        private PacketType(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
-            encoder = T::write;
-            decoder = factory;
-            handler = (packet, contextSupplier) -> {
-                NetworkEvent.Context context = contextSupplier.get();
-                if (packet.handle(context)) {
-                    context.setPacketHandled(true);
-                }
-            };
-            this.type = type;
-            this.direction = direction;
+    public static void register() {
+        CatnipPacketRegistry packetRegistry = new CatnipPacketRegistry(CreatingSpace.MODID, 1);
+        for (PacketInit packet : PacketInit.values()) {
+            packetRegistry.registerPacket(packet.type);
         }
-
-        private void register() {
-            getChannel().messageBuilder(type, index++, direction)
-                    .encoder(encoder)
-                    .decoder(decoder)
-                    .consumerNetworkThread(handler)
-                    .add();
-        }
+        packetRegistry.registerAllPackets();
     }
 
 }

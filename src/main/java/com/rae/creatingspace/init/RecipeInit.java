@@ -9,6 +9,7 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.createmod.catnip.lang.Lang;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -17,25 +18,25 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
+//TODO correct it based on AllRecipeTypes
 public enum RecipeInit implements IRecipeTypeInfo {
     CHEMICAL_SYNTHESIS(ChemicalSynthesisRecipe::new),
     MECHANICAL_ELECTROLYSIS(MechanicalElectrolysisRecipe::new),
     AIR_LIQUEFYING(AirLiquefyingRecipe::new);
 
     private final ResourceLocation id;
-    private final RegistryObject<RecipeSerializer<?>> serializerObject;
-    @Nullable
-    private final RegistryObject<RecipeType<?>> typeObject;
-    private final Supplier<RecipeType<?>> type;
+    private final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializerObject;
+    private final DeferredHolder<RecipeType<?>, RecipeType<?>> typeObject;
+    private final DeferredHolder<RecipeType<?>, RecipeType<?>> type;
 
     RecipeInit(Supplier<RecipeSerializer<?>> serializerSupplier, Supplier<RecipeType<?>> typeSupplier, boolean registerType) {
         String name = Lang.asId(name());
@@ -46,7 +47,7 @@ public enum RecipeInit implements IRecipeTypeInfo {
             type = typeObject;
         } else {
             typeObject = null;
-            type = typeSupplier;
+            type = (DeferredHolder<RecipeType<?>, RecipeType<?>>) typeSupplier;
         }
     }
 
@@ -100,7 +101,7 @@ public enum RecipeInit implements IRecipeTypeInfo {
     }
 
     private static class Registers {
-        private static final DeferredRegister<RecipeSerializer<?>> SERIALIZER_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, CreatingSpace.MODID);
+        private static final DeferredRegister<RecipeSerializer<?>> SERIALIZER_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, CreatingSpace.MODID);
         private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registries.RECIPE_TYPE, CreatingSpace.MODID);
     }
 }

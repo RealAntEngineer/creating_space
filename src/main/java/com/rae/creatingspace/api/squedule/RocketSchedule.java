@@ -6,6 +6,7 @@ import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -63,9 +64,9 @@ public class RocketSchedule {
         savedProgress = 0;
     }
 
-    public CompoundTag write() {
+    public CompoundTag write(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
-        ListTag list = NBTHelper.writeCompoundList(entries, ScheduleEntry::write);
+        ListTag list = NBTHelper.writeCompoundList(entries, e -> e.write(registries));
         tag.put("Entries", list);
         tag.putBoolean("Cyclic", cyclic);
         if (savedProgress > 0)
@@ -73,9 +74,9 @@ public class RocketSchedule {
         return tag;
     }
 
-    public static RocketSchedule fromTag(CompoundTag tag) {
+    public static RocketSchedule fromTag(HolderLookup.Provider registries,CompoundTag tag) {
         RocketSchedule schedule = new RocketSchedule();
-        schedule.entries = NBTHelper.readCompoundList(tag.getList("Entries", Tag.TAG_COMPOUND), ScheduleEntry::fromTag);
+        schedule.entries = NBTHelper.readCompoundList(tag.getList("Entries", Tag.TAG_COMPOUND), t-> ScheduleEntry.fromTag(registries, tag));
         schedule.cyclic = tag.getBoolean("Cyclic");
         if (tag.contains("Progress"))
             schedule.savedProgress = tag.getInt("Progress");

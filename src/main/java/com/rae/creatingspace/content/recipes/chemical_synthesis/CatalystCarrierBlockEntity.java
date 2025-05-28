@@ -13,6 +13,7 @@ import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -76,20 +77,20 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
+    protected void read(CompoundTag compound,  HolderLookup.Provider registries,boolean clientPacket) {
         running = compound.getBoolean("Running");
         runningTicks = compound.getInt("Ticks");
-        super.read(compound, clientPacket);
+        super.read(compound,registries, clientPacket);
 
         if (clientPacket && hasLevel())
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
     }
 
     @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
+    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
-        super.write(compound, clientPacket);
+        super.write(compound,registries, clientPacket);
     }
 
     @Override

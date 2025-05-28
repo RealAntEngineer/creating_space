@@ -8,6 +8,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,12 +16,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,6 +44,7 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
 
         }
     };
+    //TODO fix capabilities
     public LazyOptional<IFluidHandler> fluidOptional = LazyOptional.of(() -> this.OXYGEN_TANK);
 
     @Override
@@ -142,7 +141,7 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
     }
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        containedFluidTooltip(tooltip,isPlayerSneaking,fluidOptional.cast());
+        containedFluidTooltip(tooltip,isPlayerSneaking,OXYGEN_TANK);
         assert level != null;
         List<RoomAtmosphere> rooms = level.getEntitiesOfClass(RoomAtmosphere.class,
                 new AABB(getBlockPos().relative(getBlockState()
@@ -170,14 +169,14 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
 
 
     @Override
-    protected void write(CompoundTag compound, boolean clientPacket) {
-        OXYGEN_TANK.writeToNBT(compound);
-        super.write(compound, clientPacket);
+    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        OXYGEN_TANK.writeToNBT(registries,compound);
+        super.write(compound,registries, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
-        super.read(compound, clientPacket);
-        OXYGEN_TANK.readFromNBT(compound);
+    protected void read(CompoundTag compound,HolderLookup.Provider registries, boolean clientPacket) {
+        super.read(compound,registries, clientPacket);
+        OXYGEN_TANK.readFromNBT(registries,compound);
     }
 }
