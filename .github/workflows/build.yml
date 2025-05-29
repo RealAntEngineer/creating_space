@@ -18,6 +18,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
