@@ -10,8 +10,10 @@ import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBluepr
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.ingameobject.MaterialInit;
+import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -21,6 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -89,7 +94,7 @@ public class CSClientEvent {
 
     @EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ModBusEvents {
-        //TODO look at Create's client events handler
+        //TODO look at Create's client events handler (@RealAntEngineer - Ready For Review!)
         @SubscribeEvent
         public static void addEntityRendererLayers(EntityRenderersEvent.AddLayers event) {
             EntityRenderDispatcher dispatcher = Minecraft.getInstance()
@@ -97,9 +102,9 @@ public class CSClientEvent {
             OxygenBacktankArmorLayer.registerOnAll(dispatcher);
         }
         @SubscribeEvent
-        public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
             // Register overlays
-            event.registerAbove(VanillaGuiOverlay.HELMET.id(), "remaining_oxygen", RemainingO2Overlay.INSTANCE);
+            event.registerAbove(VanillaGuiLayers.AIR_LEVEL, Create.asResource("remaining_oxygen"), (LayeredDraw.Layer) RemainingO2Overlay.INSTANCE);
 
         }
     }
