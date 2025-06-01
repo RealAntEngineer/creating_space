@@ -2,6 +2,7 @@ package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.google.common.collect.Multimap;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
+import com.simibubi.create.foundation.ICapabilityProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,14 +19,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
+
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,10 +36,11 @@ public class UpgradableEquipment extends BaseArmorItem {
         super(armorMaterial, slot, properties, textureLoc);
     }
 
-    //that's better, way better -> the upgrade item will be an armor item of the same slot
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new UpgradeInventory(stack);
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(
+                Capabilities.ItemHandler.ITEM,
+                (itemStack, unused) -> new ItemStackHandler(1)
+        );
     }
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
@@ -74,62 +75,38 @@ public class UpgradableEquipment extends BaseArmorItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+    public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
         ItemStack newStack = getUpgrade(stack);
-        return newStack.isEmpty() ? super.getAttributeModifiers(slot, stack) :
-                newStack.getItem().getAttributeModifiers(slot, newStack);
+        return newStack.isEmpty() ? super.getDefaultAttributeModifiers(stack) :
+                newStack.getItem().getDefaultAttributeModifiers(newStack);
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        ItemStack upgrade = getUpgrade(itemStack);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        ItemStack upgrade = getUpgrade(stack);
         if (!upgrade.isEmpty()) {
-            components.add(
+            tooltipComponents.add(
                     Component.translatable("container.upgrade")
                             .append(" : ")
                             .append(upgrade.getItem().getDescription()));
         }
-        super.appendHoverText(itemStack, level, components, flag);
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
     @NotNull
     private static ItemStack getUpgrade(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement("upgradeElement");
-        return ItemStack.of(tag);
+        ItemStackHandler handler = (ItemStackHandler) stack.getCapability(Capabilities.ItemHandler.ITEM);
+        if (handler!=null)
+            return  handler.getStackInSlot(0);
+        return ItemStack.EMPTY;
     }
 
     private static ItemStack setUpgrade(ItemStack stack, ItemStack upgrade) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.put("upgradeElement", upgrade.serializeNBT());
         ItemStack newStack = stack.copy();
-        newStack.setTag(tag);
+        ItemStackHandler handler = (ItemStackHandler) stack.getCapability(Capabilities.ItemHandler.ITEM);
+        if (handler!=null) {
+            handler.setStackInSlot(0,upgrade);
+        }
         return newStack;
-    }
-
-    //for the menu
-    public static class UpgradeInventory implements ICapabilityProvider {
-
-        private final ItemStackHandler itemStackHandler = new ItemStackHandler(1);
-        private final LazyOptional<ItemStackHandler> handler = LazyOptional.of(() -> itemStackHandler);
-
-        public UpgradeInventory(ItemStack stack) {
-            // Load the inventory from the item's NBT data
-            CompoundTag nbt = stack.getOrCreateTag();
-            itemStackHandler.deserializeNBT(nbt.getCompound("upgradeElement"));
-        }
-
-        @Override
-        public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-            if (cap == ForgeCapabilities.ITEM_HANDLER) {
-                return handler.cast();
-            }
-            return LazyOptional.empty();
-        }
-
-        public void saveInventory(ItemStack stack) {
-            CompoundTag nbt = stack.getOrCreateTag();
-            nbt.put("upgradeElement", itemStackHandler.serializeNBT());
-            stack.setTag(nbt);
-        }
     }
 }

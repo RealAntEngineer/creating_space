@@ -12,6 +12,7 @@ import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -21,7 +22,6 @@ import net.minecraft.world.item.Item;
 
 import java.util.ArrayList;
 
-import static com.simibubi.create.AllTags.forgeItemTag;
 
 public class ItemInit {
 
@@ -144,9 +144,9 @@ public class ItemInit {
     public static final ItemEntry<Item> SPACE_FOOD = CreatingSpace.REGISTRATE.item(
             "space_food",Item::new)
             .properties(p->p.food(new FoodProperties.Builder()
-                        .alwaysEat()
+                        .alwaysEdible()
                         .nutrition(4)
-                        .saturationMod(1f)
+                        .saturationModifier(1f)
                         .fast()
                         .effect(()->
                                     new MobEffectInstance(MobEffects.NIGHT_VISION,
@@ -254,10 +254,10 @@ public class ItemInit {
     public static final ItemEntry<OxygenBacktankItem.Layered> COPPER_OXYGEN_BACKTANK =
             CreatingSpace.REGISTRATE
                     .item("copper_oxygen_backtank",
-                            p -> new OxygenBacktankItem.Layered(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit"),
+                            p -> new OxygenBacktankItem.Layered(AllArmorMaterials.COPPER.value(), p, CreatingSpace.resource("basic_spacesuit"),
                                     COPPER_BACKTANK_PLACEABLE))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
-                    .tag(forgeItemTag("armors/chestplates"))
+                    .tag(ItemTags.CHEST_ARMOR)
                     .register();
 
     public static final ItemEntry<OxygenBacktankItem.O2BacktankBlockItem> NETHERITE_BACKTANK_PLACEABLE =
@@ -268,48 +268,48 @@ public class ItemInit {
     public static final ItemEntry<OxygenBacktankItem.Layered> NETHERITE_OXYGEN_BACKTANK =
             CreatingSpace.REGISTRATE
                     .item("netherite_oxygen_backtank",
-                            p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit"),
+                            p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE.value(), p, CreatingSpace.resource("advanced_spacesuit"),
                                     NETHERITE_BACKTANK_PLACEABLE))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
-                    .tag(forgeItemTag("armors/chestplates"))
+                    .tag(ItemTags.CHEST_ARMOR)
                     .register();
 
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_LEGGINGS =
             CreatingSpace.REGISTRATE
                     .item("basic_spacesuit_leggings",
                             p -> new BaseArmorItem(AllArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, p, CreatingSpace.resource("basic_spacesuit")))
-                    .tag(forgeItemTag("armors/leggings"))
+                    .tag(ItemTags.LEG_ARMOR)
                     .register();
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_BOOTS =
             CreatingSpace.REGISTRATE
                     .item("basic_spacesuit_boots",
                             p -> new BaseArmorItem(AllArmorMaterials.COPPER, ArmorItem.Type.BOOTS, p, CreatingSpace.resource("basic_spacesuit")))
-                    .tag(forgeItemTag("armors/boots"))
+                    .tag(ItemTags.FOOT_ARMOR)
                     .register();
     public static final ItemEntry<SpacesuitHelmetItem> BASIC_SPACESUIT_HELMET =
             CreatingSpace.REGISTRATE
                     .item("basic_spacesuit_helmet",
-                            p -> new SpacesuitHelmetItem(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit")))
-                    .tag(forgeItemTag("armors/helmet"))
+                            p -> new SpacesuitHelmetItem(AllArmorMaterials.COPPER.value(), p, CreatingSpace.resource("basic_spacesuit")))
+                    .tag(ItemTags.HEAD_ARMOR)
                     .register();
 
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_LEGGINGS =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_leggings",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, p, CreatingSpace.resource("advanced_spacesuit")))
-                    .tag(forgeItemTag("armors/leggings"))
+                    .tag(ItemTags.LEG_ARMOR)
                     .register();
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_BOOTS =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_boots",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.BOOTS, p, CreatingSpace.resource("advanced_spacesuit")))
-                    .tag(forgeItemTag("armors/boots"))
+                    .tag(ItemTags.FOOT_ARMOR)
                     .register();
     public static final ItemEntry<SpacesuitHelmetItem> ADVANCED_SPACESUIT_HELMET =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_helmet",
-                            p -> new SpacesuitHelmetItem(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit")))
-                    .tag(forgeItemTag("armors/helmet"))
+                            p -> new SpacesuitHelmetItem(ArmorMaterials.NETHERITE.value(), p, CreatingSpace.resource("advanced_spacesuit")))
+                    .tag(ItemTags.HEAD_ARMOR)
                     .register();
 
     //sub classes

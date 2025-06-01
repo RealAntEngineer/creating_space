@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.fluids.storage;
 
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.foundation.ICapabilityProvider;
@@ -28,26 +29,20 @@ public class CryogenicTankItem extends BlockItem {
         super(block, properties);
     }
     //TODO capabilities  -> register capabilities in EventHandler with an item fluid capability
-    @Override
-    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return
-    }
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerItem(
                 Capabilities.FluidHandler.ITEM,
-                (itemStack, item)->{
-                    itemStack.get();
-                    return new FluidHandlerItemStack(DataComponents.,itemStack, 4000) {
-                        @Override
-                        public boolean canDrainFluidType(FluidStack fluid) {
-                            return fluid.getFluid().getFluidType().getTemperature() < 200;
-                        }
+                (itemStack, item)->
+                        new FluidHandlerItemStack(() ->DataComponentsInit.SIMPLE_FLUID_CONTENT,itemStack, 4000) {
+                    @Override
+                    public boolean canDrainFluidType(FluidStack fluid) {
+                        return fluid.getFluid().getFluidType().getTemperature() < 200;
+                    }
 
-                        @Override
-                        public boolean canFillFluidType(FluidStack fluid) {
-                            return fluid.getFluid().getFluidType().getTemperature() < 200;
-                        }
-                    };
+                    @Override
+                    public boolean canFillFluidType(FluidStack fluid) {
+                        return fluid.getFluid().getFluidType().getTemperature() < 200;
+                    }
                 },
                 BlockInit.CRYOGENIC_TANK.get().asItem()
 
@@ -57,12 +52,11 @@ public class CryogenicTankItem extends BlockItem {
     @Override
     public Component getName(ItemStack itemStack) {
 
-        CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
-        if (data != null) {
-            CompoundTag fluid = data.copyTag().getCompound("Fluid");
-            CompoundTag tag = fluid.getCompound("id");
+        FluidHandlerItemStack fluidTank = (FluidHandlerItemStack) itemStack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (fluidTank != null) {
+            FluidStack fluid = fluidTank.getFluid();
             return Component.empty().append(super.getName(itemStack)).append(" (").append(
-                    tag.toString()
+                    Component.translatable(fluid.getTranslationKey())
             ).append(")");
         }
         return super.getName(itemStack);
@@ -71,13 +65,11 @@ public class CryogenicTankItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
         //TODO make a string constant somewhere for "Fluid"
-        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-        if (data!=null) {
-            CompoundTag tank = (CompoundTag) data.copyTag().get("Fluid");
-
-            if (tank == null) tank = new CompoundTag();
-
-            FluidStack fluid = FluidStack.parseOptional(Objects.requireNonNull(context.registries()),tank);
+        //TODO this should be the standard way to register a tank in an item. -> replace each call to custom data and
+        // parsing of fluid stack to a call to capability
+        FluidHandlerItemStack fluidTank = (FluidHandlerItemStack) stack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (fluidTank != null) {
+            FluidStack fluid = fluidTank.getFluid();
 
             if (!fluid.isEmpty()) {
                 components.add(
@@ -94,12 +86,4 @@ public class CryogenicTankItem extends BlockItem {
 
         super.appendHoverText(stack, context, components, tooltipFlag);
     }
-
-    @Override
-    public int getMaxStackSize(ItemStack stack) {
-        return super.getMaxStackSize(stack);
-    }
-
-
-
 }

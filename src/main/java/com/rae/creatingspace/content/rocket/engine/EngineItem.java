@@ -8,6 +8,7 @@ import com.rae.creatingspace.legacy.server.blocks.multiblock.engines.RocketEngin
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -16,10 +17,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NonnullDefault;
@@ -73,24 +76,33 @@ public class EngineItem extends RocketEngineItem {
 
     public ItemStack getItemStackFromInfo(int thrust, float efficiency, int mass, ResourceLocation propellantType) {
         ItemStack defaultInstance = super.getDefaultInstance();
-        CompoundTag nbt = defaultInstance.getOrCreateTag();
+        CustomData data = defaultInstance.get(DataComponents.CUSTOM_DATA);
+        CompoundTag nbt = new CompoundTag();
+        if (data != null) {
+            nbt = data.copyTag();
+        }
         CompoundTag beTag = new CompoundTag();
-
+        //TODO maybe do a record to use the DataComponents system
         beTag.putInt("thrust", thrust);
         beTag.putInt("mass", mass);
         beTag.putFloat("efficiency", efficiency);
         try {
-            beTag.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantType).get().orThrow());
+            beTag.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantType).getOrThrow());
         } catch (Exception ignored) {}
         nbt.put("blockEntity", beTag);
-        defaultInstance.setTag(nbt);
+        defaultInstance.set(DataComponents.CUSTOM_DATA,CustomData.of(nbt));
         return defaultInstance;
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        CompoundTag beTag = itemStack.getOrCreateTagElement("blockEntity");
-        appendEngineDependentText(components, beTag);
-        super.appendHoverText(itemStack, level, components, flag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag)  {
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        CompoundTag nbt = new CompoundTag();
+        if (data != null) {
+            nbt = data.copyTag();
+        }
+        CompoundTag beTag = nbt.getCompound("blockEntity");
+        appendEngineDependentText(tooltipComponents, beTag);
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

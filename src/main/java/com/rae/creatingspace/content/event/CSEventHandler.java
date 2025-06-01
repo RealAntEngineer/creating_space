@@ -7,6 +7,7 @@ import com.rae.creatingspace.content.fluids.storage.CryogenicTankItem;
 import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
+import com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipment;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.legacy.saved.DesignCommands;
@@ -223,6 +224,7 @@ public class CSEventHandler {
             CryogenicTankBlockEntity.registerCapabilities(event);
             CryogenicTankItem.registerCapabilities(event);
             OxygenBacktankBlockEntity.registerCapabilities(event);
+            UpgradableEquipment.registerCapabilities(event);
         }
 
     }
