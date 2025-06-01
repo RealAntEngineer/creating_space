@@ -13,14 +13,18 @@ import com.rae.creatingspace.init.ingameobject.MaterialInit;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -36,7 +40,7 @@ public class CSClientEvent {
         return !(Minecraft.getInstance().level == null || Minecraft.getInstance().player == null);
     }
     @SubscribeEvent
-    public static void onTick(TickEvent.ClientTickEvent event){
+    public static void onTick(ClientTickEvent.Post event){
         if (!isGameActive())
             return;
         CopperOxygenBacktankFirstPersonRenderer.clientTick();
@@ -58,29 +62,30 @@ public class CSClientEvent {
         ItemStack itemStack = event.getItemStack();
         List<Component> components = event.getToolTip();
         if (!(itemStack.getItem() instanceof EngineFabricationBlueprint || itemStack.getItem() instanceof EngineItem)) {
-            CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
+            CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
+            if (data == null) {
+                return;
+            }
+            CompoundTag itemData = data.copyTag();
+            CompoundTag recipeData = itemData.getCompound("engineRecipeData");
             try {
-                if (recipeData != null) {
-                    int size = recipeData.getInt("size");
-                    int materialLevel = recipeData.getInt("materialLevel");
-                    if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
-                    if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + EngineMaterialInit.materials.get(materialLevel)));
-                    try {
-                        ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
-                        components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
-                        components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
-                    } catch (Exception ignored) {
-                    }
+                int size = recipeData.getInt("size");
+                int materialLevel = recipeData.getInt("materialLevel");
+                if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
+                if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + EngineMaterialInit.materials.get(materialLevel)));
+                try {
+                    ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).getOrThrow();
+                    components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
+                } catch (Exception ignored) {
                 }
-                CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
-                if (engineInfo != null) {
-                    components.add(Component.literal("for engine :"));
-                    appendEngineDependentText(components,engineInfo);
+                try {
+                    ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).getOrThrow();
+                    components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
+                } catch (Exception ignored) {
                 }
+                CompoundTag engineInfo = itemData.getCompound("blockEntity");
+                components.add(Component.literal("for engine :"));
+                appendEngineDependentText(components,engineInfo);
             } catch (Exception ignored){
 
             }

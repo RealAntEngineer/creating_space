@@ -5,10 +5,13 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.recipes.IMoreNbtConditions;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -67,22 +70,26 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
         return value;
     }*/
     @Inject(method = "advance", at = @At(value = "RETURN"), cancellable = true, remap = false)
-    public void addTagBack(ItemStack input, CallbackInfoReturnable<ItemStack> cir) {
+    public void addTagBack(ResourceLocation id, ItemStack input, CallbackInfoReturnable<ItemStack> cir) {
         if (isKeepNbt()) {
             ItemStack advancedItem = cir.getReturnValue();
-            CompoundTag itemTag = advancedItem.getOrCreateTag();
-            CompoundTag toKeepTag = input.getOrCreateTag();
-            for (String key : nbtKeys) {
-                Tag tag = toKeepTag.get(key);
-                if (tag != null) {
-                    itemTag.put(key, Objects.requireNonNull(tag));
+            CustomData itemData = advancedItem.get(DataComponents.CUSTOM_DATA);
+            CustomData toKeepData = input.get(DataComponents.CUSTOM_DATA);
+            if (itemData != null && toKeepData != null) {
+                CompoundTag itemTag = itemData.copyTag();
+                CompoundTag toKeepTag = toKeepData.copyTag();
+                for (String key : nbtKeys) {
+                    Tag tag = toKeepTag.get(key);
+                    if (tag != null) {
+                        itemTag.put(key, Objects.requireNonNull(tag));
+                    }
                 }
+                advancedItem.set(DataComponents.CUSTOM_DATA,CustomData.of(itemTag));
+                cir.setReturnValue(advancedItem);
             }
-            advancedItem.setTag(itemTag);
-            cir.setReturnValue(advancedItem);
         }
     }
-    @Inject(method = "getRecipe(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/Container;Lnet/minecraft/world/item/crafting/RecipeType;Ljava/lang/Class;Ljava/util/function/Predicate;)Ljava/util/Optional;", at = @At(value = "RETURN"),remap = false )
+    /*@Inject(method = "getRecipe(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/Container;Lnet/minecraft/world/item/crafting/RecipeType;Ljava/lang/Class;Ljava/util/function/Predicate;)Ljava/util/Optional;", at = @At(value = "RETURN"),remap = false )
     private static <C extends Container, R extends ProcessingRecipe<C>> void debugInfo(Level world, C inv, RecipeType<R> type, Class<R> recipeClass, Predicate<? super R> recipeFilter, CallbackInfoReturnable<Optional<R>> cir) {
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             try {
@@ -99,6 +106,6 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
                 CreatingSpace.LOGGER.error("crash while trying to print recipe log");
             }
         }
-    }
+    }*/
 
 }

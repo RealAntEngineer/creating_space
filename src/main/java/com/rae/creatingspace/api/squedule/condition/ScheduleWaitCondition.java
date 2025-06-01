@@ -4,17 +4,22 @@ import com.rae.creatingspace.api.squedule.RocketSchedule;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
+import com.simibubi.create.foundation.codec.CreateStreamCodecs;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 import java.util.function.Supplier;
 
 public abstract class ScheduleWaitCondition extends ScheduleDataEntry {
-
+    public static final StreamCodec<RegistryFriendlyByteBuf, ScheduleWaitCondition> STREAM_CODEC = CreateStreamCodecs.ofLegacyNbtWithRegistries(
+           ScheduleWaitCondition::write, ScheduleWaitCondition::fromTag
+    );
     public abstract boolean tickCompletion(Level level, RocketContraptionEntity train, CompoundTag context);
 
     protected void requestStatusToUpdate(CompoundTag context) {

@@ -1,5 +1,7 @@
 package com.rae.creatingspace.content.rocket.engine.table;
 
+import com.mojang.serialization.MapCodec;
+import com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
@@ -15,11 +17,17 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
+
 
 public class RocketEngineerTableBlock extends HorizontalDirectionalBlock implements IBE<RocketEngineerTableBlockEntity> {
     public RocketEngineerTableBlock(Properties p_49795_) {
         super(p_49795_);
+    }
+    public static final MapCodec<HorizontalDirectionalBlock> CODEC = simpleCodec(RocketEngineerTableBlock::new);
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -33,13 +41,12 @@ public class RocketEngineerTableBlock extends HorizontalDirectionalBlock impleme
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-                                 BlockHitResult hit) {
-        if (worldIn.isClientSide)
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult){
+        if (level.isClientSide)
             return InteractionResult.SUCCESS;
-        withBlockEntityDo(worldIn, pos,
+        withBlockEntityDo(level, pos,
                 be -> NetworkHooks.openScreen((ServerPlayer) player, be, be::sendToMenu));
-        return InteractionResult.SUCCESS;
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override

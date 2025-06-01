@@ -4,13 +4,18 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.squedule.condition.*;
 import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.simibubi.create.content.trains.schedule.Schedule;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -18,7 +23,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class RocketSchedule {
-
+    public static final StreamCodec<RegistryFriendlyByteBuf, RocketSchedule> STREAM_CODEC = StreamCodec.composite(
+            CatnipStreamCodecBuilders.list(ScheduleEntry.STREAM_CODEC), schedule -> schedule.entries,
+            ByteBufCodecs.BOOL, schedule -> schedule.cyclic,
+            ByteBufCodecs.VAR_INT, schedule -> schedule.savedProgress,
+            RocketSchedule::new
+    );
     public static List<Pair<ResourceLocation, Supplier<? extends ScheduleInstruction>>> INSTRUCTION_TYPES =
             new ArrayList<>();
     public static List<Pair<ResourceLocation, Supplier<? extends ScheduleWaitCondition>>> CONDITION_TYPES =

@@ -60,13 +60,6 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.CRYOGENIC_TANK)
                     .register();
 
-    public static final BlockEntityEntry<RocketGeneratorBlockEntity> ROCKET_GENERATOR =
-            REGISTRATE.blockEntity("rocket_generator", RocketGeneratorBlockEntity::new )
-                    //.instance(() -> ShaftInstance::new, false)
-                    .validBlocks(BlockInit.ROCKET_GENERATOR)
-                    .renderer(() -> RocketGeneratorBlockRenderer::new)
-                    .register();
-
     public static final BlockEntityEntry<ChemicalSynthesizerBlockEntity> SYNTHESIZER =
             REGISTRATE.blockEntity("synthesizer", ChemicalSynthesizerBlockEntity::new)
                     .validBlocks(BlockInit.CHEMICAL_SYNTHESIZER)

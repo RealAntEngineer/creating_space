@@ -46,7 +46,6 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 public class CSJei implements IModPlugin {
-    //TODO look at CreateJei (REA will do it)
     private static final ResourceLocation ID = CreatingSpace.resource("jei_plugin");
     private final List<CreateRecipeCategory<?>> allCategories = new ArrayList<>();
     private IIngredientManager ingredientManager;
@@ -92,7 +91,7 @@ public class CSJei implements IModPlugin {
         private IDrawable background;
         private IDrawable icon;
 
-        private final List<Consumer<List<T>>> recipeListConsumers = new ArrayList<>();
+        private final List<Consumer<List<RecipeHolder<T>>>> recipeListConsumers = new ArrayList<Consumer<List<RecipeHolder<T>>>>();
         private final List<Supplier<? extends ItemStack>> catalysts = new ArrayList<>();
 
         public CategoryBuilder(Class<? extends T> recipeClass) {
@@ -122,7 +121,7 @@ public class CSJei implements IModPlugin {
         public <I extends RecipeInput, R extends Recipe<I>> CategoryBuilder<T> addTypedRecipes(Supplier<RecipeType<R>> recipeType) {
             return this.addRecipeListConsumer((recipes) -> CreateJEI.consumeTypedRecipes((recipe) -> {
                 if (this.recipeClass.isInstance(recipe.value())) {
-                    recipes.add(recipe);
+                    recipes.add((RecipeHolder<T>) recipe);
                 }
 
             }, (RecipeType)recipeType.get()));
@@ -164,16 +163,16 @@ public class CSJei implements IModPlugin {
         }
 
         public CreateRecipeCategory<T> build(String name, CreateRecipeCategory.Factory<T> factory) {
-            Supplier<List<T>> recipesSupplier;
+            Supplier<List<RecipeHolder<T>>> recipesSupplier;
             if (predicate.test(AllConfigs.server().recipes)) {
                 recipesSupplier = () -> {
-                    List<T> recipes = new ArrayList<>();
-                    for (Consumer<List<T>> consumer : recipeListConsumers)
+                    List<RecipeHolder<T>> recipes = new ArrayList<>();
+                    for (Consumer<List<RecipeHolder<T>>> consumer : recipeListConsumers)
                         consumer.accept(recipes);
                     return recipes;
                 };
             } else {
-                recipesSupplier = () -> Collections.emptyList();
+                recipesSupplier = Collections::emptyList;
             }
 
             CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
@@ -213,8 +212,8 @@ public class CSJei implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        CryoSubtypeInterpreter interpreter = new CryoSubtypeInterpreter();
-        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, BlockInit.CRYOGENIC_TANK.get().asItem(), interpreter);
+        //CryoSubtypeInterpreter interpreter = new CryoSubtypeInterpreter();
+        //registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, BlockInit.CRYOGENIC_TANK.get().asItem(), interpreter);
     }
 
     @Override

@@ -2,8 +2,12 @@ package com.rae.creatingspace.content.rocket.network;
 
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.init.PacketInit;
+import com.simibubi.create.content.trains.schedule.Schedule;
+import com.simibubi.create.content.trains.schedule.ScheduleEditPacket;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -13,27 +17,12 @@ public class RocketContraptionLaunchPacket implements ServerboundPacketPayload {
 
     public int entityID;
     public ResourceLocation destination;
-
-    public RocketContraptionLaunchPacket(int entityID, ResourceLocation destination) {
-        this.entityID = entityID;
-        this.destination = destination;
-    }
-
-    public RocketContraptionLaunchPacket(FriendlyByteBuf buffer) {
-        entityID = buffer.readInt();
-        destination = buffer.readResourceLocation();
-    }
-
-    @Override
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeInt(entityID);
-        buffer.writeResourceLocation(destination);
-
-    }
-
+    public static final StreamCodec<RegistryFriendlyByteBuf, ScheduleEditPacket> STREAM_CODEC = Schedule.STREAM_CODEC.map(
+            ScheduleEditPacket::new, ScheduleEditPacket::schedule
+    );
     @Override
     public void handle(ServerPlayer player) {
-        Entity entity = sender.level().getEntity(entityID);
+        Entity entity = player.level().getEntity(entityID);
         if (entity instanceof RocketContraptionEntity ce) {
                         /*RocketSchedule schedule = new RocketSchedule();
                         CompoundTag instructionTag = new CompoundTag();

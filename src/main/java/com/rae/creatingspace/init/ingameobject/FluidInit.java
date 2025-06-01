@@ -14,9 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidInteractionRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -96,7 +96,7 @@ public class FluidInit {
 
     public static void registerFluidInteractions() {
 
-        FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.LAVA_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 LIQUID_HYDROGEN.get().getFluidType(),
                 fluidState -> {
                     if (fluidState.isSource()) {
@@ -106,7 +106,7 @@ public class FluidInit {
                     }
                 }
         ));
-        FluidInteractionRegistry.addInteraction(ForgeMod.WATER_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.WATER_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 LIQUID_HYDROGEN.get().getFluidType(),
                 fluidState -> {
                     if (fluidState.isSource()) {
@@ -117,7 +117,7 @@ public class FluidInit {
                 }
         ));
 
-        FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.LAVA_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 LIQUID_OXYGEN.get().getFluidType(),
                 fluidState -> {
                     if (fluidState.isSource()) {
@@ -127,7 +127,7 @@ public class FluidInit {
                     }
                 }
         ));
-        FluidInteractionRegistry.addInteraction(ForgeMod.WATER_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.WATER_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 LIQUID_OXYGEN.get().getFluidType(),
                 fluidState -> {
                     if (fluidState.isSource()) {
@@ -138,7 +138,7 @@ public class FluidInit {
                 }
         ));
 
-        FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.LAVA_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 LIQUID_METHANE.get().getFluidType(),
                 fluidState -> {
                     if (fluidState.isSource()) {
@@ -148,7 +148,7 @@ public class FluidInit {
                     }
                 }
         ));
-        FluidInteractionRegistry.addInteraction(ForgeMod.WATER_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.WATER_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 LIQUID_METHANE.get().getFluidType(),
                 fluidState -> {
                     if (fluidState.isSource()) {

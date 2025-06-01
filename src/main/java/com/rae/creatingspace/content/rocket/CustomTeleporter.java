@@ -4,25 +4,19 @@ import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 //TODO ask Chatgpt
-public class CustomTeleporter implements ITeleporter {
+public class CustomTeleporter {
     protected final ServerLevel level;
 
     public CustomTeleporter(ServerLevel level) {
         this.level = level;
     }
-
-    @Override
-    public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
-        return repositionEntity.apply(false);
-    }
-
-    @Override
-    public @Nullable PortalInfo getPortalInfo(Entity entity, ServerLevel destWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+    public static DimensionTransition getTransition(Entity entity, ServerLevel destWorld) {
         double height;
         height = CSDimensionUtil.arrivalHeight(destWorld.dimension().location());
         Vec3 position;
@@ -40,16 +34,6 @@ public class CustomTeleporter implements ITeleporter {
                     height,
                     entity.getZ());
         }
-        return new PortalInfo(position, Vec3.ZERO, entity.getYRot(), entity.getXRot());
-    }
-
-    @Override
-    public boolean isVanilla() {
-        return false;
-    }
-
-    @Override
-    public boolean playTeleportSound(ServerPlayer player, ServerLevel sourceWorld, ServerLevel destWorld) {
-        return false;
+        return new DimensionTransition(destWorld,position, Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.DO_NOTHING);
     }
 }

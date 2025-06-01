@@ -149,16 +149,6 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    public static final BlockEntry<RocketGeneratorBlock> ROCKET_GENERATOR =REGISTRATE.block(
-            "rocket_generator", RocketGeneratorBlock::new)
-            .initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(CSStress.setCapacity(10000))
-            .transform(axeOrPickaxe())
-            .item()
-            .transform(customItemModel())
-            .register();
-
 
     @Deprecated
     public static final BlockEntry<ChemicalSynthesizerBlock> CHEMICAL_SYNTHESIZER = REGISTRATE.block(

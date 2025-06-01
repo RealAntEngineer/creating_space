@@ -26,6 +26,7 @@ import com.simibubi.create.content.contraptions.TranslatingContraption;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -489,7 +490,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
             if (destServerLevel!=null) {
 
-                this.changeDimension(destServerLevel,new CustomTeleporter(destServerLevel));
+                this.changeDimension(new DimensionTransition(destServerLevel, this, DimensionTransition.DO_NOTHING));
             }
             else {
                 LOGGER.error("rocket failed to get server for destination : {}", this.destination);
@@ -570,87 +571,95 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     }
     //merge that with the static method ?
 
-
+    //TODO remake this based on the carriage logic (passenger logic only)
     @Override
-    public @Nullable Entity changeDimension(DimensionTransition transition) {
-        //rewrite so passengers get teleported with it
+    public Entity changeDimension(DimensionTransition transition) {
         if (!CommonHooks.onTravelToDimension(this, transition.newLevel().dimension())) {
             return null;
-        }
-        if (this.level() instanceof ServerLevel serverLevel && !this.isRemoved()) {
-            serverLevel.getProfiler().push("changeDimension");
-            ServerLevel destLevel = transition.newLevel();
-            List<Entity> passengers = this.getPassengers();
-            List<Entity> collidingEntities = level().getEntities(this, this.getBoundingBox());
-            collidingEntities.removeAll(passengers);
-            this.unRide();
-            BlockPos previousRocketPos = this.getOnPos();
-            this.level().getProfiler().push("reposition");
-            PortalInfo portalinfo = transition.getPortalInfo(this, destLevel, this::findDimensionEntryPoint);
-            if (portalinfo == null) {
-                return null;
-            } else {
-                Entity transportedEntity = teleporter.placeEntity(this, (ServerLevel) this.level(), destLevel, this.getYRot(),
+        } else {
+            Level serverlevel1 = this.level();
+            if (serverlevel1 instanceof ServerLevel) {
+                ServerLevel serverlevel = (ServerLevel)serverlevel1;
+                if (!this.isRemoved()) {
+                    ServerLevel destinationLevel = transition.newLevel();
+                    List<Entity> passengers = this.getPassengers();
+                    List<Entity> collidingEntities = level().getEntities(this, this.getBoundingBox());
+                    collidingEntities.removeAll(passengers);
+                    this.unRide();
+                    List<Entity> transportedPassengers = new ArrayList();
+                    List<Entity> transportedCE = new ArrayList();
 
-                        spawnPortal -> { //Forge: Start custom logic
-                            this.level().getProfiler().popPush("reloading");
+                    for(Entity entity : passengers) {
+                        Entity entity1 = entity.changeDimension(transition);
+                        if (entity1 != null) {
+                            transportedPassengers.add(entity1);
+                        }
+                    }
+                    for(Entity entity : collidingEntities) {
+                        Entity entity1 = entity.changeDimension(transition);
+                        if (entity1 != null) {
+                            transportedCE.add(entity1);
+                        }
+                    }
+                    BlockPos previousRocketPos = this.getOnPos();
+                    serverlevel.getProfiler().push("changeDimension");
+                    RocketContraptionEntity newEntity = destinationLevel.dimension() == serverlevel.dimension() ? this : (RocketContraptionEntity) this.getType().create(destinationLevel);
+                    if (newEntity != null) {
+                        if (this != newEntity) {
+                            newEntity.restoreFrom(this);
+                            this.removeAfterChangingDimensions();
+                        }
 
-                            RocketContraptionEntity entity = (RocketContraptionEntity) this.getType().create(destLevel);
+                        newEntity.moveTo(transition.pos().x, transition.pos().y, transition.pos().z, transition.yRot(), newEntity.getXRot());
+                        newEntity.setDeltaMovement(transition.speed());
+                        if (this != newEntity) {
+                            destinationLevel.addDuringTeleport(newEntity);
+                        }
+                        //adding previously riding passengers and collidingEntities ( separated, so they keep riding when arriving)
+                        for (int i = 0; i < transportedPassengers.size(); i++) {
+                            Entity passenger = transportedPassengers.get(i);
+                            passenger.moveTo(transition.pos().x, transition.pos().y, transition.pos().z, passenger.getYRot(), passenger.getXRot());
 
-                            if (entity != null) {
-
-                                entity.restoreFrom(this);//copy the contraption first
-                                entity.moveTo(transition.pos().x, transition.pos().y, transition.pos().z, entity.getYRot(), entity.getXRot());
-                                entity.setDeltaMovement(transition.speed());
-                                //adding previously riding passengers and collidingEntities ( separated, so they keep riding when arriving)
-                                for (int i = 0; i < passengers.size(); i++) {
-                                    Entity passenger = passengers.get(i);
-                                    passenger.moveTo(transition.pos().x, transition.pos().y, transition.pos().z, passenger.getYRot(), passenger.getXRot());
-
-                                    if (passenger instanceof ServerPlayer player) {
-                                        player.changeDimension(transition);
-                                        entity.addSittingPassenger(player, i);
-                                    } else {
-                                        if (!(passenger instanceof Player)) {
-                                            passenger.changeDimension(transition);
-                                            entity.addSittingPassenger(passenger, i);
-                                        }
-                                    }
-                                }
-                                for (Entity movedEntity : collidingEntities) {
-                                    BlockPos posDif = movedEntity.getOnPos().subtract(previousRocketPos);
-                                    movedEntity.moveTo(transition.pos().x + posDif.getX(), transition.pos().y + posDif.getY(), transition.pos().z + posDif.getZ(), movedEntity.getYRot(), movedEntity.getXRot());
-
-                                    if (movedEntity instanceof ServerPlayer player) {
-                                        player.changeDimension(transition);
-                                    } else {
-                                        if (!(movedEntity instanceof Player)) {
-                                            movedEntity.changeDimension(transition);
-                                        }
-                                    }
-                                }
-
-                                destLevel.addDuringTeleport(entity);
-                                if (CSDimensionUtil.isOrbit(destLevel.dimension().location())) {
-                                    //entity.disassemble();
-                                    entity.stopRocket();
-                                    entity.schedule.destinationReached();
-                                }
-                                else{
-                                    entity.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.ON_FINAL);
+                            if (passenger instanceof ServerPlayer player) {
+                                player.changeDimension(transition);
+                                newEntity.addSittingPassenger(player, i);
+                            } else {
+                                if (!(passenger instanceof Player)) {
+                                    passenger.changeDimension(transition);
+                                    newEntity.addSittingPassenger(passenger, i);
                                 }
                             }
-                            return entity;
-                        }); //Forge: End custom logic
+                        }
+                        for (Entity movedEntity : transportedCE) {
+                            BlockPos posDif = movedEntity.getOnPos().subtract(previousRocketPos);
+                            movedEntity.moveTo(transition.pos().x + posDif.getX(), transition.pos().y + posDif.getY(), transition.pos().z + posDif.getZ(), movedEntity.getYRot(), movedEntity.getXRot());
 
-                this.removeAfterChangingDimensions();
-                this.level().getProfiler().pop();
-                ((ServerLevel) this.level()).resetEmptyTime();
-                destLevel.resetEmptyTime();
-                this.level().getProfiler().pop();
-                return transportedEntity;
+                            if (movedEntity instanceof ServerPlayer player) {
+                                player.changeDimension(transition);
+                            } else {
+                                if (!(movedEntity instanceof Player)) {
+                                    movedEntity.changeDimension(transition);
+                                }
+                            }
+                        }
+
+                        if (CSDimensionUtil.isOrbit(destinationLevel.dimension().location())) {
+                            //entity.disassemble();
+                            newEntity.stopRocket();
+                            newEntity.schedule.destinationReached();
+                        }
+                        else{
+                            newEntity.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.ON_FINAL);
+                        }
+                        serverlevel.resetEmptyTime();
+                        destinationLevel.resetEmptyTime();
+                    }
+                    transition.postDimensionTransition().onTransition(newEntity);
+                    serverlevel.getProfiler().pop();
+                    return newEntity;
+                }
             }
-        } else {
+
             return null;
         }
     }
@@ -719,8 +728,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         move(motion.x, motion.y, motion.z);
     }
     public void sendPacket() {
-        PacketInit.getChannel()
-                .send(PacketDistributor.TRACKING_ENTITY.with(() -> this),
+        CatnipServices.NETWORK.sendToClientsTrackingEntity(this,
                         new RocketContraptionUpdatePacket(getId(),getAxisCoord(), this.speed));
     }
 
@@ -762,7 +770,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         this.originDimension =
                 ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("origin")).getOrThrow();
-        this.schedule.read((CompoundTag) compound.get("Runtime"));
+        this.schedule.read(level().registryAccess(),(CompoundTag) compound.get("Runtime"));
     }
 
     @Override
@@ -779,7 +787,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         compound.putString("status", this.entityData.get(STATUS_DATA_ACCESSOR).toString());
         compound.put("origin", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.originDimension).getOrThrow());
         compound.put("destination", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.destination).getOrThrow());
-        compound.put("Runtime", schedule.write());
+        compound.put("Runtime", schedule.write(registries));
 
         super.writeAdditional(compound,registries, spawnPacket);
     }

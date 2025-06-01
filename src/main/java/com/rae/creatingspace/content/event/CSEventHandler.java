@@ -3,6 +3,7 @@ package com.rae.creatingspace.content.event;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity;
+import com.rae.creatingspace.content.fluids.storage.CryogenicTankItem;
 import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -65,11 +67,11 @@ public class CSEventHandler {
                                     Entity vehicle = player.getVehicle();
                                     assert vehicle != null;
                                     vehicle.ejectPassengers();
-                                    vehicle.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
-                                    player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                    vehicle.changeDimension(CustomTeleporter.getTransition(vehicle,destServerLevel));
+                                    player.changeDimension(CustomTeleporter.getTransition(player,destServerLevel));
                                     player.startRiding(vehicle, true);
                                 } else {
-                                    player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                    player.changeDimension(CustomTeleporter.getTransition(player,destServerLevel));
 
                                 }
                             }
@@ -219,6 +221,7 @@ public class CSEventHandler {
             ChemicalSynthesizerBlockEntity.registerCapabilities(event);
             RoomPressuriserBlockEntity.registerCapabilities(event);
             CryogenicTankBlockEntity.registerCapabilities(event);
+            CryogenicTankItem.registerCapabilities(event);
             OxygenBacktankBlockEntity.registerCapabilities(event);
         }
 

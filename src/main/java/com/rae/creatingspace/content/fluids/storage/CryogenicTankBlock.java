@@ -52,9 +52,8 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
             return;
         withBlockEntityDo(worldIn, pos, be -> {
             CustomData tag = stack.get(DataComponents.CUSTOM_DATA);
-            //TODO maybe with items capabilities ? we need the holder lookup to set the tank
             if (tag !=null)
-                be.setTank(worldIn.holderLookup(),(CompoundTag) tag.copyTag()
+                be.setTank(worldIn.registryAccess(),(CompoundTag) tag.copyTag()
                     .get("Fluid"));
             if (stack.has(DataComponents.CUSTOM_NAME))
                 be.setCustomName(stack.getHoverName());
@@ -67,19 +66,23 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
 
         ItemStack stack = new ItemStack(item);
         Optional<CryogenicTankBlockEntity> blockEntityOptional = getBlockEntityOptional(level, pos);
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if (data!=null) {
+            CompoundTag tag = data.copyTag();
+            FluidTank tank = blockEntityOptional.map(CryogenicTankBlockEntity::getTank).orElse(null);
+            if (tank != null) {
+                CompoundTag fluidTank = new CompoundTag();
+                tag.put("Fluid", tank.writeToNBT(level.registryAccess(),fluidTank));
+            }
+            Component customName = blockEntityOptional.map(CryogenicTankBlockEntity::getCustomName)
+                    .orElse(null);
+            if (customName != null) {
+                stack.getHoverName();
+                stack.set(DataComponents.CUSTOM_NAME,customName);
+            }
 
-        CompoundTag tag = stack.getOrCreateTag();
-        FluidTank tank = blockEntityOptional.map(CryogenicTankBlockEntity::getTank).orElse(null);
-        if(tank!= null){
-            CompoundTag fluidTank = new CompoundTag();
-            tag.put("Fluid", tank.writeToNBT(fluidTank));
+            stack.set(DataComponents.CUSTOM_DATA,CustomData.of(tag));
         }
-        Component customName = blockEntityOptional.map(CryogenicTankBlockEntity::getCustomName)
-                .orElse(null);
-        if (customName != null)
-            stack.setHoverName(customName);
-
-        stack.setTag(tag);
         return stack;
     }
     @Nullable
