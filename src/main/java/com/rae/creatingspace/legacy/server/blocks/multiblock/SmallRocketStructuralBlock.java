@@ -1,5 +1,7 @@
 package com.rae.creatingspace.legacy.server.blocks.multiblock;
 
+import com.mojang.serialization.MapCodec;
+import com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.engines.SmallEngineBlock;
 import com.simibubi.create.api.equipment.goggles.IProxyHoveringInformation;
@@ -42,6 +44,12 @@ public class SmallRocketStructuralBlock extends DirectionalBlock implements IWre
 
     public SmallRocketStructuralBlock(Properties p_52591_) {
         super(p_52591_);
+    }
+    public static final MapCodec<SmallRocketStructuralBlock> CODEC = simpleCodec(SmallRocketStructuralBlock::new);
+
+    @Override
+    protected MapCodec<? extends DirectionalBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -106,14 +114,14 @@ public class SmallRocketStructuralBlock extends DirectionalBlock implements IWre
         }
     }*/
 
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (stillValid(pLevel, pPos, pState)) {
             BlockPos masterPos = getMaster(pLevel, pPos, pState);
             pLevel.destroyBlockProgress(masterPos.hashCode(), masterPos, -1);
             if (!pLevel.isClientSide() && pPlayer.isCreative())
                 pLevel.destroyBlock(masterPos, false);
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel,

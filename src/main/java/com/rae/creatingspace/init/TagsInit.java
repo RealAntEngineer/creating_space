@@ -3,7 +3,9 @@ package com.rae.creatingspace.init;
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.utility.CreateLang;
+import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -20,7 +22,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+
+import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
+
 
 public class TagsInit extends AllTags {
 
@@ -68,9 +73,9 @@ public class TagsInit extends AllTags {
     }
 
     CustomBlockTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-        ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
         if (optional) {
-            tag = optionalTag(ForgeRegistries.BLOCKS, id);
+            tag = optionalTag(BuiltInRegistries.BLOCK, id);
         } else {
             tag = BlockTags.create(id);
         }
@@ -120,9 +125,9 @@ public class TagsInit extends AllTags {
         }
 
         CustomItemTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
             if (optional) {
-                tag = optionalTag(ForgeRegistries.ITEMS, id);
+                tag = optionalTag(BuiltInRegistries.ITEM, id);
             } else {
                 tag = ItemTags.create(id);
             }
@@ -166,9 +171,9 @@ public class TagsInit extends AllTags {
         }
 
         CustomEntityTag(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
             if (optional) {
-                tag = optionalTag(ForgeRegistries.ENTITY_TYPES, id);
+                tag = optionalTag(BuiltInRegistries.ENTITY_TYPE, id);
             } else {
                 tag = TagKey.create(Registries.ENTITY_TYPE, id);
             }
@@ -211,9 +216,9 @@ public class TagsInit extends AllTags {
         }
 
         CustomFluidTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
             if (optional) {
-                tag = optionalTag(ForgeRegistries.FLUIDS, id);
+                tag = optionalTag(BuiltInRegistries.FLUID, id);
             } else {
                 tag = FluidTags.create(id);
             }
@@ -255,23 +260,21 @@ public class TagsInit extends AllTags {
         CustomBiomeTags(CustomNameSpace namespace, boolean optional, boolean alwaysDatagen) {
             this(namespace, null, optional, alwaysDatagen);
         }
-
+        //what is optional supposed to do ?
         CustomBiomeTags(CustomNameSpace namespace, String path, boolean optional, boolean alwaysDatagen) {
-            ResourceLocation id = new ResourceLocation(namespace.id, path == null ? CreateLang.asId(name()) : path);
-            if (optional) {
-                tag = optionalTag(ForgeRegistries.BIOMES, id);
-            } else {
-                tag = TagKey.create(Registries.BIOME, id);
-            }
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace.id, path == null ? Lang.asId(name()) : path);
+
+            tag = TagKey.create(Registries.BIOME, id);
+
             this.alwaysDatagen = alwaysDatagen;
         }
-
+        //We need the registry access. -> we have something in the api that might work
         public boolean matches(Biome biome) {
-            return matches(ForgeRegistries.BIOMES.getHolder(biome).orElse(null));
+            return matches(getSideAwareRegistry(Registries.BIOME).wrapAsHolder(biome));
         }
 
         public boolean matches(ResourceLocation biome) {
-            return matches(ForgeRegistries.BIOMES.getHolder(biome).orElse(null));
+            return matches(getSideAwareRegistry(Registries.BIOME).getHolder(biome).orElse(null));
         }
 
         public boolean matches(Holder<Biome> biome) {

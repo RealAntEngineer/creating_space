@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-
+//TODO replace this by the new Formic API, nested for now but will be published separately as of 1.8
 public class SingleFileCodecJsonDataManager<T> extends AbstractCodecJsonDataManager<T>
 {
 

@@ -60,9 +60,9 @@ public class MiscInit {
 
     public static class Keys {
         public static final ResourceKey<Registry<ExhaustPackType>> EXHAUST_PACK_TYPE =
-                ResourceKey.createRegistryKey(new ResourceLocation("creatingspace:exhaust_pack_type"));
+                ResourceKey.createRegistryKey(CreatingSpace.resource("exhaust_pack_type"));
         public static final ResourceKey<Registry<PowerPackType>> POWER_PACK_TYPE =
-                ResourceKey.createRegistryKey(new ResourceLocation("creatingspace:power_pack_type"));
+                ResourceKey.createRegistryKey(CreatingSpace.resource("power_pack_type"));
 
 
     }

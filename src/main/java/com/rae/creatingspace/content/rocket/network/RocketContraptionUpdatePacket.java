@@ -26,12 +26,6 @@ public class RocketContraptionUpdatePacket  implements ClientboundPacketPayload 
         this.speed = speed;
     }
 
-    public RocketContraptionUpdatePacket(FriendlyByteBuf buffer) {
-        entityID = buffer.readInt();
-        coord = buffer.readFloat();
-        speed = buffer.readFloat();
-    }
-
     @Override
     public void handle(LocalPlayer player) {
         RocketContraptionEntity.handlePacket(this);

@@ -1,40 +1,40 @@
 package com.rae.creatingspace.content.rocket.network;
 
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
+import com.rae.creatingspace.init.PacketInit;
+import com.simibubi.create.content.contraptions.sync.ClientMotionPacket;
+import io.netty.buffer.ByteBuf;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
+import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.network.NetworkEvent;
 
-public class RocketContraptionDisassemblePacket extends SimplePacketBase {
-
+public class RocketContraptionDisassemblePacket implements ServerboundPacketPayload {
+    public static final StreamCodec<ByteBuf, RocketContraptionDisassemblePacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, packet -> packet.entityID,
+            RocketContraptionDisassemblePacket::new
+    );
     public int entityID;
 
     public RocketContraptionDisassemblePacket(int entityID) {
         this.entityID = entityID;
     }
 
-    public RocketContraptionDisassemblePacket(FriendlyByteBuf buffer) {
-        entityID = buffer.readInt();
+
+    @Override
+    public void handle(ServerPlayer player) {
+        Entity entity = player.level().getEntity(entityID);
+        if (entity instanceof RocketContraptionEntity ce) {
+
+            ce.disassemble();
+        }
     }
 
     @Override
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeInt(entityID);
-    }
-
-    @Override
-    public boolean handle(NetworkEvent.Context context) {
-        context.enqueueWork(
-                () -> {
-                    ServerPlayer sender = context.getSender();
-                    Entity entity = sender.level().getEntity(entityID);
-                    if (entity instanceof RocketContraptionEntity ce) {
-
-                        ce.disassemble();
-                    }
-                });
-        return true;
+    public PacketTypeProvider getTypeProvider() {
+        return PacketInit.DISASSEMBLE_ROCKET;
     }
 }
