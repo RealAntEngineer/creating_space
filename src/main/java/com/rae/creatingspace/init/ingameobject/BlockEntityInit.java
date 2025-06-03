@@ -9,7 +9,6 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockE
 
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockRenderer;
-import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierVisual;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlockEntity;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierVisual;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierRenderer;
@@ -22,14 +21,8 @@ import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
 import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
-import com.rae.creatingspace.legacy.client.renderer.blockentity.LegacyMechanicalElectrolyserBlockRenderer;
-import com.rae.creatingspace.legacy.client.renderer.blockentity.RocketGeneratorBlockRenderer;
-import com.rae.creatingspace.legacy.server.blockentities.ChemicalSynthesizerBlockEntity;
-import com.rae.creatingspace.legacy.server.blockentities.LegacyMechanicalElectrolyzerBlockEntity;
-import com.rae.creatingspace.legacy.server.blockentities.RocketGeneratorBlockEntity;
-import com.rae.creatingspace.legacy.server.blockentities.atmosphere.OxygenBlockEntity;
+
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
-import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -60,10 +53,6 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.CRYOGENIC_TANK)
                     .register();
 
-    public static final BlockEntityEntry<ChemicalSynthesizerBlockEntity> SYNTHESIZER =
-            REGISTRATE.blockEntity("synthesizer", ChemicalSynthesizerBlockEntity::new)
-                    .validBlocks(BlockInit.CHEMICAL_SYNTHESIZER)
-                    .register();
 
     public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
             REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
@@ -88,13 +77,7 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.ROCKET_ENGINE)
                     .register();
 
-    public static final BlockEntityEntry<LegacyMechanicalElectrolyzerBlockEntity> LEGACY_ELECTROLIZER =
-            REGISTRATE.blockEntity(
-                            "legacy_electrolyzer", LegacyMechanicalElectrolyzerBlockEntity::new)
-                    //.visual(() -> ShaftInstance::new, false)
-                    .validBlocks(BlockInit.LEGACY_MECHANICAL_ELECTROLYZER)
-                    .renderer(() -> LegacyMechanicalElectrolyserBlockRenderer::new)
-                    .register();
+
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(
                             "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
@@ -114,11 +97,6 @@ public class BlockEntityInit {
                             "flow_meter", FlowGaugeBlockEntity::new)
                     .validBlocks( BlockInit.FLOW_METER)
                     .renderer(()-> FlowGaugeBlockRenderer::new)
-                    .register();
-    public static final BlockEntityEntry<OxygenBlockEntity> OXYGEN =
-            REGISTRATE.blockEntity(
-                            "oxygen", OxygenBlockEntity::new)
-                    .validBlocks(BlockInit.OXYGEN)
                     .register();
 
     public static final BlockEntityEntry<RoomPressuriserBlockEntity> ROOM_PRESSURIZER =

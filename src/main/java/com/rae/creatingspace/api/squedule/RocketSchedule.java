@@ -68,6 +68,12 @@ public class RocketSchedule {
     public boolean cyclic;
     public int savedProgress;
 
+    public RocketSchedule(List<ScheduleEntry> entries, boolean cyclic, int savedProgress) {
+        this.entries = entries;
+        this.cyclic = cyclic;
+        this.savedProgress = savedProgress;
+    }
+
     public RocketSchedule() {
         entries = new ArrayList<>();
         cyclic = true;

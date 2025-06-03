@@ -16,10 +16,10 @@ public class PonderInit {
         // (!) Modifications inside storyboard methods only require re-opening the ui
         //TODO add ponder for :
         //  electrolyzer
-        //  rocket generator
+        //  catalyst carrier
         //  clamps
         //  flowmeter
-        PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderSceneRegistrationHelper<ItemProviderEntry<?,?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         HELPER.forComponents(BlockInit.SMALL_ROCKET_ENGINE,BlockInit.BIG_ROCKET_ENGINE,BlockInit.ROCKET_CONTROLS,BlockInit.FLIGHT_RECORDER)
                 .addStoryBoard("rocket/rocket_building", RocketScene::rocketBuild)

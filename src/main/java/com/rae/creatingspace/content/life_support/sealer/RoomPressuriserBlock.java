@@ -1,12 +1,10 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,9 +19,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Function;
 
 import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
 
@@ -36,7 +33,7 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
         return AIR_LIQUEFIER.get(state.getValue(FACING));
     }
 
@@ -47,7 +44,7 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
 
     //only for debugging -> this machine will have no GUI to comply with create
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         ItemStack held = player.getMainHandItem();
         if (!level.isClientSide && held.isEmpty()) {
             if (level.getBlockEntity(pos) instanceof RoomPressuriserBlockEntity be) {
@@ -58,23 +55,6 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
-    /*
-    @OnlyIn(value = Dist.CLIENT)
-    protected void displayScreen(SealerBlockEntity be, Player player) {
-        if (!(player instanceof LocalPlayer))
-            return;
-        ScreenOpener.open(new SealerScreen(be));
-    }*/
-
-    /*@Override
-    public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState state, boolean isMoving) {
-        BlockEntity be = this.getBlockEntity(level,pos);
-        if (be instanceof SealerBlockEntity sealerBlockEntity){
-            sealerBlockEntity.removeO2inRoom(level);
-        }
-        super.onRemove(blockState, level, pos, state, isMoving);
-    }
-*/
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         IBE.onRemove(state, world, pos, newState);
@@ -93,8 +73,8 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return level.isClientSide() ? null : ($0, pos, $1, blockEntity) -> {
-            if (blockEntity instanceof SealerBlockEntity sealerBlockEntity) {
-                sealerBlockEntity.tick(level, pos, state);
+            if (blockEntity instanceof RoomPressuriserBlockEntity sealerBlockEntity) {
+                sealerBlockEntity.tick();
             }
         };
     }

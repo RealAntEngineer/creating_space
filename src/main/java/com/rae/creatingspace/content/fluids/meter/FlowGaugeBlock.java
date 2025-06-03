@@ -108,7 +108,7 @@ public class FlowGaugeBlock extends KineticBlock implements IAxisPipe, IBE<FlowG
         return state.getValue(FACING).getClockWise().getAxis() == direction.getAxis();
     }
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
+    public boolean isPathfindable(BlockState state, PathComputationType type) {
         return false;
     }
 

@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.mixin.accessor.EntityRenderDispatcherAccessor;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.model.EntityModel;
@@ -59,7 +60,7 @@ public class OxygenBacktankArmorLayer <T extends LivingEntity, M extends EntityM
     public static void registerOnAll(EntityRenderDispatcher renderManager) {
         for (EntityRenderer<? extends Player> renderer : renderManager.getSkinMap().values())
             registerOn(renderer);
-        for (EntityRenderer<?> renderer : renderManager.renderers.values())
+        for (EntityRenderer<?> renderer : ((EntityRenderDispatcherAccessor) renderManager).create$getRenderers().values())
             registerOn(renderer);
     }
 

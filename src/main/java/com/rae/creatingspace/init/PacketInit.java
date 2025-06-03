@@ -32,8 +32,6 @@ public enum PacketInit implements BasePacketPayload.PacketTypeProvider {
     LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket.STREAM_CODEC),
     SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket.STREAM_CODEC),
     DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket.STREAM_CODEC),
-    SEALER_TRY_SEALING(SealerTrySealing.class,SealerTrySealing.STREAM_CODEC),
-    SEALER_SETTINGS(SealerSettings.class,SealerSettings.STREAM_CODEC),
     ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket.STREAM_CODEC),
 
     // S2C

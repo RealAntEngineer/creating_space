@@ -1,17 +1,17 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
+import com.mojang.serialization.MapCodec;
 import com.rae.creatingspace.init.graphics.ShapesInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +38,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayer;
 
 import java.util.Optional;
 
@@ -48,6 +48,11 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	public OxygenBacktankBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
+	}
+	//TODO make this according to other codec implementation (copy past with correct name of the class)
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return null;
 	}
 
 	@Override
@@ -103,18 +108,19 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 		if (worldIn.isClientSide)
 			return;
 		withBlockEntityDo(worldIn, pos, be -> {
-			be.setCapacityEnchantLevel(stack.getEnchantmentLevel(AllEnchantments.CAPACITY.get()));
-			be.setOxygenLevel((int) stack.getOrCreateTag()
+			//
+			be.setCapacityEnchantLevel(stack.getEnchantmentLevel(worldIn.holderOrThrow(AllEnchantments.CAPACITY)));
+			be.setOxygenLevel((int) stack.getOrCreateTag()//TODO implement a DataComponent for Oxygen Level in DataComponentInit
 				.getFloat("Oxygen"));
 			if (stack.isEnchanted())
-				be.setEnchantmentTag(stack.getEnchantmentTags());
-			if (stack.hasCustomHoverName())
+				be.setEnchantmentTag(stack.getEnchantmentTags());//TODO look at BacktankBlock
+			if (stack.has(DataComponents.CUSTOM_NAME))
 				be.setCustomName(stack.getHoverName());
 		});
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
+	public InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player,
 		BlockHitResult hit) {
         if (player instanceof FakePlayer)
 			return InteractionResult.PASS;
@@ -179,7 +185,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
+	public boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 

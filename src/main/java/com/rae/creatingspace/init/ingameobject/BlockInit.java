@@ -3,6 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.rae.creatingspace.configs.CSStress;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
+import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlock;
 import com.rae.creatingspace.content.planets.RegolithSurfaceBlock;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock;
@@ -13,8 +14,7 @@ import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock;
 import com.rae.creatingspace.legacy.server.blocks.*;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.OxygenBlock;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.SealerBlock;
+
 import com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock;
 import com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock;
@@ -150,29 +150,6 @@ public class BlockInit {
             .register();
 
 
-    @Deprecated
-    public static final BlockEntry<ChemicalSynthesizerBlock> CHEMICAL_SYNTHESIZER = REGISTRATE.block(
-                    "chemical_synthesizer", ChemicalSynthesizerBlock::new)
-            .initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(axeOrPickaxe())
-            .item()
-            //.properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
-            .register();
-
-    @Deprecated
-    public static final BlockEntry<LegacyMechanicalElectrolyzerBlock> LEGACY_MECHANICAL_ELECTROLYZER = REGISTRATE.block(
-                    "legacy_mechanical_electrolyzer", LegacyMechanicalElectrolyzerBlock::new)
-            .initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
-            .transform(CSStress.setImpact(10000))
-            .transform(axeOrPickaxe())
-            .item()
-            //.properties(p-> p.tab(CreativeModeTabsInit.MACHINE_TAB))
-            .transform(customItemModel())
-            .onRegisterAfter(Registries.ITEM, i -> ItemDescription.useKey(i, "block.creatingspace.legacy_mechanical_electrolyzer"))
-            .register();
     public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -194,8 +171,8 @@ public class BlockInit {
             .transform(customItemModel())
             .register();
 
-    public static final BlockEntry<SealerBlock> OXYGEN_SEALER = REGISTRATE
-            .block("oxygen_sealer", SealerBlock::new)
+    public static final BlockEntry<RoomPressuriserBlock> OXYGEN_SEALER = REGISTRATE
+            .block("oxygen_sealer", RoomPressuriserBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .item()
             .build()
@@ -217,11 +194,7 @@ public class BlockInit {
             .item()
             .transform(customItemModel())
             .register();
-    public static final BlockEntry<OxygenBlock> OXYGEN = REGISTRATE
-            .block("oxygen", OxygenBlock::new)
-            .initialProperties(() -> Blocks.AIR)
-            .properties(p -> p.noOcclusion().noCollission().dynamicShape().air())
-            .register();
+
     public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
             .block("copper_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::copperMetal)

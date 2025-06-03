@@ -1,34 +1,40 @@
 package com.rae.creatingspace.content.recipes;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.init.IngredientInit;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.HolderSetCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.AbstractIngredient;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.IIngredientSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.item.component.CustomData;
+import net.neoforged.neoforge.common.crafting.ICustomIngredient;
+import net.neoforged.neoforge.common.crafting.IngredientType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class IntRangeNbtIngredient extends AbstractIngredient {
-    public final Set<Item> items;
-    ArrayList<String> path = null;
+public class IntRangeNbtIngredient implements ICustomIngredient {
+    public static final MapCodec<IntRangeNbtIngredient> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    HolderSetCodec.create(Registries.ITEM, BuiltInRegistries.ITEM.holderByNameCodec(), false).fieldOf("items").forGetter( i -> i.items),
+                    CompoundTag.CODEC.fieldOf("range_data").forGetter(i -> i.range_data)
+            ).apply(instance, IntRangeNbtIngredient::new)
+    );
+    public final HolderSet<Item> items;
+    ArrayList<String> path;
     int min;
     int max;
     public CompoundTag range_data;//there
 
-    public IntRangeNbtIngredient(Set<Item> items, CompoundTag range_data) {
+    public IntRangeNbtIngredient(HolderSet<Item> items, CompoundTag range_data) {
         this.items = items;
         this.range_data = range_data;
         path = new ArrayList<>(List.of(range_data.getString("path").split("/")));
@@ -43,8 +49,9 @@ public class IntRangeNbtIngredient extends AbstractIngredient {
     public boolean test(@Nullable ItemStack input) {
         if (input == null)
             return false;
-        boolean flag1 = items.contains(input.getItem());
-        boolean flag2 = matches(input.getShareTag());
+        boolean flag1 = items.contains(input.getItemHolder());
+        CustomData data = input.get(DataComponents.CUSTOM_DATA);
+        boolean flag2 = matches(data!=null ?data.copyTag():new CompoundTag());
         return flag1 && flag2;
     }
 
@@ -56,7 +63,7 @@ public class IntRangeNbtIngredient extends AbstractIngredient {
                 tag = (CompoundTag) tag.get(partialPath);
             }
             assert tag != null;
-            int value = tag.getInt(path.get(path.size() - 1));
+            int value = tag.getInt(path.getLast());
             if (value >= min || value <= max) {
                 return true;
             }
@@ -70,26 +77,20 @@ public class IntRangeNbtIngredient extends AbstractIngredient {
         return false;
     }
 
-
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer() {
-        return Serializer.INSTANCE;
+    public @NotNull IngredientType<?> getType() {
+        return IngredientInit.INT_RANGE.get();
     }
 
     @Override
-    public JsonElement toJson() {
-        return null;
-    }
-
-    @Override
-    public ItemStack[] getItems() {
+    public @NotNull Stream<ItemStack> getItems() {
         //make an iterator to collect the items ?
         ItemStack[] acc = new ItemStack[2 * items.size()];
         int i = 0;
         if (!path.isEmpty()) {
-            for (Item item : items) {
-                ItemStack firstLimit = item.getDefaultInstance();
-                ItemStack lastLimit = item.getDefaultInstance();
+            for (Holder<Item> item : items) {
+                ItemStack firstLimit = item.value().getDefaultInstance();
+                ItemStack lastLimit = item.value().getDefaultInstance();
                 CompoundTag minTag = new CompoundTag();
                 CompoundTag maxTag = new CompoundTag();
                 minTag.putInt(path.get(path.size()-1), min);
@@ -106,58 +107,16 @@ public class IntRangeNbtIngredient extends AbstractIngredient {
                         maxTag = tempMax.copy();
                     }
                 }
-                firstLimit.setTag(minTag);
-                lastLimit.setTag(maxTag);
+                firstLimit.set(DataComponents.CUSTOM_DATA,CustomData.of(minTag));
+                lastLimit.set(DataComponents.CUSTOM_DATA,CustomData.of(maxTag));
                 acc[i] = firstLimit;
                 acc[i + 1] = lastLimit;
                 i++;
             }
         }
-        return acc;
+        return Arrays.stream(acc);
     }
 
-    public static class Serializer implements IIngredientSerializer<IntRangeNbtIngredient> {
-        public static final Serializer INSTANCE = new Serializer();
 
-        @Override
-        public IntRangeNbtIngredient parse(JsonObject json) {
-            // parse items
-            Set<Item> items;
-            if (json.has("item"))
-                items = Set.of(CraftingHelper.getItem(GsonHelper.getAsString(json, "item"), true));
-            else if (json.has("items")) {
-                ImmutableSet.Builder<Item> builder = ImmutableSet.builder();
-                JsonArray itemArray = GsonHelper.getAsJsonArray(json, "items");
-                for (int i = 0; i < itemArray.size(); i++) {
-                    builder.add(CraftingHelper.getItem(GsonHelper.convertToString(itemArray.get(i), "items[" + i + ']'), true));
-                }
-                items = builder.build();
-            } else
-                throw new JsonSyntaxException("Must set either 'item' or 'items'");
-
-            // parse NBT
-            if (!json.has("range_data"))
-                throw new JsonSyntaxException("Missing range_data, expected to find a JsonObject");
-            CompoundTag nbt = CraftingHelper.getNBT(json.get("range_data"));
-
-            return new IntRangeNbtIngredient(items, nbt);
-        }
-
-        @Override
-        public IntRangeNbtIngredient parse(FriendlyByteBuf buffer) {
-            Set<Item> items = Stream.generate(() -> buffer.readRegistryIdUnsafe(ForgeRegistries.ITEMS)).limit(buffer.readVarInt()).collect(Collectors.toSet());
-            CompoundTag nbt = buffer.readNbt();
-            return new IntRangeNbtIngredient(items, Objects.requireNonNull(nbt));
-        }
-
-        @Override
-        public void write(FriendlyByteBuf buffer, IntRangeNbtIngredient ingredient) {
-            buffer.writeVarInt(ingredient.items.size());
-            for (Item item : ingredient.items)
-                buffer.writeRegistryIdUnsafe(ForgeRegistries.ITEMS, item);
-            buffer.writeNbt(ingredient.range_data);
-        }
-
-    }
 
 }
