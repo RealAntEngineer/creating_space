@@ -81,14 +81,10 @@ public class Orbit extends BoxWidget {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
-        if (visible) {
-            isHovered = isMouseOver(mouseX, mouseY);
-            beforeRender(ms, mouseX, mouseY, partialTicks);
-            renderButton(ms, mouseX, mouseY, partialTicks);
-            afterRender(ms, mouseX, mouseY, partialTicks);
-            wasHovered = isHoveredOrFocused();
-        }
+    public void doRender(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
+
+        renderButton(ms, mouseX, mouseY, partialTicks);
+
         float theta = getTheta(partialTicks);
         planetX = CSDimensionUtil.isOrbit(dim) ? getX() : getX() + radius / zoom * Math.sin(theta);
         planetY = CSDimensionUtil.isOrbit(dim) ? getY() : getY() + radius / zoom * Math.cos(theta);

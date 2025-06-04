@@ -54,7 +54,7 @@ public class SliderWidget extends AbstractSimiWidget {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (visible){
             lerpedValue.tickChaser();
 
