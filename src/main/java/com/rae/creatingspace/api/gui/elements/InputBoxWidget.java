@@ -70,8 +70,8 @@ public class InputBoxWidget extends BoxWidget {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        super.render(graphics, mouseX, mouseY, partialTicks);
+    protected void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.renderWidget(graphics, mouseX, mouseY, partialTicks);
         //editBox.render(ms,mouseX,mouseY,partialTicks);
     }
 

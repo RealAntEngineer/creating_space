@@ -78,38 +78,42 @@ public class DesignBlueprintItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
-        CompoundTag nbt = stack.getOrCreateTag();//TODO replace with a data component call with  null check -> same as in first methode
-        ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
-                nbt.get("design_type")).result().orElse(null);
-        ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
-                nbt.get("design")).result().orElse(null);
-        if (registry != null) {
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if(data != null) {
+            CompoundTag nbt = data.copyTag();
+            ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                    nbt.get("design_type")).result().orElse(null);
+            ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                    nbt.get("design")).result().orElse(null);
+            if (registry != null) {
                 save(stack, player);
                 player.displayClientMessage(Component.translatable("item.creatingspace.design_blueprint.message")
                                 .append(" ")
                                 .append(Component.translatable(
-                                registry.getPath() + "." +
-                                        location.getNamespace() + "." + location.getPath()))
+                                        registry.getPath() + "." +
+                                                location.getNamespace() + "." + location.getPath()))
                                 .append(" ")
                                 .append(Component.translatable(registry.toLanguageKey())),
                         true);
-
+            }
         }
         return super.use(level, player, interactionHand);
     }
 
     private static void save(ItemStack stack, Player player) {
-        CompoundTag nbt = stack.getOrCreateTag();//TODO replace with a data component call with  null check
-        ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
-                nbt.get("design_type")).result().orElse(null);
-        ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
-                nbt.get("design")).result().orElse(null);
-        if (registry.getPath().equals(DEFERRED_EXHAUST_PACK_TYPE.getRegistryName().getPath())) {
-            UnlockedDesignManager.addExhaustForPlayer(player, location);
-
-        }
-        if (registry.getPath().equals(DEFERRED_POWER_PACK_TYPE.getRegistryName().getPath())) {
-            UnlockedDesignManager.addPowerPackForPlayer(player, location);
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        if(data != null) {
+            CompoundTag nbt = data.copyTag();
+            ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                    nbt.get("design_type")).result().orElse(null);
+            ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
+                    nbt.get("design")).result().orElse(null);
+            if (registry.getPath().equals(DEFERRED_EXHAUST_PACK_TYPE.getRegistryName().getPath())) {
+                UnlockedDesignManager.addExhaustForPlayer(player, location);
+                }
+            if (registry.getPath().equals(DEFERRED_POWER_PACK_TYPE.getRegistryName().getPath())) {
+                UnlockedDesignManager.addPowerPackForPlayer(player, location);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.simibubi.create.foundation.item.LayeredArmorItem;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -29,20 +30,6 @@ public class OxygenBacktankItem extends UpgradableEquipment {
         this.blockItem = placeable;
     }
 
-    @Override
-    public void inventoryTick(ItemStack backtank, Level level, Entity entity, int nbr, boolean isMoving) {
-        CompoundTag tag = backtank.getOrCreateTag();//TODO data component + remove the prev oxygenLevel and toUpdate as we don't need it.
-
-        float o2amount = tag.getFloat("Oxygen");
-        float prevO2amount = tag.getFloat("prevOxygen");
-        boolean toUpdate = tag.getBoolean("toUpdate");
-        if (toUpdate) {
-            tag.putFloat("prevOxygen",o2amount);
-            tag.putBoolean("toUpdate", false);
-        }
-        // may be ? -> in the ticking entity logic make the server update the itemstack -> here don't now what is before and after
-    }
-
     @Nullable
     public static OxygenBacktankItem getWornBy(Entity entity) {
         if (!(entity instanceof LivingEntity livingEntity)) {
@@ -60,7 +47,6 @@ public class OxygenBacktankItem extends UpgradableEquipment {
                 .useOn(ctx);
     }
 
-    @Override
     public boolean canBeDepleted() {
         return false;
     }
@@ -89,9 +75,8 @@ public class OxygenBacktankItem extends UpgradableEquipment {
         return blockItem.get().getBlock();
     }
 
-    public static float getRemainingAir(ItemStack stack) {
-        CompoundTag orCreateTag = stack.getOrCreateTag();//TODO DataComponent
-        return orCreateTag.getFloat("Oxygen");
+    public static int getRemainingAir(ItemStack stack) {
+        return stack.getOrDefault(DataComponentsInit.OXYGEN_LEVEL, 0);
     }
 
     public static class O2BacktankBlockItem extends BlockItem {

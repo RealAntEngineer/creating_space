@@ -114,7 +114,7 @@ public class SpacesuitHelmetItem extends UpgradableEquipment {
 				entity.getPersistentData()
 						.putInt("VisualBacktankAir", Math.round(O2Backtanks.stream()
 								.map(OxygenBacktankUtil::getOxygen)
-								.reduce(0f, Float::sum)));
+								.reduce(0, Integer::sum)));
 
 			if (!second)
 				return;

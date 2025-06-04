@@ -1,12 +1,14 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.mojang.serialization.MapCodec;
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.graphics.ShapesInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -34,6 +37,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -42,6 +47,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NonnullDefault;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 @NonnullDefault
@@ -111,12 +117,8 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 		if (worldIn.isClientSide)
 			return;
 		withBlockEntityDo(worldIn, pos, be -> {
-			//
 			be.setCapacityEnchantLevel(stack.getEnchantmentLevel(worldIn.holderOrThrow(AllEnchantments.CAPACITY)));
-			be.setOxygenLevel((int) stack.getOrCreateTag()//TODO implement a DataComponent for Oxygen Level in DataComponentInit
-				.getFloat("Oxygen"));
-			if (stack.isEnchanted())
-				be.setEnchantmentTag(stack.getEnchantmentTags());//TODO look at BacktankBlock
+			be.setOxygenLevel(stack.getOrDefault(DataComponentsInit.OXYGEN_LEVEL, 0));
 			if (stack.has(DataComponents.CUSTOM_NAME))
 				be.setCustomName(stack.getHoverName());
 		});
@@ -151,25 +153,15 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 			item = placeable.getActualItem();
 		}
 
-		ItemStack stack = new ItemStack(item);
 		Optional<OxygenBacktankBlockEntity> blockEntityOptional = getBlockEntityOptional(level, pos);
 
+		DataComponentPatch components = blockEntityOptional.map(OxygenBacktankBlockEntity::getComponentPatch)
+				.orElse(DataComponentPatch.EMPTY);
 		int air = blockEntityOptional.map(OxygenBacktankBlockEntity::getOxygenLevel)
                 .orElse(0);
-		CompoundTag tag = stack.getOrCreateTag(); //TODO DataComponent
-		tag.putFloat("Oxygen", air);
-		tag.putFloat("prevOxygen",air);
-
-		ListTag enchants = blockEntityOptional.map(OxygenBacktankBlockEntity::getEnchantmentTag)
-			.orElse(new ListTag());
-		if (!enchants.isEmpty()) {
-			ListTag enchantmentTagList = stack.getEnchantmentTags(); //TODO look at BacktankBlock
-			enchantmentTagList.addAll(enchants);
-			tag.put("Enchantments", enchantmentTagList);
-		}
-
-        blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName).ifPresent(stack::setHoverName); //TODO look at BacktankBlock
-        return stack;
+		ItemStack stack = new ItemStack(item.builtInRegistryHolder(), 1, components);
+		stack.set(DataComponentsInit.OXYGEN_LEVEL, air);
+		return stack;
 	}
 
 	@Override
@@ -192,5 +184,27 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	public boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
+		List<ItemStack> lootDrops = super.getDrops(pState, pBuilder);
+
+		BlockEntity blockEntity = pBuilder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (!(blockEntity instanceof OxygenBacktankBlockEntity bbe))
+			return lootDrops;
+
+		DataComponentPatch components = bbe.getComponentPatch()
+				.forget(c -> c.equals(DataComponentsInit.OXYGEN_LEVEL));
+		if (components.isEmpty())
+			return lootDrops;
+
+		return lootDrops.stream()
+				.peek(stack -> {
+					if (stack.getItem() instanceof OxygenBacktankItem)
+						stack.applyComponents(components);
+				})
+				.toList();
+	}
+
 
 }
