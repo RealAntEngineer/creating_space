@@ -41,7 +41,6 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	private final Component defaultName;
 	private Component customName;
 	private int capacityEnchantLevel;
-	private ListTag enchantmentTag;
 	private DataComponentPatch componentPatch;
 
 	private final FluidTank OXYGEN_TANK = new FluidTank(1000) {
@@ -79,7 +78,6 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	public OxygenBacktankBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		defaultName = getDefaultName();
-		enchantmentTag = new ListTag();
 	}
 
 	@Override
@@ -133,7 +131,6 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 		compound.putInt("CapacityEnchantment", capacityEnchantLevel);
 		if (this.customName != null)
 			compound.putString("CustomName", Component.Serializer.toJson(this.customName, registries));
-		compound.put("Enchantments", enchantmentTag);
 	}
 
 	@Override
@@ -145,7 +142,6 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 		oxygenLevel = compound.getInt("Oxygen");
 		prevOxygenLevel = compound.getInt("prevOxygen");
 		oxygenLevelTimer = compound.getInt("Timer");
-		enchantmentTag = compound.getList("Enchantments", Tag.TAG_COMPOUND);
 		if (compound.contains("CustomName", 8))
 			this.customName = Component.Serializer.fromJson(compound.getString("CustomName"), registries);
 		if (prev != 0 && prev != oxygenLevel && oxygenLevel == OxygenBacktankUtil.maxOxygen(capacityEnchantLevel) && clientPacket)
@@ -188,14 +184,6 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 
 	public Component getCustomName() {
 		return customName;
-	}
-
-	public ListTag getEnchantmentTag() {
-		return enchantmentTag;
-	}
-
-	public void setEnchantmentTag(ListTag enchantmentTag) {
-		this.enchantmentTag = enchantmentTag;
 	}
 
 	public void setCapacityEnchantLevel(int capacityEnchantLevel) {

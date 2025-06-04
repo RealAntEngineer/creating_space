@@ -121,6 +121,8 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 			be.setOxygenLevel(stack.getOrDefault(DataComponentsInit.OXYGEN_LEVEL, 0));
 			if (stack.has(DataComponents.CUSTOM_NAME))
 				be.setCustomName(stack.getHoverName());
+			be.setComponentPatch(stack.getComponentsPatch());
+
 		});
 	}
 
