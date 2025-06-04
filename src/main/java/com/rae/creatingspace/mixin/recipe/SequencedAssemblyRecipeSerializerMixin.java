@@ -91,7 +91,7 @@ public abstract class SequencedAssemblyRecipeSerializerMixin {
         STRING_LIST_STREAM_CODEC.encode(buffer, ((IMoreNbtConditions) recipe).getMachNbt());
     }
 
-    @Inject(method = "codec", at = @At("RETURN"))
+    @Inject(method = "codec", at = @At("RETURN"), cancellable = true)
     public void addToCodec(CallbackInfoReturnable<MapCodec<SequencedAssemblyRecipe>> cir) {
         cir.setReturnValue(NEW_CODEC);
     }

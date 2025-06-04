@@ -15,6 +15,7 @@ import java.util.List;
 import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
 
 public class MiscInit {
+    //TODO there is no need for 2 different classes for MiscInit and PropellantInit, merge them
     public static final DeferredRegister<ExhaustPackType> DEFERRED_EXHAUST_PACK_TYPE =
             DeferredRegister.create(Keys.EXHAUST_PACK_TYPE, CreatingSpace.MODID);
 

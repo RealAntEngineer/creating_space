@@ -4,6 +4,7 @@ import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.foundation.ICapabilityProvider;
+import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +29,6 @@ public class CryogenicTankItem extends BlockItem {
     public CryogenicTankItem(Block block, Properties properties) {
         super(block, properties);
     }
-    //TODO capabilities  -> register capabilities in EventHandler with an item fluid capability
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerItem(
                 Capabilities.FluidHandler.ITEM,
@@ -77,6 +77,7 @@ public class CryogenicTankItem extends BlockItem {
                                 .append("  ")
                                 .append(String.valueOf(fluid.getAmount()))
                                 .append(" / 4000mb")
+                                //.withColor(CatnipClientServices.FLUID_HELPER.getColor(fluid.getFluid()))
                                 .withStyle(ChatFormatting.AQUA)
                 );
             } else {

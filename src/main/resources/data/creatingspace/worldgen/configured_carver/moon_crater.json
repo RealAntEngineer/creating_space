@@ -7,10 +7,9 @@
     },
     "y_scale": {
       "type": "minecraft:uniform",
-      "value": {
         "min_inclusive": 0.4,
         "max_exclusive": 0.7
-      }
+
     },
     "debug_settings": {
       "air_state": {

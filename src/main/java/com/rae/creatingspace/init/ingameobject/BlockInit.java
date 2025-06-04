@@ -11,6 +11,7 @@ import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzer
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock;
 import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlock;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
+import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock;
@@ -47,7 +48,9 @@ import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
 
 public class BlockInit {
-
+    static{
+        REGISTRATE.setCreativeTab(CreativeModeTabsInit.MACHINE_TAB);
+    }
     //just blocks
     //TODO add geode's blocks
     public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
@@ -215,6 +218,9 @@ public class BlockInit {
             .build()
             .register();
 
+    static{
+        REGISTRATE.setCreativeTab(CreativeModeTabsInit.MINERALS_TAB);
+    }
 
     public static final BlockEntry<Block> MOON_STONE = REGISTRATE
             .block("moon_stone",Block::new).initialProperties(()-> Blocks.STONE)

@@ -24,7 +24,7 @@ public class RocketControlsItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack stack,  TooltipContext context, List<Component> components, TooltipFlag flag) {
         super.appendHoverText(stack, context, components, flag);
-        Map<ResourceLocation,BlockPos> initialBlockPos = stack.get(DataComponentsInit.INITIAL_POS_MAP);//TODO create a DataComponent
+        Map<ResourceLocation,BlockPos> initialBlockPos = stack.getOrDefault(DataComponentsInit.INITIAL_POS_MAP, Map.of());
         components.add(Component.literal("Stored dimension entry point :").withStyle(ChatFormatting.GOLD));
         for (ResourceLocation dimension:initialBlockPos.keySet()) {
             components.add(

@@ -20,8 +20,10 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
+import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -39,14 +41,12 @@ public class CreatingSpace {
 
     public static final String MODID = "creatingspace" ;
 
-    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
-
-    static {
-        REGISTRATE.setTooltipModifierFactory(item -> {
-            return new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE).
-                    andThen(TooltipModifier.mapNull(KineticStats.create(item)));
-        });
-    }
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID)
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
+            .setTooltipModifierFactory(item -> {
+                return new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE).
+                        andThen(TooltipModifier.mapNull(KineticStats.create(item)));
+            });
 
     public CreatingSpace(IEventBus modEventBus, ModContainer modContainer) {
         IEventBus forgeEventBus = NeoForge.EVENT_BUS;
@@ -62,19 +62,20 @@ public class CreatingSpace {
 
         TagsInit.init();
 
+        DataComponentsInit.register(modEventBus);
         SoundInit.register(modEventBus);
         ItemInit.register();
         BlockInit.register();
         BlockEntityInit.register();
         EntityInit.register();
         FluidInit.register();
+        MiscInit.register(modEventBus);
         PropellantTypeInit.register(modEventBus);
         PaintingInit.register(modEventBus);
         RecipeInit.register(modEventBus);
         ParticleTypeInit.register(modEventBus);
 
         EntityDataSerializersInit.register(modEventBus);
-        MiscInit.register(modEventBus);
         CreativeModeTabsInit.register(modEventBus);
 
         CSConfigs.registerConfigs(modLoadingContext,modContainer);
