@@ -2,11 +2,13 @@ package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.rae.creatingspace.api.gui.elements.SliderWidget;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.init.DataComponentsInit;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -35,9 +37,7 @@ public class RemainingO2Overlay implements LayeredDraw.Layer {
         ItemStack itemInChestSlot = player.getItemBySlot(EquipmentSlot.CHEST);
 
         if (itemInChestSlot.getItem() instanceof OxygenBacktankItem){
-            CompoundTag tag = itemInChestSlot.getOrCreateTag();//TODO DataComponents
-            float o2Value = tag.getFloat("Oxygen");
-
+            int o2Value = itemInChestSlot.getOrDefault(DataComponentsInit.OXYGEN_LEVEL, 0);
             gauge.setMax(OxygenBacktankUtil.maxOxygen(itemInChestSlot));
             gauge.setChase((int) o2Value);
             gauge.render(graphics, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,deltaTracker.getRealtimeDeltaTicks());

@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.AllSoundEvents;
@@ -62,19 +63,15 @@ public class OxygenBacktankUtil {
 		return getOxygen(backtank) > 0;
 	}
 
-	public static float getOxygen(ItemStack backtank) {
-		CompoundTag tag = backtank.getOrCreateTag();//TODO DataComponent
-		return Math.min(tag.getFloat("Oxygen"), maxOxygen(backtank));
+	public static int getOxygen(ItemStack backtank) {
+		return Math.min(backtank.getOrDefault(DataComponentsInit.OXYGEN_LEVEL, 0), maxOxygen(backtank));
 	}
 
 	public static void consumeOxygen(LivingEntity entity, ItemStack backtank, int i) {
-		CompoundTag tag = backtank.getOrCreateTag();
 		int maxOxygen = maxOxygen(backtank);
-		float oxygen = getOxygen(backtank);
-		float newOxygen = Math.max(oxygen - i, 0);
-		tag.putFloat("Oxygen", Math.min(newOxygen, maxOxygen));
-		tag.putBoolean("toUpdate",true);
-		backtank.setTag(tag);
+		int oxygen = getOxygen(backtank);
+		int newOxygen = Math.max(oxygen - i, 0);
+		backtank.set(DataComponentsInit.OXYGEN_LEVEL, Math.min(newOxygen, maxOxygen));
 
 		if (!(entity instanceof ServerPlayer player))
 			return;

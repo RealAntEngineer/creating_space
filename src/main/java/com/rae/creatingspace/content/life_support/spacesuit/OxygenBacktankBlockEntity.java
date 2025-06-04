@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -41,8 +42,9 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	private Component customName;
 	private int capacityEnchantLevel;
 	private ListTag enchantmentTag;
+	private DataComponentPatch componentPatch;
 
-	private final FluidTank OXYGEN_TANK = new FluidTank(1000){
+	private final FluidTank OXYGEN_TANK = new FluidTank(1000) {
 		@Override
 		protected void onContentsChanged() {
 
@@ -65,8 +67,8 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 		event.registerBlockEntity(
 				Capabilities.FluidHandler.BLOCK,
 				BlockEntityInit.OXYGEN_BACKTANK.get(),
-				(be, context)-> {
-					if (context == Direction.DOWN){
+				(be, context) -> {
+					if (context == Direction.DOWN) {
 						return be.OXYGEN_TANK;
 					}
 					return null;
@@ -114,23 +116,29 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	}
 	//TODO add DataComponent and remove prevOxygen + timer (I'm not sure we are using it)
 
+	public void setComponentPatch(DataComponentPatch componentPatch) {
+		this.componentPatch = componentPatch;
+	}
 
+	public DataComponentPatch getComponentPatch() {
+		return componentPatch;
+	}
 
 	@Override
-	protected void write(CompoundTag compound,HolderLookup.Provider registries, boolean clientPacket) {
-		super.write(compound,registries, clientPacket);
+	protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+		super.write(compound, registries, clientPacket);
 		compound.putInt("Oxygen", oxygenLevel);
-		compound.putInt("prevOxygen",prevOxygenLevel);
+		compound.putInt("prevOxygen", prevOxygenLevel);
 		compound.putInt("Timer", oxygenLevelTimer);
 		compound.putInt("CapacityEnchantment", capacityEnchantLevel);
 		if (this.customName != null)
-			compound.putString("CustomName", Component.Serializer.toJson(this.customName,registries));
+			compound.putString("CustomName", Component.Serializer.toJson(this.customName, registries));
 		compound.put("Enchantments", enchantmentTag);
 	}
 
 	@Override
-	protected void read(CompoundTag compound,HolderLookup.Provider registries, boolean clientPacket) {
-		super.read(compound,registries, clientPacket);
+	protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(compound, registries, clientPacket);
 		int prev = oxygenLevel;
 		capacityEnchantLevel = compound.getInt("CapacityEnchantment");
 		OXYGEN_TANK.setCapacity(OxygenBacktankUtil.maxOxygen(capacityEnchantLevel));
@@ -151,7 +159,7 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 		for (int i = 0; i < 360; i += 10) {
 			Vec3 m = VecHelper.rotate(baseMotion, i, Axis.Y);
 			Vec3 v = baseVec.add(m.normalize()
-				.scale(.25f));
+					.scale(.25f));
 
 			level.addParticle(ParticleTypes.SPIT, v.x, v.y, v.z, m.x, m.y, m.z);
 		}
@@ -160,7 +168,7 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	@Override
 	public Component getName() {
 		return this.customName != null ? this.customName
-			: defaultName;
+				: defaultName;
 	}
 
 	public int getOxygenLevel() {
@@ -169,7 +177,7 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 
 	public void setOxygenLevel(int oxygenLevel) {
 		this.oxygenLevel = oxygenLevel;
-		OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(),oxygenLevel));
+		OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(), oxygenLevel));
 		setChanged();
 		sendData();
 	}
