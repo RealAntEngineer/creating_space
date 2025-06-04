@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
+import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -22,17 +24,21 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpgradableEquipment extends BaseArmorItem implements MenuProvider {
+    static final List<ItemLike> items = new ArrayList<>();
     public UpgradableEquipment(Holder<ArmorMaterial> armorMaterial, Type slot, Properties properties, ResourceLocation textureLoc) {
         super(armorMaterial, slot, properties, textureLoc);
+        items.add(this);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerItem(
                 Capabilities.ItemHandler.ITEM,
-                (itemStack, unused) -> new ItemStackHandler(1)
+                (itemStack, unused) -> new ItemStackHandler(1),
+                items.toArray(new ItemLike[0])
         );
     }
     @Override

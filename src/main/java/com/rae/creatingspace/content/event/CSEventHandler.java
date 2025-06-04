@@ -48,7 +48,7 @@ public class CSEventHandler {
     }
 
     @SubscribeEvent
-    public static void entityLivingEvent(EntityTickEvent livingTickEvent){
+    public static void entityLivingEvent(EntityTickEvent.Pre livingTickEvent){
         if (livingTickEvent.getEntity() instanceof LivingEntity entityLiving) {
             Level level = entityLiving.level();
             ResourceLocation dimension = level.dimension().location();

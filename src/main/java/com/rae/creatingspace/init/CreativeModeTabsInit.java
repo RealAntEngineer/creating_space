@@ -28,7 +28,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.*;
 import java.util.function.Function;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
+//@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class CreativeModeTabsInit {
     private static final DeferredRegister<CreativeModeTab> TAB_REGISTER =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreatingSpace.MODID);
