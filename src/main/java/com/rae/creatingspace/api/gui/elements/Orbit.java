@@ -81,7 +81,7 @@ public class Orbit extends BoxWidget {
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         if (visible) {
             isHovered = isMouseOver(mouseX, mouseY);
             beforeRender(ms, mouseX, mouseY, partialTicks);

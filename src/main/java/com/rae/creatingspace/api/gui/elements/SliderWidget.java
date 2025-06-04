@@ -52,8 +52,9 @@ public class SliderWidget extends AbstractSimiWidget {
     public void setMax(int max) {
         this.max = max;
     }
+
     @Override
-    protected void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (visible){
             lerpedValue.tickChaser();
 
