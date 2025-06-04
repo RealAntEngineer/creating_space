@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.NetworkHooks;
+
 
 public class RocketControlInteraction extends MovingInteractionBehaviour {
 
@@ -20,9 +20,7 @@ public class RocketControlInteraction extends MovingInteractionBehaviour {
                                            AbstractContraptionEntity contraptionEntity) {
         if (contraptionEntity instanceof RocketContraptionEntity rocketContraption) {
             if ((player instanceof ServerPlayer serverPlayer)) {
-
-                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((id, inv, p) -> RocketMenu.create(id, inv, rocketContraption), Component.translatable("container.my_item_menu")), buf ->
-                        buf.writeVarInt(rocketContraption.getId()));
+                player.openMenu( rocketContraption);
                 return true;
             }
             return true;

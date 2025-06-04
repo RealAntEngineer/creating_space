@@ -7,6 +7,7 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -15,11 +16,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
 
 public abstract class RocketEngineItem extends BlockItem {
     public RocketEngineItem(Block p_40565_, Properties p_40566_) {
@@ -75,7 +77,7 @@ public abstract class RocketEngineItem extends BlockItem {
             for (TagKey<Fluid> fluidTagkey : propellantType.getPropellantRatio().keySet()) {
                 AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
-                ForgeRegistries.FLUIDS.getEntries().forEach(
+                getSideAwareRegistry(Registries.FLUID).entrySet().forEach(
                         resourceKeyFluidEntry -> {
                             if (resourceKeyFluidEntry.getValue().is(fluidTagkey)) {
                                 fluidRef.set(resourceKeyFluidEntry.getValue());

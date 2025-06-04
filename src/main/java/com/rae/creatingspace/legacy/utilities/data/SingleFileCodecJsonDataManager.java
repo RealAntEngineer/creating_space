@@ -4,6 +4,7 @@ package com.rae.creatingspace.legacy.utilities.data;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -49,10 +50,13 @@ public class SingleFileCodecJsonDataManager<T> extends AbstractCodecJsonDataMana
         if (element!=null) {
             // if we fail to parse json, log an error and continue
             // if we succeeded, add the resulting T to the map
-            this.codec.decode(JsonOps.INSTANCE, element)
-                    .getPartialOrThrow()
-                    .ifLeft(result -> newMap.put(this.location, result.getFirst()))
-                    .ifRight(partial -> this.logger.error("Failed to parse data json for {} due to: {}", this.location.toString(), partial.message()));
+            DataResult<T> result = codec.parse(JsonOps.INSTANCE, element);
+
+            result.resultOrPartial(error ->
+                    this.logger.error("Failed to parse data json for {}: {}", this.location, error)
+            ).ifPresent(parsed ->
+                    newMap.put(this.location, parsed)
+            );
         }
         //may shut the error
 

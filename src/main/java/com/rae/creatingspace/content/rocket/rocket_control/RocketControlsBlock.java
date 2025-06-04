@@ -1,16 +1,16 @@
 package com.rae.creatingspace.content.rocket.rocket_control;
 
 import com.rae.creatingspace.content.rocket.RocketAssembleScreen;
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,13 +36,16 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.DistExecutor;
+
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class RocketControlsBlock extends Block implements IBE<RocketControlsBlockEntity>, TooltipModifier {
@@ -51,18 +54,14 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         super(properties);
     }
 
-
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        ItemStack held = player.getMainHandItem();
-        if (held.isEmpty()){
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
-                    () -> () -> withBlockEntityDo(level, pos, be -> this.displayScreen(be, player)));
-            return InteractionResult.SUCCESS;
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.isClientSide()) {
+            this.displayScreen(getBlockEntity(level,pos), player);
         }
-
-        return InteractionResult.PASS;
+        return InteractionResult.SUCCESS;
     }
+
     @OnlyIn(value = Dist.CLIENT)
     protected void displayScreen(RocketControlsBlockEntity be, Player player) {
         if (!(player instanceof LocalPlayer))
@@ -118,30 +117,30 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         if (worldIn.isClientSide)
             return;
         withBlockEntityDo(worldIn, pos, be -> {
-            be.setInitialPosMap(RocketControlsBlockEntity.getPosMap( stack.getOrCreateTag().getCompound("initialPosMap")));
-            if (stack.hasCustomHoverName())
+            Map<ResourceLocation, BlockPos> map = stack.get(DataComponentsInit.INITIAL_POS_MAP);
+            be.setInitialPosMap(map!=null?new HashMap<>(map):new HashMap<>());
+            if (stack.has(DataComponents.CUSTOM_NAME))
                 be.setCustomName(stack.getHoverName());
         });
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    @NonnullDefault
+    public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         Item item = asItem();
 
         ItemStack stack = new ItemStack(item);
         Optional<RocketControlsBlockEntity> blockEntityOptional = getBlockEntityOptional(level, pos);
 
-        CompoundTag tag = stack.getOrCreateTag();
         HashMap<ResourceLocation, BlockPos> blockPosHashMap = blockEntityOptional.map(RocketControlsBlockEntity::getInitialPosMap).orElse(null);
         if(blockPosHashMap!= null){
 
-            tag.put("initialPosMap", RocketControlsBlockEntity.putPosMap(blockPosHashMap));
+            stack.set(DataComponentsInit.INITIAL_POS_MAP, blockPosHashMap);
         }
         Component customName = blockEntityOptional.map(RocketControlsBlockEntity::getCustomName).orElse(null);
         if (customName != null)
-            stack.setHoverName(customName);
+            stack.set(DataComponents.CUSTOM_NAME,customName);
 
-        stack.setTag(tag);
         return stack;
     }
 

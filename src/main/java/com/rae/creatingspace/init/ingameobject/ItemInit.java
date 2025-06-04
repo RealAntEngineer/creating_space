@@ -254,7 +254,7 @@ public class ItemInit {
     public static final ItemEntry<OxygenBacktankItem.Layered> COPPER_OXYGEN_BACKTANK =
             CreatingSpace.REGISTRATE
                     .item("copper_oxygen_backtank",
-                            p -> new OxygenBacktankItem.Layered(AllArmorMaterials.COPPER.value(), p, CreatingSpace.resource("basic_spacesuit"),
+                            p -> new OxygenBacktankItem.Layered(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit"),
                                     COPPER_BACKTANK_PLACEABLE))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
@@ -268,7 +268,7 @@ public class ItemInit {
     public static final ItemEntry<OxygenBacktankItem.Layered> NETHERITE_OXYGEN_BACKTANK =
             CreatingSpace.REGISTRATE
                     .item("netherite_oxygen_backtank",
-                            p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE.value(), p, CreatingSpace.resource("advanced_spacesuit"),
+                            p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit"),
                                     NETHERITE_BACKTANK_PLACEABLE))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
@@ -289,7 +289,7 @@ public class ItemInit {
     public static final ItemEntry<SpacesuitHelmetItem> BASIC_SPACESUIT_HELMET =
             CreatingSpace.REGISTRATE
                     .item("basic_spacesuit_helmet",
-                            p -> new SpacesuitHelmetItem(AllArmorMaterials.COPPER.value(), p, CreatingSpace.resource("basic_spacesuit")))
+                            p -> new SpacesuitHelmetItem(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit")))
                     .tag(ItemTags.HEAD_ARMOR)
                     .register();
 
@@ -308,7 +308,7 @@ public class ItemInit {
     public static final ItemEntry<SpacesuitHelmetItem> ADVANCED_SPACESUIT_HELMET =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_helmet",
-                            p -> new SpacesuitHelmetItem(ArmorMaterials.NETHERITE.value(), p, CreatingSpace.resource("advanced_spacesuit")))
+                            p -> new SpacesuitHelmetItem(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit")))
                     .tag(ItemTags.HEAD_ARMOR)
                     .register();
 

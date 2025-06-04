@@ -55,17 +55,14 @@ public class SliderWidget extends AbstractSimiWidget {
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (visible){
-            int progress = (int) Mth.lerp(partialTicks,prevValue, value);
-
-            lerpedValue.chase(value,1, LerpedFloat.Chaser.EXP);
             lerpedValue.tickChaser();
 
-            progress = (int) lerpedValue.getValue();
+            int progress = (int) lerpedValue.getValue();
 
             int intervalNumber = (max-min)/50;
             int intervalPixel = 10;
 
-            int slidePixel = (int) (((float) progress - (progress / intervalNumber) *intervalNumber)/((float)intervalNumber) * intervalPixel);
+            int slidePixel = (int) (((float) progress - ((float) progress / intervalNumber) *intervalNumber)/((float)intervalNumber) * intervalPixel);
 
             graphics.pose().pushPose();
             GuiTexturesInit slider = GuiTexturesInit.O2_GAUGE_SLIDER;
@@ -102,8 +99,7 @@ public class SliderWidget extends AbstractSimiWidget {
         }
     }
 
-    public void setValues(int value, int prevValue) {
-        this.prevValue = prevValue;
-        this.value = value;
+    public void setChase(int o2Value) {
+        lerpedValue.updateChaseTarget(o2Value);
     }
 }

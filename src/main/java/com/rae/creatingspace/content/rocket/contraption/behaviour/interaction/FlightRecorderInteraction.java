@@ -9,16 +9,19 @@ import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
+
 
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
 
 public class FlightRecorderInteraction extends MovingInteractionBehaviour {
     private static final boolean shouldBeDisplayed = false;
@@ -67,7 +70,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                                 } else if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.VOLUMETRIC)) {
                                     AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
-                                    ForgeRegistries.FLUIDS.getEntries().forEach(
+                                    getSideAwareRegistry(Registries.FLUID).entrySet().forEach(
                                             resourceKeyFluidEntry -> {
                                                 if (resourceKeyFluidEntry.getValue().is(fluidTagKey)) {
                                                     fluidRef.set(resourceKeyFluidEntry.getValue());

@@ -8,6 +8,7 @@ import com.rae.creatingspace.legacy.utilities.packet.NewRocketAssemblePacket;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.gui.AbstractSimiScreen;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
@@ -31,8 +32,7 @@ public class RocketAssembleScreen extends AbstractSimiScreen {
 
         assembleButton = new TallIconButton(x + 84, y + 30, GuiTexturesInit.ROCKET_ICON)
                 .withCallback(() -> {
-                    PacketInit.getChannel()
-                            .sendToServer(NewRocketAssemblePacket.tryAssemble(blockEntity.getBlockPos()));
+                    CatnipServices.NETWORK.sendToServer(NewRocketAssemblePacket.tryAssemble(blockEntity.getBlockPos()));
                     onClose();
                 });
         assembleButton.setToolTip(Component.translatable("rocket.assemble.new_rocket"));

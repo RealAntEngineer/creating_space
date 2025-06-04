@@ -8,10 +8,8 @@ import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class RocketScene {
     public static void rocketBuild(SceneBuilder builder, SceneBuildingUtil util){
@@ -27,9 +25,8 @@ public class RocketScene {
         BlockPos oxygenTank_pos = new BlockPos( 2,2,1);
 
 
-        Capability<IFluidHandler> fluidHandler = ForgeCapabilities.FLUID_HANDLER;
-        FluidStack methane = new FluidStack(FluidInit.LIQUID_METHANE.getSource(),8000);
-        FluidStack oxygen = new FluidStack(FluidInit.LIQUID_OXYGEN.getSource(),8000);
+        FluidStack methane = new FluidStack(FluidInit.LIQUID_METHANE.get(),8000);
+        FluidStack oxygen = new FluidStack(FluidInit.LIQUID_OXYGEN.get(),8000);
 
         Selection control = util.select().position(1,2,1);
         Selection seat = util.select().position(1,2,0);
@@ -47,10 +44,10 @@ public class RocketScene {
         scene.overlay().showText(40).text("enough propellant, here oxygen and methane");
         scene.world().showSection(methaneTank, Direction.EAST);
         scene.world().showSection(oxygenTank,Direction.WEST);
-        scene.world().modifyBlockEntity(methaneTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.fill(methane, IFluidHandler.FluidAction.EXECUTE)));
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.fill(oxygen, IFluidHandler.FluidAction.EXECUTE)));
+        scene.world().modifyBlockEntity(methaneTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .fill(methane, IFluidHandler.FluidAction.EXECUTE));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .fill(oxygen, IFluidHandler.FluidAction.EXECUTE));
         scene.idleSeconds(3);
         scene.addKeyframe();
 
@@ -87,9 +84,9 @@ public class RocketScene {
         BlockPos oxygenTank_pos = new BlockPos( 2,2,1);
 
 
-        Capability<IFluidHandler> fluidHandler = ForgeCapabilities.FLUID_HANDLER;
-        FluidStack methane = new FluidStack(FluidInit.LIQUID_METHANE.getSource(),8000);
-        FluidStack oxygen = new FluidStack(FluidInit.LIQUID_OXYGEN.getSource(),8000);
+
+        FluidStack methane = new FluidStack(FluidInit.LIQUID_METHANE.get(), 8000);
+        FluidStack oxygen = new FluidStack(FluidInit.LIQUID_OXYGEN.get(),8000);
 
         Selection control = util.select().position(1,2,1);
         Selection seat = util.select().position(1,2,0);
@@ -104,10 +101,10 @@ public class RocketScene {
 
         scene.world().showSection(methaneTank, Direction.EAST);
         scene.world().showSection(oxygenTank,Direction.WEST);
-        scene.world().modifyBlockEntity(methaneTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.fill(methane, IFluidHandler.FluidAction.EXECUTE)));
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.fill(oxygen, IFluidHandler.FluidAction.EXECUTE)));
+        scene.world().modifyBlockEntity(methaneTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .fill(methane, IFluidHandler.FluidAction.EXECUTE));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .fill(oxygen, IFluidHandler.FluidAction.EXECUTE));
         scene.world().showSection(flight_recorder,Direction.DOWN);
 
         scene.overlay().showText(40).text("The flight recorder show tooltip info about about it's last flight or N/A if there it's just placed,");
@@ -116,8 +113,8 @@ public class RocketScene {
         scene.addKeyframe();
 
         scene.overlay().showText(40).text("If there is not enough propellant mass, you will get this :");
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.drain(oxygen, IFluidHandler.FluidAction.EXECUTE)));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .drain(oxygen, IFluidHandler.FluidAction.EXECUTE));
 
         scene.overlay().showOutlineWithText(flight_recorder,60).text(
                 "not enough propellant");
@@ -125,26 +122,26 @@ public class RocketScene {
         scene.addKeyframe();
 
         scene.overlay().showText(40).text("add more propellant to solve the issue :");
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.fill(oxygen, IFluidHandler.FluidAction.EXECUTE)));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be ->  be.getTankInventory()
+                .fill(oxygen, IFluidHandler.FluidAction.EXECUTE));
         scene.idleSeconds(3);
         scene.addKeyframe();
 
         scene.overlay().showText(40).text("If there is enough mass but the wrong ratio of propellant, you will get this :");
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.drain(oxygen, IFluidHandler.FluidAction.EXECUTE)));
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.fill(methane, IFluidHandler.FluidAction.EXECUTE)));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .drain(oxygen, IFluidHandler.FluidAction.EXECUTE));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .fill(methane, IFluidHandler.FluidAction.EXECUTE));
         scene.overlay().showOutlineWithText(flight_recorder,40).text(
                 "wrong propellant ratio");
         scene.idleSeconds(3);
         scene.addKeyframe();
 
         scene.overlay().showText(40).text("equilibrate the propellants to solve the issue");
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.drain(methane, IFluidHandler.FluidAction.EXECUTE)));
-        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getCapability(fluidHandler)
-                .ifPresent(ifh -> ifh.fill(oxygen, IFluidHandler.FluidAction.EXECUTE)));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .drain(methane, IFluidHandler.FluidAction.EXECUTE));
+        scene.world().modifyBlockEntity(oxygenTank_pos, FluidTankBlockEntity.class, be -> be.getTankInventory()
+                .fill(oxygen, IFluidHandler.FluidAction.EXECUTE));
         scene.idleSeconds(3);
         scene.addKeyframe();
 

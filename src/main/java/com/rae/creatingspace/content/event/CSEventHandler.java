@@ -12,8 +12,7 @@ import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.legacy.saved.DesignCommands;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
-import com.rae.creatingspace.legacy.server.blockentities.ChemicalSynthesizerBlockEntity;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.OxygenBlock;
+
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.CustomTeleporter;
@@ -169,10 +168,6 @@ public class CSEventHandler {
     public static void registerCommands(RegisterCommandsEvent event) {
         DesignCommands.register(event.getDispatcher());
     }
-    //for legacy purpose
-    private static boolean isStateBreathable(BlockState state) {
-        return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
-    }
 
     @SubscribeEvent
     public static void onBlockPlaced(BlockEvent.NeighborNotifyEvent event) {
@@ -219,7 +214,7 @@ public class CSEventHandler {
         //TODO this is kinda ugly and should be clean/ made better
         @SubscribeEvent
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-            ChemicalSynthesizerBlockEntity.registerCapabilities(event);
+            //ChemicalSynthesizerBlockEntity.registerCapabilities(event);
             RoomPressuriserBlockEntity.registerCapabilities(event);
             CryogenicTankBlockEntity.registerCapabilities(event);
             CryogenicTankItem.registerCapabilities(event);

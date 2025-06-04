@@ -39,9 +39,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.util.FakePlayer;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
+import java.util.Objects;
 import java.util.Optional;
-
+@NonnullDefault
 public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	implements IBE<OxygenBacktankBlockEntity>, SimpleWaterloggedBlock {
 
@@ -90,7 +93,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel()
 			.getFluidState(context.getClickedPos());
-		return super.getStateForPlacement(context)
+		return Objects.requireNonNull(super.getStateForPlacement(context))
 				.setValue(FACING, context.getHorizontalDirection()
 				.getOpposite()).
 				setValue(BlockStateProperties.WATERLOGGED,
@@ -103,7 +106,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	}
 
 	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(worldIn, pos, state, placer, stack);
 		if (worldIn.isClientSide)
 			return;
@@ -141,6 +144,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	}
 
 	@Override
+
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		Item item = asItem();
 		if (item instanceof OxygenBacktankItem.O2BacktankBlockItem placeable) {
@@ -152,19 +156,19 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 
 		int air = blockEntityOptional.map(OxygenBacktankBlockEntity::getOxygenLevel)
                 .orElse(0);
-		CompoundTag tag = stack.getOrCreateTag();
+		CompoundTag tag = stack.getOrCreateTag(); //TODO DataComponent
 		tag.putFloat("Oxygen", air);
 		tag.putFloat("prevOxygen",air);
 
 		ListTag enchants = blockEntityOptional.map(OxygenBacktankBlockEntity::getEnchantmentTag)
 			.orElse(new ListTag());
 		if (!enchants.isEmpty()) {
-			ListTag enchantmentTagList = stack.getEnchantmentTags();
+			ListTag enchantmentTagList = stack.getEnchantmentTags(); //TODO look at BacktankBlock
 			enchantmentTagList.addAll(enchants);
 			tag.put("Enchantments", enchantmentTagList);
 		}
 
-        blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName).ifPresent(stack::setHoverName);
+        blockEntityOptional.map(OxygenBacktankBlockEntity::getCustomName).ifPresent(stack::setHoverName); //TODO look at BacktankBlock
         return stack;
 	}
 

@@ -5,7 +5,9 @@ import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.infrastructure.config.AllConfigs;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,6 +17,8 @@ import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +63,7 @@ public class OxygenBacktankUtil {
 	}
 
 	public static float getOxygen(ItemStack backtank) {
-		CompoundTag tag = backtank.getOrCreateTag();
+		CompoundTag tag = backtank.getOrCreateTag();//TODO DataComponent
 		return Math.min(tag.getFloat("Oxygen"), maxOxygen(backtank));
 	}
 
@@ -99,7 +103,15 @@ public class OxygenBacktankUtil {
 	}
 
 	public static int maxOxygen(ItemStack backtank) {
-		return maxOxygen(backtank.getEnchantmentLevel(AllEnchantments.CAPACITY.get()));
+		int enchantLevel = 0;
+		ItemEnchantments enchants = backtank.getTagEnchantments();
+		for (Object2IntMap.Entry<Holder<Enchantment>> entry : enchants.entrySet()) {
+			if (entry.getKey().is(AllEnchantments.CAPACITY)) {
+				enchantLevel = entry.getIntValue();
+				break;
+			}
+		}
+		return maxOxygen(enchantLevel);
 	}
 
 	public static int maxOxygen(int enchantLevel) {

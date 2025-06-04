@@ -2,22 +2,27 @@ package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.rae.creatingspace.api.gui.elements.SliderWidget;
 import com.rae.creatingspace.configs.CSConfigs;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public class RemainingO2Overlay implements IGuiOverlay {
-    private SliderWidget gauge;
+public class RemainingO2Overlay implements LayeredDraw.Layer {
+    private final SliderWidget gauge;
     public static final RemainingO2Overlay INSTANCE = new RemainingO2Overlay();
+    RemainingO2Overlay() {
+        Minecraft mc = Minecraft.getInstance();
+        gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getScreenWidth()),
+                CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getScreenHeight()),
+                32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+    }
     @Override
-    public void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
-
+    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Minecraft mc = Minecraft.getInstance();
 
         if (mc.options.hideGui || mc.gameMode.getPlayerMode() == GameType.SPECTATOR)
@@ -30,18 +35,13 @@ public class RemainingO2Overlay implements IGuiOverlay {
         ItemStack itemInChestSlot = player.getItemBySlot(EquipmentSlot.CHEST);
 
         if (itemInChestSlot.getItem() instanceof OxygenBacktankItem){
-            CompoundTag tag = itemInChestSlot.getOrCreateTag();
+            CompoundTag tag = itemInChestSlot.getOrCreateTag();//TODO DataComponents
             float o2Value = tag.getFloat("Oxygen");
-            float prevO2Value =  tag.getFloat("prevOxygen");
-            //prevO2Value = o2Value;
-            //TODO create one at initialization the keep the same
-            gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(screenWidth), CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(screenHeight), 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+
             gauge.setMax(OxygenBacktankUtil.maxOxygen(itemInChestSlot));
-            gauge.setValues((int) o2Value, (int) prevO2Value);
-            gauge.render(graphics, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,partialTick);
+            gauge.setChase((int) o2Value);
+            gauge.render(graphics, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,deltaTracker.getRealtimeDeltaTicks());
 
         }
-
     }
-
 }

@@ -78,13 +78,12 @@ public class GeometryRendering {
         centerPos = centerPos.multiply(1d / pos.size(), 1d / pos.size(), 1d / pos.size());
         for (Vec3 coord : pos) {
             Vec3 normal = coord.subtract(centerPos);
-            vertexBuilder.vertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
-                    .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
-                    .uv(0, 0)
-                    .overlayCoords(OverlayTexture.NO_OVERLAY)
-                    .uv2(packedLight)
-                    .normal(entry.normal(), (float) normal.x, (float) normal.y, (float) normal.z)
-                    .endVertex();
+            vertexBuilder.addVertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
+                    .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha())
+                    .setUv(0, 0)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(packedLight)
+                    .setNormal(entry, (float) normal.x, (float) normal.y, (float) normal.z);
         }
     }
 
@@ -98,13 +97,12 @@ public class GeometryRendering {
             Vec3 coord = pos.get(i);
             Vec2 uv = uvVector.get(i);
             Vec3 normal = coord.subtract(centerPos);
-            vertexBuilder.vertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
-                    .color(255, 255, 255, 255)
-                    .uv(uv.x, uv.y)
-                    .overlayCoords(OverlayTexture.NO_OVERLAY)
-                    .uv2(packedLight)
-                    .normal(entry.normal(), (float) normal.x, (float) normal.y, (float) normal.z)
-                    .endVertex();
+            vertexBuilder.addVertex(entry.pose(), (float) coord.x, (float) coord.y, (float) coord.z)
+                    .setColor(255, 255, 255, 255)
+                    .setUv(uv.x, uv.y)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(packedLight)
+                    .setNormal(entry, (float) normal.x, (float) normal.y, (float) normal.z);
         }
     }
 }

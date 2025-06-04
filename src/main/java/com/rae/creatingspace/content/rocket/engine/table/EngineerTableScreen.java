@@ -5,7 +5,6 @@ import com.rae.creatingspace.content.rocket.engine.design.ExhaustPackType;
 import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.EngineMaterialInit;
-import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
@@ -18,6 +17,7 @@ import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
+import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
@@ -70,7 +70,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
     private ScrollInput engineThrustInput;
     private Label engineThrustLabel;
-    private ForgeSlider expansionRatioSlider;
+    private ExtendedSlider expansionRatioSlider;
     private GuiTexturesInit background;
     private GuiTexturesInit input;
     private IconButton confirmButton;
@@ -151,7 +151,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .calling((state) -> {
                     ExhaustPackType type = exhaustPackTypes.get(state);
                     removeWidgets(expansionRatioSlider);
-                    expansionRatioSlider = new ForgeSlider(x + 10, y + 220, 110, 20,
+                    expansionRatioSlider = new ExtendedSlider(x + 10, y + 220, 110, 20,
                             Component.translatable("creatingspace.gui.engineer_table.expansion_ratio"),
                             Component.empty(), type.getMinExpansionRatio(), type.getMaxExpansionRatio(), (type.getMaxExpansionRatio() + type.getMinExpansionRatio()) / 2, true);
                     addRenderableWidget(expansionRatioSlider);
@@ -189,7 +189,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         addRenderableWidget(powerPackLabel);
 
 
-        expansionRatioSlider = new ForgeSlider(x + 10, y + 220, 110, 20,
+        expansionRatioSlider = new ExtendedSlider(x + 10, y + 220, 110, 20,
                 Component.translatable("creatingspace.gui.engineer_table.expansion_ratio"),
                 Component.empty(), 2, 100, getMenu().getSyncData().expansionRatio(), true);
 
@@ -308,7 +308,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         float efficiency = isp / getSyncedPropellantRegistry().get(propellantType).getMaxISP();
         ItemStack engineBlueprint = ((EngineFabricationBlueprint) ItemInit.ENGINE_BLUEPRINT.get().asItem())
                 .getBlueprintForEngine(engineSizeInput.getState(), expansionRatioSlider.getValueInt(), materialLevel, (int) thrust, efficiency, propellantType, exhaustType, powerPackType);
-        PacketInit.getChannel()
+        CatnipServices.NETWORK
                 .sendToServer(
                         EngineerTableCraft
                                 .sendCraft(blockEntityPos, engineBlueprint));
@@ -330,7 +330,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             syncData.put("propellantType", ResourceLocation.CODEC
                     .encodeStart(NbtOps.INSTANCE, propellantTypeLocations.get(setPropellantType.getState()))
                     .result().orElse(new CompoundTag()));
-            PacketInit.getChannel()
+            CatnipServices.NETWORK
                     .sendToServer(
                             RocketEngineerTableSync
                                     .sendSettings(getMenu().contentHolder.getBlockPos(),

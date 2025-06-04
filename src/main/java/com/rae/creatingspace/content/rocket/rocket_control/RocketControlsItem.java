@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.rocket.rocket_control;
 
+import com.rae.creatingspace.init.DataComponentsInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -7,13 +8,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NonnullDefault;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RocketControlsItem extends BlockItem {
 
@@ -22,9 +22,9 @@ public class RocketControlsItem extends BlockItem {
     }
     @NonnullDefault
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag) {
-        super.appendHoverText(stack, level, components, flag);
-        HashMap<ResourceLocation,BlockPos> initialBlockPos = RocketControlsBlockEntity.getPosMap(stack.getOrCreateTagElement("initialPosMap"));
+    public void appendHoverText(ItemStack stack,  TooltipContext context, List<Component> components, TooltipFlag flag) {
+        super.appendHoverText(stack, context, components, flag);
+        Map<ResourceLocation,BlockPos> initialBlockPos = stack.get(DataComponentsInit.INITIAL_POS_MAP);//TODO create a DataComponent
         components.add(Component.literal("Stored dimension entry point :").withStyle(ChatFormatting.GOLD));
         for (ResourceLocation dimension:initialBlockPos.keySet()) {
             components.add(

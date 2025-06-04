@@ -1,10 +1,11 @@
 package com.rae.creatingspace.content.event;
 
+import com.llamalad7.mixinextras.sugar.Cancellable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.eventbus.api.Cancelable;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 
+//TODO make uses of this. Will be good training on the usage of events.
 public class OxygenSuffocationEvent extends LivingEvent {
     //mostly copied from galacticraft
     public final DimensionType dimension;
@@ -22,7 +23,7 @@ public class OxygenSuffocationEvent extends LivingEvent {
      * <p/>
      * IF THE Pre EVENT IS CANCELLED, THE "WARNING: OXYGEN SETUP INVALID!" HUD MESSAGE WILL NOT BE SHOWN
      */
-    @Cancelable
+    //@Cancellable
     public static class Pre extends OxygenSuffocationEvent
     {
         public Pre(LivingEntity entity)

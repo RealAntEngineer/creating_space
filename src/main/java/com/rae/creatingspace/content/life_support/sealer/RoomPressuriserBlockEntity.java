@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -13,11 +14,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -40,18 +41,20 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
         }
     };
     //TODO fix capabilities
-    public LazyOptional<IFluidHandler> fluidOptional = LazyOptional.of(() -> this.OXYGEN_TANK);
 
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.FLUID_HANDLER) {
-            Direction localDir = this.getBlockState().getValue(SealerBlock.FACING);
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                BlockEntityInit.ROOM_PRESSURIZER.get(),
+                (be, context) -> {
+                    Direction localDir = be.getBlockState().getValue(RoomPressuriserBlock.FACING);
+                    if (localDir.getOpposite() == context) {
+                        return be.OXYGEN_TANK;
+                    }
+                    return null;
+                }
 
-            if (side == localDir.getOpposite()) {
-                return this.fluidOptional.cast();
-            }
-        }
-        return super.getCapability(cap, side);
+        );
     }
     public void tryRoom() {
         assert level != null;

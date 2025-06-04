@@ -12,23 +12,22 @@ import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static com.simibubi.create.AllRecipeTypes.CAN_BE_AUTOMATED;
+
 //TODO correct it based on AllRecipeTypes
-public enum RecipeInit implements IRecipeTypeInfo {
+public enum RecipeInit implements IRecipeTypeInfo , StringRepresentable {
     CHEMICAL_SYNTHESIS(ChemicalSynthesisRecipe::new),
     MECHANICAL_ELECTROLYSIS(MechanicalElectrolysisRecipe::new),
     AIR_LIQUEFYING(AirLiquefyingRecipe::new);
@@ -63,8 +62,9 @@ public enum RecipeInit implements IRecipeTypeInfo {
         this(() -> new ProcessingRecipeSerializer<>(processingFactory));
     }
 
+    @ApiStatus.Internal
     public static void register(IEventBus modEventBus) {
-        ShapedRecipe.setCraftingSize(9, 9);
+        ShapedRecipePattern.setCraftingSize(9, 9);
         Registers.SERIALIZER_REGISTER.register(modEventBus);
         Registers.TYPE_REGISTER.register(modEventBus);
     }
@@ -82,22 +82,24 @@ public enum RecipeInit implements IRecipeTypeInfo {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends RecipeType<?>> T getType() {
-        return (T) type.get();
+    public <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
+        return (RecipeType<R>) type.get();
     }
 
-    public <C extends Container, T extends Recipe<C>> Optional<T> find(C inv, Level world) {
+    public <I extends RecipeInput, R extends Recipe<I>> Optional<RecipeHolder<R>> find(I inv, Level world) {
         return world.getRecipeManager()
                 .getRecipeFor(getType(), inv, world);
     }
-
-    public static boolean shouldIgnoreInAutomation(Recipe<?> recipe) {
-        RecipeSerializer<?> serializer = recipe.getSerializer();
+    public static boolean shouldIgnoreInAutomation(RecipeHolder<?> recipe) {
+        RecipeSerializer<?> serializer = recipe.value().getSerializer();
         if (serializer != null && AllTags.AllRecipeSerializerTags.AUTOMATION_IGNORE.matches(serializer))
             return true;
-        return recipe.getId()
-                .getPath()
-                .endsWith("_manual_only");
+        return !CAN_BE_AUTOMATED.test(recipe);
+    }
+
+    @Override
+    public @NotNull String getSerializedName() {
+        return id.toString();
     }
 
     private static class Registers {

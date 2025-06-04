@@ -9,6 +9,8 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
@@ -16,11 +18,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
+
 
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
 
 public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHaveGoggleInformation {
 
@@ -58,17 +62,18 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
             }
         }
     }
+
     @Override
-    protected void read(CompoundTag nbt, boolean clientPacket) {
+    protected void read(CompoundTag nbt,  HolderLookup.Provider registries, boolean clientPacket) {
         setLastAssemblyData(FlightDataHelper.RocketAssemblyData.fromNBT(nbt.getCompound("lastAssemblyData")));
-        super.read(nbt, clientPacket);
+        super.read(nbt,registries, clientPacket);
 
     }
 
     @Override
-    protected void write(CompoundTag nbt, boolean clientPacket) {
+    protected void write(CompoundTag nbt, HolderLookup.Provider registries,  boolean clientPacket) {
         nbt.put("lastAssemblyData",FlightDataHelper.RocketAssemblyData.toNBT(lastAssemblyData));
-        super.write(nbt, clientPacket);
+        super.write(nbt,registries, clientPacket);
     }
 
     @Override
@@ -116,7 +121,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                         } else if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.VOLUMETRIC)) {
                             AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
-                            ForgeRegistries.FLUIDS.getEntries().forEach(
+                            getSideAwareRegistry(Registries.FLUID).entrySet().forEach(
                                     resourceKeyFluidEntry -> {
                                         if (resourceKeyFluidEntry.getValue().is(fluidTagKey)) {
                                             fluidRef.set(resourceKeyFluidEntry.getValue());

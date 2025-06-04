@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,14 +84,5 @@ public class CryogenicTankBlock extends Block implements IBE<CryogenicTankBlockE
         }
         return stack;
     }
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : ($0,pos,$1,blockEntity) -> {
-            if(blockEntity instanceof CryogenicTankBlockEntity cryogenicTankBlockEntity) {
-                cryogenicTankBlockEntity.tick(level,pos,state,cryogenicTankBlockEntity);
-            }
 
-        };
-    }
 }

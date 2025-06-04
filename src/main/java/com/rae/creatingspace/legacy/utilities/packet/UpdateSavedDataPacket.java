@@ -1,37 +1,33 @@
 package com.rae.creatingspace.legacy.utilities.packet;
 
-import com.rae.creatingspace.content.rocket.network.RocketContraptionUpdatePacket;
+import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.legacy.saved.UnlockabledDesignSavedData;
 import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
-import com.simibubi.create.foundation.networking.SimplePacketBase;
-import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Objects;
 
 public class UpdateSavedDataPacket implements ClientboundPacketPayload {
 
-    public static final StreamCodec<ByteBuf, UpdateSavedDataPacket> STREAM_CODEC = StreamCodec.of(
-            (byteBuf, packet) -> packet.write(new FriendlyByteBuf(byteBuf)),
-            byteBuf ->  new UpdateSavedDataPacket(new FriendlyByteBuf(byteBuf))
-    );
-    private final UnlockabledDesignSavedData savedData;
+    public static final StreamCodec<RegistryFriendlyByteBuf, UpdateSavedDataPacket> STREAM_CODEC = StreamCodec.of(
+            (byteBuf, packet) -> packet.write(byteBuf),
+            UpdateSavedDataPacket::new);
+    private final UnlockabledDesignSavedData savedData; //TODO make a better stream codec
 
     public UpdateSavedDataPacket(UnlockabledDesignSavedData savedData) {
         this.savedData = savedData;
     }
 
-    public UpdateSavedDataPacket(FriendlyByteBuf buffer) {
-        savedData = UnlockabledDesignSavedData.load(Objects.requireNonNull(buffer.readNbt()));
+    public UpdateSavedDataPacket(RegistryFriendlyByteBuf buffer) {
+        savedData = UnlockabledDesignSavedData.load(Objects.requireNonNull(buffer.readNbt()),buffer.registryAccess());
     }
 
-    public void write(FriendlyByteBuf buffer) {
-        buffer.writeNbt(savedData.save(new CompoundTag()));
+    public void write(RegistryFriendlyByteBuf buffer) {
+        buffer.writeNbt(savedData.save(new CompoundTag(),buffer.registryAccess()));
     }
 
     @Override
@@ -42,6 +38,6 @@ public class UpdateSavedDataPacket implements ClientboundPacketPayload {
 
     @Override
     public PacketTypeProvider getTypeProvider() {
-        return null;
+        return PacketInit.UPDATE_SAVED_DATA;
     }
 }

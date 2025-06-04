@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.fluids.storage;
 
+import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
@@ -10,7 +11,6 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,11 +18,11 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -37,6 +37,14 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
     public static Component getDefaultName() {
 
         return BlockInit.CRYOGENIC_TANK.get().getName();
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                BlockEntityInit.CRYOGENIC_TANK.get(),
+                (be,context) -> be.TANK
+        );
     }
 
     @Override
@@ -57,20 +65,9 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
         }
     };
 
-    public LazyOptional<IFluidHandler> fluidOptional = LazyOptional.of(()-> this.TANK);
 
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-
-        if (cap == ForgeCapabilities.FLUID_HANDLER) {
-            return this.fluidOptional.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-
-    @Override
-    public Component getName() {
+    public @NotNull Component getName() {
         return this.customName != null ? this.customName
                 : defaultName;
     }
@@ -107,8 +104,9 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
     protected int syncCooldown;
     protected boolean queuedSync;
 
-    public void  tick(Level level, BlockPos pos, BlockState state, CryogenicTankBlockEntity cryogenicTankBlockEntity) {
+    public void  tick() {
         super.tick();
+        assert level != null;
         if (!level.isClientSide()) {
             if (syncCooldown > 0) {
                 syncCooldown--;

@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.AllSoundEvents;
@@ -11,6 +12,7 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -20,6 +22,8 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -56,19 +60,19 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 			return super.fill(resource, action);
 		}
 	};
-	public LazyOptional<IFluidHandler> fluidOptional = LazyOptional.of(()-> this.OXYGEN_TANK);
 
-
-	@Override
-	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == ForgeCapabilities.FLUID_HANDLER) {
-			if (side == Direction.DOWN ){
-				return this.fluidOptional.cast();
-			}
-		}
-		return super.getCapability(cap, side);
+	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		event.registerBlockEntity(
+				Capabilities.FluidHandler.BLOCK,
+				BlockEntityInit.OXYGEN_BACKTANK.get(),
+				(be, context)-> {
+					if (context == Direction.DOWN){
+						return be.OXYGEN_TANK;
+					}
+					return null;
+				}
+		);
 	}
-	//replace O2 level by a tank
 
 	public OxygenBacktankBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -109,21 +113,24 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 		return ComparatorUtil.fractionToRedstoneLevel(oxygenLevel / (float) max);
 	}
 	//TODO add DataComponent and remove prevOxygen + timer (I'm not sure we are using it)
+
+
+
 	@Override
-	protected void write(CompoundTag compound, boolean clientPacket) {
-		super.write(compound, clientPacket);
+	protected void write(CompoundTag compound,HolderLookup.Provider registries, boolean clientPacket) {
+		super.write(compound,registries, clientPacket);
 		compound.putInt("Oxygen", oxygenLevel);
 		compound.putInt("prevOxygen",prevOxygenLevel);
 		compound.putInt("Timer", oxygenLevelTimer);
 		compound.putInt("CapacityEnchantment", capacityEnchantLevel);
 		if (this.customName != null)
-			compound.putString("CustomName", Component.Serializer.toJson(this.customName));
+			compound.putString("CustomName", Component.Serializer.toJson(this.customName,registries));
 		compound.put("Enchantments", enchantmentTag);
 	}
 
 	@Override
-	protected void read(CompoundTag compound, boolean clientPacket) {
-		super.read(compound, clientPacket);
+	protected void read(CompoundTag compound,HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(compound,registries, clientPacket);
 		int prev = oxygenLevel;
 		capacityEnchantLevel = compound.getInt("CapacityEnchantment");
 		OXYGEN_TANK.setCapacity(OxygenBacktankUtil.maxOxygen(capacityEnchantLevel));
@@ -132,7 +139,7 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 		oxygenLevelTimer = compound.getInt("Timer");
 		enchantmentTag = compound.getList("Enchantments", Tag.TAG_COMPOUND);
 		if (compound.contains("CustomName", 8))
-			this.customName = Component.Serializer.fromJson(compound.getString("CustomName"));
+			this.customName = Component.Serializer.fromJson(compound.getString("CustomName"), registries);
 		if (prev != 0 && prev != oxygenLevel && oxygenLevel == OxygenBacktankUtil.maxOxygen(capacityEnchantLevel) && clientPacket)
 			playFilledEffect();
 	}

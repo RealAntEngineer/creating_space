@@ -10,7 +10,9 @@ import net.minecraft.world.item.Item;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EngineMaterialInit {//will only be used for datagen
+public class EngineMaterialInit {
+    //TODO need to be cleaned and rewritten
+    //will only be used for datagen
     public static HashMap<Integer, ArrayList<TagKey<Item>>> materials = new HashMap<>();
     public static HashMap<Integer, String> materialNames = new HashMap<>();
     //maybe a tag for level like for tools
@@ -41,11 +43,11 @@ public class EngineMaterialInit {//will only be used for datagen
 
     public static ArrayList<ItemEntry<? extends Item>> registerMaterial(int level, String materialName) {
         ArrayList<TagKey<Item>> collector = new ArrayList<>();
-        collector.add(ItemTags.create(new ResourceLocation("forge", "ingots/" + materialName)));
-        collector.add(ItemTags.create(new ResourceLocation("forge", "nuggets/" + materialName)));
-        collector.add(ItemTags.create(new ResourceLocation("forge", "plates/" + materialName)));
-        collector.add(ItemTags.create(new ResourceLocation("forge", "rod/" + materialName)));
-        collector.add(ItemTags.create(new ResourceLocation("creatingspace", "blisk/" + materialName)));
+        collector.add(ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ingots/" + materialName)));
+        collector.add(ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "nuggets/" + materialName)));
+        collector.add(ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "plates/" + materialName)));
+        collector.add(ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "rod/" + materialName)));
+        collector.add(ItemTags.create(ResourceLocation.fromNamespaceAndPath("creatingspace", "blisk/" + materialName)));
 
         materials.put(level, collector);
         materialNames.put(level, materialName);

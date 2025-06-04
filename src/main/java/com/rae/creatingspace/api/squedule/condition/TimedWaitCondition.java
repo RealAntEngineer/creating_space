@@ -11,8 +11,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ public abstract class TimedWaitCondition extends ScheduleWaitCondition {
         SECONDS(20, "s", "generic.unit.seconds"),
         MINUTES(20 * 60, "min", "generic.unit.minutes");
 
-        public int ticksPer;
-        public String suffix;
-        public String key;
+        public final int ticksPer;
+        public final String suffix;
+        public final String key;
 
         TimeUnit(int ticksPer, String suffix, String key) {
             this.ticksPer = ticksPer;
@@ -98,10 +98,8 @@ public abstract class TimedWaitCondition extends ScheduleWaitCondition {
             i.lockedTooltipY = 35;
         }, "Value");
 
-        builder.addSelectionScrollInput(36, 85, (i, l) -> {
-            i.forOptions(TimeUnit.translatedOptions())
-                    .titled(CreateLang.translateDirect("generic.timeUnit"));
-        }, "TimeUnit");
+        builder.addSelectionScrollInput(36, 85, (i, l) -> i.forOptions(TimeUnit.translatedOptions())
+                .titled(CreateLang.translateDirect("generic.timeUnit")), "TimeUnit");
     }
 
     @Override

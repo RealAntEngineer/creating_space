@@ -1,14 +1,13 @@
 package com.rae.creatingspace.legacy.saved;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.legacy.utilities.packet.UpdateSavedDataPacket;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,9 +45,8 @@ public class UnlockedDesignManager {
                 savedData.unlockedExhaustType = originalMap;
                 savedData.setDirty();
             }
-            PacketInit.getChannel()
-                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                            new UpdateSavedDataPacket(savedData));
+            CatnipServices.NETWORK
+                    .sendToClient(serverPlayer, new UpdateSavedDataPacket(savedData));
         }
     }
 
@@ -69,19 +67,18 @@ public class UnlockedDesignManager {
                 savedData.unlockedPowerPackType = originalMap;
                 savedData.setDirty();
             }
-            PacketInit.getChannel()
-                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                            new UpdateSavedDataPacket(savedData));
+
+            CatnipServices.NETWORK
+                    .sendToClient(serverPlayer, new UpdateSavedDataPacket(savedData));
         }
     }
     public static void clearAllExhaustDesignsForPlayer(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
+            savedData = UnlockabledDesignSavedData.loadData(Objects.requireNonNull(serverPlayer.getServer()));
             savedData.unlockedExhaustType.remove(serverPlayer.getStringUUID());
             savedData.setDirty();
-            PacketInit.getChannel()
-                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                            new UpdateSavedDataPacket(savedData));
+            CatnipServices.NETWORK
+                    .sendToClient(serverPlayer, new UpdateSavedDataPacket(savedData));
         }
     }
 
@@ -90,9 +87,8 @@ public class UnlockedDesignManager {
             savedData = UnlockabledDesignSavedData.loadData(serverPlayer.getServer());
             savedData.unlockedPowerPackType.remove(serverPlayer.getStringUUID());
             savedData.setDirty();
-            PacketInit.getChannel()
-                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                            new UpdateSavedDataPacket(savedData));
+            CatnipServices.NETWORK
+                    .sendToClient(serverPlayer, new UpdateSavedDataPacket(savedData));
         }
 
     }
@@ -108,9 +104,8 @@ public class UnlockedDesignManager {
                 savedData.unlockedPowerPackType.put(serverPlayer.getStringUUID(), new ArrayList<>(List.of(CreatingSpace.resource("open_cycle"))));
                 savedData.setDirty();
             }
-            PacketInit.getChannel()
-                    .send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                            new UpdateSavedDataPacket(savedData));
+            CatnipServices.NETWORK
+                    .sendToClient(serverPlayer, new UpdateSavedDataPacket(savedData));
         }
     }
 

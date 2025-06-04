@@ -17,7 +17,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public enum ParticleTypeInit {
-
     ROCKET_PLUME(RocketPlumeParticleData::new) ;
 
     private final ParticleEntry<?> entry;

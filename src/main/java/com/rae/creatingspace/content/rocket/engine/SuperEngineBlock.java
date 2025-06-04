@@ -91,7 +91,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
 
 
         CompoundTag tag = Objects.requireNonNull(stack.get(DataComponents.CUSTOM_DATA)).copyTag();
-        CompoundTag beData = blockEntityOptional.orElseThrow().saveWithoutMetadata();
+        CompoundTag beData = blockEntityOptional.orElseThrow().saveWithoutMetadata(level.registryAccess());
         tag.put("blockEntity", beData);
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         return stack;

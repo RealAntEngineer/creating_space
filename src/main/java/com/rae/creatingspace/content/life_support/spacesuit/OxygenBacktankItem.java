@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.simibubi.create.foundation.item.LayeredArmorItem;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -22,14 +24,14 @@ public class OxygenBacktankItem extends UpgradableEquipment {
     public static final int BAR_COLOR = 0xEFEFEF;
     private final Supplier<O2BacktankBlockItem> blockItem;
 
-    public OxygenBacktankItem(ArmorMaterial material, Properties properties, ResourceLocation textureLoc, Supplier<O2BacktankBlockItem> placeable) {
+    public OxygenBacktankItem(Holder<ArmorMaterial> material, Properties properties, ResourceLocation textureLoc, Supplier<O2BacktankBlockItem> placeable) {
         super(material, TYPE, properties, textureLoc);
         this.blockItem = placeable;
     }
 
     @Override
     public void inventoryTick(ItemStack backtank, Level level, Entity entity, int nbr, boolean isMoving) {
-        CompoundTag tag = backtank.getOrCreateTag();
+        CompoundTag tag = backtank.getOrCreateTag();//TODO data component + remove the prev oxygenLevel and toUpdate as we don't need it.
 
         float o2amount = tag.getFloat("Oxygen");
         float prevO2amount = tag.getFloat("prevOxygen");
@@ -53,7 +55,7 @@ public class OxygenBacktankItem extends UpgradableEquipment {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext ctx) {
+    public @NotNull InteractionResult useOn(UseOnContext ctx) {
         return blockItem.get()
                 .useOn(ctx);
     }
@@ -88,7 +90,7 @@ public class OxygenBacktankItem extends UpgradableEquipment {
     }
 
     public static float getRemainingAir(ItemStack stack) {
-        CompoundTag orCreateTag = stack.getOrCreateTag();
+        CompoundTag orCreateTag = stack.getOrCreateTag();//TODO DataComponent
         return orCreateTag.getFloat("Oxygen");
     }
 
@@ -111,7 +113,7 @@ public class OxygenBacktankItem extends UpgradableEquipment {
     }
 
     public static class Layered extends OxygenBacktankItem implements LayeredArmorItem {
-        public Layered(ArmorMaterial material, Properties properties, ResourceLocation textureLoc, Supplier<O2BacktankBlockItem> placeable) {
+        public Layered(Holder<ArmorMaterial> material, Properties properties, ResourceLocation textureLoc, Supplier<O2BacktankBlockItem> placeable) {
             super(material, properties, textureLoc, placeable);
         }
 

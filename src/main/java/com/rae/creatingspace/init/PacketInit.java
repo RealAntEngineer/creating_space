@@ -4,22 +4,14 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.engine.table.EngineerTableCraft;
 import com.rae.creatingspace.content.rocket.network.*;
 import com.rae.creatingspace.legacy.utilities.packet.*;
-import com.simibubi.create.AllPackets;
 import com.simibubi.create.Create;
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 
 import java.util.Locale;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 
 public enum PacketInit implements BasePacketPayload.PacketTypeProvider {

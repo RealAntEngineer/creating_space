@@ -1,22 +1,25 @@
 package com.rae.creatingspace.content.rocket.engine.table;
 
 import com.mojang.serialization.MapCodec;
-import com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlastFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
+
 
 
 public class RocketEngineerTableBlock extends HorizontalDirectionalBlock implements IBE<RocketEngineerTableBlockEntity> {
@@ -26,7 +29,7 @@ public class RocketEngineerTableBlock extends HorizontalDirectionalBlock impleme
     public static final MapCodec<HorizontalDirectionalBlock> CODEC = simpleCodec(RocketEngineerTableBlock::new);
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    protected @NotNull MapCodec<? extends HorizontalDirectionalBlock> codec() {
         return CODEC;
     }
 
@@ -35,17 +38,19 @@ public class RocketEngineerTableBlock extends HorizontalDirectionalBlock impleme
         builder.add(FACING);
         super.createBlockStateDefinition(builder);
     }
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
         return super.getStateForPlacement(context)
                 .setValue(FACING,context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult){
+    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult){
         if (level.isClientSide)
             return InteractionResult.SUCCESS;
-        withBlockEntityDo(level, pos,
-                be -> NetworkHooks.openScreen((ServerPlayer) player, be, be::sendToMenu));
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        if (blockentity instanceof RocketEngineerTableBlockEntity) {
+            player.openMenu((MenuProvider)blockentity);
+        }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
@@ -58,4 +63,5 @@ public class RocketEngineerTableBlock extends HorizontalDirectionalBlock impleme
     public BlockEntityType<? extends RocketEngineerTableBlockEntity> getBlockEntityType() {
         return BlockEntityInit.ENGINEER_TABLE.get();
     }
+
 }

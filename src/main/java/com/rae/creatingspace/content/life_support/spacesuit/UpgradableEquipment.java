@@ -1,21 +1,13 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
-import com.google.common.collect.Multimap;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
-import com.simibubi.create.foundation.ICapabilityProvider;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.*;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -29,10 +21,11 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
-public class UpgradableEquipment extends BaseArmorItem {
-    public UpgradableEquipment(ArmorMaterial armorMaterial, Type slot, Properties properties, ResourceLocation textureLoc) {
+public class UpgradableEquipment extends BaseArmorItem implements MenuProvider {
+    public UpgradableEquipment(Holder<ArmorMaterial> armorMaterial, Type slot, Properties properties, ResourceLocation textureLoc) {
         super(armorMaterial, slot, properties, textureLoc);
     }
 
@@ -55,20 +48,14 @@ public class UpgradableEquipment extends BaseArmorItem {
         return super.use(level, player, interactionHand);
     }
 
+    @Nonnull
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        Player player = context.getPlayer();
-        Level world = context.getLevel();
-
-        if (!world.isClientSide && player instanceof ServerPlayer) {
-            NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider(
-                    (id, inv, p) -> UpgradableEquipmentMenu.create(id, inv, context.getItemInHand()),
-                    Component.translatable("container.my_item_menu")
-            ), buf -> buf.writeItem(context.getItemInHand()));
-        }
-
-        return InteractionResult.SUCCESS;
+        if (context.getPlayer() == null)
+            return InteractionResult.PASS;
+        return use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
     }
+
     @Override
     public @NotNull ItemStack getDefaultInstance() {
         return setUpgrade(super.getDefaultInstance(), ItemStack.EMPTY);
@@ -108,5 +95,17 @@ public class UpgradableEquipment extends BaseArmorItem {
             handler.setStackInSlot(0,upgrade);
         }
         return newStack;
+    }
+
+    @Override
+    public @NotNull Component getDisplayName() {
+        return  Component.translatable("container.my_item_menu");
+
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        ItemStack heldItem = player.getMainHandItem();
+        return UpgradableEquipmentMenu.create(i,inventory,heldItem);
     }
 }

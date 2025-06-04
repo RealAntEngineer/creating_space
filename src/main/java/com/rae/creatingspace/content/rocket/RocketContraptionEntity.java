@@ -10,7 +10,6 @@ import com.rae.creatingspace.api.squedule.RocketScheduleRuntime;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;
 import com.rae.creatingspace.init.EntityDataSerializersInit;
-import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
@@ -46,10 +45,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Fluid;
@@ -74,7 +76,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.rae.creatingspace.init.ingameobject.SoundInit.ROCKET_LAUNCH;
 
-public class RocketContraptionEntity extends AbstractContraptionEntity {
+public class RocketContraptionEntity extends AbstractContraptionEntity implements MenuProvider {
     //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
     // (spaceport block ? to define where the rocket will go)
 
@@ -816,8 +818,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public void setInitialPosMap(HashMap<ResourceLocation, BlockPos> map) {
         initialPosMap = map;
         if (level().isClientSide){
-            PacketInit.getChannel()
-                    .sendToServer(new RocketEntryPosMapClientPacket(this.getId(), initialPosMap));
+            CatnipServices.NETWORK.sendToServer(new RocketEntryPosMapClientPacket(this.getId(), initialPosMap));
         }
     }
 
@@ -855,6 +856,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     private void stopRocket() {
         getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.IDLE);
         setContraptionMotion(Vec3.ZERO);
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        return RocketMenu.create(i,inventory,this);
     }
 
     public enum RocketStatus implements StringRepresentable {

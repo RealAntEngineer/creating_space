@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -24,7 +25,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.items.ItemStackHandler;
+
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -142,17 +144,18 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         propellantType = screenInfo.propellantType;
     }
 
+
     @Override
-    public void write(CompoundTag tag, boolean clientPacket) {
-        tag.put("inventory", inventory.serializeNBT());
+    public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        tag.put("inventory", inventory.serializeNBT(registries));
         tag.put("screenInfo", saveScreenData());
-        super.writeSafe(tag);
+        super.writeSafe(tag,registries);
     }
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
-        inventory.deserializeNBT((CompoundTag) tag.get("inventory"));
+    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        super.read(tag,registries, clientPacket);
+        inventory.deserializeNBT(registries,(CompoundTag) tag.get("inventory"));
         //seems to be buggy
         /*if (clientPacket) {
             if (inventory != null) inventory.setSize(

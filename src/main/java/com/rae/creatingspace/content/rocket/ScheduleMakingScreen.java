@@ -10,7 +10,9 @@ import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.lang.FontHelper;
+import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.theme.Color;
+import net.neoforged.neoforge.client.gui.widget.ExtendedButton;
 import org.joml.Matrix4f;
 import com.rae.creatingspace.api.squedule.RocketSchedule;
 import com.rae.creatingspace.api.squedule.ScheduleEntry;
@@ -19,7 +21,6 @@ import com.rae.creatingspace.api.squedule.condition.ScheduledDelay;
 import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
 import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
 import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
-import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
@@ -44,8 +45,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.gui.widget.ExtendedButton;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
@@ -113,8 +112,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                 Component.translatable("creatingspace.gui.rocket_controls.disassemble"),
                 ($) -> {
 
-                    PacketInit.getChannel()
-                            .sendToServer(new RocketContraptionDisassemblePacket(rocketContraption.getId()));
+                    CatnipServices.NETWORK.sendToServer(new RocketContraptionDisassemblePacket(rocketContraption.getId()));
                     onClose();
                 });
 
@@ -214,14 +212,14 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
 
     @Override
-    public void render(GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
-        partialTicks = minecraft.getFrameTime();
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        partialTicks = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
 
-        renderBackground(matrixStack);
-        renderBg(matrixStack, partialTicks, mouseX, mouseY);
+        renderBackground(graphics,mouseX, mouseY,partialTicks);
+        renderBg(graphics, partialTicks, mouseX, mouseY);
         for (Renderable widget : this.renderables)
-            widget.render(matrixStack, mouseX, mouseY, partialTicks);
-        renderForeground(matrixStack, mouseX, mouseY, partialTicks);
+            widget.render(graphics, mouseX, mouseY, partialTicks);
+        renderForeground(graphics, mouseX, mouseY, partialTicks);
 
     }
 
@@ -764,9 +762,9 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     }
 
     @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double scrollX, double scrollY) {
         if (editingCondition != null || editingDestination != null)
-            return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+            return super.mouseScrolled(pMouseX, pMouseY, scrollX,scrollY);
 
         if (hasShiftDown()) {
             List<ScheduleEntry> entries = schedule.entries;
@@ -795,12 +793,12 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                     break;
                 float chaseTarget = horizontalScrolls.get(i)
                         .getChaseTarget();
-                if (pDelta > 0 && !Mth.equal(chaseTarget, 0)) {
+                if (scrollX > 0 && !Mth.equal(chaseTarget, 0)) {
                     horizontalScrolls.get(i)
                             .chase(chaseTarget - 1, 0.5f, LerpedFloat.Chaser.EXP);
                     return true;
                 }
-                if (pDelta < 0 && !Mth.equal(chaseTarget, entry.conditions.size() - 1)) {
+                if (scrollX < 0 && !Mth.equal(chaseTarget, entry.conditions.size() - 1)) {
                     horizontalScrolls.get(i)
                             .chase(chaseTarget + 1, 0.5f, LerpedFloat.Chaser.EXP);
                     return true;
@@ -818,13 +816,13 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
             max += CARD_HEADER + 24 + maxRows * 18 + 10;
         }
         if (max > 0) {
-            chaseTarget -= pDelta * 12;
+            chaseTarget -= scrollX * 12;
             chaseTarget = Mth.clamp(chaseTarget, 0, max);
             scroll.chase((int) chaseTarget, 0.7f, LerpedFloat.Chaser.EXP);
         } else
             scroll.chase(0, 0.7f, LerpedFloat.Chaser.EXP);
 
-        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+        return super.mouseScrolled(pMouseX, pMouseY, scrollX,scrollY);
     }
 
     //used for mouse clicking (hard coded widgets)
@@ -907,7 +905,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                     renderActionTooltip(graphics, ImmutableList.of(CreateLang.translateDirect("gui.schedule.duplicate")), mx,
                             my);
                     if (click == 0) {
-                        entries.add(entries.indexOf(entry), entry.clone());
+                        entries.add(entries.indexOf(entry), entry.clone(minecraft.level.registryAccess()));
                         init();
                     }
                     return true;
@@ -1059,7 +1057,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     // (there is a need for a sync on the entity side : sync data ?)
     @Override
     public void removed() {
-        PacketInit.getChannel().sendToServer(new RocketScheduleEditPacket(schedule, getMenu().contentHolder.getId()));
+        CatnipServices.NETWORK.sendToServer(new RocketScheduleEditPacket(schedule, getMenu().contentHolder.getId()));
         //set the client side schedule
         getMenu().contentHolder.schedule.setSchedule(schedule, true);
         super.removed();
