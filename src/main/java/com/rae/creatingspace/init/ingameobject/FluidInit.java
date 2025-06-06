@@ -79,6 +79,12 @@ public class FluidInit {
                     .tag(TagsInit.CustomFluidTags.LIQUID_CO2.tag)
                     .register();
 
+    public static final FluidEntry<VirtualFluid> MONOPROPELLANT =
+            registrateCustomVirtualLiquid("monopropellant")
+                    .properties(p -> p.viscosity(1000).temperature(80).density(350))
+                    .tag(TagsInit.CustomFluidTags.MONOPROPELLANT.tag)
+                    .register();
+
     /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_CO2 =
             CreatingSpace.REGISTRATE.item("liquid_co2_bucket",
                             p -> new BucketItem(LIQUID_CO2.get(), p))
