@@ -227,7 +227,7 @@ public class MechanicalElectrolyzerBlockEntity extends BasinOperatingBlockEntity
     protected boolean isRunning() {
         return running;
     }
-
+    //TODO custom advancement -> Create AdvancementInit
     @Override
     protected Optional<CreateAdvancement> getProcessedRecipeTrigger() {
         return Optional.of(AllAdvancements.MIXER);

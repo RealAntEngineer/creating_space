@@ -1,5 +1,5 @@
 {
-  "temperature": 2,
+  "temperature": 1,
   "downfall": 0.4,
   "has_precipitation": false,
   "temperature_modifier": "none",
@@ -9,10 +9,17 @@
     "water_color": 4159204,
     "water_fog_color": 329011,
     "grass_color_modifier": "none",
-    "mood_sound": {
-    },
-    "particle": {
-    }
+    "music": [
+      {
+        "data": {
+          "sound": "creatingspace:music.mars.flumpidis",
+          "min_delay": 2,
+          "max_delay": 4,
+          "replace_current_music": true
+        },
+        "weight": 10
+      }
+    ]
   },
   "spawners": {
     "ambient": [
@@ -22,7 +29,7 @@
     "misc": [],
     "monster": [
       {
-        "type": "minecraft:slime",
+        "type": "minecraft:zombie",
         "weight": 100,
         "minCount": 1,
         "maxCount": 10
@@ -33,7 +40,7 @@
     "water_creature": []
   },
   "spawn_costs": {
-    "minecraft:slime": {
+    "minecraft:zombie": {
       "energy_budget": 100,
       "charge": 1
     }
@@ -42,8 +49,23 @@
     "air": []
   },
   "features": [
+    [],
+    [],
     [
       "creatingspace:mars/crystal_geode"
-    ]
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "creatingspace:mars/spring_water"
+    ],
+    [
+      "minecraft:patch_grass_jungle",
+      "minecraft:trees_jungle"
+    ],
+    []
   ]
 }

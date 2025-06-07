@@ -27,6 +27,8 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRenderer<MechanicalElectrolyzerBlockEntity> {
 
+	static ModelPart ELECTRODES = createElectrodes();
+
 	public MechanicalElectrolyserBlockRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}
@@ -48,6 +50,7 @@ public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRende
 				ms.pushPose();
 				ms.translate(0, -renderedHeadOffset, 0);
 				renderElectrodesFromTexture(ms,
+						//TODO better handling with the addition of namespace
 						CreatingSpace.resource("textures/block/mechanical_electrolyzer/electrodes/" +
 								electrode.getItemHolder().unwrapKey().orElseThrow().location().getPath() + ".png"), buffer);
 				ms.popPose();
@@ -71,8 +74,7 @@ public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRende
 	}
 
 	private void renderElectrodesFromTexture(PoseStack stack, ResourceLocation texLocation, MultiBufferSource buffer) {
-		ModelPart electrodes = createElectrodes();
-		electrodes.render(stack, buffer.getBuffer(RenderType.entitySolid(texLocation)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+		ELECTRODES.render(stack, buffer.getBuffer(RenderType.entitySolid(texLocation)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
 	}
 
 	public static ModelPart createElectrodes() {

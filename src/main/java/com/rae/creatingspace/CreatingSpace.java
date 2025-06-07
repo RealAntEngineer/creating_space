@@ -122,4 +122,3 @@ public class CreatingSpace {
         return new ResourceLocation(MODID,path);
     }
 }
-

@@ -1,5 +1,8 @@
-{"replace": false,
+{
+  "replace": false,
   "values": [
-    "minecraft:skeleton"
+    "minecraft:skeleton",
+    "minecraft:zombie",
+    "minecraft:slime"
   ]
 }

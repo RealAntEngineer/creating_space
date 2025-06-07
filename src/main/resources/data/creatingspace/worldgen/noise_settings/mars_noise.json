@@ -1,14 +1,14 @@
 {
-  "sea_level": 63,
+  "sea_level": -10,
   "disable_mob_generation": false,
-  "aquifers_enabled": false,
+  "aquifers_enabled": true,
   "ore_veins_enabled": false,
   "legacy_random_source": false,
   "default_block": {
     "Name": "creatingspace:mars_stone"
   },
   "default_fluid": {
-    "Name": "minecraft:air"
+    "Name": "minecraft:water"
   },
   "noise": {
     "min_y": -64,
@@ -18,7 +18,7 @@
   },
   "noise_router": {
     "barrier": 0,
-    "fluid_level_floodedness": 0,
+    "fluid_level_floodedness": 2,
     "fluid_level_spread": 0,
     "lava": 0,
     "temperature": {
@@ -33,14 +33,73 @@
       "argument1": "creatingspace:mars/erosion",
       "argument2": -1
     },
-    "erosion": "creatingspace:mars/weirdness",
+    "erosion": "creatingspace:mars/ravines_rivers_folded",
     "depth": "creatingspace:mars/depth",
     "ridges": {
       "type": "minecraft:mul",
       "argument1": "creatingspace:mars/ravines_folded",
       "argument2": "creatingspace:mars/ravine_factor"
     },
-    "initial_density_without_jaggedness": 0,
+    "initial_density_without_jaggedness": {
+      "type": "minecraft:add",
+      "argument1": 0.1171875,
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": {
+          "type": "minecraft:y_clamped_gradient",
+          "from_value": 0,
+          "from_y": -64,
+          "to_value": 1,
+          "to_y": -40
+        },
+        "argument2": {
+          "type": "minecraft:add",
+          "argument1": -0.1171875,
+          "argument2": {
+            "type": "minecraft:add",
+            "argument1": -0.078125,
+            "argument2": {
+              "type": "minecraft:mul",
+              "argument1": {
+                "type": "minecraft:y_clamped_gradient",
+                "from_value": 1,
+                "from_y": 240,
+                "to_value": 0,
+                "to_y": 256
+              },
+              "argument2": {
+                "type": "minecraft:add",
+                "argument1": 0.078125,
+                "argument2": {
+                  "type": "minecraft:clamp",
+                  "input": {
+                    "type": "minecraft:add",
+                    "argument1": -0.703125,
+                    "argument2": {
+                      "type": "minecraft:mul",
+                      "argument1": 4,
+                      "argument2": {
+                        "type": "minecraft:quarter_negative",
+                        "argument": {
+                          "type": "minecraft:mul",
+                          "argument1": "creatingspace:mars/depth",
+                          "argument2": {
+                            "type": "minecraft:cache_2d",
+                            "argument": "creatingspace:mars/factor"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "max": 64,
+                  "min": -64
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "final_density": {
       "type": "minecraft:min",
       "argument1": {
@@ -83,7 +142,6 @@
                           "type": "minecraft:add",
                           "argument1": 0.078125,
                           "argument2": {
-                            "comment": "exterior crust : it isn't impacted by the caves",
                             "type": "minecraft:range_choice",
                             "input": {
                               "type": "minecraft:max",
@@ -92,15 +150,16 @@
                                 "comment": "when it's a ravine we break the crust. TODO make the bottom the ravine solid",
                                 "type": "minecraft:range_choice",
                                 "input": "creatingspace:mars/ravines_folded",
-                                "min_inclusive": 0.001,
+                                "min_inclusive": 0.1,
                                 "max_exclusive": 10000,
                                 "when_in_range": 10,
                                 "when_out_of_range": 0
                               }
                             },
                             "min_inclusive": -1000000,
-                            "max_exclusive": 1.5625,
+                            "max_exclusive": 3,
                             "when_in_range": {
+                              "comment": "exterior crust : it isn't impacted by the caves",
                               "type": "minecraft:min",
                               "argument1": "creatingspace:mars/slopped_cheese",
                               "argument2": {
@@ -379,7 +438,8 @@
         "if_true": {
           "type": "minecraft:biome",
           "biome_is": [
-            "creatingspace:mars/mossy_ravine"
+            "creatingspace:mars/mossy_ravine",
+            "creatingspace:mars/mossy_ravine_forest"
           ]
         },
         "then_run": {

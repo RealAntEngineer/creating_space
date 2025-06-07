@@ -11,9 +11,21 @@
     "type": "minecraft:add",
     "argument1": "creatingspace:mars/offset",
     "argument2": {
-      "type": "minecraft:mul",
-      "argument1": "creatingspace:mars/ravines_folded",
-      "argument2": "creatingspace:mars/ravine_factor"
+      "type": "minecraft:add",
+      "argument1": {
+        "type": "minecraft:mul",
+        "argument1": "creatingspace:mars/ravines_folded",
+        "argument2": "creatingspace:mars/ravine_factor"
+      },
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1":"creatingspace:mars/ravines_rivers_folded",
+        "argument2": {
+          "type": "minecraft:mul",
+          "argument1": 0.6,
+          "argument2": "creatingspace:mars/ravine_factor"
+        }
+      }
     }
   }
 }
