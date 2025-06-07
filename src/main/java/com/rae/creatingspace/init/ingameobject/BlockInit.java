@@ -313,11 +313,29 @@ public class BlockInit {
                     "raw_nickel_block",Block::new)
             .initialProperties(()-> Blocks.STONE)
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
-            .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .item()
-            .transform(customItemModel())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/raw_nickel"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
             .register();
+
+    public static final BlockEntry<Block> NICKEL_BLOCK = REGISTRATE.block("nickel_block", Block::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.mapColor(MapColor.GLOW_LICHEN)
+                    .requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/nickel"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Nickel")
+            .register();
+
+
 
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
                     "moon_cobalt_ore", Block::new)
@@ -354,6 +372,34 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .item()
             .transform(customItemModel())
+            .register();
+
+    public static final BlockEntry<Block> ALUMINUM_BLOCK = REGISTRATE.block("aluminum_block", Block::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.mapColor(MapColor.GLOW_LICHEN)
+                    .requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/aluminum"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Aluminum")
+            .register();
+
+    public static final BlockEntry<Block> COBALT_BLOCK = REGISTRATE.block("cobalt_block", Block::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.mapColor(MapColor.GLOW_LICHEN)
+                    .requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/cobalt"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Cobalt")
             .register();
 
     //machinery

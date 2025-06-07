@@ -4,13 +4,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
 
+import com.rae.creatingspace.content.datagen.recipe.CSPressingRecipeGen;
+import com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class CSDatagen {
@@ -18,7 +23,10 @@ public class CSDatagen {
 		addExtraRegistrateData();
 
 		DataGenerator generator = event.getGenerator();
+		PackOutput output = generator.getPackOutput();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+
 
 		if (event.includeClient()) {
 			//generator.addProvider(true, AllSoundEvents.provider(generator));
@@ -35,6 +43,10 @@ public class CSDatagen {
 			//ProcessingRecipeGen.registerAll(generator);
 
 //			AllOreFeatureConfigEntries.gatherData(event);
+
+			//CS Recipes
+			generator.addProvider(true, new CSStandardRecipeGen(output, lookupProvider));
+			//generator.addProvider(true, new CSPressingRecipeGen(output, lookupProvider));
 		}
 	}
 
