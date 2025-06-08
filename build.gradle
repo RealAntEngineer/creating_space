@@ -132,7 +132,7 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
 
     //Nbt tools
-    runtimeOnly fg.deobf("curse.maven:item-nbt-viewer-514135:4578522")
+    //runtimeOnly fg.deobf("curse.maven:item-nbt-viewer-514135:4578522")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 

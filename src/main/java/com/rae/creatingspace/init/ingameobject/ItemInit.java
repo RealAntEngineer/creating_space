@@ -118,11 +118,16 @@ public class ItemInit {
     public static final ItemEntry<Item> BASIC_SPACESUIT_FABRIC = CreatingSpace.REGISTRATE.item(
                     "basic_spacesuit_fabric",Item::new)
             .register();
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_BASIC_SPACESUIT_FABRIC = CreatingSpace.REGISTRATE.item(
+                    "incomplete_basic_spacesuit_fabric",SequencedAssemblyItem::new)
+            .register();
 
     public static final ItemEntry<Item> ADVANCED_SPACESUIT_FABRIC = CreatingSpace.REGISTRATE.item(
                     "advanced_spacesuit_fabric",Item::new)
             .register();
-
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_ADVANCED_SPACESUIT_FABRIC = CreatingSpace.REGISTRATE.item(
+                    "incomplete_advanced_spacesuit_fabric",SequencedAssemblyItem::new)
+            .register();
 
 
     public static final ItemEntry<Item> COPPER_COIL = CreatingSpace.REGISTRATE.item(
@@ -157,6 +162,7 @@ public class ItemInit {
             )
             .register();
 
+    //TODO switch this to a less dumb name
     //minerals
     public static final ItemEntry<Item> CRYSTAL_SHARD = CreatingSpace.REGISTRATE.item(
                     "crystal_shard", Item::new)
