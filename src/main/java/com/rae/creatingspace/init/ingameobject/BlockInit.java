@@ -402,10 +402,73 @@ public class BlockInit {
             .lang("Block of Cobalt")
             .register();
 
+    public static final BlockEntry<Block> COPRONICKEL_BLOCK = REGISTRATE.block(
+                    "copronickel_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/copronickel"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Copronickel")
+            .register();
+
+    public static final BlockEntry<Block> REINFORCED_COPPER_BLOCK = REGISTRATE.block(
+                    "reinforced_copper_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/reinforced_copper"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Reinforced Copper")
+            .register();
+
+    public static final BlockEntry<Block> INCONEL_BLOCK = REGISTRATE.block(
+                    "inconel_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/inconel"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Inconel")
+            .register();
+
+    public static final BlockEntry<Block> HASTELLOY_BLOCK = REGISTRATE.block(
+                    "hastelloy_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/hastelloy"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Hastelloy")
+            .register();
+
+    public static final BlockEntry<Block> MONEL_BLOCK = REGISTRATE.block(
+                    "monel_block",Block::new)
+            .initialProperties(()-> Blocks.IRON_BLOCK)
+            .tag(BlockTags.NEEDS_IRON_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .transform(tagBlockAndItem("storage_blocks/monel"))
+            .tag(Tags.Items.STORAGE_BLOCKS)
+            .build()
+            .lang("Block of Monel")
+            .register();
+
     //machinery
-
-
-
 
 
     public static final BlockEntry<AmethystBlock> CRYSTAL_BLOCK = REGISTRATE.block(

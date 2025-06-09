@@ -46,7 +46,7 @@ public class CSDatagen {
 
 			//CS Recipes
 			generator.addProvider(true, new CSStandardRecipeGen(output, lookupProvider));
-			//generator.addProvider(true, new CSPressingRecipeGen(output, lookupProvider));
+			generator.addProvider(true, new CSPressingRecipeGen(output, lookupProvider));
 		}
 	}
 
