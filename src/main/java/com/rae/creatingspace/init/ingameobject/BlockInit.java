@@ -29,12 +29,15 @@ import com.rae.creatingspace.legacy.server.items.BigEngineItem;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.legacy.server.items.SmallEngineItem;
 
+import com.simibubi.create.AllTags;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -42,10 +45,13 @@ import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.Tags;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
+import static com.rae.creatingspace.CreatingSpace.resource;
+import static com.simibubi.create.AllTags.commonItemTag;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.*;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 
 public class BlockInit {
     static{
@@ -56,6 +62,7 @@ public class BlockInit {
     public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
             .block("rocket_engineer_table", RocketEngineerTableBlock::new)
             .properties(p -> p.strength(1.0f).noOcclusion())
+            .blockstate((c, p)-> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .item()
             .build().register();
     public static final BlockEntry<SmallEngineBlock> SMALL_ROCKET_ENGINE = REGISTRATE
@@ -67,27 +74,27 @@ public class BlockInit {
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(SmallEngineItem::new)
-            .transform(customItemModel())
+            .transform(customItemModel("1_2_1_block"))
             .register();
     public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
             .block("rocket_engine", SuperEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
-
             .transform(axeOrPickaxe())
-            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
+            .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(resource("block/small_rocket_engine"))))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(EngineItem::new)
-            .transform(customItemModel())
+            .transform(customItemModel("small_rocket_engine"))
             .register();
     public static final BlockEntry<BigEngineBlock> BIG_ROCKET_ENGINE = REGISTRATE
             .block("big_rocket_engine", BigEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).dynamicShape().noOcclusion())
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .transform(axeOrPickaxe())
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(BigEngineItem::new)
-            .transform(customItemModel())
+            .transform(customItemModel("big_rocket_engine"))
             .register();
 
     public static final BlockEntry<BigRocketStructuralBlock> BIG_ENGINE_STRUCTURAL =
@@ -123,7 +130,7 @@ public class BlockInit {
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p -> p.strength(1.0f))
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("clamps"))
             .register();
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
             .block("rocket_casing",CasingBlock::new)
@@ -134,16 +141,18 @@ public class BlockInit {
     public static final BlockEntry<RocketControlsBlock> ROCKET_CONTROLS = REGISTRATE.block(
                     "rocket_controls", RocketControlsBlock::new)
             .initialProperties(SharedProperties::copperMetal)
+            .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
             .onRegister(interactionBehaviour(new RocketControlInteraction()))
             .item(RocketControlsItem::new)
-            .transform(customItemModel())
+            .transform(customItemModel("rocket_controls"))
             .register();
     public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
                     "flight_recorder", FlightRecorderBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
+            .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .transform(axeOrPickaxe())
             .onRegister(interactionBehaviour(new FlightRecorderInteraction()))
             .item()
@@ -155,6 +164,7 @@ public class BlockInit {
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .transform(CSStress.setImpact(2000))
             .transform(axeOrPickaxe())
             .item()
@@ -175,13 +185,16 @@ public class BlockInit {
     public static final BlockEntry<RoomPressuriserBlock> OXYGEN_SEALER = REGISTRATE
             .block("oxygen_sealer", RoomPressuriserBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
+            .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .item()
-            .build()
+            .transform(customItemModel())
+       //     .build()
             .register();
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .transform(CSStress.setImpact(500))
             .transform(axeOrPickaxe())
             .item()
@@ -191,14 +204,17 @@ public class BlockInit {
             .block("flow_meter", FlowGaugeBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .blockstate((c, p) -> p.getVariantBuilder(c.get())
+                    .forAllStatesExcept(BlockStateGen.mapToAir(p), FlowGaugeBlock.FACING))
             .transform(axeOrPickaxe())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("flow_meter/block"))
             .register();
 
     public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
             .block("copper_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
+            .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/copper"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
             .register();
@@ -206,6 +222,7 @@ public class BlockInit {
     public static final BlockEntry<OxygenBacktankBlock> NETHERITE_OXYGEN_BACKTANK = REGISTRATE
             .block("netherite_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::netheriteMetal)
+            .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/netherite"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
             .transform(pickaxeOnly())
             .register();
@@ -213,6 +230,7 @@ public class BlockInit {
     public static final BlockEntry<CryogenicTankBlock> CRYOGENIC_TANK = REGISTRATE
             .block("cryogenic_tank", CryogenicTankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
+            .blockstate((c,p)-> p.simpleBlock(c.getEntry(), p.models().getExistingFile(resource("block/cryogenic_tank"))))
             .transform(pickaxeOnly())
             .item(CryogenicTankItem::new)
             .build()
@@ -226,54 +244,55 @@ public class BlockInit {
             .block("moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("moon_stone"))
             .register();
     public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
             .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("moon_stone_brick"))
             .register();
     public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
             .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("polished_moon_stone"))
             .register();
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("moon_regolith"))
             .register();
 
     public static final BlockEntry<RegolithSurfaceBlock> MOON_SURFACE_REGOLITH = REGISTRATE
             .block("moon_surface_regolith",RegolithSurfaceBlock::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).mapColor(MapColor.SNOW))
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("moon_surface_regolith"))
             .register();
 
     public static final BlockEntry<Block> MARS_STONE = REGISTRATE
             .block("mars_stone", Block::new).initialProperties(() -> Blocks.STONE)
             .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .transform(customItemModel("mars_stone"))
             .register();
     public static final BlockEntry<Block> MARS_REGOLITH = REGISTRATE
             .block("mars_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .transform(customItemModel("mars_regolith"))
             .register();
     public static final BlockEntry<Block> MARS_SURFACE_REGOLITH = REGISTRATE
             .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
-            .transform(customItemModel())
+            .transform(customItemModel("mars_surface_regolith"))
             .register();
 
     //ores
@@ -295,8 +314,8 @@ public class BlockInit {
             .properties(p-> p.strength(4.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .item()
-            .transform(customItemModel())
+            .transform(tagBlockAndItem("ores/nickel", "ores_in_ground/stone"))
+            .build()
             .register();
 
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
@@ -306,7 +325,7 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("moon_nickel_ore"))
             .register();
 
     public static final BlockEntry<Block> RAW_NICKEL_BLOCK = REGISTRATE.block(
@@ -316,6 +335,14 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
+            .recipe((c,p) ->
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                    .define('#', commonItemTag("raw_materials/nickel"))
+                    .pattern("###")
+                    .pattern("###")
+                    .pattern("###")
+                    .unlockedBy("has_" + c.getName(), has(c.get()))
+                    .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/raw_nickel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
@@ -329,10 +356,18 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/nickel"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/nickel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Nickel")
+            //.lang("Block of Nickel")
             .register();
 
 
@@ -344,7 +379,7 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("moon_cobalt_ore"))
             .register();
     public static final BlockEntry<Block> RAW_COBALT_BLOCK = REGISTRATE.block(
                     "raw_cobalt_block",Block::new)
@@ -352,8 +387,16 @@ public class BlockInit {
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .item()
-            .transform(customItemModel())
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("raw_materials/cobalt"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
+            .transform(tagBlockAndItem("storage_blocks/raw_cobalt"))
+            .transform(customItemModel("raw_cobalt_block"))
             .register();
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
@@ -362,7 +405,7 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("moon_aluminum_ore"))
             .register();
     public static final BlockEntry<Block> RAW_ALUMINUM_BLOCK = REGISTRATE.block(
                     "raw_aluminum_block",Block::new)
@@ -370,8 +413,16 @@ public class BlockInit {
             .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .item()
-            .transform(customItemModel())
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("raw_materials/aluminum"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
+            .transform(tagBlockAndItem("storage_blocks/raw_aluminum"))
+            .transform(customItemModel("raw_aluminum_block"))
             .register();
 
     public static final BlockEntry<Block> ALUMINUM_BLOCK = REGISTRATE.block("aluminum_block", Block::new)
@@ -382,10 +433,18 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/aluminum"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/aluminum"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Aluminum")
+            //.lang("Block of Aluminum")
             .register();
 
     public static final BlockEntry<Block> COBALT_BLOCK = REGISTRATE.block("cobalt_block", Block::new)
@@ -396,10 +455,18 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/cobalt"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/cobalt"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Cobalt")
+            //.lang("Block of Cobalt")
             .register();
 
     public static final BlockEntry<Block> COPRONICKEL_BLOCK = REGISTRATE.block(
@@ -410,10 +477,18 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/copronickel"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/copronickel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Copronickel")
+            //.lang("Block of Copronickel")
             .register();
 
     public static final BlockEntry<Block> REINFORCED_COPPER_BLOCK = REGISTRATE.block(
@@ -423,10 +498,18 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/reinforced_copper"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/reinforced_copper"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Reinforced Copper")
+            //.lang("Block of Reinforced Copper")
             .register();
 
     public static final BlockEntry<Block> INCONEL_BLOCK = REGISTRATE.block(
@@ -436,10 +519,18 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/inconel"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/inconel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Inconel")
+            //.lang("Block of Inconel")
             .register();
 
     public static final BlockEntry<Block> HASTELLOY_BLOCK = REGISTRATE.block(
@@ -449,10 +540,18 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/hastelloy"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/hastelloy"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Hastelloy")
+            //.lang("Block of Hastelloy")
             .register();
 
     public static final BlockEntry<Block> MONEL_BLOCK = REGISTRATE.block(
@@ -462,10 +561,18 @@ public class BlockInit {
             .transform(TagGen.pickaxeOnly())
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("ingots/monel"))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
             .transform(tagBlockAndItem("storage_blocks/monel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            .lang("Block of Monel")
+            //.lang("Block of Monel")
             .register();
 
     //machinery

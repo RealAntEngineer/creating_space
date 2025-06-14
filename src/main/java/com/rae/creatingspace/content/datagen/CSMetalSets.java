@@ -45,7 +45,7 @@ public class CSMetalSets {
             BlockInit.MOON_NICKEL_ORE.asItem()
             );
 
-    public static final List<MetalSet> ALL = List.of(ALUMINUM, COBALT, NICKEL);
+    public static final List<String> ALL = List.of("aluminum","cobalt", "nickel");
 
     public record MetalSet(
             String name,
@@ -58,10 +58,7 @@ public class CSMetalSets {
             @Nullable Item deepslateOre
     ){}
 
-    protected void buildRecipes(RecipeOutput recipeOutput){
-        CSMetalRecipeHelper.generateMetalRecipes(recipeOutput, ALUMINUM);
-        CSMetalRecipeHelper.generateMetalRecipes(recipeOutput, COBALT);
-        CSMetalRecipeHelper.generateMetalRecipes(recipeOutput, NICKEL);
+    protected void buildRecipes(RecipeOutput recipeOutput) {
     }
 
 }

@@ -19,6 +19,8 @@ import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 
+import static com.rae.creatingspace.CreatingSpace.resource;
+
 public class CSMetalRecipeHelper {
 
     public static void generateMetalRecipes(RecipeOutput output, CSMetalSets.MetalSet metal) {
@@ -29,13 +31,13 @@ public class CSMetalRecipeHelper {
                 .pattern("###")
                 .pattern("###")
                 .unlockedBy("has_nugget", has(metal.nugget()))
-                .save(output, ResourceLocation.fromNamespaceAndPath(CreatingSpace.MODID, metal.name() + "_ingot_from_nuggets"));
+                .save(output, resource(metal.name() + "_ingot_from_nuggets"));
 
         // 1 Ingot → 9 Nuggets
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, metal.nugget(), 9)
                 .requires(AllTags.commonItemTag("ingots/" + metal.name()))
                 .unlockedBy("has_ingot", has(metal.ingot()))
-                .save(output, ResourceLocation.fromNamespaceAndPath(CreatingSpace.MODID, metal.name() + "_nugget"));
+                .save(output, resource(metal.name() + "_nugget"));
 
         // 9 Ingots → 1 Block
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, metal.block())
@@ -44,13 +46,13 @@ public class CSMetalRecipeHelper {
                 .pattern("###")
                 .pattern("###")
                 .unlockedBy("has_ingot", has(metal.ingot()))
-                .save(output, ResourceLocation.fromNamespaceAndPath(CreatingSpace.MODID, metal.name() + "_block"));
+                .save(output, resource(metal.name() + "_block"));
 
         // 1 Block → 9 Ingots
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, metal.ingot(), 9)
                 .requires(AllTags.commonItemTag("storage_blocks/" + metal.name()))
                 .unlockedBy("has_block", has(metal.block()))
-                .save(output, ResourceLocation.fromNamespaceAndPath(CreatingSpace.MODID, metal.name() + "_ingot_from_block"));
+                .save(output, resource(metal.name() + "_ingot_from_block"));
     }
 
     public static void generateMetalAlloyRecipes(RecipeOutput output, CSMetalSets.MetalSet metal) {

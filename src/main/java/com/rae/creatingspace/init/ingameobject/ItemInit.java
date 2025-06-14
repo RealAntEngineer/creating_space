@@ -13,6 +13,9 @@ import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,7 +26,9 @@ import net.minecraft.world.item.Item;
 
 import java.util.ArrayList;
 
-import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
+import static com.rae.creatingspace.CreatingSpace.*;
+import static com.simibubi.create.AllTags.commonItemTag;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 
 
 public class ItemInit {
@@ -34,8 +39,8 @@ public class ItemInit {
     public static final ArrayList<ItemEntry<? extends Item>> AEROSPIKE_PLUG = smartRegisterSequencedItem("aerospike_plug");
 
     public static final ArrayList<ItemEntry<? extends Item>> BELL_NOZZLE = smartRegisterSequencedItem("bell_nozzle");
-    public static final ArrayList<ItemEntry<? extends Item>> POWER_PACK = smartRegisterSequencedItem("power_pack");
-    public static final ArrayList<ItemEntry<? extends Item>> EXHAUST_PACK= smartRegisterSequencedItem("exhaust_pack");
+    public static final ArrayList<ItemEntry<? extends Item>> POWER_PACK = smartRegisterSequenced3DItem("power_pack");
+    public static final ArrayList<ItemEntry<? extends Item>> EXHAUST_PACK= smartRegisterSequenced3DItem("exhaust_pack");
     public static final ArrayList<ItemEntry<? extends Item>> COMBUSTION_CHAMBER = smartRegisterSequencedItem("combustion_chamber");
     public static final ArrayList<ItemEntry<? extends Item>> ENGINE_INGREDIENTS = EngineMaterialInit.collectMaterials();
     public static final ArrayList<ItemEntry<? extends Item>> METALS_INGREDIENTS = EngineMaterialInit.collectMetals();
@@ -59,6 +64,14 @@ public class ItemInit {
         collector.add(REGISTRATE.item(
                         name + "_rib", Item::new)
                 .defaultModel()
+                .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('N', commonItemTag("nuggets/" + name))
+                            .define('I', commonItemTag("ingots/" + name))
+                            .pattern("NIN")
+                            .pattern(" N ")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + name + "_rib")))
                 .register());
         /*collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_canal", Item::new)
@@ -77,18 +90,38 @@ public class ItemInit {
     public static ArrayList<ItemEntry<? extends Item>> registerMetalVariants(String name) {
         ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
 
-        collector.add(REGISTRATE.item(
-                        name + "_ingot", Item::new)
+        collector.add(REGISTRATE.item(name + "_ingot", Item::new)
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .recipe((c,p) -> {
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('#', commonItemTag("nuggets/" + name))
+                            .pattern("###")
+                            .pattern("###")
+                            .pattern("###")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + name + "_ingot_from_nuggets"));
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                            .requires(commonItemTag("storage_blocks/" + name))
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + name + "_ingot_from_block"));
+                })
+                .tag(commonItemTag("ingots/"+ name), commonItemTag("ingots"))
                 .register());
         collector.add(REGISTRATE.item(
                         name + "_sheet", Item::new)
+                .tag(commonItemTag("plates/" + name), commonItemTag("plates"))
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register());
         collector.add(REGISTRATE.item(
                         name + "_nugget", Item::new)
+                .recipe((c,p) ->
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                            .requires(commonItemTag("ingots/" + name))
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + name + "_nuggets_from_ingot")))
+                .tag(commonItemTag("nuggets/"+ name), commonItemTag("nuggets"))
                 .defaultModel()
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .register());
@@ -100,8 +133,22 @@ public class ItemInit {
         collector.add(REGISTRATE.item(
                         name, Item::new)
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                .defaultModel()
                 .register());
         registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
+        System.out.println(collector);
+        return collector;
+    }
+
+    private static ArrayList<ItemEntry<? extends Item>> smartRegisterSequenced3DItem(String name) {
+        ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
+        collector.add(REGISTRATE.item(
+                        name, Item::new)
+                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                        .model((c,p) -> p.withExistingParent(name,
+                        MODID + ":item/3d_items"))
+                .register());
+    //    registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
         System.out.println(collector);
         return collector;
     }
@@ -109,17 +156,33 @@ public class ItemInit {
     private static ItemEntry<SequencedAssemblyItem> registerSequencedItem(String name) {
         return REGISTRATE.item(
                         name, SequencedAssemblyItem::new)
+                .model((c, p) -> p.withExistingParent(name,
+                        "item/generated").texture("layer0",
+                            resource("item/transition_item/" + name.substring(11))))
                 .register();
     }
 
-    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_ENGINE = registerSequencedItem("incomplete_rocket_engine");
+    private static ItemEntry<SequencedAssemblyItem> registerSequencedEngineItem(String name) {
+        return REGISTRATE.item(
+                        name, SequencedAssemblyItem::new)
+                .model((c, p) -> p.withExistingParent(name,
+                        resource("block/1_2_1_block")))
+                .register();
+    }
+
+    public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_ENGINE = registerSequencedEngineItem("incomplete_rocket_engine");
     public static final ItemEntry<DesignBlueprintItem> DESIGN_BLUEPRINT =
             REGISTRATE.item("design_blueprint", DesignBlueprintItem::new)
                     //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                    .model((c, p) -> p.withExistingParent("design_blueprint",
+                            "item/generated").texture("layer0",
+                            resource("item/engine_blueprint")))
                     .register();
+
     public static final ItemEntry<EngineFabricationBlueprint> ENGINE_BLUEPRINT =
             REGISTRATE.item("engine_blueprint", EngineFabricationBlueprint::new)
                     //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+                    .defaultModel()
                     .register();
 
     public static final ItemEntry<Item> BASIC_SPACESUIT_FABRIC = REGISTRATE.item(
@@ -172,97 +235,186 @@ public class ItemInit {
     //nickel
     public static final ItemEntry<Item> RAW_NICKEL = REGISTRATE.item(
             "raw_nickel",Item::new)
+            .recipe((c,p) ->
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                        .requires(commonItemTag("storage_blocks/raw_nickel"))
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_block")))
+            .tag(commonItemTag("raw_materials/nickel"), commonItemTag("raw_materials"),commonItemTag("ores/nickel"))
             .register();
 
 
-    /*public static final ItemEntry<Item> CRUSHED_NICKEL_ORE = CreatingSpace.REGISTRATE.item(
+    public static final ItemEntry<Item> CRUSHED_NICKEL_ORE = CreatingSpace.REGISTRATE.item(
             "crushed_nickel_ore",Item::new)
-            .register();*/
+            .tag(commonItemTag("crushed_raw_nickel"), commonItemTag("crushed_raw_materials"))
+            .register();
 
     public static final ItemEntry<Item> NICKEL_DUST = REGISTRATE.item(
                     "nickel_dust",Item::new)
+            .tag(commonItemTag("dusts/nickel"), commonItemTag("dusts"))
             .register();
 
 
     public static final ItemEntry<Item> NICKEL_INGOT = REGISTRATE.item(
             "nickel_ingot",Item::new)
+            .recipe((c,p) -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                        .define('#', commonItemTag("nuggets/nickel"))
+                        .pattern("###")
+                        .pattern("###")
+                        .pattern("###")
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_nuggets"));
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                        .requires(commonItemTag("storage_blocks/nickel"))
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_block"));
+            })
+            .tag(commonItemTag("ingots/nickel"), commonItemTag("ingots"))
             .register();
 
 
     public static final ItemEntry<Item> NICKEL_NUGGET = REGISTRATE.item(
             "nickel_nugget",Item::new)
+            .recipe((c,p) ->
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                        .requires(commonItemTag("ingots/nickel"))
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName())))
+            .tag(commonItemTag("nuggets/nickel"), commonItemTag("nuggets"))
             .register();
 
 
 
     public static final ItemEntry<Item> NICKEL_SHEET = REGISTRATE.item(
             "nickel_sheet",Item::new)
+            .tag(commonItemTag("plates/nickel"), commonItemTag("plates"))
             .register();
 
     //aluminium
 
     public static final ItemEntry<Item> RAW_ALUMINUM = REGISTRATE.item(
                     "raw_aluminum",Item::new)
+            .recipe((c,p) ->
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                            .requires(commonItemTag("storage_blocks/raw_aluminum"))
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName() + "_from_block")))
+            .tag(commonItemTag("raw_materials/aluminum"), commonItemTag("raw_materials"))
             .register();
 
 
-    /*public static final ItemEntry<Item> CRUSHED_ALUMINUM_ORE = CreatingSpace.REGISTRATE.item(
+    public static final ItemEntry<Item> CRUSHED_ALUMINUM_ORE = CreatingSpace.REGISTRATE.item(
                     "crushed_aluminum_ore",Item::new)
-            .register();*/
+            .tag(commonItemTag("crushed_raw_aluminum"), commonItemTag("crushed_raw_materials"), commonItemTag("ores/aluminum"))
+            .register();
 
 
     public static final ItemEntry<Item> ALUMINUM_INGOT = REGISTRATE.item(
                     "aluminum_ingot",Item::new)
+            .recipe((c,p) -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                        .define('#', commonItemTag("nuggets/aluminum"))
+                        .pattern("###")
+                        .pattern("###")
+                        .pattern("###")
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_nuggets"));
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                        .requires(commonItemTag("storage_blocks/aluminum"))
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_block"));
+            })
+            .tag(commonItemTag("ingots/aluminum"), commonItemTag("ingots"))
             .register();
 
 
     public static final ItemEntry<Item> ALUMINUM_NUGGET = REGISTRATE.item(
                     "aluminum_nugget",Item::new)
+            .recipe((c,p) ->
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                            .requires(commonItemTag("ingots/aluminum"))
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
+            .tag(commonItemTag("nuggets/aluminum"), commonItemTag("nuggets"))
             .register();
 
 
 
     public static final ItemEntry<Item> ALUMINUM_SHEET = REGISTRATE.item(
                     "aluminum_sheet",Item::new)
+            .tag(commonItemTag("plates/aluminum"), commonItemTag("plates"))
             .register();
 
     //cobalt
 
     public static final ItemEntry<Item> RAW_COBALT = REGISTRATE.item(
                     "raw_cobalt",Item::new)
+            .recipe((c,p) ->
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                        .requires(commonItemTag("storage_blocks/raw_cobalt"))
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_block")))
+            .tag(commonItemTag("raw_materials/cobalt"), commonItemTag("raw_materials"))
             .register();
 
 
     public static final ItemEntry<Item> CRUSHED_COBALT_ORE = REGISTRATE.item(
                     "crushed_cobalt_ore",Item::new)
+            .tag(commonItemTag("crushed_raw_cobalt"), commonItemTag("crushed_raw_materials"), commonItemTag("ores/cobalt"))
             .register();
 
 
     public static final ItemEntry<Item> COBALT_INGOT = REGISTRATE.item(
                     "cobalt_ingot",Item::new)
+            .recipe((c,p) -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                        .define('#', commonItemTag("nuggets/cobalt"))
+                        .pattern("###")
+                        .pattern("###")
+                        .pattern("###")
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_nuggets"));
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                        .requires(commonItemTag("storage_blocks/cobalt"))
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/" + c.getName() + "_from_block"));
+            })
+            .tag(commonItemTag("ingots/cobalt"), commonItemTag("ingots"))
             .register();
 
 
     public static final ItemEntry<Item> COBALT_NUGGET = REGISTRATE.item(
                     "cobalt_nugget",Item::new)
+            .recipe((c,p) ->
+                    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
+                            .requires(commonItemTag("ingots/cobalt"))
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName())))
+            .tag(commonItemTag("nuggets/cobalt"), commonItemTag("nuggets"))
             .register();
 
 
 
     public static final ItemEntry<Item> COBALT_SHEET = REGISTRATE.item(
                     "cobalt_sheet",Item::new)
+            .tag(commonItemTag("plates/cobalt"), commonItemTag("plates"))
             .register();
 
     public static final ItemEntry<OxygenBacktankItem.O2BacktankBlockItem> COPPER_BACKTANK_PLACEABLE =
             REGISTRATE
                     .item("copper_oxygen_backtank_placeable",
                             p -> new OxygenBacktankItem.O2BacktankBlockItem(BlockInit.COPPER_OXYGEN_BACKTANK.get(), ItemInit.COPPER_OXYGEN_BACKTANK::get, p))
+                    .model((c,p) -> p.withExistingParent("copper_oxygen_backtank",
+                        "minecraft:item/barrier"))
                     .register();
     public static final ItemEntry<OxygenBacktankItem.Layered> COPPER_OXYGEN_BACKTANK =
             REGISTRATE
                     .item("copper_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit"),
                                     COPPER_BACKTANK_PLACEABLE))
+                    .model((c,p) -> p.withExistingParent("copper_oxygen_backtank_placeable",
+                            MODID + ":block/oxygen_backtank/copper"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
                     .register();
@@ -271,12 +423,16 @@ public class ItemInit {
             REGISTRATE
                     .item("netherite_oxygen_backtank_placeable",
                             p -> new OxygenBacktankItem.O2BacktankBlockItem(BlockInit.NETHERITE_OXYGEN_BACKTANK.get(), ItemInit.NETHERITE_OXYGEN_BACKTANK::get, p))
+                    .model((c,p) -> p.withExistingParent("netherite_oxygen_backtank_placeable",
+                            "minecraft:item/barrier"))
                     .register();
     public static final ItemEntry<OxygenBacktankItem.Layered> NETHERITE_OXYGEN_BACKTANK =
             REGISTRATE
                     .item("netherite_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit"),
                                     NETHERITE_BACKTANK_PLACEABLE))
+                    .model((c,p) -> p.withExistingParent("copper_oxygen_netherite",
+                            MODID + ":block/oxygen_backtank/netherite"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
                     .register();
