@@ -14,16 +14,16 @@
       "type": "minecraft:add",
       "argument1": {
         "type": "minecraft:mul",
-        "argument1": "creatingspace:mars/ravines_folded",
-        "argument2": "creatingspace:mars/ravine_factor"
+        "argument1": "creatingspace:mars/ravine/ravines_final",
+        "argument2": "creatingspace:mars/ravine/ravine_factor"
       },
       "argument2": {
         "type": "minecraft:mul",
-        "argument1":"creatingspace:mars/ravines_rivers_folded",
+        "argument1":"creatingspace:mars/ravine/ravines_rivers_folded",
         "argument2": {
           "type": "minecraft:mul",
           "argument1": 0.6,
-          "argument2": "creatingspace:mars/ravine_factor"
+          "argument2": "creatingspace:mars/ravine/ravine_factor"
         }
       }
     }

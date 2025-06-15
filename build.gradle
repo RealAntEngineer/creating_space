@@ -123,6 +123,8 @@ repositories {
     }
 
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
+
+    //TODO maybe use Jitpack
     maven {
         url = "https://maven.pkg.github.com/RealAntEngineer/Formic_API" // maven for Formic_API (temporary)
         credentials {
@@ -234,4 +236,12 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

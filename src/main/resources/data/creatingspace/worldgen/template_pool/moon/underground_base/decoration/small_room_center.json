@@ -1,0 +1,22 @@
+{
+
+  "name": "creatingspace:moon/underground_base/decoration/small_room_center",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+
+      "weight": 1,
+      "element": {
+        "location": "creatingspace:moon/underground_base/decoration/small_room_center_1",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

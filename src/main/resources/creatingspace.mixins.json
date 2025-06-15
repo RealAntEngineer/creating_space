@@ -30,6 +30,8 @@
     "recipe.SequencedAssemblyRecipeMixin",
     "recipe.SequencedAssemblyRecipeSerializerMixin",
     "worldgen.FluidStatusAccessor",
+    "worldgen.JigsawStructureAccessor",
+    "worldgen.JigsawStructureMixin",
     "worldgen.NoiseBasedAquiferMixin",
     "worldgen.NoiseChunkMixin",
     "worldgen.NoiseGeneratorSettingsMixin",

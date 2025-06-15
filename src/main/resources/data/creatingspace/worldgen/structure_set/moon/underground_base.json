@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "creatingspace:moon/underground_base",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1642166475,
+
+    "spacing": 80,
+
+    "separation": 16,
+
+    "type": "minecraft:random_spread"
+  }
+}

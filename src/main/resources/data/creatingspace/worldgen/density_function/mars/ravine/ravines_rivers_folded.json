@@ -16,7 +16,7 @@
             "argument1": -0.58,
             "argument2": {
               "type": "minecraft:abs",
-              "argument": "creatingspace:mars/ravines"
+              "argument": "creatingspace:mars/ravine/ravines"
             }
           }
         }

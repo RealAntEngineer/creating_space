@@ -40,6 +40,8 @@ public class FluidInit {
                 customFlowing(name));
     }
 
+    //TODO add metalic hydrogen and methalox_monoprop
+    //TODO add color to fluids to e able to use said color in the cryo tank overing text
     public static final FluidEntry<VirtualFluid> LIQUID_METHANE =
             registrateCustomVirtualLiquid("liquid_methane")
                     .properties(p -> p.viscosity(1000).temperature(90).density(500)
@@ -183,7 +185,6 @@ public class FluidInit {
 
     //copy of Create's class
     private static class SolidRenderedPlaceableFluidType extends AllFluids.TintedFluidType {
-
         private Vector3f fogColor;
         private Supplier<Float> fogDistance;
 

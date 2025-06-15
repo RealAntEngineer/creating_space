@@ -1,0 +1,74 @@
+{
+
+  "name": "creatingspace:moon/underground_base/corridor",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+
+      "weight": 6,
+      "element": {
+        "location": "creatingspace:moon/underground_base/corridor_1",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+
+      "weight": 4,
+      "element": {
+        "location": "creatingspace:moon/underground_base/turn_1",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+
+      "weight": 3,
+      "element": {
+        "location": "creatingspace:moon/underground_base/small_room_1",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+
+      "weight": 2,
+      "element": {
+        "location": "creatingspace:moon/underground_base/stairs_1",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+
+      "weight": 2,
+      "element": {
+        "location": "creatingspace:moon/underground_base/hall_1",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

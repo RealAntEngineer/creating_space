@@ -2,7 +2,7 @@
   "type": "minecraft:clamp",
   "input": {
     "type": "minecraft:mul",
-    "argument1": -6,
+    "argument1": 3,
     "argument2": {
       "type": "minecraft:add",
       "argument1": -0.35,
@@ -10,15 +10,15 @@
         "type": "minecraft:abs",
         "argument": {
           "type": "minecraft:add",
-          "argument1": -0.58,
+          "argument1": -0.7,
           "argument2": {
             "type": "minecraft:abs",
-            "argument": "creatingspace:mars/ravines"
+            "argument": "creatingspace:mars/ravine/ravines"
           }
         }
       }
     }
   },
-  "min": -1,
-  "max": 0
+  "min": 0,
+  "max": 1
 }

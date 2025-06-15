@@ -1,0 +1,35 @@
+{
+
+  "name": "creatingspace:moon/underground_base/staircase",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+
+      "weight": 4,
+      "element": {
+        "location": "creatingspace:moon/underground_base/staircase_long",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+
+      "weight": 1,
+      "element": {
+        "location": "creatingspace:moon/underground_base/staircase_start_1",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

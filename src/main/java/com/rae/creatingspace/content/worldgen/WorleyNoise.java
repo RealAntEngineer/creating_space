@@ -5,6 +5,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 public class WorleyNoise {
+    //TODO Optimise it further
+    //TODO make a 2d version of it -> makes no sens to use 3d version and to
     private static final float K = 0.142857142857f;
     private static final float Ko = 0.428571428571f;
     private static final float K2 = 0.020408163265306f;
@@ -24,7 +26,8 @@ public class WorleyNoise {
     private final float XZSize;
     private final float YSize;
     private float x0,y0,z0;
-    private final int[] p = new int[289];//go to 256 rather than 289
+    private final int[] p = new int[289];//TODO go to 256 rather than 289, now that we use the seed it doesn't make sens anymore
+    //TODO have 3 permutations for x, y, z for improved performance ? need to do  profiling and see if it changes anything.
     public WorleyNoise(float XZSize, float YSize) {
         this.XZSize = XZSize;
         this.YSize = YSize;
@@ -32,7 +35,7 @@ public class WorleyNoise {
     }
     public void setSeed(long seed){
         RandomSource random = new XoroshiroRandomSource(seed);
-        this.x0 = random.nextFloat() * 289.0f;
+        this.x0 = random.nextFloat() * 289.0f;//TODO is this needed ?
         this.y0 = random.nextFloat() * 289.0f;
         this.z0 = random.nextFloat() * 289.0f;
 

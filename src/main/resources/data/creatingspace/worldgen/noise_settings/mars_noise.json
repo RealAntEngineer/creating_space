@@ -21,24 +21,25 @@
     "fluid_level_floodedness": 2,
     "fluid_level_spread": 0,
     "lava": 0,
+    "comment": "vegetation and erosion are unused",
     "temperature": {
       "type": "minecraft:noise",
       "noise": "creatingspace:mars/temperature",
       "xz_scale": 1,
       "y_scale": 0
     },
-    "vegetation": "creatingspace:mars/humidity",
+    "vegetation": "creatingspace:mars/ravine/ridges_folded",
     "continents": {
       "type": "minecraft:mul",
       "argument1": "creatingspace:mars/erosion",
       "argument2": -1
     },
-    "erosion": "creatingspace:mars/ravines_rivers_folded",
+    "erosion": "creatingspace:mars/ravine/ravines_folded",
     "depth": "creatingspace:mars/depth",
     "ridges": {
       "type": "minecraft:mul",
-      "argument1": "creatingspace:mars/ravines_folded",
-      "argument2": "creatingspace:mars/ravine_factor"
+      "argument1": "creatingspace:mars/ravine/ravines_final",
+      "argument2": "creatingspace:mars/ravine/ravine_factor"
     },
     "initial_density_without_jaggedness": {
       "type": "minecraft:add",
@@ -149,7 +150,7 @@
                               "argument2": {
                                 "comment": "when it's a ravine we break the crust. TODO make the bottom the ravine solid",
                                 "type": "minecraft:range_choice",
-                                "input": "creatingspace:mars/ravines_folded",
+                                "input": "creatingspace:mars/ravine/ravines_folded",
                                 "min_inclusive": 0.1,
                                 "max_exclusive": 10000,
                                 "when_in_range": 10,
@@ -259,6 +260,7 @@
   },
   "spawn_target": [],
   "surface_rule": {
+    "comment": "TODO remove the water falls for the standard mossy ravine + add some condition for the underwater blocks",
     "type": "minecraft:sequence",
     "sequence": [
       {

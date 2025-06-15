@@ -47,7 +47,7 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
         boolean fresh = random.nextInt(16) == 1;
 
         //adjust structures position
-        if (chunk.hasAnyStructureReferences()){
+        /*if (chunk.hasAnyStructureReferences()){
             for (Map.Entry<Structure, StructureStart> entry:chunk.getAllStarts().entrySet()){
                 if (entry.getKey().step().equals(GenerationStep.Decoration.SURFACE_STRUCTURES)){
                     double xDev = Math.abs((chunk.getPos().getBlockX(entry.getValue().getBoundingBox().getCenter().getX())) - craterCenter.getX());
@@ -66,7 +66,7 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
                     }
                 }
             }
-        }
+        }*/
 
 
         for (int innerChunkX = 0; innerChunkX < 16; innerChunkX++) { //iterate through positions in chunk

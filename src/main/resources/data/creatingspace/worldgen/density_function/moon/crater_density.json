@@ -3,26 +3,56 @@
   "argument": {
     "type": "minecraft:add",
     "argument1": {
-      "type": "minecraft:clamp",
-      "input":{
-        "type": "creatingspace:worley_noise",
-        "xz_size": 64,
-        "y_size": 1000000000,
-        "scale_factor": 1
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:add",
+        "argument1": 0.027,
+        "argument2": {
+          "type": "minecraft:cube",
+          "argument": {
+            "type": "minecraft:add",
+            "argument1": -0.3,
+            "argument2": {
+              "type": "minecraft:clamp",
+              "input": {
+                "type": "creatingspace:worley_noise",
+                "xz_size": 128,
+                "y_size": 1000000000,
+                "scale_factor": 1
+              },
+              "min": 0,
+              "max": 0.3
+            }
+          }
+        }
       },
-      "min": 0,
-      "max": 0.5
+      "argument2": 3
     },
     "argument2": {
-      "type": "minecraft:clamp",
-      "input":{
-        "type": "creatingspace:worley_noise",
-        "xz_size": 256,
-        "y_size": 1000000000,
-        "scale_factor": 1
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:add",
+        "argument1": 0.008,
+        "argument2": {
+          "type": "minecraft:cube",
+          "argument": {
+            "type": "minecraft:add",
+            "argument1": -0.2,
+            "argument2": {
+              "type": "minecraft:clamp",
+              "input": {
+                "type": "creatingspace:worley_noise",
+                "xz_size": 256,
+                "y_size": 1000000000,
+                "scale_factor": 1
+              },
+              "min": 0,
+              "max": 0.2
+            }
+          }
+        }
       },
-      "min": 0,
-      "max": 0.8
+      "argument2": 25
     }
   }
 }
