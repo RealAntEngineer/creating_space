@@ -180,7 +180,7 @@ tasks.withType(ProcessResources).configureEach {
             mod_description        : mod_description
     ]
     inputs.properties replaceProperties
-
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
