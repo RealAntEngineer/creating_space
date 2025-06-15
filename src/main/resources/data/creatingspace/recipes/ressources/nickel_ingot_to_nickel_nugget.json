@@ -3,7 +3,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "creatingspace:nickel_ingot"
+      "tag": "forge:ingots/nickel"
     }
   ],
   "result": {

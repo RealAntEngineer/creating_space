@@ -1,0 +1,15 @@
+{
+  "values": [
+    "creatingspace:aluminum_sheet",
+    "creatingspace:raw_aluminum_sheet",
+    "creatingspace:cobalt_sheet",
+    "creatingspace:raw_cobalt_sheet",
+    "creatingspace:nickel_sheet",
+    "creatingspace:raw_nickel_sheet",
+    "creatingspace:copronickel_sheet",
+    "creatingspace:hastelloy_sheet",
+    "creatingspace:inconel_sheet",
+    "creatingspace:monel_sheet",
+    "creatingspace:reinforced_copper_sheet"
+  ]
+}

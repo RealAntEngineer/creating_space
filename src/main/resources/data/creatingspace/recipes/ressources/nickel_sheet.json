@@ -2,7 +2,7 @@
   "type": "create:pressing",
   "ingredients":[
     {
-      "item":"creatingspace:nickel_ingot"
+      "tag": "forge:ingots/nickel"
     }
   ],
   "results": [

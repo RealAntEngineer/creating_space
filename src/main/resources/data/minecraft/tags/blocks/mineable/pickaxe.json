@@ -22,6 +22,14 @@
     "creatingspace:flight_recorder",
     "creatingspace:air_liquefier",
     "creatingspace:copper_oxygen_backtank",
-    "creatingspace:cryogenic_tank"
+    "creatingspace:cryogenic_tank",
+    "creatingspace:aluminum_block",
+    "creatingspace:cobalt_block",
+    "creatingspace:nickel_block",
+    "creatingspace:copronickel_block",
+    "creatingspace:inconel_block",
+    "creatingspace:monel_block",
+    "creatingspace:reinforced_copper_block",
+    "creatingspace:hastelloy_block"
   ]
 }
