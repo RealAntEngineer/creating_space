@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:monel_turbine"
+            "id": "creatingspace:monel_turbine"
         }
     ],
     "sequence": [

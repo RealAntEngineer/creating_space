@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:iron_turbine"
+            "id": "creatingspace:iron_turbine"
         }
     ],
     "sequence": [

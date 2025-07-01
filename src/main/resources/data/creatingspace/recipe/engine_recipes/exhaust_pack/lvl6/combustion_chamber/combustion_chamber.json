@@ -16,7 +16,7 @@
     "loops": 1,
     "results": [
         {
-            "item": "creatingspace:combustion_chamber"
+            "id": "creatingspace:combustion_chamber"
         }
     ],
     "sequence": [

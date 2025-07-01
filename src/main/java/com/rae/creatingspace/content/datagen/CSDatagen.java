@@ -4,8 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
 
-import com.rae.creatingspace.content.datagen.recipe.CSPressingRecipeGen;
-import com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen;
+import com.rae.creatingspace.content.datagen.recipe.*;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateDataProvider;
@@ -47,10 +46,13 @@ public class CSDatagen {
 //			AllOreFeatureConfigEntries.gatherData(event);
 
 			//CS Recipes
-			generator.addProvider(true, new CSStandardRecipeGen(output, lookupProvider));
-			generator.addProvider(true, new CSPressingRecipeGen(output, lookupProvider));
+			//generator.addProvider(true, new CSStandardRecipeGen(output, lookupProvider));
+			generator.addProvider(true, new CSPressingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
+			generator.addProvider(true, new CSCrushingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
+			generator.addProvider(true, new CSMixingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
+			generator.addProvider(true, new CSWashingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
 
-			event.getGenerator().addProvider(true, REGISTRATE.setDataProvider(new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event)));
+			event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
 		}
 	}
 

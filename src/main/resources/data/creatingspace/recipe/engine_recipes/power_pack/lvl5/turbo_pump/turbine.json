@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:copronickel_turbine"
+            "id": "creatingspace:copronickel_turbine"
         }
     ],
     "sequence": [

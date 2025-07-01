@@ -17,7 +17,7 @@
     "loops": 1,
     "results": [
         {
-            "item": "creatingspace:bell_nozzle"
+            "id": "creatingspace:bell_nozzle"
         }
     ],
     "sequence": [

@@ -3,13 +3,13 @@
   "type": "create:crushing",
   "ingredients": [
     {
-      "item":"minecraft:coal"
+      "item":"creatingspace:moon_stone"
     }
   ],
   "processingTime": 400,
   "results": [
-    {"count": 2,
-    "item": "creatingspace:coal_dust"
+    {"count": 1,
+    "id": "creatingspace:moon_regolith"
   }
   ]
 }

@@ -29,7 +29,11 @@ import com.rae.creatingspace.legacy.server.items.BigEngineItem;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.legacy.server.items.SmallEngineItem;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
+//import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
@@ -38,7 +42,11 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -47,6 +55,7 @@ import net.neoforged.neoforge.common.Tags;
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.rae.creatingspace.CreatingSpace.resource;
 import static com.simibubi.create.AllTags.commonItemTag;
+import static com.simibubi.create.AllTags.optionalTag;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -58,11 +67,19 @@ public class BlockInit {
         REGISTRATE.setCreativeTab(CreativeModeTabsInit.MACHINE_TAB);
     }
     //just blocks
-    //TODO add geode's blocks
     public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
             .block("rocket_engineer_table", RocketEngineerTableBlock::new)
             .properties(p -> p.strength(1.0f).noOcclusion())
             .blockstate((c, p)-> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                        .define('W', ItemTags.WOODEN_SLABS)
+                        .define('S', Items.SMOOTH_STONE)
+                        .pattern("WWW")
+                        .pattern("WWW")
+                        .pattern(" S ")
+                        .unlockedBy("has_" + c.getName(), has(c.get()))
+                        .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .build().register();
     public static final BlockEntry<SmallEngineBlock> SMALL_ROCKET_ENGINE = REGISTRATE
@@ -129,12 +146,30 @@ public class BlockInit {
     public static final BlockEntry<Block> CLAMPS = REGISTRATE
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p -> p.strength(1.0f))
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 4)
+                            .define('I', Blocks.IRON_BLOCK)
+                            .define('C', AllBlocks.COPPER_CASING.get())
+                            .pattern("ICI")
+                            .pattern("CIC")
+                            .pattern("ICI")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .transform(customItemModel("clamps"))
             .register();
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
             .block("rocket_casing",CasingBlock::new)
             .transform(BuilderTransformers.casing(() -> SpriteShiftInit.ROCKET_CASING))
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('S', AllTags.commonItemTag("plates/aluminum"))
+                            .define('C', AllTags.commonItemTag("ingots/cobalt"))
+                            .pattern("CSC")
+                            .pattern("SCS")
+                            .pattern("CSC")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .build()
             .register();
@@ -145,6 +180,22 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
             .transform(axeOrPickaxe())
             .onRegister(interactionBehaviour(new RocketControlInteraction()))
+            .recipe((c,p) -> {
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('E', AllItems.ELECTRON_TUBE.get())
+                            .define('R', AllBlocks.REDSTONE_LINK.get())
+                            .define('T', AllBlocks.TRAIN_CONTROLS.get())
+                            .define('S', AllItems.STURDY_SHEET.get())
+                            .pattern("ERE")
+                            .pattern("ETE")
+                            .pattern("SSS")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName()));
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 1)
+                            .requires(c.get())
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/" + c.getName() + "_reset"));
+            })
             .item(RocketControlsItem::new)
             .transform(customItemModel("rocket_controls"))
             .register();
@@ -155,6 +206,16 @@ public class BlockInit {
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .transform(axeOrPickaxe())
             .onRegister(interactionBehaviour(new FlightRecorderInteraction()))
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('B', AllBlocks.BRASS_CASING.get())
+                            .define('A', AllBlocks.SHAFT.get())
+                            .define('K', Items.DRIED_KELP_BLOCK)
+                            .pattern(" B ")
+                            .pattern("AKA")
+                            .pattern(" B ")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .transform(customItemModel())
             .register();
@@ -167,6 +228,18 @@ public class BlockInit {
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .transform(CSStress.setImpact(2000))
             .transform(axeOrPickaxe())
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('C', ItemInit.COPPER_COIL.get())
+                            .define('X', AllBlocks.COPPER_CASING.get())
+                            .define('T', AllBlocks.FLUID_TANK.get())
+                            .define('S', AllBlocks.SHAFT.get())
+                            .define('G', commonItemTag("plates/gold"))
+                            .pattern("XSX")
+                            .pattern("CCC")
+                            .pattern("GTG")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .transform(customItemModel())
             .onRegisterAfter(Registries.ITEM, i -> ItemDescription.useKey(i, "block.creatingspace.mechanical_electrolyzer"))
@@ -178,6 +251,16 @@ public class BlockInit {
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .transform(CSStress.setImpact(8.0))
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('N', commonItemTag("ingots/nickel"))
+                            .define('G', commonItemTag("plates/gold"))
+                            .define('P', AllBlocks.MECHANICAL_PRESS.get())
+                            .pattern(" G ")
+                            .pattern("NPN")
+                            .pattern(" G ")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item(AssemblyOperatorBlockItem::new)
             .transform(customItemModel())
             .register();
@@ -186,9 +269,19 @@ public class BlockInit {
             .block("oxygen_sealer", RoomPressuriserBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('P', AllItems.PROPELLER.get())
+                            .define('C', AllBlocks.COPPER_CASING.get())
+                            .define('T', AllBlocks.FLUID_TANK.get())
+                            .define('N', commonItemTag("plates/nickel"))
+                            .pattern("NPN")
+                            .pattern("CTC")
+                            .pattern("CCC")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .transform(customItemModel())
-       //     .build()
             .register();
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
@@ -197,6 +290,17 @@ public class BlockInit {
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .transform(CSStress.setImpact(500))
             .transform(axeOrPickaxe())
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('S', commonItemTag("plates/brass"))
+                            .define('T', AllBlocks.FLUID_TANK.get())
+                            .define('C', AllBlocks.BRASS_CASING.get())
+                            .define('P', AllBlocks.ENCASED_FAN.get())
+                            .pattern(" S ")
+                            .pattern("CPC")
+                            .pattern(" T ")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .transform(customItemModel())
             .register();
@@ -207,6 +311,14 @@ public class BlockInit {
             .blockstate((c, p) -> p.getVariantBuilder(c.get())
                     .forAllStatesExcept(BlockStateGen.mapToAir(p), FlowGaugeBlock.FACING))
             .transform(axeOrPickaxe())
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('C', AllBlocks.COPPER_CASING.get())
+                            .define('G', Items.COMPASS)
+                            .pattern("G")
+                            .pattern("C")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item()
             .transform(customItemModel("flow_meter/block"))
             .register();
@@ -216,6 +328,16 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/copper"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
+            .recipe((c,p) ->
+                    MechanicalCraftingRecipeBuilder.shapedRecipe(c.get(), 1)
+                            .key('F', ItemInit.BASIC_SPACESUIT_FABRIC.get())
+                            .key('N', commonItemTag("plates/nickel"))
+                            .key('W', Items.RED_WOOL)
+                            .key('T', AllBlocks.FLUID_TANK.get())
+                            .patternLine(" F F ")
+                            .patternLine("WTNTW")
+                            .patternLine(" FWF ")
+                            .build(p, resource("mechanical_crafting/armor/" + c.getName())))
             .transform(pickaxeOnly())
             .register();
 
@@ -224,6 +346,16 @@ public class BlockInit {
             .initialProperties(SharedProperties::netheriteMetal)
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/netherite"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
+            .recipe((c,p) ->
+                    MechanicalCraftingRecipeBuilder.shapedRecipe(c.get(), 1)
+                            .key('F', ItemInit.ADVANCED_SPACESUIT_FABRIC.get())
+                            .key('N', commonItemTag("plates/aluminum"))
+                            .key('W', Items.WHITE_WOOL)
+                            .key('T', AllBlocks.FLUID_TANK.get())
+                            .patternLine(" F F ")
+                            .patternLine("WTNTW")
+                            .patternLine(" FWF ")
+                            .build(p, resource("mechanical_crafting/armor/" + c.getName())))
             .transform(pickaxeOnly())
             .register();
 
@@ -232,6 +364,16 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c,p)-> p.simpleBlock(c.getEntry(), p.models().getExistingFile(resource("block/cryogenic_tank"))))
             .transform(pickaxeOnly())
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('N', commonItemTag("plates/nickel"))
+                            .define('W', Items.RED_WOOL)
+                            .define('T', AllBlocks.FLUID_TANK.get())
+                            .pattern("NWN")
+                            .pattern("WTW")
+                            .pattern("NWN")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/machines/" + c.getName())))
             .item(CryogenicTankItem::new)
             .build()
             .register();

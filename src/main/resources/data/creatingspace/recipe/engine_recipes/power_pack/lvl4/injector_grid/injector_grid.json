@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:reinforced_copper_injector_grid"
+            "id": "creatingspace:reinforced_copper_injector_grid"
         }
     ],
     "sequence": [
