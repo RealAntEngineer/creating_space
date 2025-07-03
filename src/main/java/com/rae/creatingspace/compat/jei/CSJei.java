@@ -85,103 +85,19 @@ public class CSJei implements IModPlugin {
         return new CategoryBuilder<>(recipeClass);
     }
 
-    private class CategoryBuilder<T extends Recipe<?>> {
-        private final Class<? extends T> recipeClass;
-        private Predicate<CRecipes> predicate = cRecipes -> true;
-        private IDrawable background;
-        private IDrawable icon;
-
-        private final List<Consumer<List<RecipeHolder<T>>>> recipeListConsumers = new ArrayList<Consumer<List<RecipeHolder<T>>>>();
-        private final List<Supplier<? extends ItemStack>> catalysts = new ArrayList<>();
+    private class CategoryBuilder<T extends Recipe<?>>  extends CreateRecipeCategory.Builder<T> {
 
         public CategoryBuilder(Class<? extends T> recipeClass) {
-            this.recipeClass = recipeClass;
+            super(recipeClass);
         }
 
-        public CategoryBuilder<T> enableIf(Predicate<CRecipes> predicate) {
-            this.predicate = predicate;
-            return this;
-        }
-
-        public CategoryBuilder<T> enableWhen(Function<CRecipes, ConfigBase.ConfigBool> configValue) {
-            predicate = c -> configValue.apply(c).get();
-            return this;
-        }
-
-        public CategoryBuilder<T> addRecipeListConsumer(Consumer<List<RecipeHolder<T>>> consumer) {
-            this.recipeListConsumers.add(consumer);
-            return this;
-        }
-
-        public CategoryBuilder<T> addTypedRecipes(IRecipeTypeInfo recipeTypeEntry) {
-            Objects.requireNonNull(recipeTypeEntry);
-            return this.addTypedRecipes(recipeTypeEntry::getType);
-        }
-
-        public <I extends RecipeInput, R extends Recipe<I>> CategoryBuilder<T> addTypedRecipes(Supplier<RecipeType<R>> recipeType) {
-            return this.addRecipeListConsumer((recipes) -> CreateJEI.consumeTypedRecipes((recipe) -> {
-                if (this.recipeClass.isInstance(recipe.value())) {
-                    recipes.add((RecipeHolder<T>) recipe);
-                }
-
-            }, (RecipeType)recipeType.get()));
-        }
-
-        public CategoryBuilder<T> catalystStack(Supplier<ItemStack> supplier) {
-            catalysts.add(supplier);
-            return this;
-        }
-
-        public CategoryBuilder<T> catalyst(Supplier<ItemLike> supplier) {
-            return catalystStack(() -> new ItemStack(supplier.get()
-                    .asItem()));
-        }
-
-        public CategoryBuilder<T> icon(IDrawable icon) {
-            this.icon = icon;
-            return this;
-        }
-
-        public CategoryBuilder<T> itemIcon(ItemLike item) {
-            icon(new ItemIcon(() -> new ItemStack(item)));
-            return this;
-        }
-
-        public CategoryBuilder<T> doubleItemIcon(ItemLike item1, ItemLike item2) {
-            icon(new DoubleItemIcon(() -> new ItemStack(item1), () -> new ItemStack(item2)));
-            return this;
-        }
-
-        public CategoryBuilder<T> background(IDrawable background) {
-            this.background = background;
-            return this;
-        }
-
-        public CategoryBuilder<T> emptyBackground(int width, int height) {
-            background(new EmptyBackground(width, height));
-            return this;
-        }
-
-        public CreateRecipeCategory<T> build(String name, CreateRecipeCategory.Factory<T> factory) {
-            Supplier<List<RecipeHolder<T>>> recipesSupplier;
-            if (predicate.test(AllConfigs.server().recipes)) {
-                recipesSupplier = () -> {
-                    List<RecipeHolder<T>> recipes = new ArrayList<>();
-                    for (Consumer<List<RecipeHolder<T>>> consumer : recipeListConsumers)
-                        consumer.accept(recipes);
-                    return recipes;
-                };
-            } else {
-                recipesSupplier = Collections::emptyList;
-            }
-
-            CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
-                    new mezz.jei.api.recipe.RecipeType<>(CreatingSpace.resource(name), recipeClass),
-                    Component.translatable(CreatingSpace.MODID + ".recipe." + name), background, icon, recipesSupplier, catalysts);
-            CreateRecipeCategory<T> category = factory.create(info);
+        @Override
+        public CreateRecipeCategory<T> build(ResourceLocation id, CreateRecipeCategory.Factory<T> factory) {
+            CreateRecipeCategory<T> category = super.build(id, factory);
             allCategories.add(category);
             return category;
         }
+
     }
 
     @Override
