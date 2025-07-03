@@ -63,9 +63,9 @@ public class ItemInit {
 
         collector.add(REGISTRATE.item(
                         name + "_engine_wall", Item::new)
-                .recipe((c,p) ->
+                /*.recipe((c,p) ->
                         BaseRecipeProvider.GeneratedRecipe()
-                ).defaultModel()
+                ).defaultModel()*/
                 .register());
         // Splitting off Andesite because we had to be difficult XD
         if (name == "andesite") {
