@@ -5,8 +5,7 @@ import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolysisRecipe;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,8 +57,9 @@ public enum RecipeInit implements IRecipeTypeInfo , StringRepresentable {
         type = typeObject;
     }
 
-    RecipeInit(ProcessingRecipeBuilder.ProcessingRecipeFactory<?> processingFactory) {
-        this(() -> new ProcessingRecipeSerializer<>(processingFactory));
+    RecipeInit(StandardProcessingRecipe.Factory<?> processingFactory) {
+        this(() -> new StandardProcessingRecipe.Serializer<>(processingFactory));
+
     }
 
     @ApiStatus.Internal

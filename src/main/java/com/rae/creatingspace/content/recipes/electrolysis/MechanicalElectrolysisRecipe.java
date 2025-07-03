@@ -2,7 +2,7 @@ package com.rae.creatingspace.content.recipes.electrolysis;
 
 import com.rae.creatingspace.init.RecipeInit;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.ProcessingRecipeParams;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeParams;
 
 public class MechanicalElectrolysisRecipe extends BasinRecipe {
     public MechanicalElectrolysisRecipe(ProcessingRecipeParams params) {
