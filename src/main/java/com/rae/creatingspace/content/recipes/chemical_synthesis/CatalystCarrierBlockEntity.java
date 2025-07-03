@@ -113,7 +113,7 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
                 if (processingTicks < 0) {
                     float recipeSpeed = 1;
                     if (currentRecipe instanceof ProcessingRecipe) {
-                        int t = ((ProcessingRecipe<?>) currentRecipe).getProcessingDuration();
+                        int t = ((ProcessingRecipe<?,?>) currentRecipe).getProcessingDuration();
                         if (t != 0)
                             recipeSpeed = t / 100f;
                     }

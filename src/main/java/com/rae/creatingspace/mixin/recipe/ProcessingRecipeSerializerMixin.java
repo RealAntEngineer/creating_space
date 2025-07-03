@@ -11,6 +11,10 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.processing.recipe.*;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.GsonHelper;
@@ -25,20 +29,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
-@Mixin(value = ProcessingRecipeSerializer.class)
+@Mixin(value = StandardProcessingRecipe.Serializer.class)
 public abstract class ProcessingRecipeSerializerMixin {
 
-    @Inject(method = "codec(Lcom/simibubi/create/AllRecipeTypes;)Lcom/mojang/serialization/MapCodec;", at = @At("RETURN"), remap = false, cancellable = true)
-    private static <T extends ProcessingRecipe<?>> void  readKeepNbtJson(AllRecipeTypes recipeTypes, CallbackInfoReturnable<MapCodec<T>> cir) {
+    //should target ProcessingRecipeParams::codec
+    @Inject(method = "codec", at = @At("RETURN"), remap = false, cancellable = true)
+    private <R extends StandardProcessingRecipe<?>> void  readKeepNbtJson(CallbackInfoReturnable<MapCodec<R>> cir) {
         //TODO add a keepNbt to the expected CODEC ? orr completely replacing it if that's not possible.
+        MapCodec<R> OLD_CODEC = cir.getReturnValue();
         cir.setReturnValue(RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.list(Codec.STRING).optionalFieldOf("keepNbt",List.of()).forGetter(
                         i -> {
                             if (i instanceof IMoreNbtConditions moreNbtConditions) {
                                 return moreNbtConditions.getKeepNbt();
                             }
-                            return List.of();
+                            return  List.of("");
                         }
                 ),
                 Codec.list(Codec.STRING).optionalFieldOf("matchNbt",List.of()).forGetter(
@@ -46,57 +53,49 @@ public abstract class ProcessingRecipeSerializerMixin {
                             if (i instanceof IMoreNbtConditions moreNbtConditions) {
                                 return moreNbtConditions.getMachNbt();
                             }
-                            return List.of();
+                            return List.of("");
                         }
                 ),
-                Codec.either(Ingredient.CODEC, FluidIngredient.CODEC).listOf().fieldOf("ingredients").forGetter(i -> {
-                    List<Either<Ingredient, FluidIngredient>> list = new ArrayList<>();
-                    i.getIngredients().forEach(o -> list.add(Either.left(o)));
-                    i.getFluidIngredients().forEach(o -> list.add(Either.right(o)));
-                    return list;
-                }),
-                Codec.either(FluidStack.CODEC, ProcessingOutput.CODEC).listOf().fieldOf("results").forGetter(i -> {
-                    List<Either<FluidStack, ProcessingOutput>> list = new ArrayList<>();
-                    i.getFluidResults().forEach(o -> list.add(Either.left(o)));
-                    i.getRollableResults().forEach(o -> list.add(Either.right(o)));
-                    return list;
-                }), // Fluid and item outputs both using "id" as key, try deserializing as fluid first
-                ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("processing_time", 0).forGetter(T::getProcessingDuration),
-                HeatCondition.CODEC.optionalFieldOf("heat_requirement", HeatCondition.NONE).forGetter(T::getRequiredHeat)
-        ).apply(instance, (keepNbt, matchNbt,ingredients, results, processingTime, heatRequirement) -> {
-            if (!(recipeTypes.serializerSupplier.get() instanceof ProcessingRecipeSerializer processingRecipeSerializer))
-                throw new RuntimeException("Not a processing recipe serializer " + recipeTypes.serializerSupplier.get());
-
-            ProcessingRecipeBuilder<T> builder = new ProcessingRecipeBuilder<T>(processingRecipeSerializer.getFactory(), recipeTypes.id);
-
-            NonNullList<Ingredient> ingredientList = NonNullList.create();
-            NonNullList<FluidIngredient> fluidIngredientList = NonNullList.create();
-
-            NonNullList<ProcessingOutput> processingOutputList = NonNullList.create();
-            NonNullList<FluidStack> fluidStackOutputList = NonNullList.create();
-
-            for (Either<Ingredient, FluidIngredient> either : ingredients) {
-                either.left().ifPresent(ingredientList::add);
-                either.right().ifPresent(fluidIngredientList::add);
-            }
-
-            for (Either<FluidStack, ProcessingOutput> either : results) {
-                either.left().ifPresent(fluidStackOutputList::add);
-                either.right().ifPresent(processingOutputList::add);
-            }
-
-            builder.withItemIngredients(ingredientList)
-                    .withItemOutputs(processingOutputList)
-                    .withFluidIngredients(fluidIngredientList)
-                    .withFluidOutputs(fluidStackOutputList)
-                    .duration(processingTime)
-                    .requiresHeat(heatRequirement);
-            T recipe = builder.build();
+                //we can avoid this with the 			RecipeSerializer.SHAPED_RECIPE.codec().forGetter(t -> t), thingy
+                OLD_CODEC.forGetter(t -> t)
+        ).apply(instance, (keepNbt, matchNbt,recipe) -> {
             if (recipe instanceof IMoreNbtConditions moreNbtConditions){
                 moreNbtConditions.setKeepNbt(new ArrayList<>(keepNbt));
                 moreNbtConditions.setMachNbt(new ArrayList<>(matchNbt));
             }
             return recipe;
         })));
+    }
+
+    @Inject(method = "streamCodec", at = @At("RETURN"), remap = false, cancellable = true)
+    private <R extends StandardProcessingRecipe<?>> void  readKeepNbtJsonStream(CallbackInfoReturnable<StreamCodec<RegistryFriendlyByteBuf, R>> cir) {
+        StreamCodec<RegistryFriendlyByteBuf, R> old_stream_codec = cir.getReturnValue();
+
+        StreamCodec<RegistryFriendlyByteBuf, R> wrapped = StreamCodec.of(
+                (buf, recipe) -> {
+                    old_stream_codec.encode(buf, recipe);
+                    if (recipe instanceof IMoreNbtConditions moreNbtConditions) {
+                        buf.writeWithCodec(NbtOps.INSTANCE,Codec.list(Codec.STRING), moreNbtConditions.getKeepNbt());
+                        buf.writeWithCodec(NbtOps.INSTANCE,Codec.list(Codec.STRING), moreNbtConditions.getMachNbt());
+
+                    }
+                },
+                buf -> {
+                    // Read extra fields first
+
+                    R recipe = old_stream_codec.decode(buf);
+
+                    if (recipe instanceof IMoreNbtConditions moreNbtConditions) {
+                        List<String> keepNbt = buf.readWithCodecTrusted(NbtOps.INSTANCE,Codec.list(Codec.STRING));
+                        List<String> matchNbt =  buf.readWithCodecTrusted(NbtOps.INSTANCE,Codec.list(Codec.STRING));
+                        moreNbtConditions.setKeepNbt(new ArrayList<>(keepNbt));
+                        moreNbtConditions.setMachNbt(new ArrayList<>(matchNbt));
+                    }
+                    return recipe;
+                }
+        );
+
+        cir.setReturnValue(wrapped);
+
     }
 }

@@ -1,30 +1,35 @@
 package com.rae.creatingspace.content.recipes.air_liquefying;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import com.rae.creatingspace.init.RecipeInit;
+import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipe;
+import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipeParams;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder.ProcessingRecipeParams;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeParams;
 import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
+public class AirLiquefyingRecipe extends ProcessingRecipe<RecipeWrapper, AirLiquefyingRecipeParam> {
 
-	private ResourceLocation blockInFront;
-	private ResourceLocation dimension;
+	private final ResourceLocation blockInFront;
+	private final ResourceLocation dimension;
 
 	public static boolean match(AirLiquefierBlockEntity airLiquefierBlockEntity, Recipe<?> recipe) {
 		return apply(airLiquefierBlockEntity, recipe, true);
@@ -40,7 +45,7 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 			BlockState state = airLiquefierBlockEntity.getBlockState();
 			BlockState targetedState = airLiquefierBlockEntity.getLevel().getBlockState(airLiquefierBlockEntity.getBlockPos().relative(state.getValue(AirLiquefierBlock.FACING)));
 			Block block = BuiltInRegistries.BLOCK.get(airLiquefyingRecipe.getBlockInFront());
-			if (block != null && !targetedState.is(block)) {
+			if (!targetedState.is(block)) {
 				return false;
 			}
 			ResourceLocation currentDimension = airLiquefierBlockEntity.getLevel().dimension().location();
@@ -69,9 +74,13 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 
 		return true;
 	}
-
-	protected AirLiquefyingRecipe(IRecipeTypeInfo type, ProcessingRecipeParams params) {
+	public AirLiquefyingRecipe(AirLiquefyingRecipeParam params) {
+		this(RecipeInit.AIR_LIQUEFYING, params);
+	}
+	protected AirLiquefyingRecipe(IRecipeTypeInfo type, AirLiquefyingRecipeParam params) {
 		super(type, params);
+		blockInFront = params.blockInFront;
+		dimension = params.dimension;
 	}
 
 	public ResourceLocation getBlockInFront() {
@@ -92,9 +101,7 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 		return 0;
 	}
 
-	public AirLiquefyingRecipe(ProcessingRecipeParams params) {
-		this(RecipeInit.AIR_LIQUEFYING, params);
-	}
+
 
 	@Override
 	protected int getMaxFluidOutputCount() {
@@ -107,37 +114,51 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<SmartInventory> {
 	}
 
 	@Override
-	public boolean matches(SmartInventory inv, @Nonnull Level worldIn) {
+	public boolean matches(@NotNull RecipeWrapper smartInventory, @NotNull Level level) {
 		return false;
 	}
-
-
-
-	@Override
-	public void readAdditional(@NotNull FriendlyByteBuf buffer) {
-		super.readAdditional(buffer);
-		blockInFront = buffer.readResourceLocation();
-		if (blockInFront.equals(ResourceLocation.parse("minecraft:_"))) {
-			blockInFront = null;
-		}
-		dimension = buffer.readResourceLocation();
-		if (dimension.equals(ResourceLocation.parse("minecraft:_"))) {
-			dimension = null;
-		}
+	@FunctionalInterface
+	public interface Factory<R extends AirLiquefyingRecipe> extends ProcessingRecipe.Factory<AirLiquefyingRecipeParam, R> {
+		R create(AirLiquefyingRecipeParam params);
 	}
 
-	@Override
-	public void writeAdditional(@NotNull FriendlyByteBuf buffer) {
-		super.writeAdditional(buffer);
-		if (blockInFront != null)
-			buffer.writeResourceLocation(blockInFront);
-		else {
-			buffer.writeResourceLocation(ResourceLocation.parse("minecraft:_"));
+	public static class Builder<R extends AirLiquefyingRecipe> extends ProcessingRecipeBuilder<AirLiquefyingRecipeParam, R, AirLiquefyingRecipe.Builder<R>> {
+		public Builder(AirLiquefyingRecipe.Factory<R> factory, ResourceLocation recipeId) {
+			super(factory, recipeId);
 		}
-		if (dimension != null)
-			buffer.writeResourceLocation(dimension);
-		else {
-			buffer.writeResourceLocation(ResourceLocation.parse("minecraft:_"));
+
+		@Override
+		protected AirLiquefyingRecipeParam createParams() {
+			return new AirLiquefyingRecipeParam();
 		}
+
+		@Override
+		public AirLiquefyingRecipe.Builder<R> self() {
+			return this;
+		}
+
 	}
+
+	public static class Serializer<R extends AirLiquefyingRecipe> implements RecipeSerializer<R> {
+		private final MapCodec<R> codec;
+		private final StreamCodec<RegistryFriendlyByteBuf, R> streamCodec;
+
+		public Serializer(ProcessingRecipe.Factory<AirLiquefyingRecipeParam, R> factory) {
+			this.codec = ProcessingRecipe.codec(factory, AirLiquefyingRecipeParam.CODEC);
+			this.streamCodec = ProcessingRecipe.streamCodec(factory, AirLiquefyingRecipeParam.STREAM_CODEC);
+		}
+
+		@Override
+		public MapCodec<R> codec() {
+			return codec;
+		}
+
+		@Override
+		public StreamCodec<RegistryFriendlyByteBuf, R> streamCodec() {
+			return streamCodec;
+		}
+
+	}
+
+
 }
