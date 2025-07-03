@@ -4,20 +4,30 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
 
+import com.rae.creatingspace.content.datagen.recipe.CSPressingRecipeGen;
+import com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateDataProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+
+import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 
 public class CSDatagen {
 	public static void gatherData(GatherDataEvent event) {
 		addExtraRegistrateData();
 
 		DataGenerator generator = event.getGenerator();
+		PackOutput output = generator.getPackOutput();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
 		if (event.includeClient()) {
@@ -35,13 +45,20 @@ public class CSDatagen {
 			//ProcessingRecipeGen.registerAll(generator);
 
 //			AllOreFeatureConfigEntries.gatherData(event);
+
+			//CS Recipes
+			generator.addProvider(true, new CSStandardRecipeGen(output, lookupProvider));
+			generator.addProvider(true, new CSPressingRecipeGen(output, lookupProvider));
+
+			event.getGenerator().addProvider(true, REGISTRATE.setDataProvider(new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event)));
 		}
 	}
 
 	private static void addExtraRegistrateData() {
 		//CreateRegistrateTags.addGenerators();
 
-		CreatingSpace.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
+		/*
+		REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
 			BiConsumer<String, String> langConsumer = provider::add;
 
 			provideDefaultLang("interface", langConsumer);
@@ -50,6 +67,7 @@ public class CSDatagen {
 			//AllSoundEvents.provideLang(langConsumer);
 			providePonderLang(langConsumer);
 		});
+		 */
 	}
 
 	private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {
