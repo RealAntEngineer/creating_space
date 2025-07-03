@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:iron_injector_grid"
+            "id": "creatingspace:iron_injector_grid"
         }
     ],
     "sequence": [

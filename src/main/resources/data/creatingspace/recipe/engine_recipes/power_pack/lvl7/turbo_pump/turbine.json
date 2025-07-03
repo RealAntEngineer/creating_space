@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:inconel_turbine"
+            "id": "creatingspace:inconel_turbine"
         }
     ],
     "sequence": [

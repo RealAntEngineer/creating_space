@@ -1,6 +1,7 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.TagsInit;
@@ -8,6 +9,10 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem;
 import com.rae.creatingspace.content.life_support.spacesuit.SpacesuitHelmetItem;
 import com.rae.creatingspace.content.rocket.engine.design.DesignBlueprintItem;
 import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
+import com.simibubi.create.AllTags;
+import com.simibubi.create.api.data.recipe.BaseRecipeProvider;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
@@ -16,6 +21,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,6 +29,9 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.BlastingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
 
@@ -45,10 +54,8 @@ public class ItemInit {
     public static final ArrayList<ItemEntry<? extends Item>> ENGINE_INGREDIENTS = EngineMaterialInit.collectMaterials();
     public static final ArrayList<ItemEntry<? extends Item>> METALS_INGREDIENTS = EngineMaterialInit.collectMetals();
 
-
     public static ArrayList<ItemEntry<? extends Item>> registerEngineIngredientForMaterial(String name) {
         ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
-
 
         collector.addAll(smartRegisterSequencedItem(name + "_injector"));
         collector.addAll(smartRegisterSequencedItem(name + "_turbine"));
@@ -56,23 +63,94 @@ public class ItemInit {
 
         collector.add(REGISTRATE.item(
                         name + "_engine_wall", Item::new)
-                .defaultModel()
-                .register());
-        collector.add(REGISTRATE.item((name + "_blisk"), Item::new)
-                .defaultModel()
-                .register());
-        collector.add(REGISTRATE.item(
-                        name + "_rib", Item::new)
-                .defaultModel()
                 .recipe((c,p) ->
-                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
-                            .define('N', commonItemTag("nuggets/" + name))
-                            .define('I', commonItemTag("ingots/" + name))
-                            .pattern("NIN")
-                            .pattern(" N ")
-                            .unlockedBy("has_" + c.getName(), has(c.get()))
-                            .save(p, resource("crafting/" + name + "_rib")))
+                        BaseRecipeProvider.GeneratedRecipe()
+                ).defaultModel()
                 .register());
+        // Splitting off Andesite because we had to be difficult XD
+        if (name == "andesite") {
+           collector.add(REGISTRATE.item((name + "_blisk"), Item::new)
+                   .defaultModel()
+                   .recipe((c, p) ->
+                       ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                           .define('N', AllItems.ANDESITE_ALLOY)
+                           .define('I', AllBlocks.SHAFT)
+                           .define('P', Items.IRON_NUGGET)
+                           .pattern("NPN")
+                           .pattern("PIP")
+                           .pattern("NPN")
+                           .unlockedBy("has_" + c.getName(), has(c.get()))
+                           .save(p, resource("crafting/rocket_ingredients/" + name + "_blisk")))
+                   .register());
+
+           collector.add(REGISTRATE.item(
+                           name + "_turbine_shaft", Item::new)
+                   .defaultModel()
+                   .recipe((c, p) ->
+                           ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                   .define('I', AllItems.ANDESITE_ALLOY)
+                                   .pattern("I  ")
+                                   .pattern(" I ")
+                                   .pattern("  I")
+                                   .unlockedBy("has_" + c.getName(), has(c.get()))
+                                   .save(p, resource("crafting/rocket_ingredients/" + name + "_turbine_shaft")))
+                   .register());
+
+           collector.add(REGISTRATE.item(
+                           name + "_rib", Item::new)
+                   .defaultModel()
+                   .recipe((c,p) ->
+                           ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                   .define('N', AllItems.ANDESITE_ALLOY)
+                                   .define('I', Items.IRON_NUGGET)
+                                   .pattern("NIN")
+                                   .pattern(" N ")
+                                   .unlockedBy("has_" + c.getName(), has(c.get()))
+                                   .save(p, resource("crafting/rocket_ingredients/" + name + "_rib")))
+                   .register());
+       }
+       else {
+           collector.add(REGISTRATE.item((name + "_blisk"), Item::new)
+                   .defaultModel()
+                   .recipe((c, p) ->
+                       ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                           .define('N', commonItemTag("nuggets/" + name))
+                           .define('I', commonItemTag("ingots/" + name))
+                           .define('P', commonItemTag("plates/" + name))
+                           .pattern("NPN")
+                           .pattern("PIP")
+                           .pattern("NPN")
+                           .unlockedBy("has_" + c.getName(), has(c.get()))
+                           .save(p, resource("crafting/rocket_ingredients/" + name + "_blisk")))
+                   .register());
+
+           collector.add(REGISTRATE.item(
+                           name + "_turbine_shaft", Item::new)
+                   .defaultModel()
+                   .recipe((c, p) ->
+                           ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                   .define('I', commonItemTag("ingots/" + name))
+                                   .pattern("I  ")
+                                   .pattern(" I ")
+                                   .pattern("  I")
+                                   .unlockedBy("has_" + c.getName(), has(c.get()))
+                                   .save(p, resource("crafting/rocket_ingredients/" + name + "_turbine_shaft")))
+                   .register());
+
+           collector.add(REGISTRATE.item(
+                           name + "_rib", Item::new)
+                   .defaultModel()
+                   .recipe((c,p) ->
+                           ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                   .define('N', commonItemTag("nuggets/" + name))
+                                   .define('I', commonItemTag("ingots/" + name))
+                                   .pattern("NIN")
+                                   .pattern(" N ")
+                                   .unlockedBy("has_" + c.getName(), has(c.get()))
+                                   .save(p, resource("crafting/rocket_ingredients/" + name + "_rib")))
+                   .register());
+       }
+
         /*collector.add(CreatingSpace.REGISTRATE.item(
                         name + "_canal", Item::new)
                 .defaultModel()
@@ -81,10 +159,6 @@ public class ItemInit {
                         name + "_engine_pipe", Item::new)
                 .defaultModel()
                 .register());*/
-        collector.add(REGISTRATE.item(
-                        name + "_turbine_shaft", Item::new)
-                .defaultModel()
-                .register());
         return collector;
     }
     public static ArrayList<ItemEntry<? extends Item>> registerMetalVariants(String name) {
@@ -197,11 +271,28 @@ public class ItemInit {
 
     public static final ItemEntry<Item> COPPER_COIL = REGISTRATE.item(
             "copper_coil",Item::new)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('C', AllTags.commonItemTag("ingots/copper"))
+                            .pattern("CCC")
+                            .pattern("C C")
+                            .pattern("CCC")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/misc/" + c.getName())))
             .register();
 
 
     public static final ItemEntry<Item> BASIC_CATALYST = REGISTRATE.item(
             "basic_catalyst",Item::new)
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 4)
+                            .define('B', Items.BONE_MEAL)
+                            .define('N', ItemInit.NICKEL_DUST)
+                            .pattern("NBN")
+                            .pattern("BNB")
+                            .pattern("NBN")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/misc/" + c.getName())))
             .register();
 
     public static final ItemEntry<CombustibleItem> COAL_DUST = REGISTRATE.item(
@@ -441,18 +532,41 @@ public class ItemInit {
             REGISTRATE
                     .item("basic_spacesuit_leggings",
                             p -> new BaseArmorItem(AllArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, p, CreatingSpace.resource("basic_spacesuit")))
+                    .recipe((c,p) ->
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                    .define('F', ItemInit.BASIC_SPACESUIT_FABRIC::get)
+                                    .pattern("FFF")
+                                    .pattern("F F")
+                                    .pattern("F F")
+                                    .unlockedBy("has_" + c.getName(), has(c.get()))
+                                    .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.LEG_ARMOR)
                     .register();
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_BOOTS =
             REGISTRATE
                     .item("basic_spacesuit_boots",
                             p -> new BaseArmorItem(AllArmorMaterials.COPPER, ArmorItem.Type.BOOTS, p, CreatingSpace.resource("basic_spacesuit")))
+                    .recipe((c,p) ->
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                    .define('F', ItemInit.BASIC_SPACESUIT_FABRIC::get)
+                                    .pattern("F F")
+                                    .pattern("F F")
+                                    .unlockedBy("has_" + c.getName(), has(c.get()))
+                                    .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.FOOT_ARMOR)
                     .register();
     public static final ItemEntry<SpacesuitHelmetItem> BASIC_SPACESUIT_HELMET =
             REGISTRATE
                     .item("basic_spacesuit_helmet",
                             p -> new SpacesuitHelmetItem(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit")))
+                    .recipe((c,p) ->
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                    .define('F', ItemInit.BASIC_SPACESUIT_FABRIC::get)
+                                    .define('G', AllItems.GOLDEN_SHEET::get)
+                                    .pattern("FFF")
+                                    .pattern("FGF")
+                                    .unlockedBy("has_" + c.getName(), has(c.get()))
+                                    .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.HEAD_ARMOR)
                     .register();
 
@@ -460,18 +574,41 @@ public class ItemInit {
             REGISTRATE
                     .item("advanced_spacesuit_leggings",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .recipe((c,p) ->
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                    .define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
+                                    .pattern("FFF")
+                                    .pattern("F F")
+                                    .pattern("F F")
+                                    .unlockedBy("has_" + c.getName(), has(c.get()))
+                                    .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.LEG_ARMOR)
                     .register();
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_BOOTS =
             REGISTRATE
                     .item("advanced_spacesuit_boots",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.BOOTS, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .recipe((c,p) ->
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                    .define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
+                                    .pattern("F F")
+                                    .pattern("F F")
+                                    .unlockedBy("has_" + c.getName(), has(c.get()))
+                                    .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.FOOT_ARMOR)
                     .register();
     public static final ItemEntry<SpacesuitHelmetItem> ADVANCED_SPACESUIT_HELMET =
             REGISTRATE
                     .item("advanced_spacesuit_helmet",
                             p -> new SpacesuitHelmetItem(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .recipe((c,p) ->
+                            ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                                    .define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
+                                    .define('G', AllItems.GOLDEN_SHEET::get)
+                                    .pattern("FFF")
+                                    .pattern("FGF")
+                                    .unlockedBy("has_" + c.getName(), has(c.get()))
+                                    .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.HEAD_ARMOR)
                     .register();
 
@@ -481,6 +618,15 @@ public class ItemInit {
                     "starter_charge", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(500))
             //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('P', Items.PAPER)
+                            .define('G', Items.GUNPOWDER)
+                            .pattern("PGP")
+                            .pattern("PGP")
+                            .pattern("PGP")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/misc/" + c.getName())))
             .register();
     public static final ItemEntry<Item> INJECTOR = REGISTRATE.item(
                     "injector", Item::new)
@@ -493,6 +639,15 @@ public class ItemInit {
     public static final ItemEntry<Item> STURDY_PROPELLER = REGISTRATE.item(
                     "sturdy_propeller", Item::new)
             //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+            .recipe((c,p) ->
+                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
+                            .define('I', commonItemTag("ingots/iron"))
+                            .define('S', AllItems.STURDY_SHEET)
+                            .pattern(" S ")
+                            .pattern("SIS")
+                            .pattern(" S ")
+                            .unlockedBy("has_" + c.getName(), has(c.get()))
+                            .save(p, resource("crafting/misc/" + c.getName())))
             .register();
 
     public static final ItemEntry<Item> INJECTOR_GRID = REGISTRATE.item(

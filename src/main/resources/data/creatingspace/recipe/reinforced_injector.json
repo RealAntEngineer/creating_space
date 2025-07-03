@@ -7,11 +7,11 @@
   "results": [
     {
       "chance": 120.0,
-      "item": "creatingspace:reinforced_injector"
+      "id": "creatingspace:reinforced_injector"
     },
     {
       "chance": 8.0,
-      "item": "creatingspace:cobalt_nugget"
+      "id": "creatingspace:cobalt_nugget"
     }
   ],
   "sequence": [

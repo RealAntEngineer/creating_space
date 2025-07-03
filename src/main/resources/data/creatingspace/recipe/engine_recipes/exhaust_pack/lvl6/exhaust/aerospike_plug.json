@@ -17,7 +17,7 @@
     "loops": 1,
     "results": [
         {
-            "item": "creatingspace:aerospike_plug"
+            "id": "creatingspace:aerospike_plug"
         }
     ],
     "sequence": [

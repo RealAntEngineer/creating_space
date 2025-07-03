@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:hastelloy_injector_grid"
+            "id": "creatingspace:hastelloy_injector_grid"
         }
     ],
     "sequence": [

@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:monel_injector_grid"
+            "id": "creatingspace:monel_injector_grid"
         }
     ],
     "sequence": [

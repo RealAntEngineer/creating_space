@@ -4,16 +4,11 @@ import com.google.common.base.Supplier;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.rae.creatingspace.content.datagen.CSMetalSets;
 import com.rae.creatingspace.content.datagen.CSRecipeProvider;
-import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.CompatMetals;
 import com.simibubi.create.foundation.data.recipe.Mods;
-import com.simibubi.create.foundation.data.recipe.PressingRecipeGen;
 import com.simibubi.create.foundation.mixin.accessor.MappedRegistryAccessor;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -32,7 +27,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -60,267 +54,44 @@ import static com.rae.creatingspace.CreatingSpace.resource;
 
 public class CSStandardRecipeGen extends CSRecipeProvider {
 
-        private Marker RESOURCES = enterFolder("resources");
-
- /*
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemInit.ALUMINUM_NUGGET.get(), 9)
-                .requires(AllTags.commonItemTag("ingots/aluminum"))
-                .unlockedBy("has_aluminum_ingot", has(ItemInit.ALUMINUM_INGOT)).save(recipeOutput, createSimpleLocation("aluminum_nugget"));
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemInit.ALUMINUM_INGOT.get(), 9)
-                .requires(AllTags.commonItemTag("storage_blocks/aluminum"))
-                .unlockedBy("has_aluminum_ingot", has(ItemInit.ALUMINUM_INGOT)).save(recipeOutput, withSuffix("_from_block").createLocation("aluminum_ingot"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ItemInit.ALUMINUM_INGOT.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AllTags.commonItemTag("nuggets/aluminum"))
-                .unlockedBy("has_aluminum_ingot", has(ItemInit.ALUMINUM_INGOT))
-                .save(recipeOutput, withSuffix("_from_nuggets").createLocation("aluminum_ingot"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BlockInit.ALUMINUM_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AllTags.commonItemTag("ingots/aluminum"))
-                .unlockedBy("has_aluminum_ingot", has(ItemInit.ALUMINUM_INGOT))
-                .save(recipeOutput, createSimpleLocation("aluminum_block"));
-
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemInit.NICKEL_NUGGET.get(), 9)
-                .requires(AllTags.commonItemTag("ingots/nickel"))
-                .unlockedBy("has_nickel_ingot", has(ItemInit.NICKEL_INGOT)).save(recipeOutput, createSimpleLocation("nickel_nugget"));
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemInit.NICKEL_INGOT.get(), 9)
-                .requires(AllTags.commonItemTag("storage_blocks/nickel"))
-                .unlockedBy("has_nickel_ingot", has(ItemInit.NICKEL_INGOT)).save(recipeOutput, withSuffix("_from_block").createLocation("nickel_ingot"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ItemInit.NICKEL_INGOT.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AllTags.commonItemTag("nuggets/nickel"))
-                .unlockedBy("has_nickel_ingot", has(ItemInit.NICKEL_INGOT))
-                .save(recipeOutput, withSuffix("_from_nuggets").createLocation("nickel_ingot"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BlockInit.NICKEL_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AllTags.commonItemTag("ingots/nickel"))
-                .unlockedBy("has_nickel_ingot", has(ItemInit.NICKEL_INGOT))
-                .save(recipeOutput, createSimpleLocation("nickel_block"));
-
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemInit.COBALT_NUGGET.get(), 9)
-                .requires(AllTags.commonItemTag("ingots/cobalt"))
-                .unlockedBy("has_cobalt_ingot", has(ItemInit.COBALT_INGOT)).save(recipeOutput, createSimpleLocation("cobalt_nugget"));
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ItemInit.COBALT_INGOT.get(), 9)
-                .requires(AllTags.commonItemTag("storage_blocks/cobalt"))
-                .unlockedBy("has_cobalt_ingot", has(ItemInit.COBALT_INGOT)).save(recipeOutput, withSuffix("_from_block").createLocation("cobalt_ingot"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ItemInit.COBALT_INGOT.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AllTags.commonItemTag("nuggets/cobalt"))
-                .unlockedBy("has_cobalt_ingot", has(ItemInit.COBALT_INGOT))
-                .save(recipeOutput, withSuffix("_from_nuggets").createLocation("cobalt_ingot"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BlockInit.COBALT_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', AllTags.commonItemTag("ingots/cobalt"))
-                .unlockedBy("has_cobalt_ingot", has(ItemInit.COBALT_INGOT))
-                .save(recipeOutput, createSimpleLocation("cobalt_block"));
-         */
-
-
-        private Marker ARMOR = enterFolder("armor");
-
-        GeneratedRecipe
-
-                ADVANCED_SPACESUIT_BOOTS = create(ItemInit.ADVANCED_SPACESUIT_BOOTS).returns(1)
-                .unlockedBy(ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
-                .viaShaped(b -> b.define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
-                        .pattern("F F")
-                        .pattern("F F")),
-
-                ADVANCED_SPACESUIT_HELMET = create(ItemInit.ADVANCED_SPACESUIT_HELMET).returns(1)
-                        .unlockedBy(ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
-                        .viaShaped(b -> b.define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
-                                .define('G', AllItems.GOLDEN_SHEET::get)
-                                .pattern("FFF")
-                                .pattern("FGF")),
-
-                ADVANCED_SPACESUIT_LEGGINGS = create(ItemInit.ADVANCED_SPACESUIT_LEGGINGS).returns(1)
-                        .unlockedBy(ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
-                        .viaShaped(b -> b.define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
-                                .pattern("FFF")
-                                .pattern("F F")
-                                .pattern("F F")),
-
-                BASIC_SPACESUIT_BOOTS = create(ItemInit.BASIC_SPACESUIT_BOOTS).returns(1)
-                        .unlockedBy(ItemInit.BASIC_SPACESUIT_FABRIC::get)
-                        .viaShaped(b -> b.define('F', ItemInit.BASIC_SPACESUIT_FABRIC::get)
-                                .pattern("F F")
-                                .pattern("F F")),
-
-                BASIC_SPACESUIT_HELMET = create(ItemInit.BASIC_SPACESUIT_HELMET).returns(1)
-                        .unlockedBy(ItemInit.BASIC_SPACESUIT_FABRIC::get)
-                        .viaShaped(b -> b.define('F', ItemInit.BASIC_SPACESUIT_FABRIC::get)
-                                .define('G', AllItems.GOLDEN_SHEET::get)
-                                .pattern("FFF")
-                                .pattern("FGF")),
-
-                BASIC_SPACESUIT_LEGGINGS = create(ItemInit.BASIC_SPACESUIT_LEGGINGS).returns(1)
-                        .unlockedBy(ItemInit.BASIC_SPACESUIT_FABRIC::get)
-                        .viaShaped(b -> b.define('F', ItemInit.BASIC_SPACESUIT_FABRIC::get)
-                                .pattern("FFF")
-                                .pattern("F F")
-                                .pattern("F F"))
-        ;
-
-        Marker MACHINES = enterFolder("machines");
-
-        GeneratedRecipe
-
-                AIR_LIQUIFIER = create(BlockInit.AIR_LIQUEFIER).returns(1)
-                .unlockedBy(AllBlocks.FLUID_TANK::get)
-                .viaShaped(b -> b.define('S', AllItems.BRASS_SHEET::get)
-                        .define('T', AllBlocks.FLUID_TANK.get())
-                        .define('C', AllBlocks.BRASS_CASING.get())
-                        .define('P', AllBlocks.ENCASED_FAN.get())
-                        .pattern(" S ")
-                        .pattern("CPC")
-                        .pattern(" T ")),
-
-                CATALYST_CARRIER = create(BlockInit.CATALYST_CARRIER).returns(1)
-                        .unlockedBy(AllBlocks.MECHANICAL_PRESS::get)
-                        .viaShaped(b -> b
-                                .define('N', AllTags.commonItemTag("ingots/nickel"))
-                                .define('G', AllTags.commonItemTag("plates/gold"))
-                                .define('P', AllBlocks.MECHANICAL_PRESS.get())
-                                .pattern(" G ")
-                                .pattern("NPN")
-                                .pattern(" G ")),
-
-                CLAMPS = create(BlockInit.CLAMPS).returns(4)
-                        .unlockedBy(AllBlocks.COPPER_CASING::get)
-                        .viaShaped(b -> b
-                                .define('I', Blocks.IRON_BLOCK)
-                                .define('C', AllBlocks.COPPER_CASING.get())
-                                .pattern("ICI")
-                                .pattern("CIC")
-                                .pattern("ICI")),
-
-                CRYOGENIC_TANK = create(BlockInit.CRYOGENIC_TANK).returns(1)
-                        .unlockedBy(AllBlocks.FLUID_TANK::get)
-                        .viaShaped(b -> b
-                                .define('N', AllTags.commonItemTag("plates/nickel"))
-                                .define('W', Items.RED_WOOL)
-                                .define('T', AllBlocks.FLUID_TANK.get())
-                                .pattern("NWN")
-                                .pattern("WTW")
-                                .pattern("NWN")),
-
-                FLIGHT_RECORDER = create(BlockInit.FLIGHT_RECORDER).returns(1)
-                        .unlockedBy(AllBlocks.BRASS_CASING::get)
-                        .viaShaped(b -> b
-                                .define('B', AllBlocks.BRASS_CASING.get())
-                                .define('A', AllBlocks.SHAFT.get())
-                                .define('K', Items.DRIED_KELP_BLOCK)
-                                .pattern(" B ")
-                                .pattern("AKA")
-                                .pattern(" B ")),
-
-                FLOW_METER = create(BlockInit.FLOW_METER).returns(1)
-                        .unlockedBy(AllBlocks.COPPER_CASING::get)
-                        .viaShaped(b -> b
-                                .define('C', AllBlocks.COPPER_CASING.get())
-                                .define('G', Items.COMPASS)
-                                .pattern("G")
-                                .pattern("C")),
-
-                MECHANICAL_ELECTROLYZER = create(BlockInit.MECHANICAL_ELECTROLYZER).returns(1)
-                        .unlockedBy(AllBlocks.FLUID_TANK::get)
-                        .viaShaped(b -> b
-                                .define('C', ItemInit.COPPER_COIL.get())
-                                .define('X', AllBlocks.COPPER_CASING.get())
-                                .define('T', AllBlocks.FLUID_TANK.get())
-                                .define('S', AllBlocks.SHAFT.get())
-                                .define('G', AllTags.commonItemTag("plates/gold"))
-                                .pattern("XSX")
-                                .pattern("CCC")
-                                .pattern("GTG")),
-
-                OXYGEN_SEALER = create(BlockInit.OXYGEN_SEALER).returns(1)
-                        .unlockedBy(AllBlocks.FLUID_TANK::get)
-                        .viaShaped(b -> b
-                                .define('P', AllItems.PROPELLER.get())
-                                .define('C', AllBlocks.COPPER_CASING.get())
-                                .define('T', AllBlocks.FLUID_TANK.get())
-                                .define('N', AllTags.commonItemTag("plates/nickel"))
-                                .pattern("NPN")
-                                .pattern("CTC")
-                                .pattern("CCC")),
-
-                ROCKET_CASING = create(BlockInit.ROCKET_CASING).returns(1)
-                        .unlockedBy(ItemInit.COBALT_INGOT::get)
-                        .viaShaped(b -> b
-                                .define('S', AllTags.commonItemTag("plates/aluminum"))
-                                .define('C', AllTags.commonItemTag("ingots/cobalt"))
-                                .pattern("CSC")
-                                .pattern("SCS")
-                                .pattern("CSC")),
-
-                ROCKET_CONTROLS_RESET = create(BlockInit.ROCKET_CONTROLS).withSuffix("_reset").returns(1)
-                        .unlockedBy(BlockInit.ROCKET_CONTROLS::get)
-                        .viaShapeless(b -> b
-                                .requires(BlockInit.ROCKET_CONTROLS.get())),
-
-                ROCKET_CONTROLS = create(BlockInit.ROCKET_CONTROLS).returns(1)
-                        .unlockedBy(AllBlocks.TRAIN_CONTROLS::get)
-                        .viaShaped(b -> b
-                                .define('E', AllItems.ELECTRON_TUBE.get())
-                                .define('R', AllBlocks.REDSTONE_LINK.get())
-                                .define('T', AllBlocks.TRAIN_CONTROLS.get())
-                                .define('S', AllItems.STURDY_SHEET.get())
-                                .pattern("ERE")
-                                .pattern("ETE")
-                                .pattern("SSS")),
-
-                ROCKET_ENGINEER_TABLE = create(BlockInit.ROCKET_ENGINEER_TABLE).returns(1)
-                        .unlockedBy(BlockInit.ROCKET_ENGINEER_TABLE::get)
-                        .viaShaped(b -> b
-                                .define('W', ItemTags.WOODEN_SLABS)
-                                .define('S', Items.SMOOTH_STONE)
-                                .pattern("WWW")
-                                .pattern("WWW")
-                                .pattern(" S "))
-        ;
-
         private Marker MISC = enterFolder("misc");
 
         GeneratedRecipe
 
-                COPPER_COIL = create(ItemInit.COPPER_COIL).returns(1)
-                .unlockedBy(ItemInit.COPPER_COIL::get)
-                .viaShaped(b -> b
-                        .define('C', AllTags.commonItemTag("ingots/copper"))
-                        .pattern("CCC")
-                        .pattern("C C")
-                        .pattern("CCC")),
+            COBALT_ORE = create(ItemInit.COBALT_INGOT::get).withSuffix("_from_ore")
+                    .viaCookingTag(() -> AllTags.commonItemTag("ores/cobalt"))
+                    .rewardXP(1)
+                    .inBlastFurnace(),
 
-                STARTER_CHARGE = create(ItemInit.STARTER_CHARGE).returns(1)
-                        .unlockedBy(ItemInit.STARTER_CHARGE::get)
-                        .viaShaped(b -> b
-                                .define('P', Items.PAPER)
-                                .define('G', Items.GUNPOWDER)
-                                .pattern("PGP")
-                                .pattern("PGP")
-                                .pattern("PGP")),
+            RAW_COBALT_ORE = create(ItemInit.COBALT_INGOT::get).withSuffix("_from_raw_ore")
+                    .viaCookingTag(() -> AllTags.commonItemTag("raw_materials/cobalt"))
+                    .rewardXP(.7f)
+                    .inBlastFurnace(),
 
-                STURDY_PROPELLER = create(ItemInit.STURDY_PROPELLER).returns(1)
-                        .unlockedBy(AllItems.STURDY_SHEET::get)
-                        .viaShaped(b -> b
-                                .define('I', Items.IRON_INGOT)
-                                .define('S', AllItems.STURDY_SHEET)
-                                .pattern(" S ")
-                                .pattern("SIS")
-                                .pattern(" S "));
+            ALUMINUM_ORE = create(ItemInit.ALUMINUM_INGOT::get).withSuffix("_from_ore")
+                    .viaCookingTag(() -> AllTags.commonItemTag("ores/aluminum"))
+                    .rewardXP(1)
+                    .inBlastFurnace(),
+
+            RAW_ALUMINUM_ORE = create(ItemInit.ALUMINUM_INGOT::get).withSuffix("_from_raw_ore")
+                    .viaCookingTag(() -> AllTags.commonItemTag("raw_materials/aluminum"))
+                    .rewardXP(.7f)
+                    .inBlastFurnace(),
+
+            NICKEL_ORE = create(ItemInit.NICKEL_INGOT::get).withSuffix("_from_ore")
+                    .viaCookingTag(() -> AllTags.commonItemTag("ores/nickel"))
+                    .rewardXP(1)
+                    .inBlastFurnace(),
+
+            RAW_NICKEL_ORE = create(ItemInit.NICKEL_INGOT::get).withSuffix("_from_raw_ore")
+                    .viaCookingTag(() -> AllTags.commonItemTag("raw_materials/nickel"))
+                    .rewardXP(.7f)
+                    .inBlastFurnace(),
+
+            CRUSHED_COBALT = blastCrushedMetal(() -> ItemInit.COBALT_INGOT, ItemInit.CRUSHED_COBALT_ORE::get),
+            CRUSHED_ALUMINUM = blastCrushedMetal(() -> ItemInit.ALUMINUM_INGOT, ItemInit.CRUSHED_ALUMINUM_ORE::get),
+            CRUSHED_NICKEL = blastCrushedMetal(() -> ItemInit.NICKEL_INGOT, ItemInit.CRUSHED_NICKEL_ORE::get);
+
 
     String currentFolder = "";
 
@@ -554,7 +325,7 @@ public class CSStandardRecipeGen extends CSRecipeProvider {
             return new GeneratedCookingRecipeBuilder(ingredient);
         }
 
-        class GeneratedCookingRecipeBuilder {
+        public class GeneratedCookingRecipeBuilder {
 
             private Supplier<Ingredient> ingredient;
             private float exp;

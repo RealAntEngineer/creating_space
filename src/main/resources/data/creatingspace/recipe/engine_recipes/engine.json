@@ -10,7 +10,7 @@
   "loops": 1,
   "results": [
     {
-      "item": "creatingspace:rocket_engine"
+      "id": "creatingspace:rocket_engine"
     }
   ],
   "sequence": [
@@ -30,7 +30,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:engine_blueprint"
+          "id": "creatingspace:engine_blueprint"
         }
       ]
     },
@@ -50,12 +50,12 @@
       ],
       "results": [
         {
-          "item": "creatingspace:engine_blueprint"
+          "id": "creatingspace:engine_blueprint"
         }
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:incomplete_rocket_engine"
+    "id": "creatingspace:incomplete_rocket_engine"
   }
 }

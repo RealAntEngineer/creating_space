@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:andesite_injector_grid"
+            "id": "creatingspace:andesite_injector_grid"
         }
     ],
     "sequence": [

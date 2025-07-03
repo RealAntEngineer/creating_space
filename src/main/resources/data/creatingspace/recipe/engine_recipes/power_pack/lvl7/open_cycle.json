@@ -17,7 +17,7 @@
     "loops": 1,
     "results": [
         {
-            "item": "creatingspace:power_pack"
+            "id": "creatingspace:power_pack"
         }
     ],
     "sequence": [

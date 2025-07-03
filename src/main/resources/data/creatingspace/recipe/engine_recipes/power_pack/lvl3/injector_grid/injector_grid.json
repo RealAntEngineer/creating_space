@@ -16,7 +16,7 @@
     "loops": 2,
     "results": [
         {
-            "item": "creatingspace:brass_injector_grid"
+            "id": "creatingspace:brass_injector_grid"
         }
     ],
     "sequence": [

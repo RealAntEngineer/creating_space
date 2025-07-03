@@ -16,7 +16,7 @@
   "loops": 1,
   "results": [
     {
-      "item": "creatingspace:exhaust_pack"
+      "id": "creatingspace:exhaust_pack"
     }
   ],
   "sequence": [
