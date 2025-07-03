@@ -1,0 +1,20 @@
+{
+  "type": "create:mixing",
+  "heat_requirement": "superheated",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    }
+  ],
+  "results": [
+    {
+      "id": "creatingspace:inconel_ingot"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "P": {
+      "item": "create:encased_fan"
+    },
+    "S": {
+      "tag": "c:plates/brass"
+    },
+    "T": {
+      "item": "create:fluid_tank"
+    }
+  },
+  "pattern": [
+    " S ",
+    "CPC",
+    " T "
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:air_liquefier"
+  }
+}

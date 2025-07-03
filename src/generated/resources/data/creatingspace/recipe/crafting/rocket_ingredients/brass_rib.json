@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/brass"
+    },
+    "N": {
+      "tag": "c:nuggets/brass"
+    }
+  },
+  "pattern": [
+    "NIN",
+    " N "
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:brass_rib"
+  }
+}

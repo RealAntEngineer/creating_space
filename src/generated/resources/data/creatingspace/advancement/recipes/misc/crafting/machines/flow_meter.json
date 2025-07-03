@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flow_meter": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:flow_meter"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/machines/flow_meter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_flow_meter"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/machines/flow_meter"
+    ]
+  }
+}

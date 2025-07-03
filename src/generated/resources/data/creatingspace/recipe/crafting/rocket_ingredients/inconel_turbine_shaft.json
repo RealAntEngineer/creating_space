@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/inconel"
+    }
+  },
+  "pattern": [
+    "I  ",
+    " I ",
+    "  I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:inconel_turbine_shaft"
+  }
+}

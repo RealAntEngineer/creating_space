@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "tag": "c:ingots/aluminum"
+    }
+  ],
+  "results": [
+    {
+      "id": "creatingspace:aluminum_sheet"
+    }
+  ]
+}

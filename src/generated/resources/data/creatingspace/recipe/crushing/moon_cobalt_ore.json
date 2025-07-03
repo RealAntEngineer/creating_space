@@ -1,0 +1,26 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "creatingspace:moon_cobalt_ore"
+    }
+  ],
+  "processing_time": 400,
+  "results": [
+    {
+      "id": "creatingspace:crushed_cobalt_ore"
+    },
+    {
+      "chance": 0.75,
+      "id": "creatingspace:crushed_cobalt_ore"
+    },
+    {
+      "chance": 0.75,
+      "id": "create:experience_nugget"
+    },
+    {
+      "chance": 0.125,
+      "id": "creatingspace:moon_stone"
+    }
+  ]
+}

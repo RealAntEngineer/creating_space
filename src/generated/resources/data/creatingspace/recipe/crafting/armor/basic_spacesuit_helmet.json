@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "creatingspace:basic_spacesuit_fabric"
+    },
+    "G": {
+      "item": "create:golden_sheet"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FGF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:basic_spacesuit_helmet"
+  }
+}

@@ -34,25 +34,15 @@ public class CSDatagen {
 		}
 		//TODO use this to load the info for dimensions (need to be one file for each dimension)
 		if (event.includeServer()) {
-			//generator.addProvider(true, new CreateRecipeSerializerTagsProvider(generator, existingFileHelper));
-
-			//generator.addProvider(true, new AllAdvancements(generator));
-
-			//generator.addProvider(true, new StandardRecipeGen(generator));
-			//generator.addProvider(true, new MechanicalCraftingRecipeGen(generator));
-			//generator.addProvider(true, new SequencedAssemblyRecipeGen(generator));
-			//ProcessingRecipeGen.registerAll(generator);
-
-//			AllOreFeatureConfigEntries.gatherData(event);
 
 			//CS Recipes
-			//generator.addProvider(true, new CSStandardRecipeGen(output, lookupProvider));
+			generator.addProvider(true, new CSStandardRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSPressingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
 			generator.addProvider(true, new CSCrushingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
 			generator.addProvider(true, new CSMixingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
 			generator.addProvider(true, new CSWashingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
 
-			event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
+			// event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
 		}
 	}
 

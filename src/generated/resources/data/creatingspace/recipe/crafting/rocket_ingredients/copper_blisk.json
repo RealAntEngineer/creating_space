@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/copper"
+    },
+    "N": {
+      "tag": "c:nuggets/copper"
+    },
+    "P": {
+      "tag": "c:plates/copper"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:copper_blisk"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:copper_casing"
+    },
+    "G": {
+      "item": "minecraft:compass"
+    }
+  },
+  "pattern": [
+    "G",
+    "C"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:flow_meter"
+  }
+}

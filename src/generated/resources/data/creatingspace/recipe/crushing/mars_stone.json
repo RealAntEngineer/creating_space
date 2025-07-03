@@ -1,0 +1,14 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "creatingspace:mars_stone"
+    }
+  ],
+  "processing_time": 400,
+  "results": [
+    {
+      "id": "creatingspace:mars_regolith"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "tag": "c:ingots/monel"
+    }
+  ],
+  "results": [
+    {
+      "id": "creatingspace:monel_sheet"
+    }
+  ]
+}

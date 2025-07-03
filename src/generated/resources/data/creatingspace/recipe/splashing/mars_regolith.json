@@ -1,0 +1,25 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "creatingspace:mars_regolith"
+    }
+  ],
+  "results": [
+    {
+      "chance": 0.125,
+      "count": 3,
+      "id": "creatingspace:cobalt_nugget"
+    },
+    {
+      "chance": 0.08,
+      "count": 3,
+      "id": "creatingspace:nickel_nugget"
+    },
+    {
+      "chance": 0.04,
+      "count": 3,
+      "id": "creatingspace:aluminum_nugget"
+    }
+  ]
+}

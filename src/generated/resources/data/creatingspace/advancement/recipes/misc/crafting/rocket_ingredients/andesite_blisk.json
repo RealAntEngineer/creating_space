@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_andesite_blisk": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:andesite_blisk"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/rocket_ingredients/andesite_blisk"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_andesite_blisk"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/rocket_ingredients/andesite_blisk"
+    ]
+  }
+}

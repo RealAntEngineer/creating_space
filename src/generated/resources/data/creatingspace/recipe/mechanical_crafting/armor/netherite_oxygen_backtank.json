@@ -1,0 +1,28 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "creatingspace:advanced_spacesuit_fabric"
+    },
+    "N": {
+      "tag": "c:plates/aluminum"
+    },
+    "T": {
+      "item": "create:fluid_tank"
+    },
+    "W": {
+      "item": "minecraft:white_wool"
+    }
+  },
+  "pattern": [
+    " F F ",
+    "WTNTW",
+    " FWF "
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:netherite_oxygen_backtank_placeable"
+  }
+}

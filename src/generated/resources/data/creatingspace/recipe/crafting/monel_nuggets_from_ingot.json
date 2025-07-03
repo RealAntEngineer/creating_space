@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:ingots/monel"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "creatingspace:monel_nugget"
+  }
+}

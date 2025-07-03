@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_basic_spacesuit_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:basic_spacesuit_helmet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/armor/basic_spacesuit_helmet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_basic_spacesuit_helmet"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/armor/basic_spacesuit_helmet"
+    ]
+  }
+}

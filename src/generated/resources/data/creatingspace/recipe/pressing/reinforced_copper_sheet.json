@@ -1,0 +1,13 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "tag": "c:ingots/reinforced_copper"
+    }
+  ],
+  "results": [
+    {
+      "id": "creatingspace:reinforced_copper_sheet"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rocket_engineer_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:rocket_engineer_table"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/machines/rocket_engineer_table"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rocket_engineer_table"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/machines/rocket_engineer_table"
+    ]
+  }
+}

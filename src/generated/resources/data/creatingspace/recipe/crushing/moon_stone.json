@@ -1,0 +1,14 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "creatingspace:moon_stone"
+    }
+  ],
+  "processing_time": 400,
+  "results": [
+    {
+      "id": "creatingspace:moon_regolith"
+    }
+  ]
+}

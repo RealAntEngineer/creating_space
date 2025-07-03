@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "creatingspace:advanced_spacesuit_fabric"
+    }
+  },
+  "pattern": [
+    "F F",
+    "F F"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:advanced_spacesuit_boots"
+  }
+}

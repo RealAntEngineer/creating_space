@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_starter_charge": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:starter_charge"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/misc/starter_charge"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_starter_charge"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/misc/starter_charge"
+    ]
+  }
+}

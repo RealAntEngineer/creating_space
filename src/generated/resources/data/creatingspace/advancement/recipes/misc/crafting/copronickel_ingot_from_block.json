@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_copronickel_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:copronickel_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/copronickel_ingot_from_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_copronickel_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/copronickel_ingot_from_block"
+    ]
+  }
+}

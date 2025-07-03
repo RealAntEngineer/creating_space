@@ -1,0 +1,18 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "tag": "c:raw_materials/cobalt"
+    }
+  ],
+  "processing_time": 400,
+  "results": [
+    {
+      "id": "creatingspace:crushed_cobalt_ore"
+    },
+    {
+      "chance": 0.75,
+      "id": "create:experience_nugget"
+    }
+  ]
+}

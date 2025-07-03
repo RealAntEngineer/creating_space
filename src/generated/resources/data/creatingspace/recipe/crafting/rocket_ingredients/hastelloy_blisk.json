@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/hastelloy"
+    },
+    "N": {
+      "tag": "c:nuggets/hastelloy"
+    },
+    "P": {
+      "tag": "c:plates/hastelloy"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:hastelloy_blisk"
+  }
+}

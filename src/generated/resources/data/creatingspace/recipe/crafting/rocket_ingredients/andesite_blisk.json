@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "create:shaft"
+    },
+    "N": {
+      "item": "create:andesite_alloy"
+    },
+    "P": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:andesite_blisk"
+  }
+}

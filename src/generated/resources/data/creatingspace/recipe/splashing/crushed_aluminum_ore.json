@@ -1,0 +1,14 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "creatingspace:crushed_aluminum_ore"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "creatingspace:aluminum_nugget"
+    }
+  ]
+}
