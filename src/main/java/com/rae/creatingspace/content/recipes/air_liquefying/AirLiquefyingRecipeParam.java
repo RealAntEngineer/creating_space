@@ -24,7 +24,7 @@ public class AirLiquefyingRecipeParam extends ProcessingRecipeParams {
         params.dimension = dimension;
         return params;
     }));
-    public static StreamCodec<RegistryFriendlyByteBuf, ItemApplicationRecipeParams> STREAM_CODEC = streamCodec(ItemApplicationRecipeParams::new);
+    public static StreamCodec<RegistryFriendlyByteBuf, AirLiquefyingRecipeParam> STREAM_CODEC = streamCodec(AirLiquefyingRecipeParam::new);
 
     ResourceLocation blockInFront;
     ResourceLocation dimension;
