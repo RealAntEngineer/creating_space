@@ -508,6 +508,7 @@ public class ItemInit {
                             MODID + ":block/oxygen_backtank/copper"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
 
     public static final ItemEntry<OxygenBacktankItem.O2BacktankBlockItem> NETHERITE_BACKTANK_PLACEABLE =
@@ -526,6 +527,7 @@ public class ItemInit {
                             MODID + ":block/oxygen_backtank/netherite"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
 
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_LEGGINGS =
@@ -541,6 +543,7 @@ public class ItemInit {
                                     .unlockedBy("has_" + c.getName(), has(c.get()))
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.LEG_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_BOOTS =
             REGISTRATE
@@ -554,6 +557,7 @@ public class ItemInit {
                                     .unlockedBy("has_" + c.getName(), has(c.get()))
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.FOOT_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
     public static final ItemEntry<SpacesuitHelmetItem> BASIC_SPACESUIT_HELMET =
             REGISTRATE
@@ -568,6 +572,7 @@ public class ItemInit {
                                     .unlockedBy("has_" + c.getName(), has(c.get()))
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.HEAD_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
 
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_LEGGINGS =
@@ -583,6 +588,7 @@ public class ItemInit {
                                     .unlockedBy("has_" + c.getName(), has(c.get()))
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.LEG_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_BOOTS =
             REGISTRATE
@@ -596,6 +602,7 @@ public class ItemInit {
                                     .unlockedBy("has_" + c.getName(), has(c.get()))
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.FOOT_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
     public static final ItemEntry<SpacesuitHelmetItem> ADVANCED_SPACESUIT_HELMET =
             REGISTRATE
@@ -610,6 +617,7 @@ public class ItemInit {
                                     .unlockedBy("has_" + c.getName(), has(c.get()))
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.HEAD_ARMOR)
+                    .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
 
     //sub classes

@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "creatingspace:deepslate_nickel_ore"
-  },
-  "result": "creatingspace:nickel_ingot",
-  "cookingtime": 20
-}

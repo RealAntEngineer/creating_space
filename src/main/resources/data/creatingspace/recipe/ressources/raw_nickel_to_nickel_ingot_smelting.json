@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "creatingspace:raw_nickel"
-  },
-  "result": "creatingspace:nickel_ingot",
-  "cookingtime": 40
-}

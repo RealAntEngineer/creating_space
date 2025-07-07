@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "creatingspace:moon_aluminum_ore"
-  },
-  "result": "creatingspace:aluminum_ingot",
-  "cookingtime": 40
-}

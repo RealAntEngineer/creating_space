@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "creatingspace:raw_aluminum"
-  },
-  "result": "creatingspace:aluminum_ingot",
-  "cookingtime": 40
-}
