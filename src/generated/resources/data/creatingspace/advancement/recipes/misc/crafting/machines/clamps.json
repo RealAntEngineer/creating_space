@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_clamps": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:clamps"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/machines/clamps"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_clamps"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/machines/clamps"
+    ]
+  }
+}

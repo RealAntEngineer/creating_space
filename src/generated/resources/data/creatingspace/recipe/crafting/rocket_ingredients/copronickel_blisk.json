@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/copronickel"
+    },
+    "N": {
+      "tag": "c:nuggets/copronickel"
+    },
+    "P": {
+      "tag": "c:plates/copronickel"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:copronickel_blisk"
+  }
+}

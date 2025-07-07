@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_oxygen_sealer": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:oxygen_sealer"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/machines/oxygen_sealer"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_oxygen_sealer"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/machines/oxygen_sealer"
+    ]
+  }
+}

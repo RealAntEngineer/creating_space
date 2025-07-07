@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_catalyst_carrier": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:catalyst_carrier"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/machines/catalyst_carrier"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_catalyst_carrier"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/machines/catalyst_carrier"
+    ]
+  }
+}

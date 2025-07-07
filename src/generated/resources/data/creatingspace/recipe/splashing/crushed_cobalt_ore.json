@@ -1,0 +1,14 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "creatingspace:crushed_cobalt_ore"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "creatingspace:cobalt_nugget"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_copper_blisk": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:reinforced_copper_blisk"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/rocket_ingredients/reinforced_copper_blisk"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_copper_blisk"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/rocket_ingredients/reinforced_copper_blisk"
+    ]
+  }
+}

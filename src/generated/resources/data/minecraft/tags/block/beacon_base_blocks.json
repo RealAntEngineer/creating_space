@@ -1,0 +1,12 @@
+{
+  "values": [
+    "creatingspace:nickel_block",
+    "creatingspace:aluminum_block",
+    "creatingspace:cobalt_block",
+    "creatingspace:copronickel_block",
+    "creatingspace:reinforced_copper_block",
+    "creatingspace:inconel_block",
+    "creatingspace:hastelloy_block",
+    "creatingspace:monel_block"
+  ]
+}

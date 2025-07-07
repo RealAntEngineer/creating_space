@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/inconel"
+    },
+    "N": {
+      "tag": "c:nuggets/inconel"
+    },
+    "P": {
+      "tag": "c:plates/inconel"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:inconel_blisk"
+  }
+}

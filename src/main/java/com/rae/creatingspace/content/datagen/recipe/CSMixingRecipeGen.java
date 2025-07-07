@@ -32,7 +32,7 @@ public class CSMixingRecipeGen extends MixingRecipeGen {
                     .require(commonItemTag("ingots/nickel"))
                     .require(commonItemTag("ingots/cobalt"))
                     .require(commonItemTag("ingots/cobalt"))
-                    .output(BuiltInRegistries.ITEM.get(resource("copronickel_ingot")), 1)
+                    .output(BuiltInRegistries.ITEM.get(resource("hastelloy_ingot")), 1)
                     .requiresHeat(HeatCondition.SUPERHEATED)),
 
             INCONEL_INGOT = create("inconel_ingot", b -> b
@@ -49,7 +49,7 @@ public class CSMixingRecipeGen extends MixingRecipeGen {
                     .output(BuiltInRegistries.ITEM.get(resource("monel_ingot")), 1)
                     .requiresHeat(HeatCondition.SUPERHEATED)),
 
-            REINFORCED_COPPER_INGOT = create("inconel_ingot", b -> b
+            REINFORCED_COPPER_INGOT = create("reinforced_copper_ingot", b -> b
                     .require(Items.IRON_INGOT)
                     .require(Items.COPPER_INGOT)
                     .require(Items.COPPER_INGOT)

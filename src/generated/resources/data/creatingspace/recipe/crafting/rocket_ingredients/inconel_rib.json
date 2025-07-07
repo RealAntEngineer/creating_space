@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/inconel"
+    },
+    "N": {
+      "tag": "c:nuggets/inconel"
+    }
+  },
+  "pattern": [
+    "NIN",
+    " N "
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:inconel_rib"
+  }
+}

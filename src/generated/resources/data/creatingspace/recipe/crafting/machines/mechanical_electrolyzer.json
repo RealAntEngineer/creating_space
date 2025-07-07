@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "creatingspace:copper_coil"
+    },
+    "G": {
+      "tag": "c:plates/gold"
+    },
+    "S": {
+      "item": "create:shaft"
+    },
+    "T": {
+      "item": "create:fluid_tank"
+    },
+    "X": {
+      "item": "create:copper_casing"
+    }
+  },
+  "pattern": [
+    "XSX",
+    "CCC",
+    "GTG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:mechanical_electrolyzer"
+  }
+}

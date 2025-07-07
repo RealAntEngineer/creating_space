@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:ingots/cobalt"
+    },
+    "S": {
+      "tag": "c:plates/aluminum"
+    }
+  },
+  "pattern": [
+    "CSC",
+    "SCS",
+    "CSC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:rocket_casing"
+  }
+}

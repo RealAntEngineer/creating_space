@@ -1,0 +1,29 @@
+{
+  "type": "create:mixing",
+  "heat_requirement": "superheated",
+  "ingredients": [
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    },
+    {
+      "tag": "c:ingots/nickel"
+    },
+    {
+      "tag": "c:ingots/cobalt"
+    },
+    {
+      "tag": "c:ingots/cobalt"
+    }
+  ],
+  "results": [
+    {
+      "id": "creatingspace:hastelloy_ingot"
+    }
+  ]
+}

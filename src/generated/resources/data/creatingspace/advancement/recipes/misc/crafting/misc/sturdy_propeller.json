@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sturdy_propeller": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:sturdy_propeller"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/misc/sturdy_propeller"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sturdy_propeller"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/misc/sturdy_propeller"
+    ]
+  }
+}

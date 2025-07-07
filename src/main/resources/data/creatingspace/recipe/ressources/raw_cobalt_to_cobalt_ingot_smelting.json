@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "creatingspace:raw_cobalt"
-  },
-  "result": "creatingspace:cobalt_ingot",
-  "cookingtime": 40
-}

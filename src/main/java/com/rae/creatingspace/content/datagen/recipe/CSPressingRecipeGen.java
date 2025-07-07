@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.datagen.recipe;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.AllRecipeTypes;
 
@@ -42,7 +43,7 @@ public class CSPressingRecipeGen extends PressingRecipeGen {
                     .output(resource("hastelloy_sheet")));
 
     public CSPressingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries, String defaultNamespace) {
-        super(output, registries, defaultNamespace);
+        super(output, registries, CreatingSpace.MODID);
     }
 
     @Override

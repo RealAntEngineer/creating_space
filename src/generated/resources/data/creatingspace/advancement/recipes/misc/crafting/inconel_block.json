@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_inconel_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "creatingspace:inconel_block"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/inconel_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_inconel_block"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/inconel_block"
+    ]
+  }
+}

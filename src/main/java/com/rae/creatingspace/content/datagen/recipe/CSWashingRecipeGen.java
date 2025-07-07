@@ -20,15 +20,13 @@ public class CSWashingRecipeGen extends WashingRecipeGen {
         super(output, registries, CreatingSpace.MODID);
     }
 
-        GeneratedRecipe
-
-            MOON_REGOLITH = create(() -> BlockInit.MOON_REGOLITH, b -> b
+        GeneratedRecipe MOON_REGOLITH = create(CreatingSpace.MODID, BlockInit.MOON_REGOLITH::asItem, b -> b
                 .output(.125f, Items.GOLD_NUGGET, 2)
                 .output(.08f, ItemInit.NICKEL_NUGGET, 2)
                 .output(.04f, ItemInit.ALUMINUM_NUGGET)
-                .output(.04f, ItemInit.COBALT_NUGGET)),
+                .output(.04f, ItemInit.COBALT_NUGGET));
 
-            MARS_REGOLITH = create(() -> BlockInit.MARS_REGOLITH, b -> b
+        GeneratedRecipe MARS_REGOLITH = create(CreatingSpace.MODID, BlockInit.MARS_REGOLITH::asItem, b -> b
                 .output(.125f, ItemInit.COBALT_NUGGET, 3)
                 .output(.08f, ItemInit.NICKEL_NUGGET, 3)
                 .output(.04f, ItemInit.ALUMINUM_NUGGET, 3)),
@@ -39,7 +37,7 @@ public class CSWashingRecipeGen extends WashingRecipeGen {
 
 
     public GeneratedRecipe crushedOreNoSecondary(ItemEntry<Item> crushed, Supplier<ItemLike> nugget) {
-        return create(crushed::get, b -> b.output(nugget.get(), 9));
+        return create(CreatingSpace.MODID, crushed::get, b -> b.output(nugget.get(), 9));
     }
 
 }

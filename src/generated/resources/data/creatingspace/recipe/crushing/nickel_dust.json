@@ -1,0 +1,19 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "tag": "c:ingots/nickel"
+    }
+  ],
+  "processing_time": 400,
+  "results": [
+    {
+      "count": 2,
+      "id": "creatingspace:nickel_dust"
+    },
+    {
+      "chance": 0.5,
+      "id": "creatingspace:nickel_dust"
+    }
+  ]
+}
