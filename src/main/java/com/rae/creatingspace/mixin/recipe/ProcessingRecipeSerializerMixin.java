@@ -1,35 +1,20 @@
 package com.rae.creatingspace.mixin.recipe;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.rae.creatingspace.content.recipes.IMoreNbtConditions;
-import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.content.processing.recipe.*;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
-import net.minecraft.core.NonNullList;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.fluids.FluidStack;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 @Mixin(value = StandardProcessingRecipe.Serializer.class)
 public abstract class ProcessingRecipeSerializerMixin {

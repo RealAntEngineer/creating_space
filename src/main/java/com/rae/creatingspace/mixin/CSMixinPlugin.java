@@ -1,6 +1,5 @@
 package com.rae.creatingspace.mixin;
 
-import com.simibubi.create.compat.Mods;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;

@@ -1,7 +1,6 @@
 package com.rae.creatingspace.mixin.entity.gravity;
 
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -17,7 +16,10 @@ public abstract class BoatMixin extends Entity {
     public BoatMixin(EntityType<?> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
-
+    //TODO verify that it's correct in the mixin.out (it should look like
+    // if (injected(d1) > (double)0.0F) {
+    // ....
+    // }
     @ModifyVariable(method = "floatBoat", at = @At(value = "LOAD"), name = "d1")
     private double modifyGravity(double d1) {
         if (shouldHandleGravity(level().dimension().location())) {
