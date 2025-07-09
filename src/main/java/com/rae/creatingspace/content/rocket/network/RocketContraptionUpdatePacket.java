@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.rocket.network;
 
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.init.PacketInit;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;
 import net.minecraft.client.player.LocalPlayer;
@@ -33,6 +34,6 @@ public class RocketContraptionUpdatePacket  implements ClientboundPacketPayload 
 
     @Override
     public PacketTypeProvider getTypeProvider() {
-        return null;
+        return PacketInit.UPDATE_ROCKET;
     }
 }

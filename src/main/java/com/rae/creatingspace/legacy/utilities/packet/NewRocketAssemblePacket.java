@@ -1,6 +1,7 @@
 package com.rae.creatingspace.legacy.utilities.packet;
 
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity;
+import com.rae.creatingspace.init.PacketInit;
 import com.simibubi.create.foundation.networking.BlockEntityConfigurationPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -42,6 +43,6 @@ public class NewRocketAssemblePacket extends BlockEntityConfigurationPacket<Rock
 
     @Override
     public PacketTypeProvider getTypeProvider() {
-        return null;
+        return PacketInit.ASSEMBLE_ROCKET_2;
     }
 }

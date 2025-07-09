@@ -860,7 +860,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return RocketMenu.create(i,inventory,this);
+        return ScheduleMakingMenu.create(i,inventory,this);
     }
 
     public enum RocketStatus implements StringRepresentable {

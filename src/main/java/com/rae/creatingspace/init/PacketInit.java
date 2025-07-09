@@ -35,7 +35,7 @@ public enum PacketInit implements BasePacketPayload.PacketTypeProvider {
     <T extends BasePacketPayload> PacketInit(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
         String name = this.name().toLowerCase(Locale.ROOT);
         this.type = new CatnipPacketRegistry.PacketType<>(
-                new CustomPacketPayload.Type<>(Create.asResource(name)),
+                new CustomPacketPayload.Type<>(CreatingSpace.resource(name)),
                 clazz, codec
         );
     }

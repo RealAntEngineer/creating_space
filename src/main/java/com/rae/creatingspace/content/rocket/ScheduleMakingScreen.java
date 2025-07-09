@@ -52,7 +52,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu> {
+public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMakingMenu> {
     //TODO transform hard coded schedule stuff to widgets
     //beginning of schedule logic
     private static final int CARD_HEADER = 22;
@@ -83,7 +83,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     private EditBox Xinput;
     private EditBox Zinput;
     IconButton validateSetting;
-    public ScheduleMakingScreen(RocketMenu container, Inventory inv, Component title) {
+    public ScheduleMakingScreen(ScheduleMakingMenu container, Inventory inv, Component title) {
         //TODO this screen will swith bwn normal selection (single trip), schedule and rocket overview.
         super(container, inv, Component.translatable("gui.destination_screen.title"));
         this.rocketContraption = container.contentHolder;
