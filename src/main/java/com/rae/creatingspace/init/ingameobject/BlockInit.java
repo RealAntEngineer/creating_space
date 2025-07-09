@@ -810,6 +810,13 @@ public class BlockInit {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 5))
+            .loot((lt, b) ->  {
+                HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
+                lt.add(b,
+                        lt.createSilkTouchDispatchTable(b,
+                                lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.CRYSTAL_SHARD.get())
+                                        .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
+            })
             .item()
             .build()
             .register();

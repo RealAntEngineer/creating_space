@@ -2,8 +2,8 @@
   "type": "creatingspace:air_liquefying",
   "blockInFront": "minecraft:air",
   "dimension": "minecraft:overworld",
-  "ingredients": [
-  ],
+  "ingredients": [],
+  "processing_time": 200,
   "results": [
     {
       "amount": 100,

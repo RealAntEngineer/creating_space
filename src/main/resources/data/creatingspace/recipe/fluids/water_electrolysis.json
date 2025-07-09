@@ -9,11 +9,11 @@
   "results": [
     {
       "amount": 80,
-      "fluid": "creatingspace:liquid_oxygen"
+      "id": "creatingspace:liquid_oxygen"
     },
     {
       "amount": 160,
-      "fluid": "creatingspace:liquid_hydrogen"
+      "id": "creatingspace:liquid_hydrogen"
     }
   ]
 }

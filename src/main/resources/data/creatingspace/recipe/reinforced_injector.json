@@ -28,7 +28,7 @@
       ],
       "results": [
         {
-          "item": "creatingspace:injector"
+          "id": "creatingspace:injector"
         }
       ]
     },
@@ -38,11 +38,11 @@
         {"item": "creatingspace:injector"}
       ],
       "results": [
-        {"item": "creatingspace:injector"}
+        {"id": "creatingspace:injector"}
       ]
     }
   ],
   "transitionalItem": {
-    "item": "creatingspace:injector"
+    "id": "creatingspace:injector"
   }
 }

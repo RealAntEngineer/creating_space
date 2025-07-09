@@ -18,7 +18,7 @@ public class AirLiquefyingRecipeParam extends ProcessingRecipeParams {
             ResourceLocation.CODEC.optionalFieldOf("blockInFront", DEFAULT_EMPTY)
                     .forGetter( r -> r.blockInFront!=null?r.blockInFront: DEFAULT_EMPTY),
             ResourceLocation.CODEC.optionalFieldOf("dimension", DEFAULT_EMPTY)
-                    .forGetter( r -> r.dimension!=null?r.blockInFront: DEFAULT_EMPTY)
+                    .forGetter( r -> r.dimension!=null?r.dimension: DEFAULT_EMPTY)
     ).apply(instance, (params, blockInFront, dimension) -> {
         params.blockInFront = blockInFront;
         params.dimension = dimension;

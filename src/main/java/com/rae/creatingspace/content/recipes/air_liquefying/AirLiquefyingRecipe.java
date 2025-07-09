@@ -122,7 +122,9 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<RecipeWrapper, AirLiqu
 		R create(AirLiquefyingRecipeParam params);
 	}
 
-	public static class Builder<R extends AirLiquefyingRecipe> extends ProcessingRecipeBuilder<AirLiquefyingRecipeParam, R, AirLiquefyingRecipe.Builder<R>> {
+	public static class Builder<R extends AirLiquefyingRecipe>
+			extends ProcessingRecipeBuilder<AirLiquefyingRecipeParam, R, Builder<R>> {
+
 		public Builder(AirLiquefyingRecipe.Factory<R> factory, ResourceLocation recipeId) {
 			super(factory, recipeId);
 		}
@@ -133,11 +135,21 @@ public class AirLiquefyingRecipe extends ProcessingRecipe<RecipeWrapper, AirLiqu
 		}
 
 		@Override
-		public AirLiquefyingRecipe.Builder<R> self() {
+		public Builder<R> self() {
 			return this;
 		}
 
+		public Builder<R> blockInFront(ResourceLocation loc) {
+			params.blockInFront = loc;
+			return this;
+		}
+
+		public Builder<R> dimension(ResourceLocation dim) {
+			params.dimension = dim;
+			return this;
+		}
 	}
+
 
 	public static class Serializer<R extends AirLiquefyingRecipe> implements RecipeSerializer<R> {
 		private final MapCodec<R> codec;

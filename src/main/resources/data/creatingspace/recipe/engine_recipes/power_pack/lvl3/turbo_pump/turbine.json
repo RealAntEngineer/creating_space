@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_brass_turbine"
+                    "id": "creatingspace:incomplete_brass_turbine"
                 }
             ]
         },
@@ -48,12 +48,12 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_brass_turbine"
+                    "id": "creatingspace:incomplete_brass_turbine"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:incomplete_brass_turbine"
+        "id": "creatingspace:incomplete_brass_turbine"
     }
 }

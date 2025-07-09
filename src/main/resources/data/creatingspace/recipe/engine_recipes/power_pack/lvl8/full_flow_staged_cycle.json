@@ -37,7 +37,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_power_pack"
+                    "id": "creatingspace:incomplete_power_pack"
                 }
             ]
         },
@@ -57,7 +57,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_power_pack"
+                    "id": "creatingspace:incomplete_power_pack"
                 }
             ]
         },
@@ -77,12 +77,12 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_power_pack"
+                    "id": "creatingspace:incomplete_power_pack"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:incomplete_power_pack"
+        "id": "creatingspace:incomplete_power_pack"
     }
 }

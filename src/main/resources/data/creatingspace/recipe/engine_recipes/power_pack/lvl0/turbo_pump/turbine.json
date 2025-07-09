@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_andesite_turbine"
+                    "id": "creatingspace:incomplete_andesite_turbine"
                 }
             ]
         },
@@ -48,12 +48,12 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_andesite_turbine"
+                    "id": "creatingspace:incomplete_andesite_turbine"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:incomplete_andesite_turbine"
+        "id": "creatingspace:incomplete_andesite_turbine"
     }
 }
