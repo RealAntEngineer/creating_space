@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_monel_injector_grid"
+                    "id": "creatingspace:incomplete_monel_injector_grid"
                 }
             ]
         },
@@ -48,7 +48,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_monel_injector_grid"
+                    "id": "creatingspace:incomplete_monel_injector_grid"
                 }
             ]
         },
@@ -64,7 +64,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_monel_injector_grid"
+                    "id": "creatingspace:incomplete_monel_injector_grid"
                 }
             ]
         }

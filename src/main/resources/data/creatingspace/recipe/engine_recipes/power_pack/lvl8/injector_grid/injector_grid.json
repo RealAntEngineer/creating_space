@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_hastelloy_injector_grid"
+                    "id": "creatingspace:incomplete_hastelloy_injector_grid"
                 }
             ]
         },
@@ -48,7 +48,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_hastelloy_injector_grid"
+                    "id": "creatingspace:incomplete_hastelloy_injector_grid"
                 }
             ]
         },
@@ -64,12 +64,12 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_hastelloy_injector_grid"
+                    "id": "creatingspace:incomplete_hastelloy_injector_grid"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:incomplete_hastelloy_injector_grid"
+        "id": "creatingspace:incomplete_hastelloy_injector_grid"
     }
 }

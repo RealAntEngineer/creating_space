@@ -14,11 +14,11 @@
   "results": [
     {
       "amount": 80,
-      "fluid": "creatingspace:liquid_methane"
+      "id": "creatingspace:liquid_methane"
     },
     {
       "amount": 90,
-      "fluid": "minecraft:water"
+      "id": "minecraft:water"
     }
   ]
 }

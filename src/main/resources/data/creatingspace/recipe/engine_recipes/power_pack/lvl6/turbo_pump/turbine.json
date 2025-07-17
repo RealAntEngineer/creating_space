@@ -32,7 +32,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_monel_turbine"
+                    "id": "creatingspace:incomplete_monel_turbine"
                 }
             ]
         },
@@ -48,12 +48,12 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_monel_turbine"
+                    "id": "creatingspace:incomplete_monel_turbine"
                 }
             ]
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:incomplete_monel_turbine"
+        "id": "creatingspace:incomplete_monel_turbine"
     }
 }

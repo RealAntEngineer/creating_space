@@ -16,7 +16,7 @@
     "loops": 1,
     "results": [
         {
-            "item": "creatingspace:combustion_chamber"
+            "id": "creatingspace:combustion_chamber"
         }
     ],
     "sequence": [
@@ -48,7 +48,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_combustion_chamber"
+                    "id": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         },
@@ -64,7 +64,7 @@
             ],
             "results": [
                 {
-                    "item": "creatingspace:incomplete_combustion_chamber"
+                    "id": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         },
@@ -86,6 +86,6 @@
         }
     ],
     "transitionalItem": {
-        "item": "creatingspace:incomplete_combustion_chamber"
+        "id": "creatingspace:incomplete_combustion_chamber"
     }
 }
