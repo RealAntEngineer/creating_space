@@ -2,18 +2,20 @@
   "type": "creatingspace:mechanical_electrolysis",
   "ingredients": [
     {
+      "type": "fluid_stack",
       "amount": 100,
       "fluid": "minecraft:water"
     }
   ],
+  "processing_time": 200,
   "results": [
-    {
-      "amount": 80,
-      "id": "creatingspace:liquid_oxygen"
-    },
     {
       "amount": 160,
       "id": "creatingspace:liquid_hydrogen"
+    },
+    {
+      "amount": 80,
+      "id": "creatingspace:liquid_oxygen"
     }
   ]
 }
