@@ -42,6 +42,8 @@ public class CSDatagen {
 			generator.addProvider(true, new CSMixingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
 			generator.addProvider(true, new CSWashingRecipeGen(output, lookupProvider, CreatingSpace.MODID));
 			generator.addProvider(true, new CSAirLiquefyingRecipeGen(output, lookupProvider));
+			generator.addProvider(true, new CSChemicalSynthesisRecipeGen(output, lookupProvider));
+			generator.addProvider(true, new CSMechanicalElectrolysisRecipeGen(output, lookupProvider));
 
 			// event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
 		}
