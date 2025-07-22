@@ -1,3 +1,3 @@
 files:
   - source: /src/main/resources/assets/creatingspace/lang/en_us.json
-    translation: /src/main/resources/assets/creatingspace/lang/%two_letters_code%
+    translation: /src/main/resources/assets/creatingspace/lang/%locale_with_underscore%.json
