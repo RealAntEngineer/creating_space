@@ -1,12 +1,14 @@
 {
   "block.creatingspace.small_rocket_engine": "Small Rocket Engine",
   "block.creatingspace.big_rocket_engine": "Big Rocket Engine",
+
   "block.creatingspace.rocket_controls": "Rocket Controls",
-  "block.creatingspace.rocket_controls.tooltip.summary": "A required block that is used by the pilot to fly the rocket.",
+  "block.creatingspace.rocket_controls.tooltip.summary" : "A required block that is used by the pilot to fly the rocket.",
   "block.creatingspace.rocket_generator": "Rocket Generator",
   "block.creatingspace.rocket_generator.tooltip.summary": "A machine that burns methane and oxygen to produce SU, start with a signal of redstone if loaded with a starter charge",
   "block.creatingspace.catalyst_carrier": "Catalyst Carrier",
   "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin ",
+
   "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "__[DEPRECATED]__ Needed for producing methane",
   "block.creatingspace.mechanical_electrolyzer": "Mechanical Electrolyzer",
@@ -20,15 +22,20 @@
   "block.creatingspace.air_liquefier": "Air Liquefier",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract oxygen from the air and co2 from campfires, only works on earth",
   "block.creatingspace.rocket_engineer_table": "Rocket Engineering Table",
-  "block.creatingspace.rocket_engineer_table.tooltip.summary": "This table is used to create engine blueprints.",
+  "block.creatingspace.rocket_engineer_table.tooltip.summary" : "This table is used to create engine blueprints.",
   "block.creatingspace.rocket_engineer_table.tooltip.behaviour1": "Enter your desired properties for your engine, It will give you a blueprint.",
   "block.creatingspace.rocket_engine": "Rocket Engine",
+
   "entity.creatingspace.rocket_contraption": "Flying Rocket",
+
+
   "block.creatingspace.clamps": "Clamps",
   "block.creatingspace.clamps.tooltip.summary": "A mean for preventing a contraption from moving, movable by pistons",
   "block.creatingspace.rocket_casing": "Rocket Casing",
+
   "block.creatingspace.cryogenic_tank": "Cryogenic Tank",
   "block.creatingspace.cryogenic_tank.tooltip.summary": "A cold liquid exclusive tank, keep it's content after breaking. Can be use in a filter",
+
   "block.creatingspace.moon_stone": "Moon Stone",
   "block.creatingspace.moon_regolith": "Moon Regolith",
   "block.creatingspace.moon_surface_regolith": "Moon Surface Regolith",
@@ -40,9 +47,11 @@
   "block.creatingspace.moon_nickel_ore": "Moon Nickel Ore",
   "block.creatingspace.moon_cobalt_ore": "Moon Cobalt Ore",
   "block.creatingspace.moon_aluminum_ore": "Moon Aluminum Ore",
+
   "block.creatingspace.raw_nickel_block": "Raw Nickel Block",
   "block.creatingspace.raw_cobalt_block": "Raw Cobalt Block",
   "block.creatingspace.raw_aluminum_block": "Raw Aluminum Block",
+
   "block.creatingspace.aluminum_block": "Block of Aluminum",
   "block.creatingspace.cobalt_block": "Block of Cobalt",
   "block.creatingspace.nickel_block": "Block of Nickel",
@@ -51,32 +60,40 @@
   "block.creatingspace.inconel_block": "Block of Inconel",
   "block.creatingspace.hastelloy_block": "Block of Hastelloy",
   "block.creatingspace.monel_block": "Block of Monel",
+
   "item.creatingspace.basic_spacesuit_helmet": "Basic Spacesuit Helmet",
-  "item.creatingspace.copper_oxygen_backtank": "Copper Oxygen Backtank",
+  "item.creatingspace.copper_oxygen_backtank" : "Copper Oxygen Backtank",
   "item.creatingspace.basic_spacesuit_leggings": "Basic Spacesuit Legging",
   "item.creatingspace.basic_spacesuit_boots": "Basic Spacesuit Boots",
+
   "item.creatingspace.advanced_spacesuit_helmet": "Advanced Spacesuit Helmet",
-  "item.creatingspace.netherite_oxygen_backtank": "Netherite Oxygen Backtank",
+  "item.creatingspace.netherite_oxygen_backtank" : "Netherite Oxygen Backtank",
   "item.creatingspace.advanced_spacesuit_leggings": "Advanced Spacesuit Legging",
   "item.creatingspace.advanced_spacesuit_boots": "Advanced Spacesuit Boots",
+
   "item.creatingspace.basic_spacesuit_fabric": "Basic Spacesuit Fabric",
   "item.creatingspace.advanced_spacesuit_fabric": "Advanced Spacesuit Fabric",
+
+
   "item.creatingspace.injector": "Injector",
   "item.creatingspace.reinforced_injector": "Reinforced Injector",
+
   "item.creatingspace.incomplete_injector": "Incomplete Injector",
   "item.creatingspace.injector_grid": "Injector Grid",
   "item.creatingspace.reinforced_injector_grid": "Reinforced Injector Grid",
+
   "item.creatingspace.incomplete_injector_grid": "Incomplete Injector Grid",
   "item.creatingspace.starter_charge": "Starter Charge",
   "item.creatingspace.starter_charge.tooltip.summary": "An explosive charge needed to start a rocket generator",
   "item.creatingspace.sturdy_propeller": "Sturdy Propeller",
   "item.creatingspace.combustion_chamber": "Combustion Chamber",
   "item.creatingspace.bell_nozzle": "Bell Nozzle",
-  "item.creatingspace.copper_coil": "Copper Coil",
-  "item.creatingspace.basic_catalyst": "Basic Catalyst",
+  "item.creatingspace.copper_coil":"Copper Coil",
+  "item.creatingspace.basic_catalyst":"Basic Catalyst",
   "item.creatingspace.aerospike_plug": "Aerospike Plug",
-  "item.creatingspace.exhaust_pack": "Exhaust Pack",
-  "item.creatingspace.power_pack": "Power Pack",
+  "item.creatingspace.exhaust_pack":"Exhaust Pack",
+  "item.creatingspace.power_pack":"Power Pack",
+
   "item.creatingspace.andesite_ingot": "Andesite Ingot",
   "item.creatingspace.andesite_nugget": "Andesite Nugget",
   "item.creatingspace.andesite_sheet": "Andesite Sheet",
@@ -221,6 +238,7 @@
   "item.creatingspace.hastelloy_canal": "Hastelloy Canal",
   "item.creatingspace.hastelloy_engine_wall": "Hastelloy Engine Wall",
   "item.creatingspace.hastelloy_engine_pipe": "Hastelloy Engine Pipe",
+
   "item.creatingspace.aluminum_block": "Block of Aluminum",
   "item.creatingspace.cobalt_block": "Block of Cobalt",
   "item.creatingspace.nickel_block": "Block of Nickel",
@@ -229,43 +247,56 @@
   "item.creatingspace.inconel_block": "Block of Inconel",
   "item.creatingspace.hastelloy_block": "Block of Hastelloy",
   "item.creatingspace.monel_block": "Block of Monel",
+
   "item.creatingspace.nickel_ingot": "Nickel Ingot",
   "item.creatingspace.nickel_nugget": "Nickel Nugget",
   "item.creatingspace.nickel_sheet": "Nickel Sheet",
   "item.creatingspace.crushed_nickel_ore": "Crushed Nickel Ore",
   "item.creatingspace.raw_nickel": "Raw Nickel",
-  "item.creatingspace.nickel_dust": "Nickel Dust",
+  "item.creatingspace.nickel_dust":"Nickel Dust",
+
   "item.creatingspace.coal_dust": "Coal Dust",
+
   "item.creatingspace.cobalt_ingot": "Cobalt Ingot",
   "item.creatingspace.cobalt_nugget": "Cobalt Nugget",
   "item.creatingspace.cobalt_sheet": "Cobalt Sheet",
   "item.creatingspace.crushed_cobalt_ore": "Crushed Cobalt Ore",
   "item.creatingspace.raw_cobalt": "Raw Cobalt",
+
   "item.creatingspace.aluminum_ingot": "Aluminum Ingot",
   "item.creatingspace.aluminum_nugget": "Aluminum Nugget",
   "item.creatingspace.aluminum_sheet": "Aluminum Sheet",
   "item.creatingspace.crushed_aluminum_ore": "Crushed Aluminum Ore",
   "item.creatingspace.raw_aluminum": "Raw Aluminum",
+
   "item.creatingspace.liquid_methane_bucket": "Bucket of Liquid Methane",
   "item.creatingspace.liquid_oxygen_bucket": "Bucket of Liquid Oxygen",
   "item.creatingspace.liquid_hydrogen_bucket": "Bucket of Liquid Hydrogen",
-  "fluid.creatingspace.liquid_methane": "Liquid Methane",
-  "fluid.creatingspace.liquid_oxygen": "Liquid Oxygen",
-  "fluid.creatingspace.liquid_hydrogen": "Liquid Hydrogen",
+
+  "fluid.creatingspace.liquid_methane" : "Liquid Methane",
+  "fluid.creatingspace.liquid_oxygen" : "Liquid Oxygen",
+  "fluid.creatingspace.liquid_hydrogen" : "Liquid Hydrogen",
   "fluid.creatingspace.liquid_co2": "Liquid CO2",
+
+
   "item.creatingspace.space_food": "Space Food",
   "item.creatingspace.space_food.tooltip.summary": "...ew",
   "item.creatingspace.design_blueprint": "Design Blueprint",
-  "item.creatingspace.design_blueprint.tooltip.summary": "This table is used to craft engine blueprints.",
+  "item.creatingspace.design_blueprint.tooltip.summary" : "This table is used to craft engine blueprints.",
   "item.creatingspace.design_blueprint.tooltip.condition1": "R-Click",
   "item.creatingspace.design_blueprint.tooltip.behaviour1": "Learn new design",
+
   "item.creatingspace.engine_blueprint": "Engine Blueprint",
-  "item.creatingspace.engine_blueprint.tooltip.summary": "Use to craft rocket engines and it's component.",
+  "item.creatingspace.engine_blueprint.tooltip.summary" : "Use to craft rocket engines and it's component.",
+
+
   "itemGroup.creatingspace.machine_tab": "Machine Tab",
   "itemGroup.creatingspace.component_tab": "Component Tab",
   "itemGroup.creatingspace.minerals_tab": "Minerals Tab",
+
   "container.creatingspace.rocket_controls": "Rocket Controls",
   "container.creatingspace.synthesizer": "Synthesizer",
+
   "creatingspace.ponder.rocket_building.header": "Rockets building",
   "creatingspace.ponder.rocket_building.text_1": "To build a rocket you need rocket controls,",
   "creatingspace.ponder.rocket_building.text_2": "enough propellant, here methane and oxygen in equal quantities",
@@ -273,6 +304,7 @@
   "creatingspace.ponder.rocket_building.text_4": "A seat can prevent falling from the rocket",
   "creatingspace.ponder.rocket_building.text_5": "If the there isn't enough thrust or propellant the rocket will refuse to go",
   "creatingspace.ponder.rocket_building.text_6": "the flight recorder can help in those moments",
+
   "creatingspace.ponder.rocket_debugging.header": "Rockets debugging",
   "creatingspace.ponder.rocket_debugging.text_1": "The flight recorder give info about it's last flight or no past flight if it's just placed,",
   "creatingspace.ponder.rocket_debugging.text_2": "no past flight",
@@ -285,10 +317,15 @@
   "creatingspace.ponder.rocket_debugging.text_9": "if the rocket is too heavy you will get :",
   "creatingspace.ponder.rocket_debugging.text_10": "not enough thrust",
   "creatingspace.ponder.rocket_debugging.text_11": "add more engines to solve the issue",
+
+
+
+
   "creatingspace.ponder.synthesizer.header": "Crafting Methane",
   "creatingspace.ponder.synthesizer.text_1": "You need to put hydrogen in it...",
   "creatingspace.ponder.synthesizer.text_2": "...And put coal dust, then wait for methane to be produced",
   "creatingspace.ponder.synthesizer.text_3": "It produces 320kg of methane every 4 seconds",
+
   "creatingspace.gui.rocket_controls.launch": "Launch",
   "creatingspace.gui.rocket_controls.send_setting": "Validate",
   "creatingspace.gui.rocket_controls.destination_cost": "deltaV needed",
@@ -303,6 +340,7 @@
   "gui.engineer_table_screen.available_propellants": "Available Propellants",
   "gui.engineer_table_screen.thrust_selection": "Select Thrust",
   "gui.engineer_table_screen.size_selection": "Select the size",
+
   "creatingspace.overlay.flight_recorder.title": "last flight :",
   "creatingspace.overlay.flight_recorder.no_failure": "no failure",
   "creatingspace.overlay.flight_recorder.no_flight": "no past flight",
@@ -311,6 +349,7 @@
   "creatingspace.overlay.flight_recorder.not_enough_thrust": "not enough thrust",
   "creatingspace.overlay.flight_recorder.thrust1": "thrust",
   "creatingspace.overlay.flight_recorder.thrust2": "weight",
+
   "creatingspace:earth_orbit": "Earth Orbit",
   "creatingspace:moon_orbit": "Moon Orbit",
   "creatingspace:the_moon": "The Moon",
@@ -320,12 +359,16 @@
   "creatingspace:mars": "Mars",
   "creatingspace:mars_orbit": "Mars Orbit",
   "creatingspace:venus": "Venus",
+
   "creatingspace.biome.venus": "Venus",
   "creatingspace.biome.space": "Space",
   "creatingspace.biome.moon_plains": "Moon Plains",
   "creatingspace.biome.mars_plains": "Mars Plains",
+
   "creatingspace.biome.moon_cave": "Moon Cave",
   "creatingspace.biome.venus_hellground": "Venus Hellground",
+
+
   "adastra:earth_orbit": "Earth Orbit",
   "adastra:moon_orbit": "Moon Orbit",
   "adastra:the_moon": "The Moon",
@@ -338,7 +381,9 @@
   "ad_astra:mars": "Ad Astra Mars",
   "ad_astra:mars_orbit": "Ad Astra Mars orbit",
   "ad_astra:venus": "Ad Astra Venus",
+
   "death.attack.no_oxygen": "%1$s didn't find oxygen in space",
+
   "creatingspace.science.thrust": "Thrust",
   "creatingspace.science.unit.newton": "N",
   "creatingspace.science.unit.kilo_gramme": "kg",
@@ -386,4 +431,5 @@
   "creatingspace.gui.engineer_table.isp": "ISP : %d s",
   "creatingspace.gui.engineer_table.engine_size_input": "%i mb",
   "creatingspace.gui.engineer_table.engine_thrust_input": "%iN"
+
 }
