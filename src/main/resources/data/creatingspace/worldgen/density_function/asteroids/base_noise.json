@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:cache_once",
+  "argument": {
+    "type": "creatingspace:worley_noise",
+    "xz_size": 256,
+    "y_size": 256,
+    "y_min": 0,
+    "y_max": 860
+  }
+}

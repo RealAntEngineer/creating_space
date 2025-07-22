@@ -9,7 +9,7 @@
   "disable_mob_generation": true,
   "legacy_random_source": false,
   "noise": {
-    "height": 384,
+    "height": 960,
     "min_y": -48,
     "size_horizontal": 2,
     "size_vertical": 2
@@ -17,9 +17,9 @@
   "noise_router": {
     "barrier": 0,
     "continents": 0,
-    "depth": 0,
+    "depth": "creatingspace:asteroids/base_noise",
     "erosion": 0,
-    "final_density": "creatingspace:asteroids/sloped_cheese",
+    "final_density": "creatingspace:asteroids/slopped_cheese",
     "fluid_level_floodedness": 0,
     "fluid_level_spread": 0,
     "initial_density_without_jaggedness": 0,

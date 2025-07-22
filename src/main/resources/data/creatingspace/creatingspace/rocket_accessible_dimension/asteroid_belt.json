@@ -1,0 +1,13 @@
+{
+  "adjacentDimensions": {
+  },
+  "arrivalHeight": 950,
+  "gravity": 0,
+  "orbitParameters": {
+    "orbitedBody": "minecraft:sun",
+    "rotationAxis" : [0,0,1],
+    "r": 300,
+    "orbT": 900,
+    "rotT": 900
+  }
+}

@@ -12,5 +12,7 @@
   "spawners": {},
   "spawn_costs": {},
   "carvers": {},
-  "features": []
+  "features": [
+    "creatingspace:asteroids/andesite"
+  ]
 }

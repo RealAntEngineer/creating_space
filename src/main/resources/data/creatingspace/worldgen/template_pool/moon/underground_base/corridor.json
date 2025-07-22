@@ -11,7 +11,20 @@
       "element": {
         "location": "creatingspace:moon/underground_base/corridor_1",
 
-        "processors": "minecraft:empty",
+        "processors": "creatingspace:moon_stone_age",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+
+      "weight": 6,
+      "element": {
+        "location": "creatingspace:moon/underground_base/corridor_2",
+
+        "processors": "creatingspace:moon_stone_age",
 
         "projection": "rigid",
 
@@ -24,7 +37,7 @@
       "element": {
         "location": "creatingspace:moon/underground_base/turn_1",
 
-        "processors": "minecraft:empty",
+        "processors": "creatingspace:moon_stone_age",
 
         "projection": "rigid",
 

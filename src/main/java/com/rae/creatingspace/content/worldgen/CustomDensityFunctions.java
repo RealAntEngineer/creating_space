@@ -122,15 +122,18 @@ public class CustomDensityFunctions {
     public static final class WorleyDensityFunction implements DensityFunction.SimpleFunction {
         WorleyNoise noise;
 
-        public static final MapCodec<WorleyDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-                Codec.FLOAT.fieldOf("xz_size").forGetter(i -> i.noise.getXZSize()),
-                Codec.FLOAT.fieldOf("y_size").forGetter(i -> i.noise.getYSize()))
+        public static final MapCodec<WorleyDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                        Codec.FLOAT.fieldOf("xz_size").forGetter(i -> i.noise.getXZSize()),
+                        Codec.FLOAT.fieldOf("y_size").forGetter(i -> i.noise.getYSize()),
+                        Codec.FLOAT.optionalFieldOf("y_min", -Float.MAX_VALUE).forGetter(i -> i.noise.getYMin()),
+                        Codec.FLOAT.optionalFieldOf("y_max",Float.MAX_VALUE).forGetter(i -> i.noise.getYMax()))
                 .apply(instance, WorleyDensityFunction::new));
 
         public static final KeyDispatchDataCodec<WorleyDensityFunction> CODEC = KeyDispatchDataCodec.of(DATA_CODEC);
 
-        public WorleyDensityFunction(float xz_size,float y_size){
-            noise = new WorleyNoise(xz_size,y_size);//scale factor is useless. maybe octaves ?
+        public WorleyDensityFunction(float xz_size,float y_size, float y_min, float y_max){
+            noise = new WorleyNoise(xz_size,y_size, y_min, y_max);//scale factor is useless. maybe octaves ?
         }
 
         @Override

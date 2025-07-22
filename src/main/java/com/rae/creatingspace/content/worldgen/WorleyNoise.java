@@ -13,6 +13,8 @@ public class WorleyNoise {
     private static final float Kz = 0.166666666667f;
     private static final float Kzo = 0.416666666667f;
     private static final float jitter = 0.8f;
+    private final float YMin;
+    private final float YMax;
 
     public float getXZSize() {
         return XZSize;
@@ -28,9 +30,11 @@ public class WorleyNoise {
     private float x0,y0,z0;
     private final int[] p = new int[289];//TODO go to 256 rather than 289, now that we use the seed it doesn't make sens anymore
     //TODO have 3 permutations for x, y, z for improved performance ? need to do  profiling and see if it changes anything.
-    public WorleyNoise(float XZSize, float YSize) {
+    public WorleyNoise(float XZSize, float YSize, float YMin, float YMax) {
         this.XZSize = XZSize;
         this.YSize = YSize;
+        this.YMin = YMin/YSize;
+        this.YMax = YMax/YSize;
         setSeed(0L);
     }
     public void setSeed(long seed){
@@ -79,9 +83,10 @@ public class WorleyNoise {
 
                     // Compute squared distance
                     float dist = Mth.sqrt((jitterX+xi-Pfx)*(jitterX+xi-Pfx)+(jitterY+yi-Pfy)*(jitterY+yi-Pfy)+(jitterZ+zi-Pfz)*(jitterZ+zi-Pfz));
-
-                    // Track minimum distance
-                    minDist = Math.min(minDist, dist);
+                    if (Piy+jitterY+yi < YMax + y0 && Piy+jitterY+yi > YMin +y0) {
+                        // Track minimum distance
+                        minDist = Math.min(minDist, dist);
+                    }
                 }
             }
         }
@@ -91,6 +96,13 @@ public class WorleyNoise {
     public double getValue(int x, int y, int z) {
         float F = cellular3x3x3((x) / XZSize,(y) / YSize,(z) / XZSize);
         return 1- (F * 2);  // Mapping to range [-1, 1]
+    }
+
+    public float getYMin() {
+        return this.YMin;
+    }
+    public float getYMax() {
+        return this.YMax;
     }
 }
 
