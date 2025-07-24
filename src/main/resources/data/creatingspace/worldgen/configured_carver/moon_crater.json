@@ -36,6 +36,9 @@
         "Name": "minecraft:glass"
       }
     },
+    "default_block":  {
+      "Name": "minecraft:glass"
+    },
     "max_radius": 27,
     "min_radius": 8,
     "ideal_range_offset": 8

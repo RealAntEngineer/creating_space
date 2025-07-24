@@ -6,7 +6,7 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 public class WorleyNoise {
     //TODO Optimise it further
-    //TODO make a 2d version of it -> makes no sens to use 3d version and to
+    //TODO make a 2d version of it -> makes no sens to use 3d version for a 2D map
     private static final float K = 0.142857142857f;
     private static final float Ko = 0.428571428571f;
     private static final float K2 = 0.020408163265306f;
@@ -76,6 +76,7 @@ public class WorleyNoise {
                     //Vec3 cell = Pi.add(new Vec3(xi, yi, zi));
                     float permuted = permute(permute(permute(Pix + xi)+Piy+yi)+Piz+zi);
                     // Pseudo-random offset inside cell
+                    //TODO remove this/change this to a more relevant version (remnants of an old version of this code)
                     float jitterX = ((permuted*K-Mth.floor(permuted*K))-Ko) * jitter;
                     float jitterY = ((Mth.floor(permuted*K)%7.0f) * K-Ko) * jitter;
                     float jitterZ = ((Mth.floor(permuted*K2)) * Kz-Kzo) * jitter;
