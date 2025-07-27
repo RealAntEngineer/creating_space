@@ -21,7 +21,7 @@
               },
               "argument2": 0.4
             },
-            "argument2": 0.2
+            "argument2": 0.1
           }
         },
         "argument2": {
@@ -31,9 +31,9 @@
             "argument1": {
               "type": "max",
               "argument1":"creatingspace:asteroids/base_noise",
-              "argument2": 0.1
+              "argument2": 0.4
             },
-            "argument2": -0.1
+            "argument2": -0.4
           },
           "argument2": {
             "type": "minecraft:mul",
@@ -57,8 +57,8 @@
         "xz_scale": 1,
         "y_scale": 1
       },
-      "argument2": 0.2
+      "argument2": 0.4
     }
   },
-  "argument2": -0.1
+  "argument2": -0.3
 }
