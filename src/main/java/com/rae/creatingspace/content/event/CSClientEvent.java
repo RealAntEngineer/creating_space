@@ -5,9 +5,11 @@ import com.rae.creatingspace.content.life_support.spacesuit.CopperOxygenBacktank
 import com.rae.creatingspace.content.life_support.spacesuit.NetheriteOxygenBacktankFirstPersonRenderer;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankArmorLayer;
+import com.rae.creatingspace.content.rocket.RocketHUD;
 import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
+import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsHandler;
 import com.rae.creatingspace.init.EngineMaterialInit;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.client.Minecraft;
@@ -24,6 +26,7 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -51,6 +54,15 @@ public class CSClientEvent {
             CameraDistanceModifier.zoomOut((float) (rocketContraption.getBoundingBox().getSize() * CSConfigs.CLIENT.zoomOut.get()));
         }
     }
+
+    @SubscribeEvent
+    public static void onUnloadWorld(LevelEvent.Unload event) {
+        if (!event.getLevel()
+                .isClientSide())
+            return;
+        RocketControlsHandler.levelUnloaded(event.getLevel());
+    }
+
 
     @SubscribeEvent
     public static void addToItemTooltip(ItemTooltipEvent event) {
@@ -101,6 +113,7 @@ public class CSClientEvent {
         public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
             // Register overlays
             event.registerAbove(VanillaGuiOverlay.HELMET.id(), "remaining_oxygen", RemainingO2Overlay.INSTANCE);
+            event.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "train_hud", RocketHUD.OVERLAY);
 
         }
     }

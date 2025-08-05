@@ -112,7 +112,7 @@ public class WorleyNoise {
             float jitterY = ((Mth.floor(fk) % 8) * K - Ko) * jitter;
             float jitterZ = ((Mth.floor(permuted * K2)) * Kz - Kzo) * jitter;
 
-            float ytest = cellY + jitterY+ yi;
+            float ytest = cellY + jitterY;
 
             if (ytest  < yMinOffset || ytest > yMaxOffset) continue;
 

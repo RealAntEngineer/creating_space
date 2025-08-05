@@ -347,6 +347,13 @@ public class BlockInit {
             .build()
             .register();
 
+    public static final BlockEntry<Block> ASTEROID_STONE = REGISTRATE
+            .block("asteroid_stone", Block::new).initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .item()
+            //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
+            .build()
+            .register();
     //ores
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
                     "nickel_ore", Block::new)
@@ -386,6 +393,65 @@ public class BlockInit {
             .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
+
+    public static final BlockEntry<AmethystBlock> CRYSTAL_BLOCK = REGISTRATE.block(
+                    "crystal_block", AmethystBlock::new)
+            .initialProperties(() -> Blocks.AMETHYST_BLOCK)
+            .properties(p -> p.strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<BuddingAmethystBlock> BUDDING_CRYSTAL = REGISTRATE.block(
+                    "budding_crystal", BuddingAmethystBlock::new)
+            .initialProperties(() -> Blocks.BUDDING_AMETHYST)
+            .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> CRYSTAL_CLUSTER = REGISTRATE.block(
+                    "crystal_cluster", p -> new AmethystClusterBlock(7, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.AMETHYST_CLUSTER)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 5))
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> LARGE_CRYSTAL_BUD = REGISTRATE.block(
+                    "large_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.LARGE_AMETHYST_BUD)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 4))
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> MEDIUM_CRYSTAL_BUD = REGISTRATE.block(
+                    "medium_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.MEDIUM_AMETHYST_BUD)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 2))
+            .item()
+            .build()
+            .register();
+    public static final BlockEntry<AmethystClusterBlock> SMALL_CRYSTAL_BUD = REGISTRATE.block(
+                    "small_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
+            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
+            .properties(p -> p.strength(1.5F)
+                    .randomTicks().sound(SoundType.SMALL_AMETHYST_BUD)
+                    .noOcclusion()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 1))
             .item()
             .build()
             .register();
@@ -570,64 +636,7 @@ public class BlockInit {
                     .register();
 
 
-    public static final BlockEntry<AmethystBlock> CRYSTAL_BLOCK = REGISTRATE.block(
-                    "crystal_block", AmethystBlock::new)
-            .initialProperties(() -> Blocks.AMETHYST_BLOCK)
-            .properties(p -> p.strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
-            .item()
-            .build()
-            .register();
-    public static final BlockEntry<BuddingAmethystBlock> BUDDING_CRYSTAL = REGISTRATE.block(
-                    "budding_crystal", BuddingAmethystBlock::new)
-            .initialProperties(() -> Blocks.BUDDING_AMETHYST)
-            .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
-            .item()
-            .build()
-            .register();
-    public static final BlockEntry<AmethystClusterBlock> CRYSTAL_CLUSTER = REGISTRATE.block(
-                    "crystal_cluster", p -> new AmethystClusterBlock(7, 3, p))
-            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
-            .properties(p -> p.strength(1.5F)
-                    .randomTicks().sound(SoundType.AMETHYST_CLUSTER)
-                    .noOcclusion()
-                    .requiresCorrectToolForDrops()
-                    .lightLevel(state -> 5))
-            .item()
-            .build()
-            .register();
-    public static final BlockEntry<AmethystClusterBlock> LARGE_CRYSTAL_BUD = REGISTRATE.block(
-                    "large_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
-            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
-            .properties(p -> p.strength(1.5F)
-                    .randomTicks().sound(SoundType.LARGE_AMETHYST_BUD)
-                    .noOcclusion()
-                    .requiresCorrectToolForDrops()
-                    .lightLevel(state -> 4))
-            .item()
-            .build()
-            .register();
-    public static final BlockEntry<AmethystClusterBlock> MEDIUM_CRYSTAL_BUD = REGISTRATE.block(
-                    "medium_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
-            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
-            .properties(p -> p.strength(1.5F)
-                    .randomTicks().sound(SoundType.MEDIUM_AMETHYST_BUD)
-                    .noOcclusion()
-                    .requiresCorrectToolForDrops()
-                    .lightLevel(state -> 2))
-            .item()
-            .build()
-            .register();
-    public static final BlockEntry<AmethystClusterBlock> SMALL_CRYSTAL_BUD = REGISTRATE.block(
-                    "small_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
-            .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
-            .properties(p -> p.strength(1.5F)
-                    .randomTicks().sound(SoundType.SMALL_AMETHYST_BUD)
-                    .noOcclusion()
-                    .requiresCorrectToolForDrops()
-                    .lightLevel(state -> 1))
-            .item()
-            .build()
-            .register();
+
 
     public static void register() {}
 

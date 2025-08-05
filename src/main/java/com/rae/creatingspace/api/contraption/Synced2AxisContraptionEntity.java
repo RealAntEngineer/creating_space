@@ -40,8 +40,17 @@ import org.jetbrains.annotations.NotNull;
  * more abstract version of OrientedContraptionEntity, doubled with a sync packet for smooth animation.
  */
 public abstract class Synced2AxisContraptionEntity extends AbstractContraptionEntity {
+
+
     private float yaw;
     private float pitch;
+    public float getYaw() {
+        return yaw;
+    }
+
+    public float getPitch() {
+        return pitch;
+    }
     private LinearLerpedVec3 speed = new LinearLerpedVec3(0,0,0);
     private @NotNull Vec3 posClientDiff = Vec3.ZERO;
     private @NotNull Vec2 rotSpeed = Vec2.ZERO;
