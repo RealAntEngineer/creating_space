@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:cache_once",
+  "argument": {
+    "type": "minecraft:min",
+    "argument1": {
+      "type": "minecraft:mul",
+      "argument1": {
+        "type": "minecraft:max",
+        "argument1": {
+          "type": "creatingspace:worley_noise",
+          "xz_size": 32,
+          "y_size": 32,
+          "y_min": 0,
+          "y_max": 512
+        },
+        "argument2": {
+          "type": "creatingspace:worley_noise",
+          "xz_size": 64,
+          "y_size": 64,
+          "y_min": 0,
+          "y_max": 512
+        }
+      },
+      "argument2": -1.5
+    },
+    "argument2": 0
+  }
+}

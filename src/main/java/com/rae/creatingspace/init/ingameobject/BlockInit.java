@@ -475,6 +475,15 @@ public class BlockInit {
             .item()
             .build()
             .register();
+    public static final BlockEntry<Block> ASTEROID_COBALT_ORE = REGISTRATE.block(
+                    "asteroid_cobalt_ore", Block::new)
+            .initialProperties(()-> Blocks.STONE)
+            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_DIAMOND_TOOL)
+            .transform(TagGen.pickaxeOnly())
+            .item()
+            .build()
+            .register();
     public static final BlockEntry<Block> RAW_COBALT_BLOCK = REGISTRATE.block(
                     "raw_cobalt_block",Block::new)
             .initialProperties(()-> Blocks.STONE)

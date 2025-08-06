@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.contraption.Synced2AxisContraptionEntity;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.content.rocket.RocketMenu;
 import com.rae.creatingspace.content.rocket.RocketTeleporter;
 import com.rae.creatingspace.content.rocket.squedule.RocketPath;
 import com.rae.creatingspace.content.rocket.squedule.RocketScheduleRuntime;
@@ -19,6 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -28,6 +30,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -44,6 +47,7 @@ import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -413,6 +417,14 @@ public class RocketContraptionEntity extends Synced2AxisContraptionEntity {
         float speedModificator = 0.2f;
         Vec3 speed = Vec3.ZERO;
         Vec2 rotSpeed = Vec2.ZERO;
+        if (heldControls.contains(12)){
+            if ((player instanceof ServerPlayer serverPlayer)) {
+
+                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((id, inv, p) ->
+                        RocketMenu.create(id, inv, this), Component.translatable("container.my_item_menu")), buf ->
+                        buf.writeVarInt(this.getId()));
+            }
+        }
         if (heldControls.contains(11)){
             speedModificator = 2f;
         }

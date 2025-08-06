@@ -24,7 +24,9 @@ public enum KeysInit {
     PITCH_UP("pitch_up", GLFW.GLFW_KEY_K, "pitch up"),
     YAW_LEFT("yaw_left", GLFW.GLFW_KEY_J, "rotate left"),
     YAW_RIGHT("yaw_right", GLFW.GLFW_KEY_L, "rotate right"),
-    SWITCH_MODE("switch_mode", GLFW.GLFW_KEY_M, "switch flight mode")
+    SWITCH_MODE("switch_mode", GLFW.GLFW_KEY_M, "switch flight mode"),
+    ROCKET_INVENTORY("rocket_inventory", GLFW.GLFW_KEY_R, "rocket inventory"),//rocket manager -> will do everything at once
+    ROCKET_SCHEDULE("rocket_schedule", GLFW.GLFW_KEY_F, "rocket schedule")
 
     ;
 

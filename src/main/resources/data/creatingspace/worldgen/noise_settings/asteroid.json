@@ -9,17 +9,31 @@
   "disable_mob_generation": true,
   "legacy_random_source": false,
   "noise": {
-    "height": 960,
+    "height": 512,
     "min_y": -48,
     "size_horizontal": 2,
     "size_vertical": 2
   },
   "noise_router": {
     "barrier": 0,
-    "continents": 0,
+    "continents": {
+      "type": "minecraft:noise",
+      "noise": "creatingspace:asteroids/size",
+      "xz_scale": 1,
+      "y_scale": 1
+    },
     "depth": "creatingspace:asteroids/base_noise",
-    "erosion": 0,
-    "final_density": "creatingspace:asteroids/slopped_cheese",
+    "erosion": {
+      "type": "minecraft:noise",
+      "noise": "creatingspace:asteroids/hollowness",
+      "xz_scale": 1,
+      "y_scale": 1
+    },
+    "final_density": {
+      "type": "minecraft:add",
+      "argument1":"creatingspace:asteroids/slopped_cheese",
+      "argument2": "creatingspace:asteroids/craters"
+    },
     "fluid_level_floodedness": 0,
     "fluid_level_spread": 0,
     "initial_density_without_jaggedness": 0,

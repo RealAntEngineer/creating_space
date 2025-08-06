@@ -11,6 +11,9 @@ import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBluepr
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsHandler;
 import com.rae.creatingspace.init.EngineMaterialInit;
+import com.simibubi.create.content.contraptions.actors.trainControls.ControlsHandler;
+import com.simibubi.create.content.kinetics.fan.AirCurrent;
+import com.simibubi.create.content.redstone.link.controller.LinkedControllerClientHandler;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -44,6 +47,10 @@ public class CSClientEvent {
     public static void onTick(TickEvent.ClientTickEvent event){
         if (!isGameActive())
             return;
+        if (event.phase == TickEvent.Phase.START) {
+            RocketControlsHandler.tick();
+            return;
+        }
         CopperOxygenBacktankFirstPersonRenderer.clientTick();
         NetheriteOxygenBacktankFirstPersonRenderer.clientTick();
     }

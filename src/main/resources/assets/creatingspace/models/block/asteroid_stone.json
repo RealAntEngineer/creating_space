@@ -1,4 +1,4 @@
 {
   "parent": "block/cube_all",
-  "textures": {"all": "creatingspace:block/asteroid_stone"}
+  "textures": {"all": "creatingspace:block/asteroid_stone_2"}
 }

@@ -12,23 +12,26 @@ import java.util.Vector;
 public class RocketControlsUtil {
 
     private static Vector<KeyMapping> standardControls;
-
+    //todo it should be a map not a list, it's beginning to be hard to manage (magic numbers)
     public static Vector<KeyMapping> getControls() {
         if (standardControls == null) {
             Options gameSettings = Minecraft.getInstance().options;
             standardControls = new Vector<>(6);
-            standardControls.add(gameSettings.keyUp);
-            standardControls.add(gameSettings.keyDown);
-            standardControls.add(gameSettings.keyLeft);
-            standardControls.add(gameSettings.keyRight);
-            standardControls.add(gameSettings.keyJump);
-            standardControls.add(gameSettings.keyShift);
+            standardControls.add(gameSettings.keyUp);//0
+            standardControls.add(gameSettings.keyDown);//1
+            standardControls.add(gameSettings.keyLeft);//2
+            standardControls.add(gameSettings.keyRight);//3
+            standardControls.add(gameSettings.keyJump);//4
+            standardControls.add(gameSettings.keyShift);//5
             standardControls.add(KeysInit.PITCH_UP.getKeybind());//6
             standardControls.add(KeysInit.PITCH_DOWN.getKeybind());//7
             standardControls.add(KeysInit.YAW_LEFT.getKeybind());//8
             standardControls.add(KeysInit.YAW_RIGHT.getKeybind());//9
             standardControls.add(KeysInit.SWITCH_MODE.getKeybind());//10
             standardControls.add(gameSettings.keySprint);//11
+            standardControls.add(KeysInit.ROCKET_INVENTORY.getKeybind());//12
+            standardControls.add(KeysInit.ROCKET_SCHEDULE.getKeybind());//13
+
         }
         return standardControls;
     }
