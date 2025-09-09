@@ -222,7 +222,7 @@ public class ItemInit {
                         .model((c,p) -> p.withExistingParent(name,
                         MODID + ":item/3d_items"))
                 .register());
-    //    registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
+        registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
         System.out.println(collector);
         return collector;
     }

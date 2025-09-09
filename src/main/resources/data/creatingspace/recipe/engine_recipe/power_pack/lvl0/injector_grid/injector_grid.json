@@ -1,0 +1,77 @@
+{
+    "type": "create:sequenced_assembly",
+    "keepNbt": [
+        "engineRecipeData",
+        "blockEntity"
+    ],
+    "ingredient": {
+        "items": "creatingspace:engine_blueprint",
+        "type": "neoforge:components",
+        "components": {
+            "minecraft:custom_data": {
+                "engineRecipeData": {
+                    "materialLevel": 0
+                }
+            }
+        }
+    },
+    "loops": 2,
+    "results": [
+        {
+            "id": "creatingspace:andesite_injector_grid"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
+                },
+                {
+                    "item": "creatingspace:andesite_injector"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_andesite_injector_grid"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
+                },
+                {
+                    "item": "creatingspace:andesite_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_andesite_injector_grid"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_andesite_injector_grid"
+                },
+                {
+                    "item": "creatingspace:andesite_injector"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_andesite_injector_grid"
+                }
+            ]
+        }
+    ],
+    "transitional_item": {
+        "id": "creatingspace:incomplete_andesite_injector_grid"
+    }
+}

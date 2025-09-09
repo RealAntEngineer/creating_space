@@ -5,11 +5,13 @@
     "blockEntity"
   ],
   "ingredient": {
-    "item": "creatingspace:engine_blueprint",
-    "type": "forge:partial_nbt",
-    "nbt": {
-      "engineRecipeData": {
-        "exhaustPackType": "creatingspace:aerospike"
+    "items": "creatingspace:engine_blueprint",
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "exhaustPackType": "creatingspace:bell_nozzle"
+        }
       }
     }
   },
@@ -51,7 +53,7 @@
           "item": "creatingspace:engine_blueprint"
         },
         {
-          "item": "creatingspace:aerospike_plug"
+          "item": "creatingspace:bell_nozzle"
         }
       ],
       "results": [
@@ -61,7 +63,7 @@
       ]
     }
   ],
-  "transitionalItem": {
+  "transitional_item": {
     "id": "creatingspace:incomplete_exhaust_pack"
   }
 }

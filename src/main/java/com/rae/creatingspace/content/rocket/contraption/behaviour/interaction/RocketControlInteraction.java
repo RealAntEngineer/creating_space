@@ -17,7 +17,9 @@ public class RocketControlInteraction extends MovingInteractionBehaviour {
                                            AbstractContraptionEntity contraptionEntity) {
         if (contraptionEntity instanceof RocketContraptionEntity rocketContraption) {
             if ((player instanceof ServerPlayer serverPlayer)) {
-                player.openMenu( rocketContraption);
+                serverPlayer.openMenu( rocketContraption,
+                        byteBuf ->
+                        byteBuf.writeVarInt(rocketContraption.getId()));
                 return true;
             }
             return true;

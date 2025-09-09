@@ -5,19 +5,21 @@
         "blockEntity"
     ],
     "ingredient": {
-        "item": "creatingspace:engine_blueprint",
-        "type": "forge:partial_nbt",
-        "nbt": {
-            "engineRecipeData": {
-                "materialLevel": 0,
-                "exhaustPackType": "creatingspace:bell_nozzle"
+        "items": "creatingspace:engine_blueprint",
+        "type": "neoforge:components",
+        "components": {
+            "minecraft:custom_data": {
+                "engineRecipeData": {
+                    "materialLevel": 0,
+                    "exhaustPackType": "creatingspace:aerospike"
+                }
             }
         }
     },
     "loops": 1,
     "results": [
         {
-            "id": "creatingspace:bell_nozzle"
+            "id": "creatingspace:aerospike_plug"
         }
     ],
     "sequence": [
@@ -28,81 +30,81 @@
                     "item": "creatingspace:incomplete_bell_nozzle"
                 },
                 {
+                    "item": "create:shaft"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_bell_nozzle"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_bell_nozzle"
+                },
+                {
+                    "item": "creatingspace:andesite_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_bell_nozzle"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_bell_nozzle"
+                },
+                {
+                    "item": "creatingspace:andesite_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_bell_nozzle"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_bell_nozzle"
+                },
+                {
+                    "item": "creatingspace:andesite_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_bell_nozzle"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_aerospike_plug"
+                },
+                {
                     "item": "creatingspace:andesite_rib"
                 }
             ],
             "results": [
                 {
-                    "id": "creatingspace:incomplete_bell_nozzle"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:incomplete_bell_nozzle"
-                },
-                {
-                    "item": "creatingspace:andesite_engine_wall"
-                }
-            ],
-            "results": [
-                {
-                    "id": "creatingspace:incomplete_bell_nozzle"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:incomplete_bell_nozzle"
-                },
-                {
-                    "item": "creatingspace:andesite_engine_wall"
-                }
-            ],
-            "results": [
-                {
-                    "id": "creatingspace:incomplete_bell_nozzle"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:incomplete_bell_nozzle"
-                },
-                {
-                    "item": "creatingspace:andesite_engine_wall"
-                }
-            ],
-            "results": [
-                {
-                    "id": "creatingspace:incomplete_bell_nozzle"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:incomplete_bell_nozzle"
-                },
-                {
-                    "item": "creatingspace:andesite_rib"
-                }
-            ],
-            "results": [
-                {
-                    "id": "creatingspace:incomplete_bell_nozzle"
+                    "id": "creatingspace:incomplete_aerospike_plug"
                 }
             ]
         }
     ],
-    "transitionalItem": {
-        "id": "creatingspace:incomplete_bell_nozzle"
+    "transitional_item": {
+        "id": "creatingspace:incomplete_aerospike_plug"
     }
 }

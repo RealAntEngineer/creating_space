@@ -18,7 +18,7 @@
     "kinetics.BacktankBlockEntityMixin",
     "recipe.ItemApplicationMixin",
     "recipe.ProcessingRecipeMixin",
-    "recipe.ProcessingRecipeSerializerMixin",
+    "recipe.ProcessingRecipeParamsMixin",
     "recipe.SequencedAssemblyRecipeMixin",
     "recipe.SequencedAssemblyRecipeSerializerMixin"
   ],

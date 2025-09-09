@@ -5,19 +5,20 @@
         "blockEntity"
     ],
     "ingredient": {
-        "item": "creatingspace:engine_blueprint",
-        "type": "forge:partial_nbt",
-        "nbt": {
-            "engineRecipeData": {
-                "materialLevel": 0,
-                "exhaustPackType": "creatingspace:aerospike"
+        "items": "creatingspace:engine_blueprint",
+        "type": "neoforge:components",
+        "components": {
+            "minecraft:custom_data": {
+                "engineRecipeData": {
+                    "materialLevel": 0
+                }
             }
         }
     },
     "loops": 1,
     "results": [
         {
-            "id": "creatingspace:aerospike_plug"
+            "id": "creatingspace:combustion_chamber"
         }
     ],
     "sequence": [
@@ -25,23 +26,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:incomplete_bell_nozzle"
-                },
-                {
-                    "item": "create:shaft"
-                }
-            ],
-            "results": [
-                {
-                    "id": "creatingspace:incomplete_bell_nozzle"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:incomplete_bell_nozzle"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 },
                 {
                     "item": "creatingspace:andesite_engine_wall"
@@ -49,7 +34,7 @@
             ],
             "results": [
                 {
-                    "id": "creatingspace:incomplete_bell_nozzle"
+                    "id": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         },
@@ -57,39 +42,7 @@
             "type": "create:deploying",
             "ingredients": [
                 {
-                    "item": "creatingspace:incomplete_bell_nozzle"
-                },
-                {
-                    "item": "creatingspace:andesite_engine_wall"
-                }
-            ],
-            "results": [
-                {
-                    "id": "creatingspace:incomplete_bell_nozzle"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:incomplete_bell_nozzle"
-                },
-                {
-                    "item": "creatingspace:andesite_engine_wall"
-                }
-            ],
-            "results": [
-                {
-                    "id": "creatingspace:incomplete_bell_nozzle"
-                }
-            ]
-        },
-        {
-            "type": "create:deploying",
-            "ingredients": [
-                {
-                    "item": "creatingspace:incomplete_aerospike_plug"
+                    "item": "creatingspace:incomplete_combustion_chamber"
                 },
                 {
                     "item": "creatingspace:andesite_rib"
@@ -97,12 +50,44 @@
             ],
             "results": [
                 {
-                    "id": "creatingspace:incomplete_aerospike_plug"
+                    "id": "creatingspace:incomplete_combustion_chamber"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_combustion_chamber"
+                },
+                {
+                    "item": "creatingspace:andesite_engine_wall"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_combustion_chamber"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_combustion_chamber"
+                },
+                {
+                    "item": "creatingspace:andesite_rib"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_combustion_chamber"
                 }
             ]
         }
     ],
-    "transitionalItem": {
-        "id": "creatingspace:incomplete_aerospike_plug"
+    "transitional_item": {
+        "id": "creatingspace:incomplete_combustion_chamber"
     }
 }
