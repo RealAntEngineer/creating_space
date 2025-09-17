@@ -32,11 +32,11 @@ public class ContraptionMixin {
     protected void onMoveBlock(@NotNull Level world, Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir) {
         BlockState state = world.getBlockState(local$Pos);
         if (state.is(BlockInit.BIG_ROCKET_ENGINE.get())) {
-            moveBigRocketEngine(local$Pos, frontier, visited, state);
+            cS_1_20_1$moveBigRocketEngine(local$Pos, frontier, visited, state);
         } else if (state.is(BlockInit.BIG_ENGINE_STRUCTURAL.get())) {
             BlockPos masterPos = BigRocketStructuralBlock.getMaster(world, local$Pos, state);
             frontier.add(masterPos);
-            moveBigRocketEngine(masterPos, frontier, visited, world.getBlockState(masterPos));
+            cS_1_20_1$moveBigRocketEngine(masterPos, frontier, visited, world.getBlockState(masterPos));
         }
         if (state.is(BlockInit.SMALL_ROCKET_ENGINE.get()) || state.is(BlockInit.ROCKET_ENGINE.get())) {
             BlockPos nextPos = local$Pos.below();
@@ -51,7 +51,8 @@ public class ContraptionMixin {
         }
     }
 
-    private void moveBigRocketEngine(BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited, BlockState state) {
+    @Unique
+    private void cS_1_20_1$moveBigRocketEngine(BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited, BlockState state) {
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {

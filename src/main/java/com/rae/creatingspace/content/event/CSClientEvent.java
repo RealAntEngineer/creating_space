@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -70,6 +71,13 @@ public class CSClientEvent {
         RocketControlsHandler.levelUnloaded(event.getLevel());
     }
 
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class DebugOverlayHandler {
+
+        @SubscribeEvent
+        public static void onDebugText(RenderGuiOverlayEvent event) {
+        }
+    }
 
     @SubscribeEvent
     public static void addToItemTooltip(ItemTooltipEvent event) {

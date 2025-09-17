@@ -10,6 +10,7 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.RocketTeleporter;
+import com.rae.formicapi.math.Solvers;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -30,7 +31,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 import static java.lang.Math.abs;
 
@@ -73,7 +73,7 @@ public class CSEventHandler {
         }
         //suffocating
         if (entityLiving.tickCount % 20 == 0) {
-            if (!inO2(entityLiving) && entityLiving.isAttackable()) {
+            if (noO2(entityLiving) && entityLiving.isAttackable()) {
                 if (entityLiving instanceof ServerPlayer player)  {
                     if (playerNeedEquipment(player)) {
                         if (checkPlayerO2Equipment(player)) {
@@ -90,7 +90,7 @@ public class CSEventHandler {
             }
         }
         //overheating
-        if (entityLiving.tickCount % 20 == 0 && !inO2(entityLiving) && entityLiving.isAttackable()) {
+        if (entityLiving.tickCount % 20 == 0 && noO2(entityLiving) && entityLiving.isAttackable()) {
             if (entityLiving instanceof ServerPlayer player) {
                 if (playerNeedEquipment(player) && player.level().dimension().location().toString().equals("creatingspace:venus") && !checkPlayerO2Equipment(player)) {
                     player.hurt(CSDamageSources.over_heat(level), 0.5F);
@@ -102,12 +102,42 @@ public class CSEventHandler {
     }
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
-        /*System.out.println(0.5-sleepFinishedEvent.getLevel().getTimeOfDay(sleepFinishedEvent.getNewTime()));
-        float newTime = dichotomy((t)-> (float) (0.5-sleepFinishedEvent.getLevel().getTimeOfDay(t)),
-                sleepFinishedEvent.getNewTime(),sleepFinishedEvent.getNewTime()*1000,1);
-*/
-        Objects.requireNonNull(Objects.requireNonNull(sleepFinishedEvent.getLevel().getServer()).getLevel(Level.OVERWORLD))
-                .setDayTime(sleepFinishedEvent.getNewTime());
+        long currentTime = sleepFinishedEvent.getLevel().dayTime();
+        double currentTOD = sleepFinishedEvent.getLevel().getTimeOfDay(0);
+
+        System.out.println("dayTime before " + currentTOD);
+
+        long step = 100L;
+        long additionalTime = 0L;
+        long maxSearch = 24000L * 20000; // search up to 2 days
+
+        boolean foundMorning = false;
+
+        while (additionalTime <= maxSearch) {
+            additionalTime += step;
+            double testTOD = sleepFinishedEvent.getLevel().getTimeOfDay(additionalTime);
+
+            if ((testTOD >= 0.8 || testTOD < 0.24)) {
+                foundMorning = true;
+                break;
+            }
+
+        }
+
+        if (!foundMorning) {
+            // fail-safe for tidal lock: just skip one "day"
+            System.out.println("No morning found (tidal lock?) — defaulting to +24000 ticks");
+            additionalTime = 24000L;
+        }
+
+        System.out.println("additional time " + additionalTime);
+        System.out.println("newTime " + (currentTime + additionalTime));
+
+        Objects.requireNonNull(Objects.requireNonNull(sleepFinishedEvent.getLevel().getServer())
+                        .getLevel(Level.OVERWORLD))
+                .setDayTime(currentTime + additionalTime);
+
+        sleepFinishedEvent.setTimeAddition(currentTime + additionalTime);
     }
     //@SubscribeEvent
     public static void blockChange(BlockEvent.NeighborNotifyEvent event){
@@ -142,14 +172,14 @@ public class CSEventHandler {
         return !player.isCreative();
     }
 
-    public static boolean inO2(LivingEntity entity) {
+    public static boolean noO2(LivingEntity entity) {
         Level level = entity.level();
         if (CSDimensionUtil.hasO2Atmosphere(level.getBiome(entity.getOnPos()))) {
-            return true;
+            return false;
         }
         boolean flag = ((INeedOxygen)entity).insideOxygenRoom();
         ((INeedOxygen)entity).setInsideOxygenRoom(false);
-        return flag;
+        return !flag;
 
     }
     @SubscribeEvent
