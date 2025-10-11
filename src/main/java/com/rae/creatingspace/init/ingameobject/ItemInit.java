@@ -232,7 +232,9 @@ public class ItemInit {
                         name, SequencedAssemblyItem::new)
                 .model((c, p) -> p.withExistingParent(name,
                         "item/generated").texture("layer0",
-                            resource("item/transition_item/" + name.substring(11))))
+                        resource("item/ghost_block")))
+                //            resource("item/transition_item/" + name.substring(11))))
+                //TODO add the transitional items for missing things
                 .register();
     }
 

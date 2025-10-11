@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
 
 import com.rae.creatingspace.content.datagen.recipe.*;
+import com.rae.creatingspace.content.datagen.recipe.engine.EngineSequencedAssemblyProvider;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateDataProvider;
@@ -44,8 +45,10 @@ public class CSDatagen {
 			generator.addProvider(true, new CSAirLiquefyingRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSChemicalSynthesisRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSMechanicalElectrolysisRecipeGen(output, lookupProvider));
+            generator.addProvider(true, new EngineSequencedAssemblyProvider(output));
 
-			// event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
+
+            // event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
 		}
 	}
 

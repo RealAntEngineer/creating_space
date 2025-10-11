@@ -1,0 +1,61 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 6
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 2,
+  "results": [
+    {
+      "id": "creatingspace:monel_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_turbine"
+        },
+        {
+          "item": "creatingspace:monel_turbine_shaft"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_monel_turbine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_turbine"
+        },
+        {
+          "item": "creatingspace:monel_blisk"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_monel_turbine"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_monel_turbine"
+  }
+}

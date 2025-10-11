@@ -1,0 +1,61 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 0
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 2,
+  "results": [
+    {
+      "id": "creatingspace:andesite_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_andesite_turbine"
+        },
+        {
+          "item": "creatingspace:andesite_turbine_shaft"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_andesite_turbine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_andesite_turbine"
+        },
+        {
+          "item": "creatingspace:andesite_blisk"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_andesite_turbine"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_andesite_turbine"
+  }
+}

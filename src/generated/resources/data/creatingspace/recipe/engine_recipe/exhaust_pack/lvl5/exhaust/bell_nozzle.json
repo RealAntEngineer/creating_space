@@ -1,0 +1,110 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "exhaustPackType": "creatingspace:bell_nozzle",
+          "materialLevel": 5
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 1,
+  "results": [
+    {
+      "id": "creatingspace:bell_nozzle"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:copronickel_rib"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:copronickel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:copronickel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:copronickel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_bell_nozzle"
+        },
+        {
+          "item": "creatingspace:copronickel_rib"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_bell_nozzle"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_bell_nozzle"
+  }
+}

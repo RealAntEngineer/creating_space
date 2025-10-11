@@ -1,0 +1,61 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 4
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 2,
+  "results": [
+    {
+      "id": "creatingspace:reinforced_copper_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_reinforced_copper_turbine"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_turbine_shaft"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_reinforced_copper_turbine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_reinforced_copper_turbine"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_blisk"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_reinforced_copper_turbine"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_reinforced_copper_turbine"
+  }
+}
