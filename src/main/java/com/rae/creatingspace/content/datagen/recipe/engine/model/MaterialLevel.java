@@ -27,12 +27,14 @@ public enum MaterialLevel {
     private final String key;
     private final String folderName;
     private final ResourceLocation basePrefix;
+    private final String prefix;
 
     MaterialLevel(int level, String key) {
         this.level = level;
         this.key = key;
         this.folderName = "lvl" + level;
-        this.basePrefix = resource( key + "_");
+        this.basePrefix = resource(key + "_");
+        this.prefix = this.basePrefix.getNamespace() + ":" + this.basePrefix.getPath();
     }
 
     /** The numeric material level (used in engineRecipeData.materialLevel). */
@@ -45,7 +47,7 @@ public enum MaterialLevel {
         return key;
     }
 
-    /** Folder segment (e.g., "level1-iron"). */
+    /** Folder segment (e.g., "lvl1"). */
     public String folderName() {
         return folderName;
     }
@@ -55,8 +57,13 @@ public enum MaterialLevel {
         return basePrefix;
     }
 
+    /** Cached string form of the namespaced prefix (e.g., "creatingspace:iron_"). */
+    public String prefix() {
+        return prefix;
+    }
+
     /** Returns a namespaced item ID with this material’s prefix. */
     public String itemId(String suffix) {
-        return basePrefix.getNamespace() + ":" + basePrefix.getPath() + suffix;
+        return prefix + suffix;
     }
 }

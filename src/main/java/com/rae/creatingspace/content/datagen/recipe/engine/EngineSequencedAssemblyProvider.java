@@ -42,31 +42,13 @@ public class EngineSequencedAssemblyProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput cache) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
-        // Material-dependent recipes
-        for (MaterialLevel mat : MaterialLevel.values()) {
-            for (EnginePartType type : EnginePartType.values()) {
-                if (!type.isMaterialDependent()) continue;
-
-                try {
-                    JsonObject json = buildRecipe(type, mat);
-                    Path path = recipePath(type, mat);
-                    futures.add(saveJson(cache, json, path));
-                } catch (Exception e) {
-                    throw new RuntimeException("Failed generating recipe for " + type.name() + " at " + mat.key(), e);
-                }
-            }
-        }
-
-        // Non-material recipes
         for (EnginePartType type : EnginePartType.values()) {
-            if (type.isMaterialDependent()) continue;
+            type.applicableMaterials()
+                    .map(mat -> scheduleRecipe(cache, type, mat))
+                    .forEach(futures::add);
 
-            try {
-                JsonObject json = buildRecipe(type, null);
-                Path path = recipePath(type, null);
-                futures.add(saveJson(cache, json, path));
-            } catch (Exception e) {
-                throw new RuntimeException("Failed generating static recipe for " + type.name(), e);
+            if (!type.isMaterialDependent()) {
+                futures.add(scheduleRecipe(cache, type, null));
             }
         }
 
@@ -81,34 +63,19 @@ public class EngineSequencedAssemblyProvider implements DataProvider {
         EngineSAJson.Builder b = EngineSAJson.builder()
                 .loops(type.loops());
 
-        // --------------------------------------------------------------------
-        // Material-dependent recipes
-        // --------------------------------------------------------------------
-        if (type.isMaterialDependent() && mat != null) {
+        if (type.isMaterialDependent()) {
+            if (mat == null) {
+                throw new IllegalArgumentException("Material-dependent recipe requires material level for " + type.name());
+            }
+
             // Add proper ingredient with materialLevel in custom data
             b.blueprintIngredient(mat.level());
-
-            // Result item — same name as the recipe file
-            String partName = type.recipeSubPath()
-                    .substring(type.recipeSubPath().lastIndexOf('/') + 1);
-            b.result(getResultItemId(type, mat));
-
-            // Transitional item naming rules
-            b.transitionalItem(getTransitionalItemId(type, mat));
-
-
-            // --------------------------------------------------------------------
-            // Non-material recipes (engine, duplicate_blueprint)
-            // --------------------------------------------------------------------
         } else {
-            b.result("creatingspace:" + type.recipeSubPath());
-            b.transitionalItem("creatingspace:engine_blueprint");
-
-            // simple ingredient reference to avoid {}
-            JsonObject ing = new JsonObject();
-            ing.addProperty("item", "creatingspace:engine_blueprint");
-            b.rawIngredient(ing);
+            b.rawIngredient(EngineSAJson.Builder.itemIngredient("creatingspace:engine_blueprint"));
         }
+
+        b.result(type.resultItemId(mat));
+        b.transitionalItem(type.transitionalItemId(mat));
 
         // --------------------------------------------------------------------
         // Extra data & sequence definition
@@ -128,15 +95,16 @@ public class EngineSequencedAssemblyProvider implements DataProvider {
     // ------------------------------------------------------------------------
 
     private Path recipePath(EnginePartType type, MaterialLevel mat) {
-        StringBuilder sb = new StringBuilder("data/creatingspace/recipe/");
-        sb.append(type.baseFolder()).append("/");
-
-        if (type.isMaterialDependent() && mat != null) {
-            sb.append(mat.folderName()).append("/");
+        Path base = Path.of("data", "creatingspace", "recipe", type.baseFolder());
+        if (type.isMaterialDependent()) {
+            if (mat == null) {
+                throw new IllegalArgumentException("Material-dependent recipe requires material level for " + type.name());
+            }
+            base = base.resolve(mat.folderName());
         }
 
-        sb.append(type.recipeSubPath()).append(".json");
-        return output.getOutputFolder().resolve(Path.of(sb.toString()));
+        Path file = Path.of(type.recipeSubPath() + ".json");
+        return output.getOutputFolder().resolve(base).resolve(file);
     }
 
     // ------------------------------------------------------------------------
@@ -148,40 +116,17 @@ public class EngineSequencedAssemblyProvider implements DataProvider {
         return DataProvider.saveStable(cache, GSON.toJsonTree(json), path);
     }
 
-    private static String getResultItemId(EnginePartType part, MaterialLevel mat) {
-        // These parts always produce generic item IDs (no material prefix)
-        return switch (part) {
-            case COMBUSTION_CHAMBER -> "creatingspace:combustion_chamber";
-            case BELL_NOZZLE -> "creatingspace:bell_nozzle";
-            case AEROSPIKE_PLUG -> "creatingspace:aerospike_plug";
-            case FUEL_RICH_STAGED_CYCLE, FULL_FLOW_STAGED_CYCLE, OPEN_CYCLE, OX_RICH_STAGED_CYCLE -> "creatingspace:power_pack";
-            case DUPLICATE_BLUEPRINT -> "creatingspace:duplicate_blueprint";
-            case ENGINE -> "creatingspace:engine";
-            default -> mat.itemId(
-                    part.recipeSubPath().substring(part.recipeSubPath().lastIndexOf('/') + 1)
-            );
-        };
-    }
-
-    private static String getTransitionalItemId(EnginePartType type, MaterialLevel mat) {
-        return switch (type) {
-            // Exhaust pack members all use a shared transitional
-            case COMBUSTION_CHAMBER -> "creatingspace:incomplete_combustion_chamber";
-            case BELL_NOZZLE -> "creatingspace:incomplete_bell_nozzle";
-            case AEROSPIKE_PLUG -> "creatingspace:incomplete_aerospike_plug";
-            case FUEL_RICH_STAGED_CYCLE, FULL_FLOW_STAGED_CYCLE, OPEN_CYCLE, OX_RICH_STAGED_CYCLE -> "creatingspace:incomplete_power_pack";
-            case DUPLICATE_BLUEPRINT -> "creatingspace:engine_blueprint";
-            case ENGINE -> "creatingspace:engine_blueprint";
-
-            // Default material-dependent transitional logic
-            default -> {
-                String partName = type.recipeSubPath()
-                        .substring(type.recipeSubPath().lastIndexOf('/') + 1);
-                if (partName.equals("injector_grid") || partName.equals("turbine"))
-                    yield EngineSAJson.Builder.incompleteMaterialItemId(mat, partName);
-                yield EngineSAJson.Builder.incompleteItemId(partName);
-            }
-        };
+    private CompletableFuture<?> scheduleRecipe(CachedOutput cache, EnginePartType type, MaterialLevel mat) {
+        try {
+            JsonObject json = buildRecipe(type, mat);
+            Path path = recipePath(type, mat);
+            return saveJson(cache, json, path);
+        } catch (Exception e) {
+            String context = type.isMaterialDependent()
+                    ? " at " + (mat != null ? mat.key() : "<missing material>")
+                    : " (static)";
+            throw new RuntimeException("Failed generating recipe for " + type.name() + context, e);
+        }
     }
 
     @Override

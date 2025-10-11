@@ -90,6 +90,7 @@ public class EngineSAJson {
         // Ingredient setup (engine blueprint w/ custom data)
         // --------------------------------------------------------------------
         public Builder blueprintIngredient(int materialLevel) {
+            resetIngredientState();
             ingredient.addProperty("items", "creatingspace:engine_blueprint");
             ingredient.addProperty("type", "neoforge:components");
 
@@ -112,7 +113,7 @@ public class EngineSAJson {
         // --------------------------------------------------------------------
         public Builder ingredientItem(String id) {
             if (id == null || id.isBlank()) return this;
-            ingredient.entrySet().clear();
+            resetIngredientState();
             ingredient.addProperty("item", id);
             ingredientExplicitlySet = true;
             return this;
@@ -121,7 +122,7 @@ public class EngineSAJson {
         /** Inserts a pre-built ingredient JSON (used for static recipes). */
         public Builder rawIngredient(JsonObject ingredientJson) {
             if (ingredientJson == null || ingredientJson.entrySet().isEmpty()) return this;
-            ingredient.entrySet().clear();
+            resetIngredientState();
             ingredientJson.entrySet().forEach(e -> ingredient.add(e.getKey(), e.getValue()));
             ingredientExplicitlySet = true;
             return this;
@@ -224,6 +225,13 @@ public class EngineSAJson {
             return !t.contains(":");
         }
 
+        private void resetIngredientState() {
+            ingredient.entrySet().clear();
+            components.entrySet().clear();
+            engineRecipeData.entrySet().clear();
+            ingredientExplicitlySet = false;
+        }
+
         // --------------------------------------------------------------------
         // Transitional Item ID Helpers
         // --------------------------------------------------------------------
@@ -235,6 +243,13 @@ public class EngineSAJson {
         /** Builds a transitional item ID with a material key included. */
         public static String incompleteMaterialItemId(MaterialLevel mat, String baseName) {
             return "creatingspace:incomplete_" + mat.key() + "_" + baseName;
+        }
+
+        /** Simple helper to produce a `{"item": id}` ingredient JSON. */
+        public static JsonObject itemIngredient(String id) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("item", id);
+            return obj;
         }
     }
 }

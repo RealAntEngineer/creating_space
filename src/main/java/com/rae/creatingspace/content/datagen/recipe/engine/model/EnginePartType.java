@@ -2,6 +2,9 @@ package com.rae.creatingspace.content.datagen.recipe.engine.model;
 
 import com.rae.creatingspace.content.datagen.recipe.engine.util.EngineSAJson;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import static com.rae.creatingspace.CreatingSpace.resource;
 
 /**
@@ -41,9 +44,7 @@ public enum EnginePartType {
         public void buildSequence(EngineSAJson.Builder b, MaterialLevel mat) {
             String base = EngineSAJson.Builder.incompleteItemId("bell_nozzle");
             b.deploy(base, mat.itemId("rib"));
-            b.deploy(base, mat.itemId("engine_wall"));
-            b.deploy(base, mat.itemId("engine_wall"));
-            b.deploy(base, mat.itemId("engine_wall"));
+            repeatDeploy(b, base, mat.itemId("engine_wall"), 3);
             b.deploy(base, mat.itemId("rib"));
         }
 
@@ -109,6 +110,16 @@ public enum EnginePartType {
         public void appendExtraEngineData(EngineSAJson.Builder b) {
             b.putInEngineRecipeData("powerPackType", resource("fuel_rich_staged_cycle").toString());
         }
+
+        @Override
+        public String resultItemId(MaterialLevel mat) {
+            return "creatingspace:power_pack";
+        }
+
+        @Override
+        public String transitionalItemId(MaterialLevel mat) {
+            return EngineSAJson.Builder.incompleteItemId("power_pack");
+        }
     },
 
     FULL_FLOW_STAGED_CYCLE(
@@ -123,6 +134,16 @@ public enum EnginePartType {
         @Override
         public void appendExtraEngineData(EngineSAJson.Builder b) {
             b.putInEngineRecipeData("powerPackType", resource("full_flow_staged_cycle").toString());
+        }
+
+        @Override
+        public String resultItemId(MaterialLevel mat) {
+            return "creatingspace:power_pack";
+        }
+
+        @Override
+        public String transitionalItemId(MaterialLevel mat) {
+            return EngineSAJson.Builder.incompleteItemId("power_pack");
         }
     },
 
@@ -140,6 +161,16 @@ public enum EnginePartType {
         public void appendExtraEngineData(EngineSAJson.Builder b) {
             b.putInEngineRecipeData("powerPackType", resource("open_cycle").toString());
         }
+
+        @Override
+        public String resultItemId(MaterialLevel mat) {
+            return "creatingspace:power_pack";
+        }
+
+        @Override
+        public String transitionalItemId(MaterialLevel mat) {
+            return EngineSAJson.Builder.incompleteItemId("power_pack");
+        }
     },
 
     OX_RICH_STAGED_CYCLE(
@@ -154,6 +185,16 @@ public enum EnginePartType {
         @Override
         public void appendExtraEngineData(EngineSAJson.Builder b) {
             b.putInEngineRecipeData("powerPackType", resource("ox_rich_staged_cycle").toString());
+        }
+
+        @Override
+        public String resultItemId(MaterialLevel mat) {
+            return "creatingspace:power_pack";
+        }
+
+        @Override
+        public String transitionalItemId(MaterialLevel mat) {
+            return EngineSAJson.Builder.incompleteItemId("power_pack");
         }
     },
 
@@ -184,18 +225,61 @@ public enum EnginePartType {
     private final String recipeSubPath;
     private final boolean materialDependent;
     private final int loops;
+    private final String recipeLeafName;
 
     EnginePartType(String baseFolder, String recipeSubPath, boolean materialDependent, int loops) {
         this.baseFolder = baseFolder;
         this.recipeSubPath = recipeSubPath;
         this.materialDependent = materialDependent;
         this.loops = loops;
+        int slashIndex = recipeSubPath.lastIndexOf('/');
+        this.recipeLeafName = slashIndex == -1 ? recipeSubPath : recipeSubPath.substring(slashIndex + 1);
     }
 
     public String baseFolder() { return baseFolder; }
     public String recipeSubPath() { return recipeSubPath; }
     public boolean isMaterialDependent() { return materialDependent; }
     public int loops() { return loops; }
+    public String recipeLeafName() { return recipeLeafName; }
+
+    /** Returns the default result item ID for this part at the given material level. */
+    public String resultItemId(MaterialLevel mat) {
+        if (!materialDependent) {
+            return "creatingspace:" + recipeLeafName;
+        }
+
+        if (mat == null) {
+            throw new IllegalArgumentException("Material-dependent recipe requires material level for " + name());
+        }
+
+        return switch (this) {
+            case COMBUSTION_CHAMBER -> "creatingspace:combustion_chamber";
+            case BELL_NOZZLE -> "creatingspace:bell_nozzle";
+            case AEROSPIKE_PLUG -> "creatingspace:aerospike_plug";
+            default -> mat.itemId(recipeLeafName);
+        };
+    }
+
+    /** Returns the transitional item ID for this part at the given material level. */
+    public String transitionalItemId(MaterialLevel mat) {
+        if (!materialDependent) {
+            return "creatingspace:engine_blueprint";
+        }
+
+        if (mat == null) {
+            throw new IllegalArgumentException("Material-dependent recipe requires material level for " + name());
+        }
+
+        return switch (recipeLeafName) {
+            case "injector_grid", "turbine" -> EngineSAJson.Builder.incompleteMaterialItemId(mat, recipeLeafName);
+            default -> EngineSAJson.Builder.incompleteItemId(recipeLeafName);
+        };
+    }
+
+    /** Stream of material levels that this part should generate recipes for. */
+    public Stream<MaterialLevel> applicableMaterials() {
+        return materialDependent ? Arrays.stream(MaterialLevel.values()) : Stream.empty();
+    }
 
     /** Override this to append additional data fields into engineRecipeData. */
     public void appendExtraEngineData(EngineSAJson.Builder b) {}
@@ -208,5 +292,12 @@ public enum EnginePartType {
         b.deployMach(base, mat.itemId("turbine"));
         b.deployMach(base, mat.itemId("turbine"));
         b.deployMach(base, mat.itemId("injector_grid"));
+    }
+
+    /** Utility to add the same deploying step multiple times. */
+    protected static void repeatDeploy(EngineSAJson.Builder b, String base, String addition, int times) {
+        for (int i = 0; i < times; i++) {
+            b.deploy(base, addition);
+        }
     }
 }
