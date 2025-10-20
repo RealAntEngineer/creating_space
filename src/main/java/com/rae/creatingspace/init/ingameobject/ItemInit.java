@@ -2,6 +2,7 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen;
+import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystItem;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.TagsInit;
@@ -666,5 +667,11 @@ public class ItemInit {
                     "reinforced_injector_grid", Item::new)
             //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
+
+    public static final ItemEntry<CatalystItem> NICKEL_SULFATE_CATALYST = REGISTRATE.item(
+            "nickel_sulfate_catalyst", CatalystItem::new)
+            .properties(p -> p.durability(100))
+            .register();
+
     public static void register() {}
 }

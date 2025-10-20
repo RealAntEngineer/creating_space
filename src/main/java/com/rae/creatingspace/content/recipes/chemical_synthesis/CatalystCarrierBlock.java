@@ -5,20 +5,31 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.lwjgl.system.NonnullDefault;
 
+import java.util.Objects;
+import java.util.function.Function;
+@NonnullDefault
 public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<CatalystCarrierBlockEntity> {
 
     public CatalystCarrierBlock(Properties properties) {
@@ -44,7 +55,7 @@ public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<
         Direction prefferedSide = getPreferredHorizontalFacing(context);
         if (prefferedSide != null)
             return defaultBlockState().setValue(HORIZONTAL_FACING, prefferedSide);
-        return super.getStateForPlacement(context);
+        return Objects.requireNonNull(super.getStateForPlacement(context));
     }
 
     @Override
@@ -72,6 +83,33 @@ public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<
     @Override
     protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (!level.isClientSide) {
+            if (stack.getItem() instanceof CatalystItem) {
+                withBlockEntityDo(level, pos, be -> be.setCatalyst(stack));
+                return ItemInteractionResult.CONSUME;
+
+            }
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+
+        if (!level.isClientSide) {
+            withBlockEntityDo(level, pos, be -> be.setCatalyst(ItemStack.EMPTY));
+            return InteractionResult.SUCCESS;
+        }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
+    }
+
+    @Override
+    public InteractionResult onBlockEntityUse(BlockGetter world, BlockPos pos, Function<CatalystCarrierBlockEntity, InteractionResult> action) {
+        return IBE.super.onBlockEntityUse(world, pos, action);
     }
 
 }

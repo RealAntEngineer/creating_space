@@ -3,6 +3,7 @@ package com.rae.creatingspace.init;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipeParam;
+import com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisParams;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolysisRecipe;
 import com.simibubi.create.AllTags;
@@ -63,11 +64,11 @@ public enum RecipeInit implements IRecipeTypeInfo , StringRepresentable {
 
     RecipeInit(StandardProcessingRecipe.Factory<?> processingFactory) {
         this(() -> new StandardProcessingRecipe.Serializer<>(processingFactory));
-
     }
     RecipeInit(ProcessingRecipe.Factory<AirLiquefyingRecipeParam, ? extends AirLiquefyingRecipe> liquefyingRecipeParamFactory) {
         this(() -> new AirLiquefyingRecipe.Serializer<>(liquefyingRecipeParamFactory));
     }
+
     @ApiStatus.Internal
     public static void register(IEventBus modEventBus) {
         ShapedRecipePattern.setCraftingSize(9, 9);

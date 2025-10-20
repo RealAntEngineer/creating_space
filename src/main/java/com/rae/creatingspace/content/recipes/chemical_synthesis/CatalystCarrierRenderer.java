@@ -43,6 +43,17 @@ public class CatalystCarrierRenderer extends KineticBlockEntityRenderer<Catalyst
 
         float renderedHeadOffset =
                 be.getRenderedHeadOffset(partialTicks);
+        ItemStack catalyst = be.getCatalyst();
+        if (catalyst != null) {
+            if (!catalyst.isEmpty()) {
+                ms.pushPose();
+                ms.translate(0, -renderedHeadOffset, 0);
+                renderCatalystFromTexture(ms,
+                        CreatingSpace.resource("textures/block/catalyst_carrier/catalyst/" +
+                                catalyst.getItemHolder().unwrapKey().orElseThrow().location().getPath() + ".png"), buffer);
+                ms.popPose();
+            }
+        }
 
         if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
@@ -59,6 +70,11 @@ public class CatalystCarrierRenderer extends KineticBlockEntityRenderer<Catalyst
     @Override
     protected BlockState getRenderedBlockState(CatalystCarrierBlockEntity be) {
         return shaft(getRotationAxisOf(be));
+    }
+
+    private void renderCatalystFromTexture(PoseStack stack, ResourceLocation texLocation, MultiBufferSource buffer) {
+        ModelPart catalyst = createCatalyst();
+        catalyst.render(stack, buffer.getBuffer(RenderType.entitySolid(texLocation)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
     }
 
     public static ModelPart createCatalyst() {

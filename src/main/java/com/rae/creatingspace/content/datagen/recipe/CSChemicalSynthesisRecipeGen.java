@@ -4,9 +4,9 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
 import com.rae.creatingspace.init.RecipeInit;
-import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
+import com.simibubi.create.api.data.recipe.StandardProcessingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeParams;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -16,11 +16,7 @@ import net.minecraft.world.level.material.Fluids;
 import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("unused")
-public class CSChemicalSynthesisRecipeGen extends ProcessingRecipeGen<
-        ProcessingRecipeParams,
-        ChemicalSynthesisRecipe,
-        ChemicalSynthesisRecipe.Builder<ChemicalSynthesisRecipe>
-        > {
+public class CSChemicalSynthesisRecipeGen extends StandardProcessingRecipeGen<ChemicalSynthesisRecipe> {
 
     public CSChemicalSynthesisRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, lookup, CreatingSpace.MODID);
@@ -32,8 +28,8 @@ public class CSChemicalSynthesisRecipeGen extends ProcessingRecipeGen<
     }
 
     @Override
-    protected ChemicalSynthesisRecipe.Builder<ChemicalSynthesisRecipe> getBuilder(ResourceLocation id) {
-        return new ChemicalSynthesisRecipe.Builder<>(ChemicalSynthesisRecipe::new, id);
+    protected StandardProcessingRecipe.Builder<ChemicalSynthesisRecipe> getBuilder(ResourceLocation id) {
+        return new ChemicalSynthesisRecipe.Builder(id);
     }
 
     {

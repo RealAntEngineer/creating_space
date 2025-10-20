@@ -47,7 +47,6 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.*;
@@ -60,7 +59,6 @@ import net.neoforged.neoforge.common.Tags;
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.rae.creatingspace.CreatingSpace.resource;
 import static com.simibubi.create.AllTags.commonItemTag;
-import static com.simibubi.create.AllTags.optionalTag;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -842,7 +840,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
-    public static final BlockEntry<AmethystClusterBlock> SMALL_CRYSTAL_BUD = REGISTRATE.block(
+    public static final BlockEntry<AmethystClusterBlock> SMALL_NICKEL_SULFATE_BUD = REGISTRATE.block(
                     "small_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
             .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
             .properties(p -> p.strength(1.5F)
