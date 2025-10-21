@@ -1,17 +1,16 @@
 {
   "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "creatingspace:engine_blueprint"
+  },
   "keepNbt": [
     "engineRecipeData",
     "blockEntity"
   ],
-  "ingredient": {
-    "item": "creatingspace:engine_blueprint"
-  },
   "loops": 1,
   "results": [
     {
-      "count": 2,
-      "id": "creatingspace:engine_blueprint"
+      "id": "creatingspace:duplicate_blueprint"
     }
   ],
   "sequence": [

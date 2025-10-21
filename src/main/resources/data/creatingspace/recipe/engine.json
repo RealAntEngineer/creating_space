@@ -1,25 +1,21 @@
 {
   "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "creatingspace:engine_blueprint"
+  },
   "keepNbt": [
     "engineRecipeData",
     "blockEntity"
   ],
-  "ingredient": {
-    "item": "creatingspace:engine_blueprint"
-  },
   "loops": 1,
   "results": [
     {
-      "id": "creatingspace:rocket_engine"
+      "id": "creatingspace:engine"
     }
   ],
   "sequence": [
     {
       "type": "create:deploying",
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
-      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"
@@ -27,6 +23,10 @@
         {
           "item": "creatingspace:power_pack"
         }
+      ],
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
       ],
       "results": [
         {
@@ -36,10 +36,6 @@
     },
     {
       "type": "create:deploying",
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
-      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"
@@ -47,6 +43,10 @@
         {
           "item": "creatingspace:exhaust_pack"
         }
+      ],
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
       ],
       "results": [
         {
@@ -56,6 +56,6 @@
     }
   ],
   "transitional_item": {
-    "id": "creatingspace:incomplete_rocket_engine"
+    "id": "creatingspace:engine_blueprint"
   }
 }
