@@ -1,0 +1,110 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "exhaustPackType": "creatingspace:aerospike",
+          "materialLevel": 3
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 1,
+  "results": [
+    {
+      "id": "creatingspace:aerospike_plug"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_aerospike_plug"
+        },
+        {
+          "item": "create:shaft"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_aerospike_plug"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_aerospike_plug"
+        },
+        {
+          "item": "creatingspace:brass_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_aerospike_plug"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_aerospike_plug"
+        },
+        {
+          "item": "creatingspace:brass_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_aerospike_plug"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_aerospike_plug"
+        },
+        {
+          "item": "creatingspace:brass_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_aerospike_plug"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_aerospike_plug"
+        },
+        {
+          "item": "creatingspace:brass_rib"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_aerospike_plug"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_aerospike_plug"
+  }
+}

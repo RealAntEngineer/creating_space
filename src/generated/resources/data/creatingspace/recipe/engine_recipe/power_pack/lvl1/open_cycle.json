@@ -1,0 +1,70 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 1,
+          "powerPackType": "creatingspace:open_cycle"
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 1,
+  "results": [
+    {
+      "id": "creatingspace:power_pack"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_power_pack"
+        },
+        {
+          "item": "creatingspace:iron_turbine"
+        }
+      ],
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_power_pack"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_power_pack"
+        },
+        {
+          "item": "creatingspace:iron_injector_grid"
+        }
+      ],
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_power_pack"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_power_pack"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 6
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 2,
+  "results": [
+    {
+      "id": "creatingspace:monel_injector_grid"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        },
+        {
+          "item": "creatingspace:monel_injector"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_monel_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        },
+        {
+          "item": "creatingspace:monel_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_monel_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_monel_injector_grid"
+        },
+        {
+          "item": "creatingspace:monel_injector"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_monel_injector_grid"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_monel_injector_grid"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 4
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 1,
+  "results": [
+    {
+      "id": "creatingspace:combustion_chamber"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_combustion_chamber"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_combustion_chamber"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_combustion_chamber"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_rib"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_combustion_chamber"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_combustion_chamber"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_combustion_chamber"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_combustion_chamber"
+        },
+        {
+          "item": "creatingspace:reinforced_copper_rib"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_combustion_chamber"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_combustion_chamber"
+  }
+}

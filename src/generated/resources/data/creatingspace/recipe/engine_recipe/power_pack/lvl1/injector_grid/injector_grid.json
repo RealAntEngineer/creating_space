@@ -1,0 +1,77 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 1
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 2,
+  "results": [
+    {
+      "id": "creatingspace:iron_injector_grid"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_iron_injector_grid"
+        },
+        {
+          "item": "creatingspace:iron_injector"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_iron_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_iron_injector_grid"
+        },
+        {
+          "item": "creatingspace:iron_engine_wall"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_iron_injector_grid"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_iron_injector_grid"
+        },
+        {
+          "item": "creatingspace:iron_injector"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_iron_injector_grid"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_iron_injector_grid"
+  }
+}

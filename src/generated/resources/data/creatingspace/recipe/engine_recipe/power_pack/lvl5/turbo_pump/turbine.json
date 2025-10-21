@@ -1,0 +1,61 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "materialLevel": 5
+        }
+      }
+    },
+    "items": "creatingspace:engine_blueprint"
+  },
+  "keepNbt": [
+    "engineRecipeData",
+    "blockEntity"
+  ],
+  "loops": 2,
+  "results": [
+    {
+      "id": "creatingspace:copronickel_turbine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_copronickel_turbine"
+        },
+        {
+          "item": "creatingspace:copronickel_turbine_shaft"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_copronickel_turbine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "creatingspace:incomplete_copronickel_turbine"
+        },
+        {
+          "item": "creatingspace:copronickel_blisk"
+        }
+      ],
+      "results": [
+        {
+          "id": "creatingspace:incomplete_copronickel_turbine"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "creatingspace:incomplete_copronickel_turbine"
+  }
+}
