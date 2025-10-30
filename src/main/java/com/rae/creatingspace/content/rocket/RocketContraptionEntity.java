@@ -859,7 +859,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     }
 
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+    public @Nullable AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player) {
         return ScheduleMakingMenu.create(i,inventory,this);
     }
 

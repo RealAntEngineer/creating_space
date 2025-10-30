@@ -79,10 +79,10 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
             try {
                 nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,
                         PropellantTypeInit.getSyncedPropellantRegistry().getKey(propellantType)).getOrThrow());
-            } catch (Throwable ignored){
-                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,PropellantTypeInit.METHALOX.getId() ).getOrThrow());
-                CreatingSpace.LOGGER.warn("catch exeption will saving engine : "+propellantType);
-                CreatingSpace.LOGGER.warn("exeption : "+ignored.getMessage());
+            } catch (Throwable error){
+                CreatingSpace.LOGGER.warn("catch exception will saving engine : "+propellantType);
+                CreatingSpace.LOGGER.warn("exeption : "+error.getMessage());
+                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,CreatingSpace.resource("methalox")).getOrThrow());//PropellantTypeInit.METHALOX.getId()));
             }
             super.write(nbt,registries, clientPacket);
         }
@@ -101,10 +101,10 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
             try {
                 propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).getOrThrow())
                         .orElse(PropellantTypeInit.METHALOX.get());
-            } catch (Throwable ignored){
+            } catch (Throwable error){
                 propellantType = PropellantTypeInit.METHALOX.get();
-                CreatingSpace.LOGGER.warn("catch exeption will loading engine : "+propellantType);
-                CreatingSpace.LOGGER.warn("exeption : "+ignored.getMessage());
+                CreatingSpace.LOGGER.warn("catch exception will loading engine : "+propellantType);
+                CreatingSpace.LOGGER.warn("exeption : "+ error.getMessage());
             }
         }
 

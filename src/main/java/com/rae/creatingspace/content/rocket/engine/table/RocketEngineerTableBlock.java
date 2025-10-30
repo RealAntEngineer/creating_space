@@ -48,8 +48,8 @@ public class RocketEngineerTableBlock extends HorizontalDirectionalBlock impleme
         if (level.isClientSide)
             return InteractionResult.SUCCESS;
         BlockEntity blockentity = level.getBlockEntity(pos);
-        if (blockentity instanceof RocketEngineerTableBlockEntity) {
-            player.openMenu((MenuProvider)blockentity);
+        if (blockentity instanceof RocketEngineerTableBlockEntity be) {
+            player.openMenu(be, be::sendToMenu);
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }

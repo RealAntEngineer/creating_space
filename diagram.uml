@@ -1,0 +1,1737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.rae.creatingspace.legacy</OriginalElement>
+  <nodes>
+    <node x="8680.377805527516" y="6801.656642077513">com.rae.creatingspace.content.planets.CustomDimensionEffects.MarsEffect</node>
+    <node x="7578.70648148854" y="8966.444408333266">com.rae.creatingspace.content.event.CSClientEvent</node>
+    <node x="4626.199728127393" y="6997.791508289334">net.minecraft.world.entity.Entity.MoveFunction</node>
+    <node x="8824.608055534032" y="8079.784770618176">com.rae.creatingspace.content.rocket.contraption.behaviour.movement.EngineMovementBehaviour</node>
+    <node x="8974.800533281785" y="9038.444408333266">com.rae.creatingspace.init.ingameobject.MaterialInit</node>
+    <node x="4630.656484498667" y="8966.444408333266">com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader</node>
+    <node x="7485.912187799264" y="7120.910104189687">com.rae.creatingspace.configs.CSCfgCommon.Comments</node>
+    <node x="5682.532298943686" y="8262.846115612241">com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction</node>
+    <node x="7348.757657131876" y="6304.098176725972">com.rae.creatingspace.configs.CSOxygenBacktank.Comments</node>
+    <node x="6231.686372777025" y="6275.988025438758">com.rae.creatingspace.api.squedule.condition.CargoThresholdCondition</node>
+    <node x="8197.875532235374" y="6695.033515716954">com.rae.creatingspace.content.planets.CustomDimensionEffects.MarsOrbitEffects</node>
+    <node x="4189.59946538108" y="8966.444408333266">net.neoforged.neoforge.common.crafting.ICustomIngredient</node>
+    <node x="2220.207043568201" y="2519.8819777150075">com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity</node>
+    <node x="7776.70648148854" y="8966.444408333266">com.rae.creatingspace.mixin.recipe.SequencedAssemblyRecipeSerializerMixin</node>
+    <node x="6017.1924393183035" y="996.5150722675334">net.minecraft.world.item.Item</node>
+    <node x="7933.159765251359" y="6785.089348577209">com.rae.creatingspace.configs.CSCfgClient.Comments</node>
+    <node x="7744.016351632065" y="6809.261597240778">com.rae.creatingspace.configs.CSCfgClient</node>
+    <node x="1182.466169371282" y="8603.1433700397">com.rae.creatingspace.compat.jei.AnimatedChemicalSynthesizer</node>
+    <node x="7445.922443351981" y="709.6494598958919">com.simibubi.create.content.processing.recipe.StandardProcessingRecipe</node>
+    <node x="1505.818852145456" y="4157.152625547525">com.simibubi.create.content.kinetics.base.KineticBlockEntity</node>
+    <node x="1205.4554305178012" y="921.0789815603496">com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock</node>
+    <node x="6755.943579702394" y="744.2772179123959">com.rae.creatingspace.content.rocket.engine.design.DesignBlueprintItem</node>
+    <node x="4022.1375801701533" y="2482.093450069661">com.rae.creatingspace.api.gui.elements.TallIconButton</node>
+    <node x="8726.587108828351" y="8966.444408333266">net.minecraft.world.level.saveddata.SavedData</node>
+    <node x="5854.279129613381" y="8446.328075826252">com.rae.creatingspace.api.squedule.instruction.ChangeThrottleInstruction</node>
+    <node x="1519.8595513990992" y="569.1677484116399">com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock</node>
+    <node x="4498.598142733649" y="7184.554498836458">com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere</node>
+    <node x="4749.411726255692" y="982.3687482715723">net.minecraft.client.gui.screens.Screen</node>
+    <node x="5506.900410809255" y="8966.444408333266">com.rae.creatingspace.content.event.CSEventHandler</node>
+    <node x="-16.199466718215263" y="9038.444408333266">com.rae.creatingspace.content.ponders.CustomProcessingScene</node>
+    <node x="7698.800533281785" y="9038.444408333266">com.rae.creatingspace.content.datagen.recipe.engine.model.MaterialLevel</node>
+    <node x="8624.800533281785" y="9038.444408333266">com.rae.creatingspace.init.ingameobject.PaintingInit</node>
+    <node x="8468.36945268652" y="2099.1399378652904">com.rae.creatingspace.compat.jei.CSJei</node>
+    <node x="-305.0" y="4096.93597296307">com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierVisual</node>
+    <node x="1848.8629283248183" y="1969.5479344559724">com.rae.creatingspace.api.IMass</node>
+    <node x="851.1864338602359" y="739.6086632888353">com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlock</node>
+    <node x="4071.748737782169" y="8245.535820805484">com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.RocketAssemblyData</node>
+    <node x="3746.2807489385864" y="8079.784770618176">com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.PropellantStatus</node>
+    <node x="8122.651839596101" y="442.035480102899">com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Builder</node>
+    <node x="228.82064944990248" y="7588.192779453355">com.rae.creatingspace.content.datagen.recipe.CSAirLiquefyingRecipeGen</node>
+    <node x="3085.439408144021" y="3090.3749192871023">com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity</node>
+    <node x="2868.1262882145866" y="8155.5109012679295">com.rae.creatingspace.init.TagsInit.CustomItemTags</node>
+    <node x="107.16323596409745" y="4621.51077079918">com.rae.creatingspace.mixin.kinetics.BacktankBlockEntityMixin</node>
+    <node x="1672.0360324675537" y="7332.584262952211">com.rae.creatingspace.content.rocket.network.RocketContraptionLaunchPacket</node>
+    <node x="276.0332505409707" y="8966.444408333266">com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.FlightRecorderInteraction</node>
+    <node x="1259.8005332817845" y="9038.444408333266">com.rae.creatingspace.CreatingSpaceClient</node>
+    <node x="6333.2035865418375" y="8966.444408333266">com.rae.creatingspace.mixin.entity.LivingEntityMixin</node>
+    <node x="4036.744928870039" y="1913.6024154671818">net.minecraft.client.gui.components.AbstractWidget</node>
+    <node x="8078.800533281785" y="9038.444408333266">com.rae.creatingspace.content.ponders.RocketScene</node>
+    <node x="3142.9402055325363" y="8543.378960250791">com.rae.creatingspace.init.TagsInit.CustomBiomeTags</node>
+    <node x="1234.4456566323493" y="1584.2092130267213">com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlock</node>
+    <node x="3686.9380146944195" y="27.534089230665813">com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipmentMenu</node>
+    <node x="3405.938014694419" y="3721.1628736337093">com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockRenderer</node>
+    <node x="598.5919312273548" y="6909.576254656233">com.rae.creatingspace.content.datagen.recipe.CSMixingRecipeGen</node>
+    <node x="6901.913704812249" y="6648.977668022126">com.rae.creatingspace.configs.CSKinetics</node>
+    <node x="1343.3417296828106" y="1351.344005298249">com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock</node>
+    <node x="6131.800533281785" y="9038.444408333266">com.rae.creatingspace.CreatingSpace</node>
+    <node x="7078.986788628227" y="746.8094773451427">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Factory</node>
+    <node x="3648.0061169450246" y="7100.335667310558">net.minecraft.world.entity.Entity.MovementEmission</node>
+    <node x="8795.819718768422" y="6241.704824051587">net.minecraft.client.renderer.DimensionSpecialEffects</node>
+    <node x="3942.5544667541126" y="360.0339038359509">com.rae.creatingspace.content.rocket.engine.table.EngineerTableMenu</node>
+    <node x="4570.694433512631" y="2426.355503342698">com.rae.creatingspace.api.gui.elements.DimSelectBoxWidget</node>
+    <node x="2179.097166975201" y="8391.792378184233">net.minecraft.world.level.levelgen.carver.CarverConfiguration</node>
+    <node x="290.1989330272779" y="1485.7675045120247">com.rae.creatingspace.legacy.server.blocks.multiblock.engines.RocketEngineBlock</node>
+    <node x="8829.182509241029" y="1144.4259330301152">com.rae.creatingspace.compat.jei.category.AirLiquefyingCategory</node>
+    <node x="737.1945480393379" y="8007.784770618176">com.rae.creatingspace.content.datagen.recipe.CSChemicalSynthesisRecipeGen</node>
+    <node x="8362.573916792979" y="6576.8884749320305">com.rae.creatingspace.content.planets.CustomDimensionEffects.MoonEffect</node>
+    <node x="1322.2829784728174" y="1124.9501285112144">com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock</node>
+    <node x="2561.5949696339458" y="6873.343828545778">com.rae.creatingspace.content.rocket.engine.table.EngineerTableCraft</node>
+    <node x="75.74188208832231" y="4122.397393021529">com.rae.creatingspace.content.life_support.sealer.CSFanVisual</node>
+    <node x="2037.9655514035312" y="5850.2596375584">com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderRenderer</node>
+    <node x="6862.356443954393" y="8079.784770618176">com.simibubi.create.content.contraptions.Contraption</node>
+    <node x="8462.464463057891" y="1346.5909734100824">com.simibubi.create.compat.jei.category.CreateRecipeCategory.Info</node>
+    <node x="2798.5338253077643" y="8966.444408333266">com.rae.creatingspace.content.event.OxygenSuffocationEvent.Pre</node>
+    <node x="8408.642567366704" y="7057.578255053603">com.rae.creatingspace.content.planets.CustomDimensionEffects.MoonOrbitEffect</node>
+    <node x="4826.127979377613" y="8460.260417104399">com.rae.creatingspace.mixin.recipe.ProcessingRecipeParamsMixin</node>
+    <node x="2598.957385486591" y="7550.964666623544">com.rae.creatingspace.content.rocket.network.RocketEngineerTableSync</node>
+    <node x="5405.787308196238" y="8261.866813058816">com.rae.creatingspace.api.squedule.instruction.TextScheduleInstruction</node>
+    <node x="4256.800533281785" y="9038.444408333266">com.rae.creatingspace.content.planets.CSDimensionUtil</node>
+    <node x="4311.039166166861" y="1751.4857869769662">net.minecraft.client.gui.components.events.GuiEventListener</node>
+    <node x="3372.8005332817847" y="9038.444408333266">com.rae.creatingspace.init.EngineMaterialInit</node>
+    <node x="8799.800533281785" y="9038.444408333266">com.rae.creatingspace.content.datagen.CSDatagen</node>
+    <node x="8443.432620800193" y="1827.293185134749">com.rae.creatingspace.compat.jei.CSJei.CategoryBuilder</node>
+    <node x="7119.800533281785" y="9038.444408333266">com.rae.creatingspace.init.graphics.SpriteShiftInit</node>
+    <node x="8778.795193719356" y="5993.735390048016">net.minecraft.client.renderer.DimensionSpecialEffects.OverworldEffects</node>
+    <node x="2917.8775607638627" y="6768.467787566976">com.rae.creatingspace.content.rocket.network.RocketContraptionUpdatePacket</node>
+    <node x="3330.943010492843" y="3507.9908875216743">net.minecraft.world.level.block.entity.BlockEntity.ComponentHelper</node>
+    <node x="5878.590299388961" y="2115.228678684306">com.rae.creatingspace.legacy.server.items.SmallEngineItem</node>
+    <node x="7991.893243564011" y="6509.042905999535">com.rae.creatingspace.configs.CSCfgServer.Comments</node>
+    <node x="1749.3537944004124" y="385.95248841229375">com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock.RenderProperties</node>
+    <node x="8390.349914459948" y="318.15531499565645">com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe.Builder</node>
+    <node x="104.01977281271184" y="3727.8593238619596">com.rae.creatingspace.content.recipes.electrolysis.ElectrolyzerVisual</node>
+    <node x="6355.726357941125" y="1611.2434268554398">net.minecraft.world.item.Item.Properties</node>
+    <node x="7493.871703130558" y="1477.5728693279264">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipeParam</node>
+    <node x="5718.900410809255" y="8966.444408333266">com.rae.creatingspace.content.life_support.spacesuit.CopperOxygenBacktankFirstPersonRenderer</node>
+    <node x="9319.800533281785" y="9038.444408333266">com.rae.creatingspace.init.graphics.ShapesInit</node>
+    <node x="3117.4518826474073" y="8966.444408333266">com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutput</node>
+    <node x="5782.881955853548" y="7143.85899851976">com.rae.creatingspace.api.squedule.condition.PlayerPassengerCondition</node>
+    <node x="3851.4639728580087" y="8273.767957022957">com.rae.creatingspace.legacy.utilities.data.FlightDataHelper</node>
+    <node x="6361.322814357788" y="8079.784770618176">com.rae.creatingspace.content.rocket.contraption.RocketContraption</node>
+    <node x="7617.852070829976" y="8079.784770618176">net.minecraft.client.particle.TextureSheetParticle</node>
+    <node x="4652.9980854294745" y="7360.986296325456">com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere.AtmosphereFilterData</node>
+    <node x="5930.800533281785" y="9038.444408333266">com.rae.creatingspace.init.graphics.MenuTypesInit</node>
+    <node x="258.8005332817845" y="9038.444408333266">com.rae.creatingspace.init.EntityDataSerializersInit</node>
+    <node x="8029.427478297142" y="8079.784770618176">net.minecraft.client.particle.Particle.LifetimeAlpha</node>
+    <node x="9420.55516359616" y="8966.444408333266">com.rae.creatingspace.init.RecipeInit</node>
+    <node x="3426.4518826474073" y="8966.444408333266">com.rae.creatingspace.init.ingameobject.FluidInit.SolidRenderedPlaceableFluidType</node>
+    <node x="6106.984389743646" y="6327.148623844565">com.rae.creatingspace.api.squedule.condition.CargoThresholdCondition.Ops</node>
+    <node x="4607.957517389357" y="6530.479757543785">com.rae.creatingspace.mixin.entity.gravity.MinecartMixin</node>
+    <node x="5258.900173689193" y="1620.6656956069546">com.rae.creatingspace.content.rocket.rocket_control.RocketControlsItem</node>
+    <node x="4845.683382454993" y="562.4319766304257">com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipementScreen</node>
+    <node x="1287.1742447190686" y="8966.444408333266">com.rae.creatingspace.api.planets.RocketAccessibleDimension.AccessibilityParameter</node>
+    <node x="53.11124155536743" y="4364.104446356812">com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlockEntity</node>
+    <node x="3757.55146640105" y="8497.215468634746">com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.PropellantStatusData</node>
+    <node x="1636.5725368825044" y="2481.942375536843">com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.BigEngine</node>
+    <node x="2561.467721185834" y="2644.6218415214653">com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity</node>
+    <node x="1169.860844416136" y="5780.80504915283">com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer</node>
+    <node x="8272.94710924402" y="1675.3683701676568">com.simibubi.create.compat.jei.category.CreateRecipeCategory.Factory</node>
+    <node x="3016.8009025688348" y="6351.429329483293">com.rae.creatingspace.legacy.utilities.packet.UpdateSavedDataPacket</node>
+    <node x="6621.920988594006" y="352.1104223896594">com.rae.creatingspace.content.life_support.spacesuit.SpacesuitHelmetItem</node>
+    <node x="1069.4532759123263" y="6296.729096913519">com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen.GeneratedRecipeBuilder</node>
+    <node x="4118.26205876765" y="-14.0">com.rae.creatingspace.content.rocket.ScheduleMakingMenu</node>
+    <node x="4303.469988780911" y="2090.7260746700927">net.createmod.catnip.gui.widget.AbstractSimiWidget</node>
+    <node x="6147.8346817190195" y="7034.462084633491">com.rae.creatingspace.api.squedule.condition.RedstoneLinkCondition</node>
+    <node x="2687.8005332817847" y="9038.444408333266">com.rae.creatingspace.init.CSDamageSources</node>
+    <node x="3819.941264795886" y="2389.247324673198">com.rae.creatingspace.api.gui.elements.LabeledBoxWidget</node>
+    <node x="1082.3633807157719" y="5993.735390048016">com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen.GeneratedRecipeBuilder.GeneratedCookingRecipeBuilder</node>
+    <node x="8267.800533281785" y="9038.444408333266">com.rae.creatingspace.content.life_support.sealer.RoomShape</node>
+    <node x="917.1742447190686" y="8966.444408333266">com.rae.creatingspace.legacy.utilities.data.SingleFileCodecJsonDataManager</node>
+    <node x="4281.079534333403" y="6269.955329528961">com.rae.creatingspace.mixin.entity.PlayerMixin</node>
+    <node x="5726.800533281785" y="9038.444408333266">com.rae.creatingspace.content.rocket.engine.design.PropellantType</node>
+    <node x="3576.380415188467" y="6876.112970076455">com.rae.creatingspace.mixin.entity.gravity.LivingEntityMixin</node>
+    <node x="8105.640219189316" y="1048.7453232425746">com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim</node>
+    <node x="4727.573438297581" y="2254.644514952352">com.rae.creatingspace.api.gui.elements.SliderWidget</node>
+    <node x="4414.650743064086" y="1056.5232358858327">net.minecraft.client.gui.screens.Screen.NarratableSearchResult</node>
+    <node x="2055.969911255193" y="6726.403728311982">com.rae.creatingspace.legacy.utilities.packet.RocketControlsSettingsPacket</node>
+    <node x="1778.1841945124897" y="8239.825218044609">net.minecraft.world.level.levelgen.carver.WorldCarver.CarveSkipChecker</node>
+    <node x="9029.023197807595" y="1501.189663641706">com.simibubi.create.compat.jei.category.BasinCategory</node>
+    <node x="7120.818477615104" y="6929.468446288286">com.rae.creatingspace.configs.CSRocketEngine.Comments</node>
+    <node x="2379.5843207522225" y="6188.747080583419">net.createmod.catnip.net.base.BasePacketPayload.PacketTypeProvider</node>
+    <node x="180.0" y="9110.444408333266">com.rae.creatingspace.init.ingameobject.BlockInit</node>
+    <node x="4039.8005332817847" y="9038.444408333266">com.rae.creatingspace.mixin.entity.ContraptionMixin</node>
+    <node x="7416.740562357103" y="8079.784770618176">com.rae.creatingspace.legacy.server.particle.PlumeParticle</node>
+    <node x="6751.751886890489" y="987.5132657489439">com.rae.creatingspace.content.fluids.storage.CreativeFluidContainer</node>
+    <node x="7731.410609575087" y="6309.722627194661">com.rae.creatingspace.configs.CSOxygenBacktank.ColorSelection</node>
+    <node x="3595.8005332817847" y="9038.444408333266">com.rae.creatingspace.content.event.DataEventHandler</node>
+    <node x="1752.3770075520706" y="4443.109375442582">com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer</node>
+    <node x="385.1991528793259" y="5156.357663226137">com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity</node>
+    <node x="-25.476554274305386" y="8966.444408333266">com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour</node>
+    <node x="256.46521277782097" y="7254.709235365373">com.rae.creatingspace.content.datagen.recipe.CSCrushingRecipeGen</node>
+    <node x="7260.082530841604" y="6809.002727918123">com.rae.creatingspace.configs.CSRocketEngine</node>
+    <node x="2013.2283780561002" y="8238.225730986012">net.minecraft.world.level.levelgen.carver.WorldCarver</node>
+    <node x="-119.04976155722522" y="3917.797850429267">com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual</node>
+    <node x="4944.601682210744" y="6750.910079495685">com.rae.creatingspace.content.rocket.RocketContraptionEntity.RocketStatus</node>
+    <node x="2769.33878466431" y="6505.15909286415">net.createmod.catnip.net.base.ClientboundPacketPayload</node>
+    <node x="1074.4946350283822" y="311.0828172803234">com.rae.creatingspace.content.planets.RegolithSurfaceBlock</node>
+    <node x="8290.699493397238" y="1462.3366837034196">net.minecraft.world.item.crafting.Recipe</node>
+    <node x="7578.08350487488" y="189.09400371853485">com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolysisRecipe</node>
+    <node x="8221.427478297142" y="8079.784770618176">com.rae.creatingspace.content.rocket.contraption.behaviour.movement.FlightRecorderMovementBehaviour</node>
+    <node x="7100.364788419442" y="8966.444408333266">com.rae.creatingspace.api.squedule.RocketScheduleRuntime</node>
+    <node x="1992.8813826006435" y="4051.732615182972">com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer</node>
+    <node x="88.19983028900765" y="5335.347435163165">com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity.FlowMeterFluidTransportBehaviour</node>
+    <node x="6960.511004259248" y="8966.444408333266">com.rae.creatingspace.api.squedule.RocketScheduleRuntime.State</node>
+    <node x="7517.436716654144" y="5993.735390048016">com.rae.creatingspace.configs.CSOxygenBacktank.PlaceSelection</node>
+    <node x="7129.539045946374" y="1097.8793306972873">com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Factory</node>
+    <node x="2339.3596765572715" y="5993.735390048016">com.rae.creatingspace.init.PacketInit</node>
+    <node x="8540.800447881567" y="8966.444408333266">net.minecraft.world.level.saveddata.SavedData.Factory</node>
+    <node x="1037.9347645518214" y="6564.775424218782">com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen</node>
+    <node x="2536.4245470044957" y="5695.253872415355">com.rae.creatingspace.content.rocket.engine.RocketEngineBlockRenderer</node>
+    <node x="3507.6924981025104" y="8288.461893320906">com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.CollisionStatus</node>
+    <node x="871.7502973412622" y="6855.348606509524">com.rae.creatingspace.content.datagen.CSRecipeProvider.Marker</node>
+    <node x="5602.669272834956" y="900.8903086320137">com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem.O2BacktankBlockItem</node>
+    <node x="4316.748737782169" y="8268.24230199271">com.rae.creatingspace.mixin.recipe.SequencedAssemblyRecipeMixin</node>
+    <node x="3692.9995297457917" y="6512.399744924984">com.rae.creatingspace.mixin.entity.gravity.BoatMixin</node>
+    <node x="-305.0" y="9038.444408333266">com.rae.creatingspace.init.MiscInit.Keys</node>
+    <node x="5852.09315562561" y="1890.1689869706438">com.rae.creatingspace.content.rocket.engine.RocketEngineItem</node>
+    <node x="3898.4617632280933" y="6265.68635645327">net.minecraft.client.renderer.entity.EntityRenderer</node>
+    <node x="289.0895486158936" y="1071.2498435703205">com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock</node>
+    <node x="7512.098908531786" y="6625.582880230956">com.rae.creatingspace.configs.CSConfigBase</node>
+    <node x="260.5788805880238" y="1280.6036583434432">com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock</node>
+    <node x="7030.895174123521" y="931.6130287246293">com.simibubi.create.content.processing.recipe.ProcessingRecipe.Factory</node>
+    <node x="1125.2884031458507" y="806.8157979333982">net.minecraft.world.level.block.Block</node>
+    <node x="-305.0" y="9110.444408333266">com.rae.creatingspace.init.worldgen.CarverInit</node>
+    <node x="8601.691764502386" y="1032.6113308802783">mezz.jei.api.recipe.category.IRecipeCategory</node>
+    <node x="1771.4351761492017" y="6957.082813343389">com.rae.creatingspace.legacy.utilities.packet.NewRocketAssemblePacket</node>
+    <node x="3947.950606086285" y="5993.735390048016">com.rae.creatingspace.content.rocket.RocketContraptionEntityRenderer</node>
+    <node x="8641.552627872574" y="1441.8642240884224">com.simibubi.create.compat.jei.category.CreateRecipeCategory</node>
+    <node x="9143.486903550278" y="1267.1440020279874">com.rae.creatingspace.compat.jei.category.ChemicalSynthesisCategory</node>
+    <node x="553.0332505409707" y="8966.444408333266">com.rae.creatingspace.legacy.utilities.data.AbstractCodecJsonDataManager</node>
+    <node x="543.8458059287636" y="8811.410242634058">com.rae.creatingspace.init.CreativeModeTabsInit</node>
+    <node x="1848.7476192925242" y="8966.444408333266">mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter</node>
+    <node x="8703.179421326797" y="1719.2776936521154">com.simibubi.create.compat.jei.category.CreateRecipeCategory.Builder</node>
+    <node x="6201.620962408197" y="1704.261690575197">net.minecraft.world.item.Item.TooltipContext</node>
+    <node x="180.726533465839" y="3489.4652907780137">com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlockEntity</node>
+    <node x="4975.900173689194" y="983.7365461147043">net.minecraft.client.gui.screens.Screen.DeferredTooltipRendering</node>
+    <node x="3290.6924981025104" y="8308.818532798061">com.rae.creatingspace.init.TagsInit.CustomEntityTag</node>
+    <node x="5999.716444461896" y="774.0459546030895">com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipment</node>
+    <node x="484.0" y="9110.444408333266">com.rae.creatingspace.api.planets.Star</node>
+    <node x="7011.751886890489" y="384.62966148592693">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Serializer</node>
+    <node x="4868.656484498667" y="8966.444408333266">com.rae.creatingspace.content.life_support.spacesuit.NetheriteOxygenBacktankFirstPersonRenderer</node>
+    <node x="3963.646360641831" y="133.43754833715184">com.simibubi.create.foundation.gui.menu.MenuBase</node>
+    <node x="7872.474135215818" y="8079.784770618176">net.minecraft.client.particle.Particle</node>
+    <node x="786.146817428453" y="1832.5531308524442">com.rae.creatingspace.legacy.server.blocks.multiblock.engines.BigEngineBlock</node>
+    <node x="7220.381902422979" y="625.0600698307885">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe</node>
+    <node x="3839.502210333585" y="7251.568699511122">com.rae.creatingspace.mixin.entity.gravity.PrimedTntMixin</node>
+    <node x="1678.0850033892068" y="794.2602241497523">net.minecraft.world.level.block.Block.BlockStatePairKey</node>
+    <node x="4330.894852348572" y="2535.7025371774007">com.rae.creatingspace.api.gui.elements.BackgroundScrollInput</node>
+    <node x="4286.5920560165105" y="310.8027031403258">net.minecraft.world.inventory.AbstractContainerMenu</node>
+    <node x="9148.800533281785" y="9038.444408333266">com.rae.creatingspace.configs.CSConfigs</node>
+    <node x="2048.4859548660884" y="2484.3344200793344">com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.SmallEngine</node>
+    <node x="3124.8835379911525" y="8079.784770618175">com.rae.creatingspace.init.TagsInit.CustomNameSpace</node>
+    <node x="7484.873959810115" y="6925.470514847844">com.rae.creatingspace.configs.CSCfgCommon</node>
+    <node x="8526.662003643974" y="6613.028723181278">com.rae.creatingspace.content.planets.CustomDimensionEffects</node>
+    <node x="1741.8005332817845" y="9038.444408333266">com.rae.creatingspace.api.rendering.GeometryRendering</node>
+    <node x="2120.3982452785567" y="8966.444408333266">com.rae.creatingspace.compat.jei.CryoSubtypeInterpreter</node>
+    <node x="67.21364161155645" y="8894.444408333266">com.rae.creatingspace.legacy.server.particle.RocketPlumeParticleData</node>
+    <node x="1433.2306675517616" y="5842.269491399818">com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierRenderer</node>
+    <node x="1717.88571011217" y="3905.6911468286016">net.minecraft.world.level.block.entity.BlockEntity</node>
+    <node x="6729.800533281785" y="9038.444408333266">com.rae.creatingspace.init.ingameobject.BlockEntityInit</node>
+    <node x="7800.823184733633" y="6554.62338621263">com.rae.creatingspace.configs.CSCfgServer</node>
+    <node x="-166.19946671821546" y="9038.444408333266">com.rae.creatingspace.init.MiscInit</node>
+    <node x="6331.800533281785" y="9038.444408333266">com.rae.creatingspace.api.squedule.ScheduleEntry</node>
+    <node x="3080.981589844272" y="8316.042986353752">com.rae.creatingspace.init.TagsInit</node>
+    <node x="5133.601682210744" y="6987.867982031461">com.rae.creatingspace.api.squedule.condition.TimedWaitCondition.TimeUnit</node>
+    <node x="523.8005332817845" y="9038.444408333266">com.rae.creatingspace.content.life_support.sealer.RoomShapeSerializer</node>
+    <node x="3232.9935981380686" y="3311.091355876166">net.minecraft.world.level.block.entity.BlockEntity.DataComponentInput</node>
+    <node x="409.60062928437287" y="1666.0390134033928">com.rae.creatingspace.content.rocket.engine.SuperEngineBlock</node>
+    <node x="1100.1383199505829" y="1749.9561305669745">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock</node>
+    <node x="6596.161627465211" y="8079.784770618176">com.simibubi.create.content.contraptions.TranslatingContraption</node>
+    <node x="2920.8005332817847" y="9038.444408333266">com.rae.creatingspace.init.DamageSourceInit</node>
+    <node x="2562.2092269641726" y="2406.5892303408646">com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity.SyncData</node>
+    <node x="3618.4960343252737" y="6172.490370081262">com.rae.creatingspace.content.life_support.sealer.RoomAtmosphereRenderer</node>
+    <node x="4207.603661648545" y="2483.847742335458">com.rae.creatingspace.api.gui.elements.Orbit</node>
+    <node x="5344.485791470741" y="7191.704732929586">com.rae.creatingspace.api.squedule.condition.IdleCargoCondition</node>
+    <node x="1980.8005332817847" y="9038.444408333266">com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil</node>
+    <node x="7184.387891114519" y="329.3003684558943">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Builder</node>
+    <node x="7260.787264891796" y="8079.784770618176">com.rae.creatingspace.legacy.server.particle.PlumeParticle.Factory</node>
+    <node x="2880.551424826757" y="2556.491491871255">com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity.TableInventory</node>
+    <node x="8575.948596923516" y="8079.784770618176">com.simibubi.create.api.behaviour.movement.MovementBehaviour</node>
+    <node x="5743.72143728716" y="650.0798010312853">com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem</node>
+    <node x="4457.206267511523" y="6342.6255004969335">net.minecraft.client.renderer.entity.layers.RenderLayer</node>
+    <node x="4816.222227481238" y="8079.784770618176">com.rae.creatingspace.mixin.recipe.ProcessingRecipeMixin</node>
+    <node x="2385.3982452785567" y="8966.444408333266">com.rae.creatingspace.content.event.OxygenSuffocationEvent.Post</node>
+    <node x="4521.897408564888" y="453.3069475964469">com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen</node>
+    <node x="1501.8005332817845" y="9038.444408333266">com.rae.creatingspace.init.DataComponentsInit</node>
+    <node x="8909.225594212103" y="6469.53900689778">net.minecraft.client.renderer.DimensionSpecialEffects.NetherEffects</node>
+    <node x="5727.4487683537045" y="6729.98883985094">com.rae.creatingspace.api.squedule.condition.TimeOfDayCondition</node>
+    <node x="1316.0360324675537" y="7586.969478012375">com.rae.creatingspace.content.datagen.recipe.CSMechanicalElectrolysisRecipeGen</node>
+    <node x="7520.962731111365" y="997.2868936859186">com.simibubi.create.content.processing.recipe.ProcessingRecipe</node>
+    <node x="7509.792007743497" y="6218.1798327373435">com.rae.creatingspace.configs.CSOxygenBacktank</node>
+    <node x="793.5046932721705" y="249.7000304741016">com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock</node>
+    <node x="1686.1057284214185" y="5921.735390048016">com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyserBlockRenderer</node>
+    <node x="2871.900807062231" y="8490.541767635912">com.rae.creatingspace.init.TagsInit.CustomBlockTags</node>
+    <node x="1196.648149596945" y="6961.276165786502">com.rae.creatingspace.content.datagen.CSRecipeProvider.GeneratedRecipe</node>
+    <node x="6712.651007732943" y="550.6668114469886">com.rae.creatingspace.content.recipes.electrolysis.ElectrodeItem</node>
+    <node x="1533.18419451249" y="8425.31558152659">com.rae.creatingspace.compat.jei.AnimatedAirLiquefier</node>
+    <node x="-305.0" y="8699.820126037332">com.simibubi.create.foundation.particle.ICustomParticleData</node>
+    <node x="23.0" y="9110.444408333266">com.rae.creatingspace.init.ingameobject.EntityInit</node>
+    <node x="277.65878157493466" y="8079.7847706181765">com.rae.creatingspace.init.graphics.ParticleTypeInit</node>
+    <node x="3286.8009025688348" y="6603.924713828387">net.minecraft.world.entity.Entity.RemovalReason</node>
+    <node x="2601.5773858631824" y="8325.972550409704">com.rae.creatingspace.init.TagsInit.CustomFluidTags</node>
+    <node x="7048.787264891796" y="8079.784770618176">com.simibubi.create.content.contraptions.Contraption.RenderedBlocks</node>
+    <node x="3926.7433046274236" y="8966.444408333266">com.rae.creatingspace.content.recipes.IntRangeNbtIngredient</node>
+    <node x="7764.533035952157" y="7003.119069005502">com.rae.creatingspace.configs.CSCfgClient.Measurement</node>
+    <node x="1352.0240662096116" y="8079.784770618176">com.rae.creatingspace.compat.jei.AnimatedMechanicalElectrolyzer</node>
+    <node x="1914.405067844309" y="7639.527958779311">com.rae.creatingspace.content.rocket.network.RocketScheduleEditPacket</node>
+    <node x="626.7138670754181" y="760.3403135173402">com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock</node>
+    <node x="6548.2035865418375" y="8966.444408333266">net.createmod.ponder.api.registration.PonderPlugin</node>
+    <node x="8176.70648148854" y="8966.444408333266">com.rae.creatingspace.init.ingameobject.PropellantTypeInit.Keys</node>
+    <node x="332.10430704166447" y="2121.8019627822036">net.minecraft.world.level.block.EntityBlock</node>
+    <node x="2520.3707297328774" y="8966.444408333266">com.rae.creatingspace.content.event.OxygenSuffocationEvent</node>
+    <node x="7925.436632319008" y="200.19088279627397">com.simibubi.create.content.processing.basin.BasinRecipe</node>
+    <node x="415.8824597971154" y="878.8131999919519">com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlock</node>
+    <node x="5573.948830061666" y="-14.0">com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem.Layered</node>
+    <node x="437.9688119921078" y="3047.775430694123">com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity</node>
+    <node x="4159.450480594447" y="6783.132564524823">net.minecraft.world.entity.Entity</node>
+    <node x="4669.7178894281105" y="6760.249043378206">com.rae.creatingspace.content.rocket.RocketContraptionEntity</node>
+    <node x="4684.800533281785" y="9038.444408333266">com.rae.creatingspace.content.rocket.engine.design.PowerPackType</node>
+    <node x="6499.650790540082" y="1514.563244415839">com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint</node>
+    <node x="8632.525221340828" y="6263.870269214271">net.minecraft.client.renderer.DimensionSpecialEffects.SkyType</node>
+    <node x="583.5957491894138" y="1786.0625338500972">com.rae.creatingspace.legacy.server.blocks.multiblock.engines.SmallEngineBlock</node>
+    <node x="7888.800533281785" y="9038.444408333266">com.rae.creatingspace.init.IngredientInit</node>
+    <node x="3774.743304627423" y="8966.444408333266">com.rae.creatingspace.init.ingameobject.FluidInit</node>
+    <node x="9069.79365671667" y="6192.95114649227">net.minecraft.client.renderer.DimensionSpecialEffects.EndEffects</node>
+    <node x="-7.620485400688381" y="6046.845508535077">com.rae.creatingspace.content.datagen.recipe.engine.EngineSequencedAssemblyProvider</node>
+    <node x="834.1008180092804" y="-14.0">com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock.RenderProperties</node>
+    <node x="-140.0" y="9110.444408333266">com.rae.creatingspace.init.ingameobject.SoundInit</node>
+    <node x="1108.6147754800627" y="7868.130607426815">com.rae.creatingspace.content.datagen.recipe.CSWashingRecipeGen</node>
+    <node x="8314.800447881567" y="8966.444408333266">com.rae.creatingspace.init.ingameobject.PropellantTypeInit</node>
+    <node x="173.78079112262066" y="8275.383401156158">com.rae.creatingspace.init.graphics.ParticleTypeInit.ParticleEntry</node>
+    <node x="9051.542473240435" y="8966.444408333266">com.rae.creatingspace.content.datagen.recipe.engine.util.EngineSAJson</node>
+    <node x="2470.321564917249" y="6416.308742403712">net.createmod.catnip.net.base.BasePacketPayload</node>
+    <node x="6530.800533281785" y="9038.444408333266">com.rae.creatingspace.mixin.CSMixinPlugin</node>
+    <node x="4826.817229870863" y="1862.3887643095582">com.rae.creatingspace.api.squedule.ScheduleEntryWidget</node>
+    <node x="2284.712125338584" y="5796.014365250055">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockRenderer</node>
+    <node x="4667.520617763866" y="167.130767570354">com.rae.creatingspace.content.rocket.ScheduleMakingScreen</node>
+    <node x="5452.514736624191" y="6975.366461298714">com.rae.creatingspace.api.squedule.condition.TimedWaitCondition</node>
+    <node x="2217.8005332817847" y="9038.444408333266">com.rae.creatingspace.init.CSContraptionType</node>
+    <node x="5315.800533281785" y="9038.444408333266">com.rae.creatingspace.init.graphics.PartialModelInit</node>
+    <node x="4313.377279601046" y="7295.103914417797">com.rae.creatingspace.mixin.entity.gravity.ItemEntityMixin</node>
+    <node x="2453.8005332817847" y="9038.444408333266">com.rae.creatingspace.init.graphics.DimensionEffectInit</node>
+    <node x="1302.4001239381148" y="7217.776921354278">com.rae.creatingspace.content.datagen.recipe.CSCuttingRecipeGen</node>
+    <node x="772.8005332817845" y="9038.444408333266">com.rae.creatingspace.content.life_support.spacesuit.RemainingO2Overlay</node>
+    <node x="1320.7317128316179" y="8346.148178571633">com.simibubi.create.compat.jei.category.animations.AnimatedKinetics</node>
+    <node x="8897.587108828351" y="8966.444408333266">com.rae.creatingspace.content.datagen.recipe.engine.util.EngineSAJson.Builder</node>
+    <node x="2366.5773858631824" y="8551.498823509726">com.rae.creatingspace.content.planets.worldgen.CraterCarverConfig</node>
+    <node x="2918.5338253077643" y="8966.444408333266">net.minecraft.data.recipes.RecipeOutput</node>
+    <node x="149.36289160413241" y="4910.2867625139515">com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockEntity</node>
+    <node x="6058.633518847149" y="1791.8392818309626">com.rae.creatingspace.content.rocket.engine.EngineItem</node>
+    <node x="6059.995427170536" y="6651.135068695974">com.rae.creatingspace.api.squedule.condition.LazyTickedScheduleCondition</node>
+    <node x="6249.138838121378" y="5993.735390048016">com.rae.creatingspace.api.squedule.condition.FluidThresholdCondition</node>
+    <node x="813.0700837395086" y="7418.339729145737">net.minecraft.data.recipes.RecipeProvider</node>
+    <node x="538.0277114043079" y="8247.741164153997">com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator.ItemOrdering</node>
+    <node x="6747.511004259248" y="8966.444408333266">com.rae.creatingspace.content.ponders.CSPonderPlugin</node>
+    <node x="5833.260815594423" y="1058.783240993783">net.minecraft.world.item.BlockItem</node>
+    <node x="7347.812418687576" y="308.23106925977777">com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Serializer</node>
+    <node x="4043.873484873706" y="7353.376363017867">com.rae.creatingspace.mixin.entity.gravity.FallingBlockEntityMixin</node>
+    <node x="8448.800533281785" y="9038.444408333266">com.rae.creatingspace.api.squedule.RocketPath</node>
+    <node x="3818.8005332817847" y="9038.444408333266">com.rae.creatingspace.content.rocket.engine.design.ExhaustPackType</node>
+    <node x="5521.800533281785" y="9038.444408333266">com.rae.creatingspace.init.graphics.GuiTexturesInit</node>
+    <node x="2713.702030037687" y="7175.421957281789">com.rae.creatingspace.content.rocket.network.RocketContraptionDisassemblePacket</node>
+    <node x="7118.565978168255" y="6421.936342125705">com.rae.creatingspace.configs.CSStress.Comments</node>
+    <node x="2206.2990663513106" y="7227.070547231576">net.createmod.catnip.net.base.ServerboundPacketPayload</node>
+    <node x="1790.270871397668" y="2387.5515986101764">com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity</node>
+    <node x="336.0" y="9110.444408333266">com.rae.creatingspace.init.ingameobject.ItemInit</node>
+    <node x="978.6035466198232" y="1816.454048206214">com.simibubi.create.foundation.block.IBE</node>
+    <node x="1170.548027498692" y="8252.369127503023">mezz.jei.api.gui.drawable.IDrawable</node>
+    <node x="5336.013843923025" y="6783.260405962722">com.rae.creatingspace.api.squedule.condition.ScheduledDelay</node>
+    <node x="1019.4389417446359" y="6811.226529967419">com.rae.creatingspace.content.datagen.CSRecipeProvider</node>
+    <node x="6638.561175030733" y="1308.0961993775836">com.rae.creatingspace.legacy.server.items.FuelItem</node>
+    <node x="555.9080441930823" y="8079.7847706181765">com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator.ItemOrdering.Type</node>
+    <node x="4472.800533281785" y="9038.444408333266">com.rae.creatingspace.api.rendering.CSRenderTypes</node>
+    <node x="8594.740514198997" y="6976.779540663798">com.rae.creatingspace.content.planets.CustomDimensionEffects.EarthOrbitEffects</node>
+    <node x="444.9216791018946" y="7853.186711686099">com.rae.creatingspace.content.datagen.recipe.CSPressingRecipeGen</node>
+    <node x="4655.31881280542" y="8269.62288272109">com.rae.creatingspace.content.recipes.IMoreNbtConditions</node>
+    <node x="6134.900410809255" y="8966.444408333266">com.rae.creatingspace.content.life_support.INeedOxygen</node>
+    <node x="4587.5220433292925" y="6108.556529068093">com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankArmorLayer</node>
+    <node x="7312.800533281785" y="9038.444408333266">com.rae.creatingspace.content.planets.RegolithBlock</node>
+    <node x="2164.021613172921" y="8079.784770618176">com.rae.creatingspace.content.planets.worldgen.CraterCarver</node>
+    <node x="7193.662928796508" y="1520.1488614491482">com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisParams</node>
+    <node x="9489.800533281785" y="9038.444408333266">com.rae.creatingspace.init.PonderInit</node>
+    <node x="9249.542473240435" y="8966.444408333266">com.rae.creatingspace.init.RecipeInit.Registers</node>
+    <node x="4388.797426856123" y="695.5777166533385">com.rae.creatingspace.content.rocket.engine.table.EngineerTableScreen</node>
+    <node x="8191.158931623277" y="-14.0">com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe</node>
+    <node x="4806.416845946058" y="2087.982212911119">com.rae.creatingspace.api.gui.elements.InputBoxWidget</node>
+    <node x="1821.314916833016" y="2145.1384609217653">com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.NbtDependent</node>
+    <node x="815.6587815749347" y="8443.044952723467">com.rae.creatingspace.compat.jei.AnimatedCatalystCarrier</node>
+    <node x="-305.0" y="8966.444408333266">com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.RocketControlInteraction</node>
+    <node x="6454.304378351155" y="6454.330004862936">com.rae.creatingspace.api.squedule.condition.ItemThresholdCondition</node>
+    <node x="484.65878157493466" y="8514.048680717624">com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator</node>
+    <node x="-121.15367027548098" y="6521.447684249527">net.minecraft.data.DataProvider</node>
+    <node x="7505.800533281785" y="9038.444408333266">com.rae.creatingspace.init.worldgen.DimensionInit</node>
+    <node x="1551.7476192925244" y="8966.444408333266">com.rae.creatingspace.api.planets.RocketAccessibleDimension</node>
+    <node x="4838.657995955263" y="1489.976232993799">com.rae.creatingspace.content.rocket.RocketAssembleScreen</node>
+    <node x="4416.59946538108" y="8966.444408333266">com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader.PartialMassMap</node>
+    <node x="2898.247347429976" y="2894.058239836426">com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity</node>
+    <node x="7941.914805057788" y="991.2614515847575">com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim.Serializer</node>
+    <node x="7279.993437838687" y="6500.296318027278">com.rae.creatingspace.configs.CSStress</node>
+    <node x="3146.8005332817847" y="9038.444408333266">com.rae.creatingspace.content.rocket.CustomTeleporter</node>
+    <node x="-305.0" y="6547.389247313401">net.minecraft.data.DataProvider.Factory</node>
+    <node x="5661.4903792147925" y="1811.7168482388101">com.rae.creatingspace.legacy.server.items.BigEngineItem</node>
+    <node x="1016.8005332817845" y="9038.444408333266">com.rae.creatingspace.mixin.recipe.ItemApplicationMixin</node>
+    <node x="8240.00939215421" y="776.8031671636286">com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim.FakeItemStack</node>
+    <node x="5919.377012729454" y="6893.202513097099">com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition</node>
+    <node x="6137.279129613381" y="8079.784770618176">com.rae.creatingspace.content.rocket.contraption.RocketContraption.ConsumptionInfo</node>
+    <node x="4780.809988004759" y="1243.0833837506364">net.createmod.catnip.gui.AbstractSimiScreen</node>
+    <node x="5456.824355661533" y="1728.1922726469422">com.rae.creatingspace.content.fluids.storage.CryogenicTankItem</node>
+    <node x="5298.656484498667" y="8966.444408333266">com.rae.creatingspace.content.event.CSEventHandler.ModBusEvents</node>
+    <node x="8163.893243564011" y="6935.573568664915">com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect</node>
+    <node x="7370.364788419442" y="8966.444408333266">com.rae.creatingspace.content.event.CSClientEvent.ModBusEvents</node>
+    <node x="63.698391827792136" y="8506.00456914903">net.minecraft.core.particles.ParticleOptions</node>
+    <node x="4895.800533281785" y="9038.444408333266">com.rae.creatingspace.api.squedule.RocketSchedule</node>
+    <node x="2256.2741270025617" y="7750.598816536742">com.rae.creatingspace.content.rocket.network.RocketEntryPosMapClientPacket</node>
+    <node x="-257.4384143899631" y="3719.246599292997">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierVisual</node>
+    <node x="1300.6120668531244" y="399.586686081934">com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock</node>
+    <node x="320.07367684482404" y="3271.216631892079">com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity</node>
+    <node x="6701.183979445481" y="1179.5174379626183">com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystItem</node>
+    <node x="9212.181941657627" y="1671.5431547735145">com.rae.creatingspace.compat.jei.category.MechanicalElectrolysisCategory</node>
+    <node x="5106.800533281785" y="9038.444408333266">com.rae.creatingspace.content.datagen.recipe.engine.model.EnginePartType</node>
+    <node x="6925.800533281785" y="9038.444408333266">com.rae.creatingspace.content.event.IgniteOnPlace</node>
+    <node x="6722.304378351155" y="6640.109602590521">com.rae.creatingspace.configs.CSKinetics.Comments</node>
+    <node x="5848.448656462228" y="8079.784770618176">com.rae.creatingspace.api.squedule.instruction.DestinationInstruction</node>
+    <node x="7300.077346568093" y="1164.1800903845588">com.simibubi.create.content.processing.recipe.ProcessingRecipeParams</node>
+    <node x="5141.127979377613" y="8261.866813058816">com.rae.creatingspace.api.squedule.instruction.ChangeTitleInstruction</node>
+    <node x="1457.5381440742117" y="179.2279260858063">com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock.RenderProperties</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="net.minecraft.world.item.BlockItem" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.event.OxygenSuffocationEvent.Pre" target="com.rae.creatingspace.content.event.OxygenSuffocationEvent" relationship="GENERALIZATION">
+      <point x="5.684341886080802E-14" y="4.0" />
+      <point x="0.0" y="4.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.DimensionSpecialEffects.SkyType" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock.RenderProperties" target="com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.ingameobject.FluidInit.SolidRenderedPlaceableFluidType" target="com.rae.creatingspace.init.ingameobject.FluidInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.ItemThresholdCondition" target="com.rae.creatingspace.api.squedule.condition.CargoThresholdCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.ScheduledDelay" target="com.rae.creatingspace.api.squedule.condition.TimedWaitCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.CollisionStatus" target="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.CargoThresholdCondition.Ops" target="com.rae.creatingspace.api.squedule.condition.CargoThresholdCondition" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.packet.RocketControlsSettingsPacket" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MoonOrbitEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem.O2BacktankBlockItem" target="net.minecraft.world.item.BlockItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.event.OxygenSuffocationEvent.Pre" target="com.rae.creatingspace.content.event.OxygenSuffocationEvent" relationship="INNER_CLASS">
+      <point x="5.684341886080802E-14" y="-4.0" />
+      <point x="0.0" y="-4.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.BasinCategory" target="com.simibubi.create.compat.jei.category.CreateRecipeCategory" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.category.ChemicalSynthesisCategory" target="com.simibubi.create.compat.jei.category.BasinCategory" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem.O2BacktankBlockItem" target="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSCfgCommon" target="com.rae.creatingspace.configs.CSConfigBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.gravity.MinecartMixin" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity.FlowMeterFluidTransportBehaviour" target="com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory" target="net.minecraft.world.item.crafting.Recipe" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockEntity" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory.Info" target="com.simibubi.create.compat.jei.category.CreateRecipeCategory" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSOxygenBacktank.PlaceSelection" target="com.rae.creatingspace.configs.CSOxygenBacktank" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisParams" target="com.simibubi.create.content.processing.recipe.ProcessingRecipeParams" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSOxygenBacktank.Comments" target="com.rae.creatingspace.configs.CSOxygenBacktank" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineItem" target="net.minecraft.world.item.BlockItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Serializer" target="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe" relationship="INNER_CLASS">
+      <point x="6.935653875598064" y="-0.0" />
+      <point x="6.935653875598021" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.PropellantStatusData" target="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock.RenderProperties" target="com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory" target="mezz.jei.api.recipe.category.IRecipeCategory" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutput" target="net.minecraft.data.recipes.RecipeOutput" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.graphics.ParticleTypeInit.ParticleEntry" target="net.minecraft.core.particles.ParticleOptions" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.EngineerTableCraft" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.packet.UpdateSavedDataPacket" target="net.createmod.catnip.net.base.ClientboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.CSRecipeProvider" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.entity.Entity.MoveFunction" target="net.minecraft.world.entity.Entity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.data.DataProvider.Factory" target="net.minecraft.data.DataProvider" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.DimensionSpecialEffects.EndEffects" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="GENERALIZATION">
+      <point x="-18.766193647728414" y="-0.0" />
+      <point x="-18.7661936477287" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.items.SmallEngineItem" target="com.rae.creatingspace.content.rocket.engine.RocketEngineItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader.PartialMassMap" target="com.rae.creatingspace.legacy.utilities.data.MassOfBlockReader" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen" target="com.rae.creatingspace.content.datagen.CSRecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.kinetics.base.KineticBlockEntity" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen.GeneratedRecipeBuilder.GeneratedCookingRecipeBuilder" target="com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen.GeneratedRecipeBuilder" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSKinetics.Comments" target="com.rae.creatingspace.configs.CSKinetics" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.SpacesuitHelmetItem" target="com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipment" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSStress" target="com.rae.creatingspace.configs.CSConfigBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.contraption.RocketContraption.ConsumptionInfo" target="com.rae.creatingspace.content.rocket.contraption.RocketContraption" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.particle.Particle.LifetimeAlpha" target="net.minecraft.client.particle.Particle" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere.AtmosphereFilterData" target="com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.RedstoneLinkCondition" target="com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.level.block.entity.BlockEntity.DataComponentInput" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Serializer" target="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe" relationship="DEPENDENCY">
+      <point x="-6.935653875598007" y="-0.0" />
+      <point x="-6.935653875598035" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockRenderer" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.instruction.ChangeTitleInstruction" target="com.rae.creatingspace.api.squedule.instruction.TextScheduleInstruction" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyserBlockRenderer" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSCfgCommon.Comments" target="com.rae.creatingspace.configs.CSCfgCommon" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.recipe.ProcessingRecipeParamsMixin" target="com.rae.creatingspace.content.recipes.IMoreNbtConditions" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSPressingRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.graphics.ParticleTypeInit.ParticleEntry" target="com.rae.creatingspace.init.graphics.ParticleTypeInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.gravity.FallingBlockEntityMixin" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.foundation.block.IBE" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankArmorLayer" target="net.minecraft.client.renderer.entity.layers.RenderLayer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.category.MechanicalElectrolysisCategory" target="com.simibubi.create.compat.jei.category.BasinCategory" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.DimensionSpecialEffects.EndEffects" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="INNER_CLASS">
+      <point x="18.766193647728528" y="-0.0" />
+      <point x="18.7661936477287" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSCuttingRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.RocketControlInteraction" target="com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MarsOrbitEffects" target="com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.createmod.catnip.net.base.ClientboundPacketPayload" target="net.createmod.catnip.net.base.BasePacketPayload" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.basin.BasinRecipe" target="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator.ItemOrdering.Type" target="com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator.ItemOrdering" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Factory" target="com.simibubi.create.content.processing.recipe.ProcessingRecipe.Factory" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.foundation.gui.menu.MenuBase" target="net.minecraft.world.inventory.AbstractContainerMenu" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.rocket_control.RocketControlsItem" target="net.minecraft.world.item.BlockItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.network.RocketEntryPosMapClientPacket" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.CargoThresholdCondition" target="com.rae.creatingspace.api.squedule.condition.LazyTickedScheduleCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity.TableInventory" target="com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe" target="com.simibubi.create.content.processing.recipe.ProcessingRecipe" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.particle.RocketPlumeParticleData" target="com.simibubi.create.foundation.particle.ICustomParticleData" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSKinetics" target="com.rae.creatingspace.configs.CSConfigBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.gravity.LivingEntityMixin" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.RocketContraptionEntityRenderer" target="net.minecraft.client.renderer.entity.EntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Factory" target="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.ProcessingRecipe.Factory" target="com.simibubi.create.content.processing.recipe.ProcessingRecipe" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.EarthOrbitEffects" target="com.rae.creatingspace.content.planets.CustomDimensionEffects" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.worldgen.CraterCarver" target="net.minecraft.world.level.levelgen.carver.WorldCarver" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.recipe.SequencedAssemblyRecipeMixin" target="com.rae.creatingspace.content.recipes.IMoreNbtConditions" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.SmallEngine" target="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity" relationship="INNER_CLASS">
+      <point x="-12.120347911681392" y="-0.0" />
+      <point x="-12.120347911681506" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.items.BigEngineItem" target="com.rae.creatingspace.content.rocket.engine.RocketEngineItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim" target="net.minecraft.world.item.crafting.Recipe" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe" target="com.simibubi.create.content.processing.basin.BasinRecipe" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.worldgen.CraterCarverConfig" target="net.minecraft.world.level.levelgen.carver.CarverConfiguration" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.gui.screens.Screen.DeferredTooltipRendering" target="net.minecraft.client.gui.screens.Screen" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" target="com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.engine.EngineSequencedAssemblyProvider" target="net.minecraft.data.DataProvider" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe.Builder" target="com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.TagsInit.CustomItemTags" target="com.rae.creatingspace.init.TagsInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.gui.elements.Orbit" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.data.recipes.RecipeProvider" target="net.minecraft.data.DataProvider" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.CryoSubtypeInterpreter" target="mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory.Builder" target="com.simibubi.create.compat.jei.category.CreateRecipeCategory" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.EngineItem" target="com.rae.creatingspace.content.rocket.engine.RocketEngineItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.particle.PlumeParticle" target="net.minecraft.client.particle.TextureSheetParticle" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.level.levelgen.carver.WorldCarver" target="net.minecraft.world.level.levelgen.carver.CarverConfiguration" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierVisual" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSChemicalSynthesisRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Builder" target="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.PacketInit" target="net.createmod.catnip.net.base.BasePacketPayload.PacketTypeProvider" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.SmallEngineBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSRocketEngine" target="com.rae.creatingspace.configs.CSConfigBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSMechanicalElectrolysisRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSRocketEngine.Comments" target="com.rae.creatingspace.configs.CSRocketEngine" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity.SyncData" target="com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.AnimatedMechanicalElectrolyzer" target="com.simibubi.create.compat.jei.category.animations.AnimatedKinetics" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Factory" target="com.simibubi.create.content.processing.recipe.ProcessingRecipe.Factory" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.level.levelgen.carver.WorldCarver.CarveSkipChecker" target="net.minecraft.world.level.levelgen.carver.WorldCarver" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.SmallEngineBlock" target="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.RocketEngineBlock" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.entity.Entity.RemovalReason" target="net.minecraft.world.entity.Entity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.LazyTickedScheduleCondition" target="com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.CSRecipeProvider.GeneratedRecipe" target="com.rae.creatingspace.content.datagen.CSRecipeProvider" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.TimedWaitCondition" target="com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.particle.TextureSheetParticle" target="net.minecraft.client.particle.Particle" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem" target="com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipment" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.gui.elements.TallIconButton" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.kinetics.BacktankBlockEntityMixin" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim.Serializer" target="com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.CSFanVisual" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.network.RocketContraptionUpdatePacket" target="net.createmod.catnip.net.base.ClientboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem.Layered" target="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem" relationship="INNER_CLASS">
+      <point x="5.2573111211913215" y="1.1368683772161603E-13" />
+      <point x="5.257311121191314" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSCfgClient" target="com.rae.creatingspace.configs.CSConfigBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.gui.screens.Screen" target="net.minecraft.client.gui.components.events.GuiEventListener" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.level.block.entity.BlockEntity.ComponentHelper" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.TagsInit.CustomEntityTag" target="com.rae.creatingspace.init.TagsInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator.ItemOrdering" target="com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.CSJei.CategoryBuilder" target="com.rae.creatingspace.compat.jei.CSJei" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.createmod.catnip.gui.AbstractSimiScreen" target="net.minecraft.client.gui.screens.Screen" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MarsEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.AnimatedCatalystCarrier" target="com.simibubi.create.compat.jei.category.animations.AnimatedKinetics" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen" target="net.minecraft.client.gui.screens.Screen" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.DimensionSpecialEffects.NetherEffects" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="INNER_CLASS">
+      <point x="-5.256484799811972" y="-0.0" />
+      <point x="-5.256484799811972" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MoonOrbitEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSCfgClient.Comments" target="com.rae.creatingspace.configs.CSCfgClient" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.AnimatedAirLiquefier" target="com.simibubi.create.compat.jei.category.animations.AnimatedKinetics" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.storage.CryogenicTankItem" target="net.minecraft.world.item.BlockItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.gui.elements.BackgroundScrollInput" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.SuperEngineBlock" target="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.RocketEngineBlock" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Builder" target="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe" relationship="INNER_CLASS">
+      <point x="5.126668141037854" y="-0.0" />
+      <point x="5.12666814103784" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Factory" target="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe" relationship="DEPENDENCY">
+      <point x="-8.633966680157783" y="-0.0" />
+      <point x="-8.633966680157783" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.ScheduleMakingMenu" target="com.simibubi.create.foundation.gui.menu.MenuBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.event.OxygenSuffocationEvent.Post" target="com.rae.creatingspace.content.event.OxygenSuffocationEvent" relationship="GENERALIZATION">
+      <point x="-0.0" y="-4.5" />
+      <point x="2.842170943040401E-14" y="-4.5" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.gravity.PrimedTntMixin" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.gui.elements.SliderWidget" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipementScreen" target="com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.TimedWaitCondition.TimeUnit" target="com.rae.creatingspace.api.squedule.condition.TimedWaitCondition" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.TagsInit.CustomNameSpace" target="com.rae.creatingspace.init.TagsInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.contraptions.TranslatingContraption" target="com.simibubi.create.content.contraptions.Contraption" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSStress.Comments" target="com.rae.creatingspace.configs.CSStress" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.event.OxygenSuffocationEvent.Post" target="com.rae.creatingspace.content.event.OxygenSuffocationEvent" relationship="INNER_CLASS">
+      <point x="0.0" y="4.5" />
+      <point x="2.842170943040401E-14" y="4.5" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderRenderer" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MarsOrbitEffects" target="com.rae.creatingspace.content.planets.CustomDimensionEffects" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory.Factory" target="net.minecraft.world.item.crafting.Recipe" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.NbtDependent" target="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity" relationship="GENERALIZATION">
+      <point x="5.001266234681452" y="-0.0" />
+      <point x="5.001266234681566" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.MiscInit.Keys" target="com.rae.creatingspace.init.MiscInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockEntity" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.TimeOfDayCondition" target="com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.AnimatedChemicalSynthesizer" target="com.simibubi.create.compat.jei.category.animations.AnimatedKinetics" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolysisRecipe" target="com.simibubi.create.content.processing.basin.BasinRecipe" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.ProcessingRecipe" target="com.simibubi.create.content.processing.recipe.ProcessingRecipeParams" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.RocketScheduleRuntime.State" target="com.rae.creatingspace.api.squedule.RocketScheduleRuntime" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.contraption.behaviour.movement.EngineMovementBehaviour" target="com.simibubi.create.api.behaviour.movement.MovementBehaviour" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.gui.elements.LabeledBoxWidget" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.electrolysis.ElectrodeItem" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.particle.RocketPlumeParticleData" target="net.minecraft.core.particles.ParticleOptions" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSOxygenBacktank.ColorSelection" target="com.rae.creatingspace.configs.CSOxygenBacktank" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.packet.NewRocketAssemblePacket" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.gravity.ItemEntityMixin" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.TagsInit.CustomBlockTags" target="com.rae.creatingspace.init.TagsInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlockEntity" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.gravity.BoatMixin" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.EngineerTableMenu" target="com.simibubi.create.foundation.gui.menu.MenuBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.NbtDependent" target="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity" relationship="INNER_CLASS">
+      <point x="-5.00126623468168" y="-0.0" />
+      <point x="-5.00126623468168" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.RoomPressuriserRenderer" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.ingameobject.PropellantTypeInit.Keys" target="com.rae.creatingspace.init.ingameobject.PropellantTypeInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSCfgClient.Measurement" target="com.rae.creatingspace.configs.CSCfgClient" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.RocketAssembleScreen" target="net.createmod.catnip.gui.AbstractSimiScreen" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.CSRecipeProvider.Marker" target="com.rae.creatingspace.content.datagen.CSRecipeProvider" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.ScheduleEntryWidget" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.contraptions.Contraption.RenderedBlocks" target="com.simibubi.create.content.contraptions.Contraption" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory.Builder" target="net.minecraft.world.item.crafting.Recipe" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.gui.elements.InputBoxWidget" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.BigEngine" target="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity" relationship="GENERALIZATION">
+      <point x="-12.012616408006807" y="-0.0" />
+      <point x="-12.012616408007034" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Factory" target="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe" relationship="INNER_CLASS">
+      <point x="8.633966680157783" y="-0.0" />
+      <point x="8.633966680157762" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.network.RocketContraptionDisassemblePacket" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects" relationship="INNER_CLASS">
+      <point x="-7.444160933541866" y="-0.0" />
+      <point x="-7.444160933541951" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.DimensionSpecialEffects.OverworldEffects" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="GENERALIZATION">
+      <point x="-5.078189876925933" y="-0.0" />
+      <point x="-5.078189876925876" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.ponders.CSPonderPlugin" target="net.createmod.ponder.api.registration.PonderPlugin" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.BigEngine" target="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity" relationship="INNER_CLASS">
+      <point x="12.012616408006807" y="-0.0" />
+      <point x="12.012616408006693" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Serializer" target="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MoonEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.animations.AnimatedKinetics" target="mezz.jei.api.gui.drawable.IDrawable" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.EngineerTableScreen" target="com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.level.saveddata.SavedData.Factory" target="net.minecraft.world.level.saveddata.SavedData" relationship="INNER_CLASS">
+      <point x="0.0" y="4.5" />
+      <point x="0.0" y="4.5" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.BigEngineBlock" target="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.RocketEngineBlock" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSOxygenBacktank" target="com.rae.creatingspace.configs.CSConfigBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.RecipeInit.Registers" target="com.rae.creatingspace.init.RecipeInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.storage.CryogenicTankBlockEntity" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSCfgServer.Comments" target="com.rae.creatingspace.configs.CSCfgServer" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.gui.screens.Screen.NarratableSearchResult" target="net.minecraft.client.gui.screens.Screen" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.FluidThresholdCondition" target="com.rae.creatingspace.api.squedule.condition.CargoThresholdCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.EarthOrbitEffects" target="com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.DimensionSpecialEffects.OverworldEffects" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="INNER_CLASS">
+      <point x="5.078189876925876" y="-0.0" />
+      <point x="5.078189876925933" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects" relationship="GENERALIZATION">
+      <point x="7.444160933541923" y="-0.0" />
+      <point x="7.444160933541866" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.IntRangeNbtIngredient" target="net.neoforged.neoforge.common.crafting.ICustomIngredient" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.RocketContraptionEntity" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.network.RocketScheduleEditPacket" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSWashingRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystItem" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock.RenderProperties" target="com.rae.creatingspace.content.rocket.engine.SuperRocketStructuralBlock" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.instruction.TextScheduleInstruction" target="com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.configs.CSCfgServer" target="com.rae.creatingspace.configs.CSConfigBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSCrushingRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory.Info" target="net.minecraft.world.item.crafting.Recipe" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSMixingRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.particle.PlumeParticle.Factory" target="com.rae.creatingspace.legacy.server.particle.PlumeParticle" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.entity.Entity.MovementEmission" target="net.minecraft.world.entity.Entity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.PlayerPassengerCondition" target="com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierVisual" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.SuperEngineBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.electrolysis.ElectrolyzerVisual" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlockEntity" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlockEntity" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim.FakeItemStack" target="com.rae.creatingspace.content.datagen.recipe.ModdedCookingRecipeOutputShim" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen.GeneratedRecipeBuilder" target="com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.ProcessingRecipe.Factory" target="com.simibubi.create.content.processing.recipe.ProcessingRecipeParams" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.meter.FlowGaugeBlockRenderer" target="com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.TagsInit.CustomBiomeTags" target="com.rae.creatingspace.init.TagsInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.gui.components.AbstractWidget" target="net.minecraft.client.gui.components.events.GuiEventListener" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.createmod.catnip.net.base.BasePacketPayload.PacketTypeProvider" target="net.createmod.catnip.net.base.BasePacketPayload" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.event.CSEventHandler.ModBusEvents" target="com.rae.creatingspace.content.event.CSEventHandler" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.engine.util.EngineSAJson.Builder" target="com.rae.creatingspace.content.datagen.recipe.engine.util.EngineSAJson" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.createmod.catnip.net.base.ServerboundPacketPayload" target="net.createmod.catnip.net.base.BasePacketPayload" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.RocketContraptionEntity.RocketStatus" target="com.rae.creatingspace.content.rocket.RocketContraptionEntity" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.RocketAssemblyData" target="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.TagsInit.CustomFluidTags" target="com.rae.creatingspace.init.TagsInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.instruction.DestinationInstruction" target="com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.item.Item.Properties" target="net.minecraft.world.item.Item" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.recipe.ProcessingRecipeMixin" target="com.rae.creatingspace.content.recipes.IMoreNbtConditions" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.gui.elements.DimSelectBoxWidget" target="net.createmod.catnip.gui.widget.AbstractSimiWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.RegolithSurfaceBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.instruction.ChangeThrottleInstruction" target="com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.contraption.behaviour.interaction.FlightRecorderInteraction" target="com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.event.CSClientEvent.ModBusEvents" target="com.rae.creatingspace.content.event.CSClientEvent" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipment" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.entity.EntityRenderer" target="net.minecraft.world.entity.Entity" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.squedule.condition.IdleCargoCondition" target="com.rae.creatingspace.api.squedule.condition.TimedWaitCondition" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.contraption.RocketContraption" target="com.simibubi.create.content.contraptions.TranslatingContraption" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.category.AirLiquefyingCategory" target="com.simibubi.create.compat.jei.category.CreateRecipeCategory" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.ChemicalSynthesisRecipe.Builder" target="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe.Builder" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.CSJei.CategoryBuilder" target="com.simibubi.create.compat.jei.category.CreateRecipeCategory.Builder" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.ScheduleMakingScreen" target="com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.items.FuelItem" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.sealer.RoomAtmosphereRenderer" target="net.minecraft.client.renderer.entity.EntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.level.block.Block.BlockStatePairKey" target="net.minecraft.world.level.block.Block" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.PlayerMixin" target="net.minecraft.world.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MoonEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects.GenericCelestialOrbitEffect" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.createmod.catnip.gui.widget.AbstractSimiWidget" target="net.minecraft.client.gui.components.AbstractWidget" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.createmod.catnip.gui.widget.AbstractSimiWidget" target="net.minecraft.client.gui.components.events.GuiEventListener" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.network.RocketEngineerTableSync" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipmentMenu" target="com.simibubi.create.foundation.gui.menu.MenuBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.datagen.recipe.CSAirLiquefyingRecipeGen" target="net.minecraft.data.recipes.RecipeProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlockEntity" target="net.minecraft.world.level.block.entity.BlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipeParam" target="com.simibubi.create.content.processing.recipe.ProcessingRecipeParams" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.foundation.block.IBE" target="net.minecraft.world.level.block.EntityBlock" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockRenderer" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.item.Item.TooltipContext" target="net.minecraft.world.item.Item" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.world.level.saveddata.SavedData.Factory" target="net.minecraft.world.level.saveddata.SavedData" relationship="DEPENDENCY">
+      <point x="-0.0" y="-4.5" />
+      <point x="0.0" y="-4.5" />
+    </edge>
+    <edge source="com.rae.creatingspace.compat.jei.CSJei.CategoryBuilder" target="net.minecraft.world.item.crafting.Recipe" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.compat.jei.category.CreateRecipeCategory.Factory" target="com.simibubi.create.compat.jei.category.CreateRecipeCategory" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe.Builder" target="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefyingRecipe" relationship="DEPENDENCY">
+      <point x="-5.126668141037868" y="-0.0" />
+      <point x="-5.12666814103784" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.BigEngineBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierRenderer" target="com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.planets.CustomDimensionEffects.MarsEffect" target="com.rae.creatingspace.content.planets.CustomDimensionEffects" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.DimensionSpecialEffects.NetherEffects" target="net.minecraft.client.renderer.DimensionSpecialEffects" relationship="GENERALIZATION">
+      <point x="5.256484799811858" y="-0.0" />
+      <point x="5.256484799811858" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem.Layered" target="com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem" relationship="GENERALIZATION">
+      <point x="-5.2573111211913215" y="-1.1368683772161603E-13" />
+      <point x="-5.25731112119135" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.storage.CreativeFluidContainer" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.NbtDependent" target="com.rae.creatingspace.api.IMass" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.foundation.particle.ICustomParticleData" target="net.minecraft.core.particles.ParticleOptions" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper.PropellantStatus" target="com.rae.creatingspace.legacy.utilities.data.FlightDataHelper" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity.SmallEngine" target="com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity" relationship="GENERALIZATION">
+      <point x="12.120347911681847" y="-0.0" />
+      <point x="12.12034791168162" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.ProcessingRecipe" target="net.minecraft.world.item.crafting.Recipe" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.engine.design.DesignBlueprintItem" target="net.minecraft.world.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.server.blocks.multiblock.engines.RocketEngineBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.init.CreativeModeTabsInit.RegistrateDisplayItemsGenerator" target="com.rae.creatingspace.init.CreativeModeTabsInit" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity" target="com.simibubi.create.content.kinetics.base.KineticBlockEntity" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.network.RocketContraptionLaunchPacket" target="net.createmod.catnip.net.base.ServerboundPacketPayload" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.content.processing.recipe.StandardProcessingRecipe" target="com.simibubi.create.content.processing.recipe.ProcessingRecipe" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen" target="net.minecraft.world.inventory.AbstractContainerMenu" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.api.planets.RocketAccessibleDimension.AccessibilityParameter" target="com.rae.creatingspace.api.planets.RocketAccessibleDimension" relationship="INNER_CLASS">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock" target="com.simibubi.create.foundation.block.IBE" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.legacy.utilities.data.SingleFileCodecJsonDataManager" target="com.rae.creatingspace.legacy.utilities.data.AbstractCodecJsonDataManager" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock" target="net.minecraft.world.level.block.Block" relationship="GENERALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.mixin.entity.LivingEntityMixin" target="com.rae.creatingspace.content.life_support.INeedOxygen" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="net.minecraft.client.renderer.entity.layers.RenderLayer" target="net.minecraft.world.entity.Entity" relationship="DEPENDENCY">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+    <edge source="com.rae.creatingspace.content.rocket.contraption.behaviour.movement.FlightRecorderMovementBehaviour" target="com.simibubi.create.api.behaviour.movement.MovementBehaviour" relationship="REALIZATION">
+      <point x="0.0" y="-0.0" />
+      <point x="0.0" y="-0.0" />
+    </edge>
+  </edges>
+  <settings layout="Circular" zoom="0.6115129822682357" showDependencies="false" x="1375.560827318002" y="8619.40312576" />
+  <SelectedNodes>
+    <node>com.rae.creatingspace.compat.jei.AnimatedAirLiquefier</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

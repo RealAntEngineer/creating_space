@@ -11,7 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 
 public class RocketEngineerTableSync extends BlockEntityConfigurationPacket<RocketEngineerTableBlockEntity> {
-    private CompoundTag syncData;
+    private final CompoundTag syncData;
     public static final StreamCodec<RegistryFriendlyByteBuf, RocketEngineerTableSync> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, packet -> packet.pos,
             ByteBufCodecs.COMPOUND_TAG, packet -> packet.syncData,

@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -75,7 +76,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
+    public AbstractContainerMenu createMenu(int id, @NotNull Inventory inv, @NotNull Player player) {
         return EngineerTableMenu.create(id, inv, this);
     }
 
@@ -144,6 +145,10 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         propellantType = screenInfo.propellantType;
     }
 
+    @Override
+    public void sendToMenu(RegistryFriendlyByteBuf buffer) {
+        super.sendToMenu(buffer);
+    }
 
     @Override
     public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {

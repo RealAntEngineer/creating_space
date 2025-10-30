@@ -27,7 +27,6 @@ public class ScheduleMakingMenu extends MenuBase<RocketContraptionEntity> {
 
     @Override
     protected RocketContraptionEntity createOnClient(RegistryFriendlyByteBuf extraData) {
-        //System.out.println("create on client");
         int entityID = extraData.readVarInt();
         Entity entityByID = Minecraft.getInstance().level.getEntity(entityID);
         if (!(entityByID instanceof RocketContraptionEntity rocketEntity))

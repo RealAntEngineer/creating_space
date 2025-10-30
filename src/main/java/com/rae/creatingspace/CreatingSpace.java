@@ -33,6 +33,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.slf4j.Logger;
 
 @Mod(CreatingSpace.MODID)
@@ -58,6 +60,12 @@ public class CreatingSpace {
             event.dataPackRegistry(PropellantTypeInit.Keys.PROPELLANT_TYPE,PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC);
             LOGGER.debug("added reload for CS registries");
         });
+        /*modEventBus.addListener((NewRegistryEvent event) -> {
+            //event.create(new RegistryBuilder<>(RocketAccessibleDimension.REGISTRY_KEY).sync(true));
+            //event.create(new RegistryBuilder<>(MiscInit.Keys.POWER_PACK_TYPE));
+            //event.create(new RegistryBuilder<>(MiscInit.Keys.EXHAUST_PACK_TYPE));
+            event.create(new RegistryBuilder<>(PropellantTypeInit.Keys.PROPELLANT_TYPE));
+                });*/
         REGISTRATE.registerEventListeners(modEventBus);
 
         TagsInit.init();

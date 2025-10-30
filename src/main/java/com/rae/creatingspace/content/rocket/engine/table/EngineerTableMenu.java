@@ -49,7 +49,6 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
 
     @Override
     protected RocketEngineerTableBlockEntity createOnClient(RegistryFriendlyByteBuf extraData) {
-        //System.out.println("create on client");
         ClientLevel world = Minecraft.getInstance().level;
         assert world != null;
         BlockEntity blockEntity = world.getBlockEntity(extraData.readBlockPos());
@@ -57,7 +56,6 @@ public class EngineerTableMenu extends MenuBase<RocketEngineerTableBlockEntity> 
             engineerTable.readClient(Objects.requireNonNull(extraData.readNbt()), world.registryAccess());
             return engineerTable;
         }
-        //System.out.println("fail");
         return null;
     }
 
