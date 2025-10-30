@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.rae.creatingspace.init.MiscInit.getSyncedExhaustPackRegistry;
@@ -305,7 +306,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
     private void craftEngine(BlockPos blockEntityPos, ResourceLocation propellantType, ResourceLocation exhaustType, ResourceLocation powerPackType, float isp, float mass, float thrust) {
         //send a packet to the BE
-        float efficiency = isp / getSyncedPropellantRegistry().get(propellantType).getMaxISP();
+        float efficiency = isp / Objects.requireNonNull(getSyncedPropellantRegistry().get(propellantType)).getMaxISP();
         ItemStack engineBlueprint = ((EngineFabricationBlueprint) ItemInit.ENGINE_BLUEPRINT.get().asItem())
                 .getBlueprintForEngine(engineSizeInput.getState(), expansionRatioSlider.getValueInt(), materialLevel, (int) thrust, efficiency, propellantType, exhaustType, powerPackType);
         CatnipServices.NETWORK

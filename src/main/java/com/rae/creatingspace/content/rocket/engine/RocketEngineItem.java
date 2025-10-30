@@ -46,7 +46,7 @@ public abstract class RocketEngineItem extends BlockItem {
             PropellantType propellantType = beTag.contains("propellantType")? PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
                     ResourceLocation.CODEC.parse(NbtOps.INSTANCE, beTag.get("propellantType"))
                             .resultOrPartial(s -> {
-                            }).orElse(PropellantTypeInit.METHALOX.getId())).orElseThrow():null;
+                            }).orElseThrow()).orElseThrow():null;
             appendEngineTextDirect(components,propellantType,
                     beTag.contains("efficiency")&&propellantType!=null?(int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")):null,
                     beTag.contains("mass")?beTag.getInt("mass"):null,

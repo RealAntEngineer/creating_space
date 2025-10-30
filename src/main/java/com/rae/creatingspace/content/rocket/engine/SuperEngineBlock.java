@@ -78,7 +78,7 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
         if (worldIn.isClientSide)
             return;
         withBlockEntityDo(worldIn, pos, be -> {
-            be.setFromNbt(Objects.requireNonNull(stack.get(DataComponents.CUSTOM_DATA)).copyTag().getCompound("blockEntity"));
+            be.setFromNbt(Objects.requireNonNull(stack.get(DataComponents.CUSTOM_DATA)).copyTag().getCompound("blockEntity"), worldIn.registryAccess());
         });
     }
 

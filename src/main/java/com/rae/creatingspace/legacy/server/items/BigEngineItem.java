@@ -26,7 +26,7 @@ public class BigEngineItem extends RocketEngineItem {
         super(p_40565_, p_40566_);
     }
     @Override
-    protected boolean canPlace(BlockPlaceContext pContext, BlockState pState) {
+    protected boolean canPlace(BlockPlaceContext pContext, @NotNull BlockState pState) {
         RocketEngineBlock part = (RocketEngineBlock) getBlock();
         Level level = pContext.getLevel();
         Direction facing = pContext.getClickedFace();
@@ -50,7 +50,7 @@ public class BigEngineItem extends RocketEngineItem {
     }
 
     @Override
-    protected boolean placeBlock(BlockPlaceContext pContext, BlockState pState) {
+    protected boolean placeBlock(BlockPlaceContext pContext, @NotNull BlockState pState) {
         RocketEngineBlock part = (RocketEngineBlock) getBlock();
         Level lvl = pContext.getLevel();
         Direction facing = pContext.getClickedFace();
@@ -103,7 +103,7 @@ public class BigEngineItem extends RocketEngineItem {
 
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
         //This can be called before registries are bounded to the deferredHolder so check for binding first
         if (PropellantTypeInit.METHALOX.isBound())
             appendEngineTextDirect(components,PropellantTypeInit.METHALOX.get(),  (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),10000,

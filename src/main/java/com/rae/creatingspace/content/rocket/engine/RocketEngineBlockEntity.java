@@ -7,18 +7,23 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.api.IMass;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
@@ -39,7 +44,7 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
     public static class NbtDependent extends RocketEngineBlockEntity implements IMass {
         int thrust = 1000;
-        PropellantType propellantType = PropellantTypeInit.METHALOX.get();
+        Holder<PropellantType> propellantType = null;//= PropellantTypeInit.METHALOX.get();
         Float efficiency = 1f;
         int mass = 0;
 
@@ -64,7 +69,7 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
         @Override
         public PropellantType getPropellantType() {
-            return propellantType;
+            return propellantType.value();
         }
 
         public void setThrust(int thrust) {
@@ -78,7 +83,7 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
             nbt.putFloat("efficiency", efficiency);
             try {
                 nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,
-                        PropellantTypeInit.getSyncedPropellantRegistry().getKey(propellantType)).getOrThrow());
+                        Objects.requireNonNull(propellantType.getKey()).location()).getOrThrow());
             } catch (Throwable error){
                 CreatingSpace.LOGGER.warn("catch exception will saving engine : "+propellantType);
                 CreatingSpace.LOGGER.warn("exeption : "+error.getMessage());
@@ -90,21 +95,25 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
         @Override
         public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
             super.read(nbt,registries,clientPacket);
-            setFromNbt(nbt);
+            setFromNbt(nbt, registries);
         }
 
-        public void setFromNbt(CompoundTag nbt) {
+        public void setFromNbt(CompoundTag nbt, HolderLookup.Provider registries) {
 
                 thrust = nbt.getInt("thrust");
                 efficiency = nbt.getFloat("efficiency");
                 mass = nbt.getInt("mass");
             try {
-                propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).getOrThrow())
-                        .orElse(PropellantTypeInit.METHALOX.get());
+                propellantType = registries.holderOrThrow(ResourceKey.create(
+                        PropellantTypeInit.Keys.PROPELLANT_TYPE,
+                                        ResourceLocation.CODEC.parse(NbtOps.INSTANCE, nbt.get("propellantType")).getOrThrow()));
+                /*propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional().getOrThrow())
+                        .orElse(PropellantTypeInit.METHALOX.get());*/
             } catch (Throwable error){
-                propellantType = PropellantTypeInit.METHALOX.get();
-                CreatingSpace.LOGGER.warn("catch exception will loading engine : "+propellantType);
+                //propellantType = PropellantTypeInit.METHALOX.get();
+                CreatingSpace.LOGGER.warn("catch exception will loading engine : "+nbt);
                 CreatingSpace.LOGGER.warn("exeption : "+ error.getMessage());
+                propellantType = null;
             }
         }
 
@@ -159,6 +168,7 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
         @Override
         public PropellantType getPropellantType() {
+            //need testing.
             return PropellantTypeInit.METHALOX.get();
         }
 

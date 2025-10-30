@@ -5,6 +5,7 @@ import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.MiscInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -61,8 +62,8 @@ public class EngineFabricationBlueprint extends Item {
 
     public ItemStack getBlueprintForEngine(int throatArea, int expansionRatio, int materialLevel, int thrust, float efficiency, ResourceLocation propellantTypeLocation, ResourceLocation exhaustPackTypeLocation, ResourceLocation powerPackTypeLocation) {
 
-        PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
-                propellantTypeLocation).orElse(PropellantTypeInit.METHALOX.get());
+        PropellantType propellantType = PropellantTypeInit.getSyncedPropellantRegistry().get(
+                propellantTypeLocation);
         ExhaustPackType exhaustPackType = MiscInit.getSyncedExhaustPackRegistry()
                 .get(exhaustPackTypeLocation);
         PowerPackType powerPackType = MiscInit.getSyncedPowerPackRegistry().get(powerPackTypeLocation);

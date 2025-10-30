@@ -20,11 +20,6 @@ public class PropellantTypeInit {
     public static final DeferredRegister<PropellantType> DEFERRED_PROPELLANT_TYPE =
             DeferredRegister.create(Keys.PROPELLANT_TYPE, CreatingSpace.MODID);
 
-    static {
-        //DEFERRED_PROPELLANT_TYPE.makeRegistry((builder) -> builder.sync(true));
-    }
-
-                    //.dataPackRegistry(PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC));
     public static final DeferredHolder<PropellantType,PropellantType> METHALOX = DEFERRED_PROPELLANT_TYPE
             .register("methalox", () -> new PropellantType(
                     Map.of(

@@ -54,10 +54,13 @@ public class CreatingSpace {
         IEventBus forgeEventBus = NeoForge.EVENT_BUS;
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modEventBus.addListener((DataPackRegistryEvent.NewRegistry event) -> {
-            event.dataPackRegistry(RocketAccessibleDimension.REGISTRY_KEY,RocketAccessibleDimension.CODEC, RocketAccessibleDimension.CODEC);
+            event.dataPackRegistry(RocketAccessibleDimension.REGISTRY_KEY,RocketAccessibleDimension.CODEC, RocketAccessibleDimension.CODEC,
+                    (builder) -> builder.sync(true)
+            );
             event.dataPackRegistry(MiscInit.Keys.POWER_PACK_TYPE,PowerPackType.DIRECT_CODEC, PowerPackType.DIRECT_CODEC);
             event.dataPackRegistry(MiscInit.Keys.EXHAUST_PACK_TYPE,ExhaustPackType.DIRECT_CODEC, ExhaustPackType.DIRECT_CODEC);
-            event.dataPackRegistry(PropellantTypeInit.Keys.PROPELLANT_TYPE,PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC);
+            event.dataPackRegistry(PropellantTypeInit.Keys.PROPELLANT_TYPE,PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC,
+                    (builder) -> builder.sync(true));
             LOGGER.debug("added reload for CS registries");
         });
         /*modEventBus.addListener((NewRegistryEvent event) -> {
