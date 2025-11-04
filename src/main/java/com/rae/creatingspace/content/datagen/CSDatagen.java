@@ -8,6 +8,7 @@ import com.rae.creatingspace.content.datagen.recipe.*;
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateDataProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -17,6 +18,8 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+
+import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 
 public class CSDatagen {
 	public static void gatherDataHighPriority(GatherDataEvent event) {
@@ -52,6 +55,7 @@ public class CSDatagen {
 			//generator.addProvider(true, new EngineSequencedAssemblyProvider(output));
 			// it doesn't quite work. the output is wrong right now and it's missing some of it
 
+            generator.addProvider(true, new CSWorldGenProvider(output, lookupProvider));
 
 			// event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
 		}
