@@ -1,32 +1,40 @@
 {
   "type": "create:sequenced_assembly",
-  "ingredient": {
-    "item": "creatingspace:engine_blueprint"
-  },
   "keepNbt": [
     "engineRecipeData",
     "blockEntity"
   ],
+  "ingredient": {
+    "type": "neoforge:components",
+    "items": "creatingspace:engine_blueprint",
+    "components": {
+      "minecraft:custom_data": {
+        "engineRecipeData": {
+          "exhaustPackType": "creatingspace:aerospike"
+        }
+      }
+    }
+  },
   "loops": 1,
   "results": [
     {
-      "id": "creatingspace:rocket_engine"
+      "id": "creatingspace:exhaust_pack"
     }
   ],
   "sequence": [
     {
       "type": "create:deploying",
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"
         },
         {
-          "item": "creatingspace:power_pack"
+          "item": "creatingspace:combustion_chamber"
         }
-      ],
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
       ],
       "results": [
         {
@@ -36,17 +44,17 @@
     },
     {
       "type": "create:deploying",
+      "machNbt": [
+        "engineRecipeData",
+        "blockEntity"
+      ],
       "ingredients": [
         {
           "item": "creatingspace:engine_blueprint"
         },
         {
-          "item": "creatingspace:exhaust_pack"
+          "item": "creatingspace:aerospike_plug"
         }
-      ],
-      "machNbt": [
-        "engineRecipeData",
-        "blockEntity"
       ],
       "results": [
         {
@@ -55,7 +63,7 @@
       ]
     }
   ],
-  "transitional_item": {
-    "id": "creatingspace:engine_blueprint"
+  "transitionalItem": {
+    "id": "creatingspace:incomplete_exhaust_pack"
   }
 }
