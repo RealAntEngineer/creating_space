@@ -5,7 +5,6 @@ import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.MiscInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -15,8 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class EngineFabricationBlueprint extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack itemStack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag tooltipFlag) {
         //TODO make this method static somewhere (repetition for the engine, for the engine blueprint then for every item)
         CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
         if (data!=null) {
@@ -69,25 +67,23 @@ public class EngineFabricationBlueprint extends Item {
         PowerPackType powerPackType = MiscInit.getSyncedPowerPackRegistry().get(powerPackTypeLocation);
         ItemStack defaultInstance = super.getDefaultInstance();
         CustomData data = defaultInstance.get(DataComponents.CUSTOM_DATA);
-        CompoundTag nbt = new CompoundTag();
-        if (data!=null) {
-            nbt = data.copyTag();
-            CompoundTag engineInfo = new CompoundTag();
-            engineInfo.putInt("thrust", thrust);
-            assert exhaustPackType != null;
-            engineInfo.putInt("mass", exhaustPackType.getMass((float) throatArea / 1000, expansionRatio));//size will be defined in the exhaust and powerPack as a coef (0.5 fo reach right now)
-            engineInfo.putFloat("efficiency", efficiency);
-            engineInfo.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantTypeLocation).getOrThrow());
+        CompoundTag nbt = data==null?new CompoundTag():data.copyTag();
+        CompoundTag engineInfo = new CompoundTag();
+        engineInfo.putInt("thrust", thrust);
+        assert exhaustPackType != null;
+        engineInfo.putInt("mass", exhaustPackType.getMass((float) throatArea / 1000, expansionRatio));//size will be defined in the exhaust and powerPack as a coef (0.5 fo reach right now)
+        engineInfo.putFloat("efficiency", efficiency);
+        engineInfo.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, propellantTypeLocation).getOrThrow());
 
-            CompoundTag recipeData = new CompoundTag();
-            recipeData.put("exhaustPackType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, exhaustPackTypeLocation).getOrThrow());
-            recipeData.put("powerPackType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, powerPackTypeLocation).getOrThrow());
-            recipeData.putInt("size", throatArea);
-            recipeData.putInt("expansionRatio", expansionRatio);
-            recipeData.putInt("materialLevel", materialLevel);
-            nbt.put("blockEntity", engineInfo);
-            nbt.put("engineRecipeData", recipeData);
-        }
+        CompoundTag recipeData = new CompoundTag();
+        recipeData.put("exhaustPackType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, exhaustPackTypeLocation).getOrThrow());
+        recipeData.put("powerPackType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, powerPackTypeLocation).getOrThrow());
+        recipeData.putInt("size", throatArea);
+        recipeData.putInt("expansionRatio", expansionRatio);
+        recipeData.putInt("materialLevel", materialLevel);
+        nbt.put("blockEntity", engineInfo);
+        nbt.put("engineRecipeData", recipeData);
+
         defaultInstance.set(DataComponents.CUSTOM_DATA,CustomData.of(nbt));
         return defaultInstance;
     }

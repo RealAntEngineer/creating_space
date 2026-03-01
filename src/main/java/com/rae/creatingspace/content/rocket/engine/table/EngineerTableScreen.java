@@ -309,6 +309,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         float efficiency = isp / Objects.requireNonNull(getSyncedPropellantRegistry().get(propellantType)).getMaxISP();
         ItemStack engineBlueprint = ((EngineFabricationBlueprint) ItemInit.ENGINE_BLUEPRINT.get().asItem())
                 .getBlueprintForEngine(engineSizeInput.getState(), expansionRatioSlider.getValueInt(), materialLevel, (int) thrust, efficiency, propellantType, exhaustType, powerPackType);
+        System.out.println(engineBlueprint.getComponents());
         CatnipServices.NETWORK
                 .sendToServer(
                         EngineerTableCraft
