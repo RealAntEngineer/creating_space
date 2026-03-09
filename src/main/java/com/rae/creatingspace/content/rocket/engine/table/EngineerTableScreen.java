@@ -337,7 +337,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                                             syncData
                                     ));
         } catch (Exception ignored){
-
+            System.out.println(ignored.getMessage());
         }
     }
 
@@ -371,5 +371,11 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         setPropellantType.visible = !availablePropellants.isEmpty();
         setPropellantType.onChanged();
         //the srollInput is only synced with the label on scroll
+    }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        syncWithBE();
     }
 }

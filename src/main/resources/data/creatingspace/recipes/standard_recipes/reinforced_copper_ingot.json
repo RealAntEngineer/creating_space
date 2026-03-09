@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "creatingspace:reinforced_copper_nugget"
+      "tag": "forge:nuggets/reinforced_copper"
     }
   },
   "pattern": [

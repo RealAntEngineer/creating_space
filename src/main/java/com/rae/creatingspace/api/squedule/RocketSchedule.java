@@ -59,7 +59,7 @@ public class RocketSchedule {
 
     public RocketSchedule() {
         entries = new ArrayList<>();
-        cyclic = true;
+        cyclic = false;
         savedProgress = 0;
     }
 

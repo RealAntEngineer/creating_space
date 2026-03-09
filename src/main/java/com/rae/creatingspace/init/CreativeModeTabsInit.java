@@ -97,7 +97,7 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.ALUMINUM_NUGGET);
                         output.accept(ItemInit.ALUMINUM_SHEET);
                         output.accept(ItemInit.ALUMINUM_SHEET);
-smal                        output.accept(ItemInit.CRYSTAL_SHARD);
+                        output.accept(ItemInit.CRYSTAL_SHARD);
                         output.accept(ItemInit.BASIC_SPACESUIT_FABRIC);
                         output.accept(ItemInit.ADVANCED_SPACESUIT_FABRIC);
                         output.accept(ItemInit.BASIC_SPACESUIT_HELMET);

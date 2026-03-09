@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "creatingspace:hastelloy_nugget"
+      "tag": "forge:nuggets/hastelloy"
     }
   },
   "pattern": [

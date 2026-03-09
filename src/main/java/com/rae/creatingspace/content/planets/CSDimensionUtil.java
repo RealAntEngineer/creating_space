@@ -83,6 +83,7 @@ public class CSDimensionUtil {
     }
 
     public static float gravity(ResourceLocation location) {
+        getTravelMap();// this is there to ensure the travel map exist in the client side in case of a dedicated server
         if (travelMap != null) {
             RocketAccessibleDimension dimensionParameter = travelMap.get(location);
             if (dimensionParameter!=null){

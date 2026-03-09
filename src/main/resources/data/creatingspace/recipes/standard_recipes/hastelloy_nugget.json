@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "creatingspace:hastelloy_ingot"
+      "tag": "forge:ingots/hastelloy"
     }
   ],
   "result": {
