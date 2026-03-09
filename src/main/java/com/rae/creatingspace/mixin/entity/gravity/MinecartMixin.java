@@ -7,7 +7,9 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static com.rae.creatingspace.content.planets.CSDimensionUtil.shouldHandleGravity;
 
@@ -17,11 +19,18 @@ public abstract class MinecartMixin extends Entity {
         super(p_19870_, p_19871_);
     }
 
-    @ModifyVariable(method = "tick", at = @At(value = "LOAD"), name = "d0")
+    @Inject(method = "getDefaultGravity", at = @At("HEAD"), cancellable = true)
+    private void getDefaultGravity(CallbackInfoReturnable<Double> cir) {
+        if (shouldHandleGravity(level().dimension().location())) {
+            cir.setReturnValue(0.04D * CSDimensionUtil.gravity(level().dimension().location()) / 9.81);
+        }
+    }
+
+    /*@ModifyVariable(method = "tick", at = @At(value = "LOAD"), name = "d0")
     private double modifyGravity(double d0) {
         if (shouldHandleGravity(level().dimension().location())) {
             return d0 * CSDimensionUtil.gravity(level().dimension().location()) / 9.81;
         }
         return d0;
-    }
+    }*/
 }

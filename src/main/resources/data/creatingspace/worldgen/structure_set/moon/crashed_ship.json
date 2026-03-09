@@ -1,14 +1,14 @@
 {
   "structures": [
     {
-      "structure": "creatingspace:crashed_rocket",
+      "structure": "creatingspace:moon/crashed_ship",
       "weight": 1
     }
   ],
   "placement": {
-    "salt": 1642136474,
+    "salt": 1642174,
 
-    "spacing": 20,
+    "spacing": 10,
 
     "separation": 6,
 

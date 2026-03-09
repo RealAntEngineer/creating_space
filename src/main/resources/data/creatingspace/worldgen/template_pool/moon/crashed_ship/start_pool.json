@@ -1,6 +1,6 @@
 {
 
-  "name": "creatingspace:crashed_rocket/start_pool",
+  "name": "creatingspace:moon/crashed_ship/start_pool",
 
   "fallback": "minecraft:empty",
 
@@ -10,7 +10,7 @@
       "weight": 1,
       "element": {
 
-        "location": "creatingspace:crashed_rocket",
+        "location": "creatingspace:moon/crashed_ship",
 
         "processors": "minecraft:empty",
 

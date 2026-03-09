@@ -8,20 +8,22 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static com.rae.creatingspace.content.planets.CSDimensionUtil.shouldHandleGravity;
 
 @Mixin(value = FallingBlockEntity.class)
 public abstract class FallingBlockEntityMixin extends Entity {
-    public FallingBlockEntityMixin(EntityType<?> p_19870_, Level p_19871_) {
-        super(p_19870_, p_19871_);
+    public FallingBlockEntityMixin(EntityType<?> type, Level level) {
+        super(type, level);
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/item/FallingBlockEntity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 0, shift = At.Shift.AFTER))
-    public void gravity(CallbackInfo ci) {
+    @Inject(method = "getDefaultGravity", at = @At("HEAD"), cancellable = true)
+    private void getDefaultGravity(CallbackInfoReturnable<Double> cir) {
         if (shouldHandleGravity(level().dimension().location())) {
-            this.setDeltaMovement(getDeltaMovement().add(0, 0.04D - 0.04D * CSDimensionUtil.gravity(level().dimension().location()) / 9.81, 0));
+            cir.setReturnValue(0.04D * CSDimensionUtil.gravity(level().dimension().location()) / 9.81);
         }
     }
 }

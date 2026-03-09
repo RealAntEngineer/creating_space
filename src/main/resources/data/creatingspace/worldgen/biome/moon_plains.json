@@ -34,9 +34,9 @@
   },
   "features": [
     [
-      "creatingspace:moon_aluminum_ore",
-      "creatingspace:moon_cobalt_ore",
-      "creatingspace:moon_nickel_ore"
+      "creatingspace:moon/aluminum_ore",
+      "creatingspace:moon/cobalt_ore",
+      "creatingspace:moon/nickel_ore"
     ]
   ]
 }

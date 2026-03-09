@@ -10,7 +10,7 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockE
 import com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipment;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.legacy.saved.DesignCommands;
+import com.rae.creatingspace.init.CommandsInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
@@ -26,21 +26,17 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.SleepFinishedTimeEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @EventBusSubscriber(modid = CreatingSpace.MODID)
 public class CSEventHandler {
@@ -166,7 +162,7 @@ public class CSEventHandler {
     }
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
-        DesignCommands.register(event.getDispatcher());
+        CommandsInit.register(event.getDispatcher());
     }
 
     @SubscribeEvent

@@ -1,8 +1,9 @@
-package com.rae.creatingspace.legacy.saved;
+package com.rae.creatingspace.init;
 
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.rae.creatingspace.legacy.saved.UnlockedDesignManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -14,24 +15,25 @@ import java.util.List;
 import static com.rae.creatingspace.init.MiscInit.getSyncedExhaustPackRegistry;
 import static com.rae.creatingspace.init.MiscInit.getSyncedPowerPackRegistry;
 
-public class DesignCommands {
+public class CommandsInit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("addAllDesigns")
-                .requires(source -> source.hasPermission(2)) // Requires operator level permission
+        // Root command: /crowns
+        dispatcher.register(Commands.literal("creatingspace")
+                .requires(source -> source.hasPermission(2)) // Operator permission for all subcommands
+                .then(Commands.literal("addAllDesigns")
                 .executes(context -> {
                     ServerPlayer player = context.getSource().getPlayerOrException();
                     addAllDesigns(player);
                     return Command.SINGLE_SUCCESS;
-                }));
+                }))
 
-        dispatcher.register(Commands.literal("clearAllDesigns")
-                .requires(source -> source.hasPermission(2)) // Requires operator level permission
+                .then(Commands.literal("clearAllDesigns")
                 .executes(context -> {
                     ServerPlayer player = context.getSource().getPlayerOrException();
                     clearAllDesigns(player);
                     return Command.SINGLE_SUCCESS;
-                }));
+                })));
     }
 
     private static void addAllDesigns(ServerPlayer player) {

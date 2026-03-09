@@ -1,6 +1,6 @@
 {
   "type": "neoforge:add_features",
   "biomes":"#creatingspace:is_moon",
-  "features":"creatingspace:moon_nickel_ore",
+  "features":"creatingspace:moon/nickel_ore",
   "step":"underground_ores"
 }
