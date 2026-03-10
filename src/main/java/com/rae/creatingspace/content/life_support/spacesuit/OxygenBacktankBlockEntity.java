@@ -56,6 +56,9 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 		@Override
 		public int fill(FluidStack resource, FluidAction action) {
 			//make filling harder the more you go
+			if (isFluidValid(resource) && !resource.isFluidEqual(this.fluid)){
+				return super.fill(new FluidStack(this.fluid, resource.getAmount()), action);
+			}
 			return super.fill(resource, action);
 		}
 	};
