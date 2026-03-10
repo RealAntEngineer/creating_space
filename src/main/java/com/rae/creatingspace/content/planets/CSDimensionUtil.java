@@ -24,6 +24,7 @@ public class CSDimensionUtil {
     public static Map<ResourceLocation, RocketAccessibleDimension> getTravelMap() {
         if (travelMap == null){
             LOGGER.info("updating the travel map");
+            //this will fail for sure on a dedicated server right ?
             CSDimensionUtil.updatePlanetsFromRegistry(Objects.requireNonNull(Minecraft.getInstance().getConnection())
                     .registryAccess().registry(RocketAccessibleDimension.REGISTRY_KEY)
                     .orElseThrow());
@@ -83,6 +84,7 @@ public class CSDimensionUtil {
     }
 
     public static float gravity(ResourceLocation location) {
+        getTravelMap();// ??? this is there to ensure the travel map exist in the client side in case of a dedicated server
         if (travelMap != null) {
             RocketAccessibleDimension dimensionParameter = travelMap.get(location);
             if (dimensionParameter!=null){
