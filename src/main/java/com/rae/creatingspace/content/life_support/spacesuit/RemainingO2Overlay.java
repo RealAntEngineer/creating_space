@@ -1,6 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
-import com.rae.creatingspace.api.gui.elements.SliderWidget;
+import com.rae.creatingspace.api.gui.elements.VerticalDialWidget;
 import com.rae.creatingspace.configs.CSConfigs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +13,7 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public class RemainingO2Overlay implements IGuiOverlay {
-    private SliderWidget gauge;
+    private VerticalDialWidget gauge;
     public static final RemainingO2Overlay INSTANCE = new RemainingO2Overlay();
     @Override
     public void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight) {
@@ -35,7 +35,7 @@ public class RemainingO2Overlay implements IGuiOverlay {
             float prevO2Value =  tag.getFloat("prevOxygen");
             //prevO2Value = o2Value;
             //TODO create one at initialization the keep the same
-            gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(screenWidth), CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(screenHeight), 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+            gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(screenWidth), CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(screenHeight), 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
             gauge.setMax(OxygenBacktankUtil.maxOxygen(itemInChestSlot));
             gauge.setValues((int) o2Value, (int) prevO2Value);
             gauge.render(graphics, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,partialTick);

@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class SliderWidget extends AbstractSimiWidget {
+public class VerticalDialWidget extends AbstractSimiWidget {
     private final int color;
     //TODO clean up the prevValue, value thing as there already is a lerpedFloat
     // warning there is remaining value everywhere
@@ -23,11 +23,11 @@ public class SliderWidget extends AbstractSimiWidget {
 
     public LerpedFloat lerpedValue;
     public int prevValue;
-    public SliderWidget(int x, int y, int width, int height) {
+    public VerticalDialWidget(int x, int y, int width, int height) {
         this(x, y, width, height, 0xFFFFFF);
     }
 
-    public SliderWidget(int x, int y, int width, int height, int color) {
+    public VerticalDialWidget(int x, int y, int width, int height, int color) {
         super(x, y, width, height);
         this.color = color;
         font = Minecraft.getInstance().font;

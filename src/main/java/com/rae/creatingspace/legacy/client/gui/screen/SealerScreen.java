@@ -1,7 +1,7 @@
 package com.rae.creatingspace.legacy.client.gui.screen;
 
 import com.rae.creatingspace.api.gui.elements.BackgroundScrollInput;
-import com.rae.creatingspace.api.gui.elements.SliderWidget;
+import com.rae.creatingspace.api.gui.elements.VerticalDialWidget;
 import com.rae.creatingspace.init.PacketInit;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
@@ -25,7 +25,7 @@ public class SealerScreen extends AbstractSimiScreen {
     private Button startButton;
     private boolean isSetting = false;
     private Indicator sealedIndicator;
-    private SliderWidget o2Gauge;
+    private VerticalDialWidget o2Gauge;
     private IconButton settingButton;
     private Indicator settingIndicator;
     private ScrollInput setRangeInput;
@@ -114,7 +114,7 @@ public class SealerScreen extends AbstractSimiScreen {
         addRenderableWidget(settingIndicator);
         addRenderableWidget(retryIndicator);
 
-        o2Gauge = new SliderWidget(x+6,y+19,32,64);
+        o2Gauge = new VerticalDialWidget(x+6,y+19,32,64);
 
         addRenderableWidget(o2Gauge);
 
