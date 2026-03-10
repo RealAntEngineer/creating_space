@@ -42,7 +42,7 @@ public class CreatingSpace {
     public static final String MODID = "creatingspace" ;
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
-    public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
+    //public static final UnlockedDesignManager DESIGN_SAVED_DATA = new UnlockedDesignManager();
     static {
         REGISTRATE.setTooltipModifierFactory(item -> {
             return new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE).

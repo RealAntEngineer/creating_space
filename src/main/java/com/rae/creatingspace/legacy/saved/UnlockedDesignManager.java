@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class UnlockedDesignManager {
+public abstract class UnlockedDesignManager {
+    //purely static, don't create instances
     private static UnlockabledDesignSavedData savedData;
     public static void setSavedData(UnlockabledDesignSavedData savedData) {
         UnlockedDesignManager.savedData = savedData;
