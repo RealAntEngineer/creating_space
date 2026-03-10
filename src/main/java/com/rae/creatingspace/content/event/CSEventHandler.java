@@ -7,7 +7,6 @@ import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.legacy.saved.DesignCommands;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
-import com.rae.creatingspace.legacy.server.blocks.atmosphere.OxygenBlock;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.CustomTeleporter;
@@ -21,7 +20,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -32,7 +30,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = CreatingSpace.MODID)
 public class CSEventHandler {
@@ -136,20 +133,7 @@ public class CSEventHandler {
         if (CSDimensionUtil.hasO2Atmosphere(level.getBiome(entity.getOnPos()))) {
             return true;
         }
-        /*
-        AABB colBox = entity.getBoundingBox();
-        Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
-        for (BlockState state : blockStateStream.toList()) {
-            if (isStateBreathable(state)){
-                return true;
-            }
-        }
-        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox);
-        for (RoomAtmosphere atmosphere : entityStream) {
-            if (atmosphere.getShape().inside(colBox) && atmosphere.breathable()) {
-                return true;
-            }
-        }*/
+
         boolean flag = ((INeedOxygen)entity).insideOxygenRoom();
         ((INeedOxygen)entity).setInsideOxygenRoom(false);
         return flag;
@@ -158,10 +142,6 @@ public class CSEventHandler {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         DesignCommands.register(event.getDispatcher());
-    }
-    //for legacy purpose
-    private static boolean isStateBreathable(BlockState state) {
-        return state.getBlock() instanceof OxygenBlock && state.getValue(OxygenBlock.BREATHABLE);
     }
 
     @SubscribeEvent
