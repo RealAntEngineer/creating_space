@@ -5,7 +5,7 @@ import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.legacy.saved.DesignCommands;
+import com.rae.creatingspace.init.CommandsInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
@@ -99,6 +99,7 @@ public class CSEventHandler {
     }
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
+        //the overworld control the clock for every dimensions, so if we sleep it's the overworld that need to get updated
         sleepFinishedEvent.getLevel().getServer().getLevel(Level.OVERWORLD).setDayTime(sleepFinishedEvent.getNewTime());
         /*for (ServerLevel serverlevel : sleepFinishedEvent.getLevel().getServer().getAllLevels()) {
             serverlevel.setDayTime(sleepFinishedEvent.getNewTime());
@@ -141,7 +142,7 @@ public class CSEventHandler {
     }
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
-        DesignCommands.register(event.getDispatcher());
+        CommandsInit.register(event.getDispatcher());
     }
 
     @SubscribeEvent
