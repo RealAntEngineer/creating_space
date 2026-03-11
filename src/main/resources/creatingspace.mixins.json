@@ -8,6 +8,7 @@
   "plugin": "com.rae.creatingspace.mixin.CSMixinPlugin",
   "mixins": [
     "entity.ContraptionMixin",
+    "entity.EntityMixin",
     "entity.LivingEntityMixin",
     "entity.PlayerMixin",
     "entity.gravity.BoatMixin",

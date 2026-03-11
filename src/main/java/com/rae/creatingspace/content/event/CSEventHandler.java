@@ -77,12 +77,12 @@ public class CSEventHandler {
                             ItemStack tank = player.getItemBySlot(EquipmentSlot.CHEST);
                             OxygenBacktankUtil.consumeOxygen(player, tank, 1);
                         } else {
-                            player.hurt(CSDamageSources.no_oxygen(level), 0.5f);
+                            player.hurt(CSDamageSources.no_oxygen(level), 2f);
 
                         }
                     }
-                }else if (!(TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving))) {
-                    entityLiving.hurt(CSDamageSources.no_oxygen(level), 0.5f);
+                } else if (!(TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving))) {
+                    entityLiving.hurt(CSDamageSources.no_oxygen(level), 2f);
                 }
             }
         }

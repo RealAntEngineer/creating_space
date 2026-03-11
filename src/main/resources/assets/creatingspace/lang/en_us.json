@@ -373,7 +373,7 @@
   "ad_astra:mars_orbit": "Ad Astra Mars orbit",
   "ad_astra:venus": "Ad Astra Venus",
 
-  "death.attack.no_oxygen": "%1$s didn't find oxygen in space",
+  "death.attack.creatingspace.no_oxygen": "%1$s didn't find oxygen in space",
 
   "creatingspace.science.thrust": "Thrust",
   "creatingspace.science.unit.newton": "N",

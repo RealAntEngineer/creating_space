@@ -276,6 +276,7 @@ public class ItemInit {
                     .item("netherite_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit"),
                                     NETHERITE_BACKTANK_PLACEABLE))
+                    .properties(p -> p.fireResistant())
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(forgeItemTag("armors/chestplates"))
                     .register();
@@ -303,18 +304,21 @@ public class ItemInit {
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_leggings",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .properties(p -> p.fireResistant())
                     .tag(forgeItemTag("armors/leggings"))
                     .register();
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_BOOTS =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_boots",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.BOOTS, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .properties(p -> p.fireResistant())
                     .tag(forgeItemTag("armors/boots"))
                     .register();
     public static final ItemEntry<SpacesuitHelmetItem> ADVANCED_SPACESUIT_HELMET =
             CreatingSpace.REGISTRATE
                     .item("advanced_spacesuit_helmet",
                             p -> new SpacesuitHelmetItem(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .properties(p -> p.fireResistant())
                     .tag(forgeItemTag("armors/helmet"))
                     .register();
 

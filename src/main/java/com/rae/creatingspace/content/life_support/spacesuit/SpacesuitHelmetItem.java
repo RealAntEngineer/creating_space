@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -67,7 +68,7 @@ public class SpacesuitHelmetItem extends UpgradableEquipment {
 	}
 
 	@SubscribeEvent
-	public static void breatheUnderwater(LivingTickEvent event) {
+	public static void breatheUnderwater(LivingBreatheEvent event) {
 		LivingEntity entity = event.getEntity();
 		Level world = entity.level();
 		boolean second = world.getGameTime() % 20 == 0;
@@ -82,13 +83,10 @@ public class SpacesuitHelmetItem extends UpgradableEquipment {
 			return;
 
 		boolean lavaDiving = entity.isInLava();
-		if (!helmet.getItem()
-			.isFireResistant() && lavaDiving)
+		if (!helmet.getItem().isFireResistant() && lavaDiving)
 			return;
 
-		if (!entity.canDrownInFluidType(entity.getEyeInFluidType()) && !lavaDiving)
-			return;
-		if (entity instanceof Player && ((Player) entity).isCreative())
+		if (event.canBreathe() && !lavaDiving)
 			return;
 
 		List<ItemStack> O2Backtanks = OxygenBacktankUtil.getAllWithOxygen(entity);
