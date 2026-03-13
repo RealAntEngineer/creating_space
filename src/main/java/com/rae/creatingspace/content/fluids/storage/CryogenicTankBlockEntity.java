@@ -111,7 +111,7 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
     protected int syncCooldown;
     protected boolean queuedSync;
 
-    public void  tick(Level level, BlockPos pos, BlockState state, CryogenicTankBlockEntity cryogenicTankBlockEntity) {
+    public void tick(Level level, BlockPos pos, BlockState state, CryogenicTankBlockEntity cryogenicTankBlockEntity) {
         super.tick();
         if (!level.isClientSide()) {
             if (syncCooldown > 0) {

@@ -7,7 +7,6 @@
   "refmap": "creatingspace.refmap.json",
   "plugin": "com.rae.creatingspace.mixin.CSMixinPlugin",
   "mixins": [
-    "entity.ContraptionMixin",
     "entity.EntityMixin",
     "entity.LivingEntityMixin",
     "entity.PlayerMixin",

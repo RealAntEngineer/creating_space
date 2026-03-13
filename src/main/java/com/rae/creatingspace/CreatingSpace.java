@@ -86,6 +86,8 @@ public class CreatingSpace {
         PacketInit.registerPackets();
         IgniteOnPlace.register();
 
+        MovementCheckInit.register();
+
         CarverInit.register(modEventBus);
 
         CSContraptionType.register(modEventBus);
