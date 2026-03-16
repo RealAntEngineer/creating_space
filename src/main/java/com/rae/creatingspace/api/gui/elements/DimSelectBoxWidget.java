@@ -16,11 +16,11 @@ public class DimSelectBoxWidget extends BoxWidget {
     protected Font font;
 
     public DimSelectBoxWidget(int x, int y, int width, int height, Component text, ResourceLocation dim) {
-        super(x, y, width,height);
+        super(x, y, width, height);
         font = Minecraft.getInstance().font;
         this.dim = dim;
-        this.label = new Label(x+3,y+(height-10)/2,text);
-        label.setTextAndTrim(text,true,112);
+        this.label = new Label(x + 3, y + (height - 10) / 2, text);
+        label.setTextAndTrim(text, true, 112);
         color = 0xFFFFFF;
     }
 
@@ -35,7 +35,7 @@ public class DimSelectBoxWidget extends BoxWidget {
         if (label == null || label.text.getString().isEmpty())
             return;
 
-        label.render(graphics,mouseX,mouseY,partialTicks
+        label.render(graphics, mouseX, mouseY, partialTicks
         );
     }
 }

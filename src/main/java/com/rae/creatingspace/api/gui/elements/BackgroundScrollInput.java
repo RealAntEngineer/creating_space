@@ -12,7 +12,7 @@ public class BackgroundScrollInput extends ScrollInput {
 
     @Override
     public void doRender(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        GuiTexturesInit.SCROLL_BACKGROUND.render(graphics,getX()-1,getY()-1);
+        GuiTexturesInit.SCROLL_BACKGROUND.render(graphics, getX() - 1, getY() - 1);
         super.doRender(graphics, mouseX, mouseY, partialTicks);
     }
 }

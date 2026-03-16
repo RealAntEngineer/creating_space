@@ -15,12 +15,12 @@ import static java.lang.Math.abs;
 
 public class PropellantType {
     static final float R = 8.31446261815324f;
-    Map<TagKey<Fluid>, Float> propellantRatio;
-    Integer maxISP;
-    Float Cp;
-    Float gamma;
-    Float Rs;
-    Integer M;
+    public Map<TagKey<Fluid>, Float> propellantRatio;
+    public Integer maxISP;
+    public Float Cp;
+    public Float gamma;
+    public Float Rs;
+    public Integer M;
 
     //for codec use MiscInit.PROPELLANT_TYPE.get().getCodec()
     public static final Codec<Map<TagKey<Fluid>, Float>> MAP_CODEC = Codec.unboundedMap(

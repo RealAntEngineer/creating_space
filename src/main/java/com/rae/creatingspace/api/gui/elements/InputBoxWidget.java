@@ -14,7 +14,7 @@ public class InputBoxWidget extends BoxWidget {
 
     public InputBoxWidget(int x, int y, int width, int height, Component initialValue) {
         super(x, y, width, height);
-        editBox = new EditBox(Minecraft.getInstance().font,x,y,width,height,initialValue);
+        editBox = new EditBox(Minecraft.getInstance().font, x, y, width, height, initialValue);
         editBox.setBordered(false);
     }
 
@@ -28,11 +28,12 @@ public class InputBoxWidget extends BoxWidget {
         //editBox.tick();
     }
 
-    public void setValue(int value){
-        this.editBox.setValue(String.valueOf(value));
-    }
     public String getValue() {
         return editBox.getValue();
+    }
+
+    public void setValue(int value) {
+        this.editBox.setValue(String.valueOf(value));
     }
 
     @Override
@@ -46,26 +47,26 @@ public class InputBoxWidget extends BoxWidget {
     }
 
     @Override
-    public boolean charTyped(char p_94732_, int p_94733_) {
-        return editBox.charTyped(p_94732_, p_94733_);
-    }
-
-    @Override
     public boolean keyReleased(int p_94750_, int p_94751_, int p_94752_) {
         return editBox.keyReleased(p_94750_, p_94751_, p_94752_);
     }
 
-    public void setVisibility(boolean visible){
+    @Override
+    public boolean charTyped(char p_94732_, int p_94733_) {
+        return editBox.charTyped(p_94732_, p_94733_);
+    }
+
+    public void setVisibility(boolean visible) {
         this.visible = visible;
         editBox.visible = visible;
     }
 
-    public void setActivity(boolean active){
+    public void setActivity(boolean active) {
         this.active = active;
         editBox.active = active;
     }
 
-    public void setResponder(Consumer<String> stringConsumer){
+    public void setResponder(Consumer<String> stringConsumer) {
         editBox.setResponder(stringConsumer);
     }
 

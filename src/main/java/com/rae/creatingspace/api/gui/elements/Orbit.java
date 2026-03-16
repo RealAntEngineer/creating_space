@@ -1,8 +1,8 @@
 package com.rae.creatingspace.api.gui.elements;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
+import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import net.createmod.catnip.gui.widget.BoxWidget;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.Minecraft;
@@ -15,21 +15,35 @@ import java.util.List;
 import java.util.Objects;
 
 public class Orbit extends BoxWidget {
+    private final ResourceLocation dim;
+    //it's a circle
+    int radius;
+    int bodyRadius = 5;
+    ArrayList<Orbit> satellites = new ArrayList<>();
     private Integer windowHeight = null;
     private Integer windowWidth = null;
     private double planetY;
     private double planetX;
-    private final ResourceLocation dim;
-    //it's a circle
-    int radius;
     private float zoom;
     private Integer maxSatelliteDistance = 0;
+    private int xShift;
+    private int yShift;
+
+    public Orbit(int centerX, int centerY, int radius, ResourceLocation dim) {
+        super(centerX, centerY, radius * 2, radius * 2);
+        this.radius = radius;
+        this.dim = dim;
+    }
+    public Orbit(int centerX, int centerY, int radius, ResourceLocation dim, List<Orbit> satellites) {
+        super(centerX, centerY, radius * 2, radius * 2);
+        this.radius = radius;
+        this.dim = dim;
+        this.satellites = new ArrayList<>(satellites);
+    }
 
     public void setBodyRadius(int bodyRadius) {
         this.bodyRadius = bodyRadius;
     }
-
-    int bodyRadius = 5;
 
     public void setxShift(int xShift) {
         this.xShift = xShift;
@@ -39,9 +53,6 @@ public class Orbit extends BoxWidget {
         this.yShift = yShift;
     }
 
-    private int xShift;
-    private int yShift;
-
     public void setSatellites(List<Orbit> satellites) {
         this.satellites = new ArrayList<>(satellites);
     }
@@ -50,34 +61,14 @@ public class Orbit extends BoxWidget {
         this.satellites.add(satellite);
         if (maxSatelliteDistance < satellite.radius) maxSatelliteDistance = satellite.radius;
     }
+
     public int getMaxSatelliteDistance() {
         return maxSatelliteDistance;
-    }
-
-    ArrayList<Orbit> satellites = new ArrayList<>();
-
-    public Orbit(int centerX, int centerY, int radius, ResourceLocation dim) {
-        super(centerX, centerY, radius * 2, radius * 2);
-        this.radius = radius;
-        this.dim = dim;
-    }
-
-    public Orbit(int centerX, int centerY, int radius, ResourceLocation dim, List<Orbit> satellites) {
-        super(centerX, centerY, radius * 2, radius * 2);
-        this.radius = radius;
-        this.dim = dim;
-        this.satellites = new ArrayList<>(satellites);
     }
 
     public void setWindow(int windowHeight, int windowWidth) {
         this.windowHeight = windowHeight;
         this.windowWidth = windowWidth;
-    }
-
-    @Override
-    public boolean isMouseOver(double mouseX, double mouseY) {
-        return ((radius / zoom - 5) * (radius / zoom - 5) < ((getX() + xShift - mouseX) * (getX() + xShift - mouseX) + (getY() + yShift - mouseY) * (getY() + yShift - mouseY))) &&
-                (((getX() + xShift - mouseX) * (getX() + xShift - mouseX) + (getY() + yShift - mouseY) * (getY() + yShift - mouseY)) < (radius / zoom + 5) * (radius / zoom + 5));
     }
 
     @Override
@@ -107,7 +98,11 @@ public class Orbit extends BoxWidget {
         }
     }
 
-
+    private float getTheta(float partialTicks) {
+        float time = Objects.requireNonNull(Minecraft.getInstance().getCameraEntity()).tickCount + partialTicks;
+        float speed = 0.01f;
+        return radius > 0 ? (float) (time * 2 * Math.PI / radius) * speed : 1;
+    }
 
     private boolean isInsideWindow(int x, int y) {
         if (windowWidth == null || windowHeight == null) {
@@ -121,39 +116,6 @@ public class Orbit extends BoxWidget {
                     (x - windowWidth) * (x - windowWidth) + (y - windowHeight) * (y - windowHeight) <= (radius / zoom) * (radius / zoom);
             return flag1 || flag2 || flag3;
         }
-    }
-
-    public double getPlanetY() {
-        return planetY;
-    }
-
-    public double getPlanetX() {
-        return planetX;
-    }
-
-    private float getTheta(float partialTicks) {
-        float time = Objects.requireNonNull(Minecraft.getInstance().getCameraEntity()).tickCount + partialTicks;
-        float speed = 0.01f;
-        return radius > 0 ? (float) (time * 2 * Math.PI / radius) * speed : 1;
-    }
-
-    private void drawBody(GuiGraphics ms, int centerX, int centerY) {
-        if (!CSDimensionUtil.isOrbit(dim)) {
-            GuiTexturesInit.render(CreatingSpace.resource(
-                            "textures/gui/destination/"
-                                    +
-                                    dim.getPath()
-                                    + ".png"),
-                    ms, centerX - bodyRadius, centerY - bodyRadius, 0, 0, bodyRadius * 2 + 1,
-                    bodyRadius * 2 + 1, bodyRadius * 2 + 1, bodyRadius * 2 + 1, Color.WHITE);
-        }
-    }
-
-    @Override
-    protected boolean clicked(double pMouseX, double pMouseY) {
-        if (!active || !visible)
-            return false;
-        return isMouseOver(pMouseX, pMouseY);
     }
 
     //launch lazy renderer when the orbit is bigger that the window
@@ -200,10 +162,24 @@ public class Orbit extends BoxWidget {
         }
     }
 
-    @Override
-    public void onClick(double mouseX, double mouseY) {
-        super.onClick(mouseX, mouseY);
-        setFocused(true);
+    public double getPlanetX() {
+        return planetX;
+    }
+
+    public double getPlanetY() {
+        return planetY;
+    }
+
+    private void drawBody(GuiGraphics ms, int centerX, int centerY) {
+        if (!CSDimensionUtil.isOrbit(dim)) {
+            GuiTexturesInit.render(CreatingSpace.resource(
+                            "textures/gui/destination/"
+                                    +
+                                    dim.getPath()
+                                    + ".png"),
+                    ms, centerX - bodyRadius, centerY - bodyRadius, 0, 0, bodyRadius * 2 + 1,
+                    bodyRadius * 2 + 1, bodyRadius * 2 + 1, bodyRadius * 2 + 1, Color.WHITE);
+        }
     }
 
     private void drawSymmetricLines(GuiGraphics graphics, int centerX, int centerY, int startX, int startY, int length, int color) {
@@ -212,17 +188,36 @@ public class Orbit extends BoxWidget {
         graphics.hLine(centerX - startX - length, centerX - startX, centerY + startY, color);
 
         //top
-        graphics.hLine( centerX + startX, centerX + startX + length, centerY - startY, color);
-        graphics.hLine( centerX - startX - length, centerX - startX, centerY - startY, color);
+        graphics.hLine(centerX + startX, centerX + startX + length, centerY - startY, color);
+        graphics.hLine(centerX - startX - length, centerX - startX, centerY - startY, color);
 
         //right
-        graphics.vLine( centerX + startY, centerY + startX - 1, centerY + startX + length + 1, color);
-        graphics.vLine( centerX + startY, centerY - startX - length - 1, centerY - startX + 1, color);
+        graphics.vLine(centerX + startY, centerY + startX - 1, centerY + startX + length + 1, color);
+        graphics.vLine(centerX + startY, centerY - startX - length - 1, centerY - startX + 1, color);
 
         //left
         graphics.vLine(centerX - startY, centerY + startX - 1, centerY + startX + length + 1, color);
         graphics.vLine(centerX - startY, centerY - startX - length - 1, centerY - startX + 1, color);
 
+    }
+
+    @Override
+    public void onClick(double mouseX, double mouseY) {
+        super.onClick(mouseX, mouseY);
+        setFocused(true);
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return ((radius / zoom - 5) * (radius / zoom - 5) < ((getX() + xShift - mouseX) * (getX() + xShift - mouseX) + (getY() + yShift - mouseY) * (getY() + yShift - mouseY))) &&
+                (((getX() + xShift - mouseX) * (getX() + xShift - mouseX) + (getY() + yShift - mouseY) * (getY() + yShift - mouseY)) < (radius / zoom + 5) * (radius / zoom + 5));
+    }
+
+    @Override
+    protected boolean clicked(double pMouseX, double pMouseY) {
+        if (!active || !visible)
+            return false;
+        return isMouseOver(pMouseX, pMouseY);
     }
 
     public ResourceLocation getDim() {
