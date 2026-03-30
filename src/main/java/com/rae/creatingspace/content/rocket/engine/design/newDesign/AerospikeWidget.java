@@ -71,12 +71,10 @@ public class AerospikeWidget extends CompoundWidget {
         double targetAngle = finalFlowAngle.getDecimalValue() / 180 * Math.PI;
 
         finalMach = design.getExitMach((float) expansionRatio.getDecimalValue());
-        System.out.println("Final Mach: " + finalMach);
 
         thetaT = -(targetAngle +
                 PrandtlMeyer.prandtlMeyer(finalMach, design.propellant.gamma));
         thetaT = Mth.clamp(thetaT, -Math.PI/2, 0);
-        System.out.println("Initial angle: " + thetaT);
 
         double tol = 1e-4;
 
