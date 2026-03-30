@@ -134,6 +134,7 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.MARS_SURFACE_REGOLITH);
                         output.accept(BlockInit.CRYSTAL_BLOCK);
                         output.accept(BlockInit.BUDDING_CRYSTAL);
+                        output.accept(BlockInit.CRYSTAL_CLUSTER);
                         output.accept(BlockInit.LARGE_CRYSTAL_BUD);
                         output.accept(BlockInit.MEDIUM_CRYSTAL_BUD);
                         output.accept(BlockInit.SMALL_CRYSTAL_BUD);

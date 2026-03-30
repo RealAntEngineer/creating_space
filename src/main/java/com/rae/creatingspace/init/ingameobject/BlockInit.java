@@ -3,6 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 import com.rae.creatingspace.configs.CSStress;
 import com.rae.creatingspace.content.fluids.storage.CryogenicTankBlock;
 import com.rae.creatingspace.content.fluids.meter.FlowGaugeBlock;
+import com.rae.creatingspace.content.planets.BuddingCrystalBlock;
 import com.rae.creatingspace.content.planets.RegolithSurfaceBlock;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlock;
@@ -57,6 +58,7 @@ public class BlockInit {
             .properties(p -> p.strength(1.0f).noOcclusion())
             .item()
             .build().register();
+
     public static final BlockEntry<SmallEngineBlock> SMALL_ROCKET_ENGINE = REGISTRATE
             .block("small_rocket_engine", SmallEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
@@ -68,6 +70,7 @@ public class BlockInit {
             .item(SmallEngineItem::new)
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
             .block("rocket_engine", SuperEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
@@ -79,6 +82,7 @@ public class BlockInit {
             .item(EngineItem::new)
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<BigEngineBlock> BIG_ROCKET_ENGINE = REGISTRATE
             .block("big_rocket_engine", BigEngineBlock::new)
             //.initialProperties(SharedProperties::copperMetal)
@@ -118,18 +122,21 @@ public class BlockInit {
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .transform(axeOrPickaxe())
                     .register();
+
     public static final BlockEntry<Block> CLAMPS = REGISTRATE
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
             .properties(p -> p.strength(1.0f))
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
             .block("rocket_casing",CasingBlock::new)
             .transform(BuilderTransformers.casing(() -> SpriteShiftInit.ROCKET_CASING))
             .item()
             .build()
             .register();
+
     public static final BlockEntry<RocketControlsBlock> ROCKET_CONTROLS = REGISTRATE.block(
                     "rocket_controls", RocketControlsBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -139,6 +146,7 @@ public class BlockInit {
             .item(RocketControlsItem::new)
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
                     "flight_recorder", FlightRecorderBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -158,7 +166,6 @@ public class BlockInit {
             .item()
             .transform(customItemModel())
             .register();
-
 
     @Deprecated
     public static final BlockEntry<ChemicalSynthesizerBlock> CHEMICAL_SYNTHESIZER = REGISTRATE.block(
@@ -183,6 +190,7 @@ public class BlockInit {
             .transform(customItemModel())
             .onRegisterAfter(Registries.ITEM, i -> ItemDescription.useKey(i, "block.creatingspace.legacy_mechanical_electrolyzer"))
             .register();
+
     public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -193,6 +201,7 @@ public class BlockInit {
             .transform(customItemModel())
             .onRegisterAfter(Registries.ITEM, i -> ItemDescription.useKey(i, "block.creatingspace.mechanical_electrolyzer"))
             .register();
+
     public static final BlockEntry<CatalystCarrierBlock> CATALYST_CARRIER = REGISTRATE.block(
                     "catalyst_carrier", CatalystCarrierBlock::new)
             .initialProperties(SharedProperties::stone)
@@ -210,6 +219,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
+
     public static final BlockEntry<AirLiquefierBlock> AIR_LIQUEFIER = REGISTRATE.block(
                     "air_liquefier", AirLiquefierBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -219,6 +229,7 @@ public class BlockInit {
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<FlowGaugeBlock> FLOW_METER = REGISTRATE
             .block("flow_meter", FlowGaugeBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -227,11 +238,13 @@ public class BlockInit {
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<OxygenBlock> OXYGEN = REGISTRATE
             .block("oxygen", OxygenBlock::new)
             .initialProperties(() -> Blocks.AIR)
             .properties(p -> p.noOcclusion().noCollission().dynamicShape().air())
             .register();
+
     public static final BlockEntry<OxygenBacktankBlock> COPPER_OXYGEN_BACKTANK = REGISTRATE
             .block("copper_oxygen_backtank", OxygenBacktankBlock::new)
             .initialProperties(SharedProperties::copperMetal)
@@ -254,56 +267,56 @@ public class BlockInit {
             .build()
             .register();
 
-
     public static final BlockEntry<Block> MOON_STONE = REGISTRATE
             .block("moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
             .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
             .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p-> p.sound(SoundType.SNOW))
             .item()
             .transform(customItemModel())
             .register();
 
     public static final BlockEntry<RegolithSurfaceBlock> MOON_SURFACE_REGOLITH = REGISTRATE
             .block("moon_surface_regolith",RegolithSurfaceBlock::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).mapColor(MapColor.SNOW))
+            .properties(p-> p.sound(SoundType.SNOW).mapColor(MapColor.SNOW))
             .item()
             .transform(customItemModel())
             .register();
 
     public static final BlockEntry<Block> MARS_STONE = REGISTRATE
             .block("mars_stone", Block::new).initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> MARS_REGOLITH = REGISTRATE
             .block("mars_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
-            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p -> p.sound(SoundType.SNOW))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> MARS_SURFACE_REGOLITH = REGISTRATE
             .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
-            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p -> p.sound(SoundType.SNOW))
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel())
@@ -312,8 +325,7 @@ public class BlockInit {
     //ores
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
                     "nickel_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.GOLD_ORE)
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
@@ -322,11 +334,9 @@ public class BlockInit {
             .build()
             .register();
 
-
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(
                     "deepslate_nickel_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(4.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.DEEPSLATE_GOLD_ORE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -335,8 +345,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
                     "moon_nickel_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.GOLD_ORE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -345,8 +354,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> RAW_NICKEL_BLOCK = REGISTRATE.block(
                     "raw_nickel_block",Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
@@ -355,46 +363,39 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
                     "moon_cobalt_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.GOLD_ORE)
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> RAW_COBALT_BLOCK = REGISTRATE.block(
                     "raw_cobalt_block",Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.GOLD_ORE)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
             .transform(customItemModel())
             .register();
+
     public static final BlockEntry<Block> RAW_ALUMINUM_BLOCK = REGISTRATE.block(
                     "raw_aluminum_block",Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .initialProperties(()-> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .item()
             .transform(customItemModel())
             .register();
-
-    //machinery
-
-
-
-
 
     public static final BlockEntry<AmethystBlock> CRYSTAL_BLOCK = REGISTRATE.block(
                     "crystal_block", AmethystBlock::new)
@@ -403,13 +404,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
-    public static final BlockEntry<BuddingAmethystBlock> BUDDING_CRYSTAL = REGISTRATE.block(
-                    "budding_crystal", BuddingAmethystBlock::new)
-            .initialProperties(() -> Blocks.BUDDING_AMETHYST)
-            .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
-            .item()
-            .build()
-            .register();
+
     public static final BlockEntry<AmethystClusterBlock> CRYSTAL_CLUSTER = REGISTRATE.block(
                     "crystal_cluster", p -> new AmethystClusterBlock(7, 3, p))
             .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
@@ -421,6 +416,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
+
     public static final BlockEntry<AmethystClusterBlock> LARGE_CRYSTAL_BUD = REGISTRATE.block(
                     "large_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
             .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
@@ -432,6 +428,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
+
     public static final BlockEntry<AmethystClusterBlock> MEDIUM_CRYSTAL_BUD = REGISTRATE.block(
                     "medium_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
             .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
@@ -443,6 +440,7 @@ public class BlockInit {
             .item()
             .build()
             .register();
+
     public static final BlockEntry<AmethystClusterBlock> SMALL_CRYSTAL_BUD = REGISTRATE.block(
                     "small_crystal_bud", p -> new AmethystClusterBlock(5, 3, p))
             .initialProperties(() -> Blocks.AMETHYST_CLUSTER)
@@ -454,6 +452,19 @@ public class BlockInit {
             .item()
             .build()
             .register();
+
+    public static final BlockEntry<BuddingCrystalBlock> BUDDING_CRYSTAL = REGISTRATE.block(
+                    "budding_crystal", (p ) -> new BuddingCrystalBlock(p,
+                            SMALL_CRYSTAL_BUD.get(),
+                            MEDIUM_CRYSTAL_BUD.get(),
+                            LARGE_CRYSTAL_BUD.get(),
+                            CRYSTAL_CLUSTER.get()))
+            .initialProperties(() -> Blocks.BUDDING_AMETHYST)
+            .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+            .item()
+            .build()
+            .register();
+
     public static void register() {}
 
 }

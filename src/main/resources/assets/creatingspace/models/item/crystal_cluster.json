@@ -1,3 +1,11 @@
 {
-  "parent": "creatingspace:block/crystal_cluster"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "creatingspace:block/crystal_cluster"
+  },
+  "display": {
+    "head": {
+      "translation": [ 0, 14, -5 ]
+    }
+  }
 }

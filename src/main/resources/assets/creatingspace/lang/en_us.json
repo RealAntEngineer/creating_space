@@ -321,7 +321,7 @@
 
   "creatingspace.gui.rocket_controls.launch": "Launch",
   "creatingspace.gui.rocket_controls.send_setting": "Validate",
-  "creatingspace.gui.rocket_controls.destination_cost": "deltaV needed",
+  "creatingspace.gui.rocket_controls.destination_cost": "ΔV needed",
   "creatingspace.gui.rocket_controls.pos_selection": "Pos ?",
   "creatingspace.gui.sealer.try_seal": "Try Sealing",
   "creatingspace.gui.sealer.isSealed": "Is Sealed ?",
