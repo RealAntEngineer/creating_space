@@ -33,7 +33,6 @@ public class CSDatagen {
 		if (event.includeClient()) {
 			//generator.addProvider(true, AllSoundEvents.provider(generator));
 		}
-		//TODO use this to load the info for dimensions (need to be one file for each dimension)
 		if (event.includeServer()) {
 
 			//CS Recipes
@@ -45,7 +44,8 @@ public class CSDatagen {
 			generator.addProvider(true, new CSAirLiquefyingRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSChemicalSynthesisRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSMechanicalElectrolysisRecipeGen(output, lookupProvider));
-            generator.addProvider(true, new EngineSequencedAssemblyProvider(output));
+            //generator.addProvider(true, new EngineSequencedAssemblyProvider(output));
+			// it doesn't quite work. the output is wrong right now and it's missing some of it
 
 
             // event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));

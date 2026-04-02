@@ -827,8 +827,8 @@ public class BlockInit {
                                         .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
             })
             .item()
-            .transform(customItemModel("nickel_sulfate_cluster"))
-            .register();
+            .transform((b) -> b.model(AssetLookup.itemModel("nickel_sulfate_cluster")))
+            .build().register();
 
     public static final BlockEntry<AmethystClusterBlock> LARGE_NICKEL_SULFATE_BUD = REGISTRATE.block(
                     "large_nickel_sulfate_bud", p -> new AmethystClusterBlock(5, 3, p))
@@ -840,8 +840,8 @@ public class BlockInit {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 4))
             .item()
-            .transform(customItemModel("large_nickel_sulfate_bud"))
-            .register();
+            .transform((b) -> b.model(AssetLookup.itemModel("large_nickel_sulfate_bud")))
+            .build().register();
 
     public static final BlockEntry<AmethystClusterBlock> MEDIUM_NICKEL_SULFATE_BUD = REGISTRATE.block(
                     "medium_nickel_sulfate_bud", p -> new AmethystClusterBlock(5, 3, p))
@@ -853,8 +853,8 @@ public class BlockInit {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 2))
             .item()
-            .transform(customItemModel("medium_nickel_sulfate_bud"))
-            .register();
+            .transform((b) -> b.model(AssetLookup.itemModel("medium_nickel_sulfate_bud")))
+            .build().register();
 
     public static final BlockEntry<AmethystClusterBlock> SMALL_NICKEL_SULFATE_BUD = REGISTRATE.block(
                     "small_nickel_sulfate_bud", p -> new AmethystClusterBlock(5, 3, p))
@@ -866,8 +866,8 @@ public class BlockInit {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 1))
             .item()
-            .transform(customItemModel("small_nickel_sulfate_bud"))
-            .register();
+            .transform((b) -> b.model(AssetLookup.itemModel("small_nickel_sulfate_bud")))
+            .build().register();
 
     public static final BlockEntry<BuddingCrystalBlock> BUDDING_NICKEL_SULFATE = REGISTRATE.block(
                     "budding_nickel_sulfate", (p) -> new BuddingCrystalBlock(p,
@@ -878,8 +878,7 @@ public class BlockInit {
             .initialProperties(() -> Blocks.BUDDING_AMETHYST)
             .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
             .item()
-            .transform(customItemModel("budding_nickel_sulfate"))
-            .register();
+            .build().register();
 
     public static void register() {}
 
