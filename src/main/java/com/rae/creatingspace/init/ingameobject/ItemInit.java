@@ -322,8 +322,8 @@ public class ItemInit {
             .register();
 
     //minerals
-    public static final ItemEntry<Item> CRYSTAL_SHARD = REGISTRATE.item(
-                    "crystal_shard", Item::new)
+    public static final ItemEntry<Item> NICKEL_SULFATE_SHARD = REGISTRATE.item(
+                    "nickel_sulfate_shard", Item::new)
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .register();
     //nickel

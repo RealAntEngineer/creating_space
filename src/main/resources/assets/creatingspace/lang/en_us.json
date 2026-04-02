@@ -44,6 +44,15 @@
   "block.creatingspace.mars_stone": "Mars Stone",
   "block.creatingspace.mars_regolith": "Mars Regolith",
   "block.creatingspace.mars_surface_regolith": "Mars Surface Regolith",
+
+  "block.creatingspace.nickel_sulfate_block": "Nickel Sulfate Block",
+  "block.creatingspace.budding_nickel_sulfate": "Budding Nickel Sulfate",
+  "block.creatingspace.nickel_sulfate_cluster": "Nickel Sulfate Cluster",
+  "block.creatingspace.large_nickel_sulfate_bud": "Large Nickel Sulfate Bud",
+  "block.creatingspace.medium_nickel_sulfate_bud": "Medium Nickel Sulfate Bud",
+  "block.creatingspace.small_nickel_sulfate_bud": "Small Nickel Sulfate Bud",
+  "item.creatingspace.nickel_sulfate_shard": "Nickel Sulfate Shard",
+
   "block.creatingspace.nickel_ore": "Nickel Ore",
   "block.creatingspace.deepslate_nickel_ore": "Deepslate Nickel Ore",
   "block.creatingspace.moon_nickel_ore": "Moon Nickel Ore",

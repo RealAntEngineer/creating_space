@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "creatingspace:block/small_crystal_bud"
+    "layer0": "creatingspace:block/small_nickel_sulfate_bud"
   },
   "display": {
     "head": {

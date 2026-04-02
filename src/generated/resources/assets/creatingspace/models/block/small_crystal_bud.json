@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "creatingspace:block/small_crystal_bud"
-  }
-}

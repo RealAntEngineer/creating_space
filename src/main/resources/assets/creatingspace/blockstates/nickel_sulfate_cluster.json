@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "creatingspace:block/nickel_sulfate_cluster",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "creatingspace:block/nickel_sulfate_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "creatingspace:block/nickel_sulfate_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "creatingspace:block/nickel_sulfate_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "creatingspace:block/nickel_sulfate_cluster"
+    },
+    "facing=west": {
+      "model": "creatingspace:block/nickel_sulfate_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}
