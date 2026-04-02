@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "creatingspace:budding_crystal"
+          "name": "creatingspace:medium_nickel_sulfate_bud"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "creatingspace:blocks/budding_crystal"
+  "random_sequence": "creatingspace:blocks/medium_nickel_sulfate_bud"
 }

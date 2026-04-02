@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "creatingspace:large_crystal_bud"
+          "name": "creatingspace:small_nickel_sulfate_bud"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "creatingspace:blocks/large_crystal_bud"
+  "random_sequence": "creatingspace:blocks/small_nickel_sulfate_bud"
 }

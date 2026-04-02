@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "minecraft:block/air"
+    "facing=east": {
+      "model": "creatingspace:block/flow_meter/block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "creatingspace:block/flow_meter/block"
+    },
+    "facing=south": {
+      "model": "creatingspace:block/flow_meter/block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "creatingspace:block/flow_meter/block",
+      "y": 270
     }
   }
 }

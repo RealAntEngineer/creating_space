@@ -827,7 +827,7 @@ public class BlockInit {
                                         .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
             })
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("nickel_sulfate_cluster"))
             .register();
 
     public static final BlockEntry<AmethystClusterBlock> LARGE_NICKEL_SULFATE_BUD = REGISTRATE.block(
@@ -840,7 +840,7 @@ public class BlockInit {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 4))
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("large_nickel_sulfate_bud"))
             .register();
 
     public static final BlockEntry<AmethystClusterBlock> MEDIUM_NICKEL_SULFATE_BUD = REGISTRATE.block(
@@ -853,7 +853,7 @@ public class BlockInit {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 2))
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("medium_nickel_sulfate_bud"))
             .register();
 
     public static final BlockEntry<AmethystClusterBlock> SMALL_NICKEL_SULFATE_BUD = REGISTRATE.block(
@@ -866,7 +866,7 @@ public class BlockInit {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 1))
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("small_nickel_sulfate_bud"))
             .register();
 
     public static final BlockEntry<BuddingCrystalBlock> BUDDING_NICKEL_SULFATE = REGISTRATE.block(
@@ -878,7 +878,7 @@ public class BlockInit {
             .initialProperties(() -> Blocks.BUDDING_AMETHYST)
             .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
             .item()
-            .transform(customItemModel())
+            .transform(customItemModel("budding_nickel_sulfate"))
             .register();
 
     public static void register() {}
