@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/air"
+      "model": "creatingspace:block/structural/super_engine"
     }
   }
 }

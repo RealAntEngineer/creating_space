@@ -499,7 +499,7 @@ public class ItemInit {
             REGISTRATE
                     .item("copper_oxygen_backtank_placeable",
                             p -> new OxygenBacktankItem.O2BacktankBlockItem(BlockInit.COPPER_OXYGEN_BACKTANK.get(), ItemInit.COPPER_OXYGEN_BACKTANK::get, p))
-                    .model((c,p) -> p.withExistingParent("copper_oxygen_backtank",
+                    .model((c,p) -> p.withExistingParent("copper_oxygen_backtank_placeable",
                         "minecraft:item/barrier"))
                     .register();
     public static final ItemEntry<OxygenBacktankItem.Layered> COPPER_OXYGEN_BACKTANK =
@@ -507,7 +507,7 @@ public class ItemInit {
                     .item("copper_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(AllArmorMaterials.COPPER, p, CreatingSpace.resource("basic_spacesuit"),
                                     COPPER_BACKTANK_PLACEABLE))
-                    .model((c,p) -> p.withExistingParent("copper_oxygen_backtank_placeable",
+                    .model((c,p) -> p.withExistingParent("copper_oxygen_backtank",
                             MODID + ":block/oxygen_backtank/copper"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
@@ -526,7 +526,7 @@ public class ItemInit {
                     .item("netherite_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit"),
                                     NETHERITE_BACKTANK_PLACEABLE))
-                    .model((c,p) -> p.withExistingParent("copper_oxygen_netherite",
+                    .model((c,p) -> p.withExistingParent("netherite_oxygen_backtank",
                             MODID + ":block/oxygen_backtank/netherite"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)

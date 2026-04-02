@@ -97,7 +97,7 @@ public class BlockInit {
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
             .item(SmallEngineItem::new)
-            .transform(customItemModel("1_2_1_block"))
+            .transform(customItemModel("small_rocket_engine"))
             .register();
 
     public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
@@ -128,8 +128,8 @@ public class BlockInit {
             REGISTRATE.block("big_engine_structure", BigRocketStructuralBlock::new)
                     //.initialProperties(SharedProperties::copperMetal)
                     .properties(p-> p.strength(1.0f))
-                    .blockstate((c, p) -> p.getVariantBuilder(c.get())
-                            .forAllStatesExcept(BlockStateGen.mapToAir(p), BigRocketStructuralBlock.FACING))
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
+                            .getExistingFile(p.modLoc("block/structural/big_engine"))))
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE))
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
@@ -140,9 +140,8 @@ public class BlockInit {
             REGISTRATE.block("engine_structure", SuperRocketStructuralBlock::new)
                     //.initialProperties(SharedProperties::copperMetal)
                     .properties(p -> p.strength(1.0f))
-                    .blockstate((c, p) -> p.getVariantBuilder(c.get())
-                            .forAllStatesExcept(BlockStateGen.mapToAir(p), SmallRocketStructuralBlock.FACING))
-                    .properties(BlockBehaviour.Properties::noOcclusion)
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
+                            .getExistingFile(p.modLoc("block/structural/super_engine"))))                    .properties(BlockBehaviour.Properties::noOcclusion)
                     .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
                     .transform(axeOrPickaxe())
                     .register();
@@ -151,8 +150,8 @@ public class BlockInit {
             REGISTRATE.block("small_engine_structure", SmallRocketStructuralBlock::new)
                     //.initialProperties(SharedProperties::copperMetal)
                     .properties(p-> p.strength(1.0f))
-                    .blockstate((c, p) -> p.getVariantBuilder(c.get())
-                            .forAllStatesExcept(BlockStateGen.mapToAir(p), SmallRocketStructuralBlock.FACING))
+                    .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
+                            .getExistingFile(p.modLoc("block/structural/small_engine"))))
                     .properties(p -> p.mapColor(MapColor.METAL))
                     .properties(BlockBehaviour.Properties::noOcclusion)
                     .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
