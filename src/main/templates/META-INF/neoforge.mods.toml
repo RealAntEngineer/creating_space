@@ -6,12 +6,13 @@ license="MIT"
 
 [[mods]]
 modId="creatingspace"
-version = "1.7.10"
+version = "${mod_version}"
 displayName="Creating Space"
 logoFile = "logo.png"
 credits='''
 Source code:
 RealAntEngineer
+KalWantsPizza
 Icicles
 Bream
 

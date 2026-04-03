@@ -6,6 +6,7 @@ import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import dev.engine_room.flywheel.lib.model.Models;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.model.geom.ModelPart;
@@ -40,25 +41,33 @@ public class CatalystCarrierRenderer extends KineticBlockEntityRenderer<Catalyst
     protected void renderSafe(CatalystCarrierBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer,
                               int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
+        if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
         float renderedHeadOffset =
                 be.getRenderedHeadOffset(partialTicks);
         ItemStack catalyst = be.getCatalyst();
+        BlockState blockState = be.getBlockState();
+
         if (catalyst != null) {
             if (!catalyst.isEmpty()) {
+                SuperByteBuffer catalystModel = CachedBuffers.partial(PartialModelInit.NICKEL_SULFATE_CATALYST, blockState);
+
+                catalystModel.translate(0, -renderedHeadOffset, 0)
+                        .rotateXDegrees(180)
+                        .light(light)
+                        .renderInto(ms, buffer.getBuffer(RenderType.solid()));
+                /*
                 ms.pushPose();
                 ms.translate(0, -renderedHeadOffset, 0);
                 renderCatalystFromTexture(ms,
                         CreatingSpace.resource("textures/block/catalyst_carrier/catalyst/" +
                                 catalyst.getItemHolder().unwrapKey().orElseThrow().location().getPath() + ".png"), buffer);
-                ms.popPose();
+                ms.popPose();*/
             }
         }
 
-        if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
 
-        BlockState blockState = be.getBlockState();
 
         SuperByteBuffer headRender = CachedBuffers.partialFacing(PartialModelInit.CATALYST_CARRIER_HEAD, blockState,
                 blockState.getValue(HORIZONTAL_FACING));

@@ -17,12 +17,14 @@ import com.simibubi.create.api.data.recipe.BaseRecipeProvider;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -220,8 +222,8 @@ public class ItemInit {
         collector.add(REGISTRATE.item(
                         name, Item::new)
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                        .model((c,p) -> p.withExistingParent(name,
-                        MODID + ":item/3d_items"))
+                                .transform((b) -> b.model(AssetLookup.itemModel(name))
+                )
                 .register());
         registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
         System.out.println(collector);
@@ -253,7 +255,7 @@ public class ItemInit {
                     //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                     .model((c, p) -> p.withExistingParent("design_blueprint",
                             "item/generated").texture("layer0",
-                            resource("item/engine_blueprint")))
+                            ResourceLocation.withDefaultNamespace("item/paper")))
                     .register();
 
     public static final ItemEntry<EngineFabricationBlueprint> ENGINE_BLUEPRINT =
