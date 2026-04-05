@@ -7,8 +7,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.rae.creatingspace.content.datagen.CSRecipeProvider;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.recipe.CompatMetals;
-import com.simibubi.create.foundation.data.recipe.Mods;
 import com.simibubi.create.foundation.mixin.accessor.MappedRegistryAccessor;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -127,11 +125,9 @@ public class CSStandardRecipeGen extends CSRecipeProvider {
                 .inBlastFurnace();
     }
 
-    GeneratedRecipe blastModdedCrushedMetal(ItemEntry<? extends Item> ingredient, CompatMetals metal) {
-        for (Mods mod : metal.getMods()) {
-            String metalName = metal.getName(mod);
-            ResourceLocation ingot = mod.ingotOf(metalName);
-            String modId = mod.getId();
+    GeneratedRecipe blastModdedCrushedMetal(ItemEntry<? extends Item> ingredient, String metalName, String... mods) {
+        for (String modId : mods) {
+            ResourceLocation ingot = ResourceLocation.fromNamespaceAndPath(modId, "ingot_" + metalName);
             create(ingot).withSuffix("_compat_" + modId)
                     .whenModLoaded(modId)
                     .viaCooking(ingredient::get)

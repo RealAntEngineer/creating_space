@@ -17,7 +17,6 @@ import com.simibubi.create.api.data.recipe.BaseRecipeProvider;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
-import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -298,9 +297,8 @@ public class ItemInit {
                             .save(p, resource("crafting/misc/" + c.getName())))
             .register();
 
-    public static final ItemEntry<CombustibleItem> COAL_DUST = REGISTRATE.item(
-            "coal_dust", CombustibleItem::new)
-            .onRegister(i -> i.setBurnTime(500))
+    public static final ItemEntry<Item> COAL_DUST = REGISTRATE.item(
+                    "coal_dust", Item::new)
             .register();
 
     //food
@@ -625,10 +623,8 @@ public class ItemInit {
 
     //sub classes
 
-    public static final ItemEntry<CombustibleItem> STARTER_CHARGE = REGISTRATE.item(
-                    "starter_charge", CombustibleItem::new)
-            .onRegister(i -> i.setBurnTime(500))
-            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
+    public static final ItemEntry<Item> STARTER_CHARGE = REGISTRATE.item(
+                    "starter_charge", Item::new)
             .recipe((c,p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('P', Items.PAPER)
