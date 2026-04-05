@@ -10,6 +10,7 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankItem;
 import com.rae.creatingspace.content.life_support.spacesuit.SpacesuitHelmetItem;
 import com.rae.creatingspace.content.rocket.engine.design.DesignBlueprintItem;
 import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint;
+import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
@@ -18,8 +19,8 @@ import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.item.CombustibleItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -300,9 +301,9 @@ public class ItemInit {
                             .save(p, resource("crafting/misc/" + c.getName())))
             .register();
 
-    public static final ItemEntry<CombustibleItem> COAL_DUST = REGISTRATE.item(
-            "coal_dust", CombustibleItem::new)
-            .onRegister(i -> i.setBurnTime(500))
+    public static final ItemEntry<Item> COAL_DUST = REGISTRATE.item(
+            "coal_dust", Item::new)
+            .burnTime(4000)
             .register();
 
     //food
@@ -625,22 +626,6 @@ public class ItemInit {
                     .tag(ItemTags.TRIMMABLE_ARMOR)
                     .register();
 
-    //sub classes
-
-    public static final ItemEntry<CombustibleItem> STARTER_CHARGE = REGISTRATE.item(
-                    "starter_charge", CombustibleItem::new)
-            .onRegister(i -> i.setBurnTime(500))
-            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-            .recipe((c,p) ->
-                    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
-                            .define('P', Items.PAPER)
-                            .define('G', Items.GUNPOWDER)
-                            .pattern("PGP")
-                            .pattern("PGP")
-                            .pattern("PGP")
-                            .unlockedBy("has_" + c.getName(), has(c.get()))
-                            .save(p, resource("crafting/misc/" + c.getName())))
-            .register();
     public static final ItemEntry<Item> INJECTOR = REGISTRATE.item(
                     "injector", Item::new)
             //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
@@ -673,7 +658,7 @@ public class ItemInit {
             .register();
 
     public static final ItemEntry<CatalystItem> NICKEL_SULFATE_CATALYST = REGISTRATE.item(
-            "nickel_sulfate_catalyst", CatalystItem::new)
+            "nickel_sulfate_catalyst", (p) -> new CatalystItem(p, PartialModelInit.NICKEL_SULFATE_CATALYST))
             .properties(p -> p.durability(100))
             .register();
 

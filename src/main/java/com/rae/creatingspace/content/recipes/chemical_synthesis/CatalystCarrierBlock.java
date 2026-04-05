@@ -18,6 +18,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -86,24 +87,34 @@ public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide) {
-            if (stack.getItem() instanceof CatalystItem) {
-                withBlockEntityDo(level, pos, be -> be.setCatalyst(stack));
-                return ItemInteractionResult.CONSUME;
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
+                                              Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack heldByPlayer = stack.copy();
 
-            }
-        }
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        // Let non-catalyst items pass through (blocks, tools, etc.)
+        if (!heldByPlayer.isEmpty() && !(heldByPlayer.getItem() instanceof CatalystItem))
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+
+        if (level.isClientSide)
+            return ItemInteractionResult.SUCCESS;
+
+        withBlockEntityDo(level, pos, be -> {
+            ItemStack currentCatalyst = be.getCatalyst().copy();
+
+            // Both empty → nothing to do
+            if (currentCatalyst.isEmpty() && heldByPlayer.isEmpty())
+                return;
+
+            player.setItemInHand(hand, currentCatalyst);
+            be.setCatalyst(heldByPlayer);
+            be.sendData();
+        });
+
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-
-        if (!level.isClientSide) {
-            withBlockEntityDo(level, pos, be -> be.setCatalyst(ItemStack.EMPTY));
-            return InteractionResult.SUCCESS;
-        }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 

@@ -29,7 +29,8 @@ public abstract class SequencedAssemblyRecipeSerializerMixin {
     private static final StreamCodec<ByteBuf, List<String>> STRING_LIST_STREAM_CODEC =
             ByteBufCodecs.fromCodec(Codec.list(Codec.STRING));
 
-    @Inject(method = "fromNetwork", at = @At("RETURN"), cancellable = true)
+    //to fix it inject into the stream codec and do the same as addToCodec
+    /*@Inject(method = "fromNetwork", at = @At("RETURN"), cancellable = true)
     public void readKeepNbt(RegistryFriendlyByteBuf buffer, CallbackInfoReturnable<SequencedAssemblyRecipe> cir) {
         SequencedAssemblyRecipe recipe = cir.getReturnValue();
         ((IMoreNbtConditions) recipe).setKeepNbt(new ArrayList<>(STRING_LIST_STREAM_CODEC.decode(buffer)));
@@ -41,7 +42,7 @@ public abstract class SequencedAssemblyRecipeSerializerMixin {
     public void writeKeepNbt(RegistryFriendlyByteBuf buffer, SequencedAssemblyRecipe recipe, CallbackInfo ci) {
         STRING_LIST_STREAM_CODEC.encode(buffer, ((IMoreNbtConditions) recipe).getKeepNbt());
         STRING_LIST_STREAM_CODEC.encode(buffer, ((IMoreNbtConditions) recipe).getMachNbt());
-    }
+    }*/
 
     @Inject(method = "codec", at = @At("RETURN"), cancellable = true)
     public void addToCodec(CallbackInfoReturnable<MapCodec<SequencedAssemblyRecipe>> cir) {

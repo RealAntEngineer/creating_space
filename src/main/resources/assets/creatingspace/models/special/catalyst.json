@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:cutout",
   "ambientocclusion": false,
   "textures": {
     "cross": "creatingspace:item/nickel_sulfate_catalyst_2"

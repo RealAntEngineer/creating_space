@@ -32,7 +32,7 @@ public class TagsInit extends AllTags {
     public enum CustomNameSpace {
 
         MOD(CreatingSpace.MODID, false, true),
-        FORGE("forge"),
+        COMMON("c"),
         TIC("tconstruct"),
         QUARK("quark");
 
@@ -51,7 +51,8 @@ public class TagsInit extends AllTags {
         }
     }
     public enum CustomBlockTags {
-    MOON_CARVER_REPLACEABLES(),MOON_STONE_ORE_REPLACEABLES();
+        MOON_CARVER_REPLACEABLES(),
+        MOON_STONE_ORE_REPLACEABLES();
 
     public final TagKey<Block> tag;
     public final boolean alwaysDatagen;

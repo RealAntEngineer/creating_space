@@ -38,15 +38,22 @@ import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.item.ItemDescription;
+import com.tterrag.registrate.builders.BlockBuilder;
+import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -56,6 +63,8 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.neoforged.neoforge.common.Tags;
+
+import java.util.Map;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.rae.creatingspace.CreatingSpace.resource;
@@ -494,7 +503,9 @@ public class BlockInit {
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .transform(tagBlockAndItem("ores/nickel", "ores_in_ground/stone"))
+            .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items(),
+                    Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE
+            )))
             .build()
             .register();
 
@@ -512,8 +523,9 @@ public class BlockInit {
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .transform(tagBlockAndItem("ores/nickel", "ores_in_ground/stone"))
-            .build()
+            .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items(),
+                    Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE
+            )))            .build()
             .register();
 
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
@@ -530,7 +542,7 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.ORES)
             .transform(TagGen.pickaxeOnly())
-            .item()
+            .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items())))
             .transform(customItemModel("moon_nickel_ore"))
             .register();
 
@@ -549,7 +561,7 @@ public class BlockInit {
                     .pattern("###")
                     .unlockedBy("has_" + c.getName(), has(c.get()))
                     .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/raw_nickel"))
+            .transform(TagGen.tagBlockAndItem(CommonMetal.NICKEL.rawStorageBlocks))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             .register();
@@ -570,7 +582,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/nickel"))
+            .transform(TagGen.tagBlockAndItem(CommonMetal.NICKEL.storageBlocks))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             //.lang("Block of Nickel")
@@ -735,6 +747,7 @@ public class BlockInit {
             //.lang("Block of Reinforced Copper")
             .register();
 
+
     public static final BlockEntry<Block> INCONEL_BLOCK = REGISTRATE.block(
                     "inconel_block",Block::new)
             .initialProperties(()-> Blocks.IRON_BLOCK)
@@ -878,6 +891,11 @@ public class BlockInit {
             .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
             .item()
             .build().register();
+
+    private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, ItemBuilder<BlockItem, BlockBuilder<T, P>>> tagBlockAndItem(String s) {
+        return TagGen.tagBlockAndItem(BlockTags.create(ResourceLocation.withDefaultNamespace(s)),
+                ItemTags.create(ResourceLocation.withDefaultNamespace(s)));
+    }
 
     public static void register() {}
 

@@ -6,6 +6,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import org.lwjgl.system.NonnullDefault;
@@ -62,7 +63,7 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
         return value;
     }*/
     @Inject(method = "advance", at = @At(value = "RETURN"), cancellable = true, remap = false)
-    public void addTagBack(ResourceLocation id, ItemStack input, CallbackInfoReturnable<ItemStack> cir) {
+    public void addTagBack(ResourceLocation id, ItemStack input, RandomSource random, CallbackInfoReturnable<ItemStack> cir) {
         if (isKeepNbt()) {
             ItemStack advancedItem = cir.getReturnValue();
             CustomData itemData = advancedItem.get(DataComponents.CUSTOM_DATA);

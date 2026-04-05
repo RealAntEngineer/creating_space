@@ -7,7 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.rae.creatingspace.content.datagen.CSRecipeProvider;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.recipe.CompatMetals;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.data.recipe.Mods;
 import com.simibubi.create.foundation.mixin.accessor.MappedRegistryAccessor;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -51,6 +51,7 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import static com.rae.creatingspace.CreatingSpace.resource;
+
 
 public class CSStandardRecipeGen extends CSRecipeProvider {
 
@@ -127,8 +128,8 @@ public class CSStandardRecipeGen extends CSRecipeProvider {
                 .inBlastFurnace();
     }
 
-    GeneratedRecipe blastModdedCrushedMetal(ItemEntry<? extends Item> ingredient, CompatMetals metal) {
-        for (Mods mod : metal.getMods()) {
+    GeneratedRecipe blastModdedCrushedMetal(ItemEntry<? extends Item> ingredient, CommonMetal metal) {
+        for (Mods mod : metal.mods) {
             String metalName = metal.getName(mod);
             ResourceLocation ingot = mod.ingotOf(metalName);
             String modId = mod.getId();
@@ -396,7 +397,7 @@ public class CSStandardRecipeGen extends CSRecipeProvider {
         }
     }
 
-    public String getthisName() {
+    public String getThisName() {
         return "CreatingSpace Standard Recipes";
     }
 
