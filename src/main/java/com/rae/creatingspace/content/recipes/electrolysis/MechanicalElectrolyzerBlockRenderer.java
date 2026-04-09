@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
-import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,9 +13,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
-public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRenderer<MechanicalElectrolyzerBlockEntity> {
+public class MechanicalElectrolyzerBlockRenderer extends KineticBlockEntityRenderer<MechanicalElectrolyzerBlockEntity> {
 
-	public MechanicalElectrolyserBlockRenderer(BlockEntityRendererProvider.Context context) {
+	public MechanicalElectrolyzerBlockRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}
 
@@ -32,7 +31,7 @@ public class MechanicalElectrolyserBlockRenderer extends KineticBlockEntityRende
 		float renderedHeadOffset =
 				be.getRenderedHeadOffset(partialTicks);
 
-		if (VisualizationManager.supportsVisualization(be.getLevel())) return;
+		//if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
 		BlockState blockState = be.getBlockState();
 		SuperByteBuffer headRender = CachedBuffers.partialFacing(PartialModelInit.ELECTROLYZER_HEAD, blockState,

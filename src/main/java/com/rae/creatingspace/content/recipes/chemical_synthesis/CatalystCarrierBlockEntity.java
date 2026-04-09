@@ -19,7 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -30,20 +30,20 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
-    private static final Object shapelessOrMixingRecipesKey = new Object();
+    private static final Object chemistryRecipesKey = new Object();
 
     public int runningTicks;
     public int processingTicks;
-    public boolean running;
-    private ItemStack catalyst = ItemStack.EMPTY;//todo replace null values by air item
+    public boolean   running;
+    private @NotNull ItemStack catalyst = ItemStack.EMPTY;
 
     public CatalystCarrierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -89,7 +89,7 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
         CompoundTag catalyst = (CompoundTag) compound.get("catalyst");
         if (catalyst != null) {
-            if (catalyst.isEmpty()) {
+            if (catalyst.isEmpty()) {//redundant
                 this.catalyst = ItemStack.EMPTY;
             } else {
                 this.catalyst  = ItemStack.parseOptional(registries,catalyst);
@@ -227,7 +227,7 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
     @Override
     protected Object getRecipeCacheKey() {
-        return shapelessOrMixingRecipesKey;
+        return chemistryRecipesKey;
     }
 
     @Override
@@ -254,13 +254,13 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
          */
     }
 
-    public ItemStack getCatalyst() {
+    public @NotNull ItemStack getCatalyst() {
         return catalyst;
     }
 
     public void setCatalyst(@Nullable ItemStack held) {
         if (held == null) {
-            catalyst = null;
+            catalyst = ItemStack.EMPTY;
             notifyUpdate();
             return;
         }

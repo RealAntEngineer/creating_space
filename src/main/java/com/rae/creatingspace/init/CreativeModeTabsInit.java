@@ -121,7 +121,6 @@ public class CreativeModeTabsInit {
                     BlockInit.ENGINE_STRUCTURAL,
                     BlockInit.BIG_ENGINE_STRUCTURAL,
                     BlockInit.SMALL_ENGINE_STRUCTURAL,
-                    ItemInit.STARTER_CHARGE,
                     ItemInit.REINFORCED_INJECTOR,
                     ItemInit.REINFORCED_INJECTOR_GRID,
                     ItemInit.INJECTOR,

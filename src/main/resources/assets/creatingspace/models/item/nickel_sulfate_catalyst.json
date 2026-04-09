@@ -1,7 +1,7 @@
 {
   "parent": "item/amethyst_bud",
   "textures": {
-    "layer0": "creatingspace:block/small_nickel_sulfate_bud"
+    "layer0": "creatingspace:item/nickel_sulfate_catalyst_2"
   },
   "display": {
     "firstperson_righthand": {

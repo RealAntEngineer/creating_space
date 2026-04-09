@@ -10,10 +10,8 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockE
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockRenderer;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlockEntity;
-import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierVisual;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierRenderer;
-import com.rae.creatingspace.content.recipes.electrolysis.ElectrolyzerVisual;
-import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyserBlockRenderer;
+import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockRenderer;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockEntity;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlockEntity;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderRenderer;
@@ -33,6 +31,7 @@ public class BlockEntityInit {
             REGISTRATE.blockEntity("engineer_table", RocketEngineerTableBlockEntity::new)
                     .validBlocks(BlockInit.ROCKET_ENGINEER_TABLE)
                     .register();
+
     public static final BlockEntityEntry<RocketControlsBlockEntity> CONTROLS =
             REGISTRATE.blockEntity("controls", RocketControlsBlockEntity::new)
             .validBlocks(BlockInit.ROCKET_CONTROLS)
@@ -53,13 +52,13 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.CRYOGENIC_TANK)
                     .register();
 
-
     public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
             REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
-                    .visual(() -> CatalystCarrierVisual::new, true)
+                    //.visual(() -> CatalystCarrierVisual::new, false)
                     .validBlocks(BlockInit.CATALYST_CARRIER)
                     .renderer(() -> CatalystCarrierRenderer::new)
                     .register();
+
     public static final BlockEntityEntry<RocketEngineBlockEntity.BigEngine> BIG_ENGINE =
             REGISTRATE.blockEntity(
                     "big_engine", RocketEngineBlockEntity.BigEngine::new)
@@ -77,14 +76,14 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.ROCKET_ENGINE)
                     .register();
 
-
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(
                             "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
-                    .visual(() -> ElectrolyzerVisual::new, true)
+                    //.visual(() -> ElectrolyzerVisual::new, true)
                     .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
-                    .renderer(()-> MechanicalElectrolyserBlockRenderer::new)
+                    .renderer(()-> MechanicalElectrolyzerBlockRenderer::new)
                     .register();
+
     public static final BlockEntityEntry<AirLiquefierBlockEntity> AIR_LIQUEFIER =
             REGISTRATE.blockEntity(
                             "air_liquefier", AirLiquefierBlockEntity::new)
@@ -92,6 +91,7 @@ public class BlockEntityInit {
                     .validBlocks( BlockInit.AIR_LIQUEFIER)
                     .renderer(()-> AirLiquefierBlockRenderer::new)
                     .register();
+
     public static final BlockEntityEntry<FlowGaugeBlockEntity> FLOW_METER =
             REGISTRATE.blockEntity(
                             "flow_meter", FlowGaugeBlockEntity::new)
@@ -106,6 +106,7 @@ public class BlockEntityInit {
                     .validBlocks(BlockInit.OXYGEN_SEALER)
                     .renderer(() -> RoomPressuriserRenderer::new)
                     .register();
+
     public static final BlockEntityEntry<FlightRecorderBlockEntity> FLIGHT_RECORDER =
             REGISTRATE.blockEntity(
                             "flight_recorder", FlightRecorderBlockEntity::new)

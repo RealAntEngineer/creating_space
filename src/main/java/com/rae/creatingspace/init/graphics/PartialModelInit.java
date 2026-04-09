@@ -7,6 +7,9 @@ import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 public class PartialModelInit {
     public static final PartialModel MEMORY_ROLL = block("flight_recorder/memory_roll"),
             CATALYST_CARRIER_HEAD = block("catalyst_carrier/head"),
+            NICKEL_SULFATE_CATALYST = PartialModel.of(
+                    CreatingSpace.resource("special/catalyst")
+            ),
             ELECTROLYZER_HEAD = block("mechanical_electrolyzer/head");
 
     private static PartialModel block(String path) {

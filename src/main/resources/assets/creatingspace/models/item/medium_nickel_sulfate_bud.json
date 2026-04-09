@@ -1,11 +1,11 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/amethyst_bud",
   "textures": {
     "layer0": "creatingspace:block/medium_nickel_sulfate_bud"
   },
   "display": {
-    "head": {
-      "translation": [ 0, 14, -5 ]
+    "fixed": {
+      "translation": [ 0, 6, 0 ]
     }
   }
 }
