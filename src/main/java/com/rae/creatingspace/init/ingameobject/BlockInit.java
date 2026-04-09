@@ -68,7 +68,6 @@ import java.util.Map;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.rae.creatingspace.CreatingSpace.resource;
-import static com.simibubi.create.AllTags.commonItemTag;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
@@ -186,13 +185,13 @@ public class BlockInit {
             .register();
 
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
-            .block("rocket_casing",CasingBlock::new)
+            .block("rocket_casing", CasingBlock::new)
             .transform(BuilderTransformers.casing(() -> SpriteShiftInit.ROCKET_CASING))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
-            .recipe((c,p) ->
+            .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
-                            .define('S', AllTags.commonItemTag("plates/aluminum"))
-                            .define('C', AllTags.commonItemTag("ingots/cobalt"))
+                            .define('S', commonItemTag("plates/aluminum"))
+                            .define('C', commonItemTag("ingots/cobalt"))
                             .pattern("CSC")
                             .pattern("SCS")
                             .pattern("CSC")
@@ -491,9 +490,9 @@ public class BlockInit {
     //ores
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
                     "nickel_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
-            .loot((lt, b) ->  {
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
                         lt.createSilkTouchDispatchTable(b,
@@ -502,6 +501,8 @@ public class BlockInit {
             })
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores/nickel")))
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores_in_ground/stone")))
             .transform(TagGen.pickaxeOnly())
             .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items(),
                     Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE
@@ -511,9 +512,9 @@ public class BlockInit {
 
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(
                     "deepslate_nickel_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(4.0f).requiresCorrectToolForDrops())
-            .loot((lt, b) ->  {
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(4.0f).requiresCorrectToolForDrops())
+            .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
                         lt.createSilkTouchDispatchTable(b,
@@ -522,6 +523,8 @@ public class BlockInit {
             })
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores/nickel")))
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores_in_ground/stone")))
             .transform(TagGen.pickaxeOnly())
             .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items(),
                     Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE
@@ -530,9 +533,9 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
                     "moon_nickel_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
-            .loot((lt, b) ->  {
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
                         lt.createSilkTouchDispatchTable(b,
@@ -541,15 +544,16 @@ public class BlockInit {
             })
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.ORES)
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores/nickel")))
             .transform(TagGen.pickaxeOnly())
             .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items())))
             .transform(customItemModel("moon_nickel_ore"))
             .register();
 
     public static final BlockEntry<Block> RAW_NICKEL_BLOCK = REGISTRATE.block(
-                    "raw_nickel_block",Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+                    "raw_nickel_block", Block::new)
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
             .transform(TagGen.pickaxeOnly())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
@@ -574,7 +578,8 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
-            .recipe((c,p) ->
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/nickel")))
+            .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', commonItemTag("ingots/nickel"))
                             .pattern("###")
@@ -585,14 +590,13 @@ public class BlockInit {
             .transform(TagGen.tagBlockAndItem(CommonMetal.NICKEL.storageBlocks))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            //.lang("Block of Nickel")
             .register();
 
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
                     "moon_cobalt_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
-            .loot((lt, b) ->  {
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
                         lt.createSilkTouchDispatchTable(b,
@@ -601,18 +605,21 @@ public class BlockInit {
             })
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores/cobalt")))
             .transform(TagGen.pickaxeOnly())
             .item()
+            .tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "ores/cobalt")))
             .transform(customItemModel("moon_cobalt_ore"))
             .register();
 
     public static final BlockEntry<Block> RAW_COBALT_BLOCK = REGISTRATE.block(
-                    "raw_cobalt_block",Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+                    "raw_cobalt_block", Block::new)
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .recipe((c,p) ->
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_cobalt")))
+            .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', commonItemTag("raw_materials/cobalt"))
                             .pattern("###")
@@ -620,15 +627,16 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/raw_cobalt"))
+            .item()
+            .tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_cobalt")))
             .transform(customItemModel("raw_cobalt_block"))
             .register();
 
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(3.0f).requiresCorrectToolForDrops())
-            .loot((lt, b) ->  {
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
                         lt.createSilkTouchDispatchTable(b,
@@ -637,18 +645,21 @@ public class BlockInit {
             })
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores/aluminum")))
             .transform(TagGen.pickaxeOnly())
             .item()
+            .tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "ores/aluminum")))
             .transform(customItemModel("moon_aluminum_ore"))
             .register();
 
     public static final BlockEntry<Block> RAW_ALUMINUM_BLOCK = REGISTRATE.block(
-                    "raw_aluminum_block",Block::new)
-            .initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+                    "raw_aluminum_block", Block::new)
+            .initialProperties(() -> Blocks.STONE)
+            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .recipe((c,p) ->
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_aluminum")))
+            .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', commonItemTag("raw_materials/aluminum"))
                             .pattern("###")
@@ -656,7 +667,8 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/raw_aluminum"))
+            .item()
+            .tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_aluminum")))
             .transform(customItemModel("raw_aluminum_block"))
             .register();
 
@@ -668,7 +680,8 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
-            .recipe((c,p) ->
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/aluminum")))
+            .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', commonItemTag("ingots/aluminum"))
                             .pattern("###")
@@ -676,10 +689,10 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/aluminum"))
+            .item()
+            .tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/aluminum")))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            //.lang("Block of Aluminum")
             .register();
 
     public static final BlockEntry<Block> COBALT_BLOCK = REGISTRATE.block("cobalt_block", Block::new)
@@ -690,7 +703,8 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
-            .recipe((c,p) ->
+            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/cobalt")))
+            .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', commonItemTag("ingots/cobalt"))
                             .pattern("###")
@@ -808,7 +822,6 @@ public class BlockInit {
             .transform(tagBlockAndItem("storage_blocks/monel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
-            //.lang("Block of Monel")
             .register();
 
     //machinery

@@ -1,6 +1,7 @@
 package com.rae.creatingspace.mixin.recipe;
 
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.rae.creatingspace.content.recipes.IMoreNbtConditions;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
@@ -53,32 +54,32 @@ public abstract class SequencedAssemblyRecipeSerializerMixin {
 
     @Inject(method = "codec", at = @At("RETURN"), cancellable = true)
     public void addToCodec(CallbackInfoReturnable<MapCodec<SequencedAssemblyRecipe>> cir) {
-        cir.setReturnValue(RecordCodecBuilder.mapCodec(
-                i -> i.group(
-                        cir.getReturnValue().forGetter(r -> r),
-                        Codec.list(Codec.STRING).optionalFieldOf("keepNbt",List.of()).forGetter(
-                                r -> {
-                                    if (r instanceof IMoreNbtConditions moreNbtConditions) {
-                                        return moreNbtConditions.getKeepNbt();
-                                    }
-                                    return  List.of();
-                                }
-                        ),
-                        Codec.list(Codec.STRING).optionalFieldOf("matchNbt",List.of()).forGetter(
-                                r -> {
-                                    if (r instanceof IMoreNbtConditions moreNbtConditions) {
-                                        return moreNbtConditions.getMachNbt();
-                                    }
-                                    return List.of();
-                                }
-                        )
-                ).apply(i, (recipe, mach, keep) -> {
-                            ((IMoreNbtConditions) recipe).setKeepNbt(new ArrayList<>(keep));
-                            ((IMoreNbtConditions) recipe).setMachNbt(new ArrayList<>(mach));
-                            return recipe;
-                        }
-                )
-        ));
+        MapCodec<SequencedAssemblyRecipe> originalCodec = cir.getReturnValue();
 
+        MapCodec<SequencedAssemblyRecipe> extendedCodec = RecordCodecBuilder.mapCodec(
+                instance -> instance.group(
+                        originalCodec.forGetter(recipe -> recipe),
+                        Codec.list(Codec.STRING).optionalFieldOf("keepNbt", List.of()).forGetter(recipe -> {
+                            if (recipe instanceof IMoreNbtConditions conditions) {
+                                return conditions.getKeepNbt();
+                            }
+                            return List.of();
+                        }),
+                        Codec.list(Codec.STRING).optionalFieldOf("matchNbt", List.of()).forGetter(recipe -> {
+                            if (recipe instanceof IMoreNbtConditions conditions) {
+                                return conditions.getMachNbt();
+                            }
+                            return List.of();
+                        })
+                ).apply(instance, (recipe, keepNbt, matchNbt) -> {
+                    if (recipe instanceof IMoreNbtConditions conditions) {
+                        conditions.setKeepNbt(new ArrayList<>(keepNbt));
+                        conditions.setMachNbt(new ArrayList<>(matchNbt));
+                    }
+                    return recipe;
+                })
+        );
+
+        cir.setReturnValue(extendedCodec);
     }
 }
