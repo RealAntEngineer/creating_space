@@ -97,7 +97,7 @@ public class CSClientEvent {
         }
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT)
     public static class ModBusEvents {
         //TODO look at Create's client events handler (@RealAntEngineer - Ready For Review!)
         @SubscribeEvent

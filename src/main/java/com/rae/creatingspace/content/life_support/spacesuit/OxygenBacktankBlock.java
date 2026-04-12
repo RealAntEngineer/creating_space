@@ -4,14 +4,14 @@ import com.mojang.serialization.MapCodec;
 import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.graphics.ShapesInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
+import com.rae.creatingspace.legacy.server.blocks.multiblock.engines.BigEngineBlock;
+import com.rae.creatingspace.legacy.server.blocks.multiblock.engines.RocketEngineBlock;
 import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -53,6 +53,7 @@ import java.util.Optional;
 @NonnullDefault
 public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	implements IBE<OxygenBacktankBlockEntity>, SimpleWaterloggedBlock {
+	static final MapCodec<OxygenBacktankBlock> CODEC = simpleCodec(OxygenBacktankBlock::new);
 
 	public OxygenBacktankBlock(Properties properties) {
 		super(properties);
@@ -61,7 +62,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	//TODO make this according to other codec implementation (copy past with correct name of the class)
 	@Override
 	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-		return null;
+		return CODEC;
 	}
 
 	@Override

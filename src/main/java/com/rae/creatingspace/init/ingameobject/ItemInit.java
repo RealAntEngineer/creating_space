@@ -1,7 +1,6 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.datagen.recipe.CSStandardRecipeGen;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystItem;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
 import com.rae.creatingspace.init.EngineMaterialInit;
@@ -14,17 +13,14 @@ import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.api.data.recipe.BaseRecipeProvider;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,8 +30,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.BlastingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
 
@@ -271,6 +265,7 @@ public class ItemInit {
 
     public static final ItemEntry<Item> ADVANCED_SPACESUIT_FABRIC = REGISTRATE.item(
                     "advanced_spacesuit_fabric",Item::new)
+            .properties(Item.Properties::fireResistant)
             .register();
 
 
@@ -521,6 +516,7 @@ public class ItemInit {
             REGISTRATE
                     .item("netherite_oxygen_backtank_placeable",
                             p -> new OxygenBacktankItem.O2BacktankBlockItem(BlockInit.NETHERITE_OXYGEN_BACKTANK.get(), ItemInit.NETHERITE_OXYGEN_BACKTANK::get, p))
+                    .properties(Item.Properties::fireResistant)
                     .model((c,p) -> p.withExistingParent("netherite_oxygen_backtank_placeable",
                             "minecraft:item/barrier"))
                     .register();
@@ -529,6 +525,7 @@ public class ItemInit {
                     .item("netherite_oxygen_backtank",
                             p -> new OxygenBacktankItem.Layered(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit"),
                                     NETHERITE_BACKTANK_PLACEABLE))
+                    .properties(Item.Properties::fireResistant)
                     .model((c,p) -> p.withExistingParent("netherite_oxygen_backtank",
                             MODID + ":block/oxygen_backtank/netherite"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
@@ -585,6 +582,7 @@ public class ItemInit {
             REGISTRATE
                     .item("advanced_spacesuit_leggings",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.LEGGINGS, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .properties(Item.Properties::fireResistant)
                     .recipe((c,p) ->
                             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                                     .define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
@@ -600,6 +598,7 @@ public class ItemInit {
             REGISTRATE
                     .item("advanced_spacesuit_boots",
                             p -> new BaseArmorItem(ArmorMaterials.NETHERITE, ArmorItem.Type.BOOTS, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .properties(Item.Properties::fireResistant)
                     .recipe((c,p) ->
                             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                                     .define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)
@@ -614,6 +613,7 @@ public class ItemInit {
             REGISTRATE
                     .item("advanced_spacesuit_helmet",
                             p -> new SpacesuitHelmetItem(ArmorMaterials.NETHERITE, p, CreatingSpace.resource("advanced_spacesuit")))
+                    .properties(Item.Properties::fireResistant)
                     .recipe((c,p) ->
                             ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                                     .define('F', ItemInit.ADVANCED_SPACESUIT_FABRIC::get)

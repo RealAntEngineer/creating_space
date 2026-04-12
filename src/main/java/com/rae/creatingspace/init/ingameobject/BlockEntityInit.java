@@ -11,6 +11,8 @@ import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEnt
 import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockRenderer;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierBlockEntity;
 import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierRenderer;
+import com.rae.creatingspace.content.recipes.chemical_synthesis.CatalystCarrierVisual;
+import com.rae.creatingspace.content.recipes.electrolysis.ElectrolyzerVisual;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockRenderer;
 import com.rae.creatingspace.content.recipes.electrolysis.MechanicalElectrolyzerBlockEntity;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlockEntity;
@@ -54,7 +56,7 @@ public class BlockEntityInit {
 
     public static final BlockEntityEntry<CatalystCarrierBlockEntity> CATALYST_CARRIER =
             REGISTRATE.blockEntity("catalyst_carrier", CatalystCarrierBlockEntity::new)
-                    //.visual(() -> CatalystCarrierVisual::new, false)
+                    .visual(() -> CatalystCarrierVisual::new, true)
                     .validBlocks(BlockInit.CATALYST_CARRIER)
                     .renderer(() -> CatalystCarrierRenderer::new)
                     .register();
@@ -79,7 +81,7 @@ public class BlockEntityInit {
     public static final BlockEntityEntry<MechanicalElectrolyzerBlockEntity> ELECTROLIZER =
             REGISTRATE.blockEntity(
                             "electrolyzer", MechanicalElectrolyzerBlockEntity::new)
-                    //.visual(() -> ElectrolyzerVisual::new, true)
+                    .visual(() -> ElectrolyzerVisual::new, true)
                     .validBlocks( BlockInit.MECHANICAL_ELECTROLYZER)
                     .renderer(()-> MechanicalElectrolyzerBlockRenderer::new)
                     .register();

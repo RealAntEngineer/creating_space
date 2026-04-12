@@ -1,6 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
-import com.rae.creatingspace.api.gui.elements.SliderWidget;
+import com.rae.creatingspace.api.gui.elements.VerticalDialWidget;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.init.DataComponentsInit;
 import net.minecraft.client.DeltaTracker;
@@ -8,18 +8,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 
 public class RemainingO2Overlay implements LayeredDraw.Layer {
-    private final SliderWidget gauge;
+    private final       VerticalDialWidget gauge;
     public static final RemainingO2Overlay INSTANCE = new RemainingO2Overlay();
     RemainingO2Overlay() {
         Minecraft mc = Minecraft.getInstance();
-        gauge = new SliderWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getScreenWidth()),
+        gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getScreenWidth()),
                 CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getScreenHeight()),
                 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
     }

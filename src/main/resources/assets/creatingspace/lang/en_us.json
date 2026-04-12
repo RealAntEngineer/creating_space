@@ -285,6 +285,7 @@
   "fluid.creatingspace.liquid_oxygen" : "Liquid Oxygen",
   "fluid.creatingspace.liquid_hydrogen" : "Liquid Hydrogen",
   "fluid.creatingspace.liquid_co2": "Liquid CO2",
+  "fluid.creatingspace.monopropellant": "Monopropellant",
 
 
   "item.creatingspace.space_food": "Space Food",
@@ -401,15 +402,21 @@
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
   "creatingspace.recipe.chemical": "chemical",
   "creatingspace.recipe.electrolysis": "electrolysis",
+
   "propellant_type.creatingspace.methalox": "Metha/LOX",
   "propellant_type.creatingspace.lh2lox": "LH2/LOX",
   "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
+  "propellant_type.creatingspace.monoprop": "Premixed methalox",
+
   "exhaust_pack_type.creatingspace.bell_nozzle": "Bell Nozzle",
   "exhaust_pack_type.creatingspace.aerospike": "Aerospike",
+
   "power_pack_type.creatingspace.open_cycle": "Open Cycle",
   "power_pack_type.creatingspace.ox_rich_staged_cycle": "Ox Rich Flow",
   "power_pack_type.creatingspace.fuel_rich_staged_cycle": "Fuel Rich Flow",
   "power_pack_type.creatingspace.full_flow_staged_cycle": "Full Flow",
+  "power_pack_type.creatingspace.catalyse_cycle": "Catalyse Cycle",
+
   "creatingspace.gui.rocket_controls.assemble": "Assemble",
   "rocket.assemble.new_rocket": "Create New Rocket",
   "creatingspace.gui.rocket_controls.disassemble": "Disassemble",

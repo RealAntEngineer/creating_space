@@ -68,15 +68,4 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
     public BlockEntityType<? extends RoomPressuriserBlockEntity> getBlockEntityType() {
         return BlockEntityInit.ROOM_PRESSURIZER.get();
     }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : ($0, pos, $1, blockEntity) -> {
-            if (blockEntity instanceof RoomPressuriserBlockEntity sealerBlockEntity) {
-                sealerBlockEntity.tick();
-            }
-        };
-    }
-
 }

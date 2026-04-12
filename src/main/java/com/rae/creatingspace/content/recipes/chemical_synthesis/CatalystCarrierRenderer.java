@@ -1,9 +1,11 @@
 package com.rae.creatingspace.content.recipes.chemical_synthesis;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -41,7 +43,7 @@ public class CatalystCarrierRenderer extends KineticBlockEntityRenderer<Catalyst
     protected void renderSafe(CatalystCarrierBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource,
                               int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, bufferSource, light, overlay);
-        //if (VisualizationManager.supportsVisualization(be.getLevel())) return;
+
 
         float renderedHeadOffset =
                 be.getRenderedHeadOffset(partialTicks);
@@ -50,21 +52,16 @@ public class CatalystCarrierRenderer extends KineticBlockEntityRenderer<Catalyst
 
         if (!catalyst.isEmpty()) {
             PartialModel model = ((CatalystItem)catalyst.getItem()).getModel();
-            SuperByteBuffer catalystModel = CachedBuffers.partial(PartialModelInit.NICKEL_SULFATE_CATALYST, blockState);
+            SuperByteBuffer catalystModel = CachedBuffers.partial(model, blockState);
 
             catalystModel.translate(0, -renderedHeadOffset-1, 0)
                     .rotateCenteredDegrees(180, Direction.Axis.X)
                     .light(light)
                     .renderInto(ms, bufferSource.getBuffer(RenderType.cutout()));
-            /*
-            ms.pushPose();
-            ms.translate(0, -renderedHeadOffset, 0);
-            renderCatalystFromTexture(ms,
-                    CreatingSpace.resource("textures/block/catalyst_carrier/catalyst/" +
-                            catalyst.getItemHolder().unwrapKey().orElseThrow().location().getPath() + ".png"), bufferSource);
-            ms.popPose();*/
         }
+        if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
+        KineticBlockEntityRenderer.renderRotatingKineticBlock(be, getRenderedBlockState(be), ms, bufferSource.getBuffer(RenderType.solid()), light);
 
         SuperByteBuffer headRender = CachedBuffers.partialFacing(PartialModelInit.CATALYST_CARRIER_HEAD, blockState,
                 blockState.getValue(HORIZONTAL_FACING));

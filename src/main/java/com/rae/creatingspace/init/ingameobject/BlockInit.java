@@ -68,6 +68,7 @@ import java.util.Map;
 
 import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
 import static com.rae.creatingspace.CreatingSpace.resource;
+import static com.simibubi.create.AllTags.commonItemTag;
 import static com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour.interactionBehaviour;
 import static com.simibubi.create.api.behaviour.movement.MovementBehaviour.movementBehaviour;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;

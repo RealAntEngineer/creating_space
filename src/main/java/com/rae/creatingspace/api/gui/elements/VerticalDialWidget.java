@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
-public class SliderWidget extends AbstractSimiWidget {
+public class VerticalDialWidget extends AbstractSimiWidget {
     private final int color;
     //TODO clean up the prevValue, value thing as there already is a lerpedFloat
     // warning there is remaining value everywhere
@@ -23,11 +23,11 @@ public class SliderWidget extends AbstractSimiWidget {
 
     public LerpedFloat lerpedValue;
     public int prevValue;
-    public SliderWidget(int x, int y, int width, int height) {
+    public VerticalDialWidget(int x, int y, int width, int height) {
         this(x, y, width, height, 0xFFFFFF);
     }
 
-    public SliderWidget(int x, int y, int width, int height, int color) {
+    public VerticalDialWidget(int x, int y, int width, int height, int color) {
         super(x, y, width, height);
         this.color = color;
         font = Minecraft.getInstance().font;
@@ -56,14 +56,17 @@ public class SliderWidget extends AbstractSimiWidget {
     @Override
     public void renderWidget(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (visible){
+            int progress;
+
+            lerpedValue.chase(value,1, LerpedFloat.Chaser.EXP);
             lerpedValue.tickChaser();
 
-            int progress = (int) lerpedValue.getValue();
+            progress = (int) lerpedValue.getValue();
 
             int intervalNumber = (max-min)/50;
             int intervalPixel = 10;
 
-            int slidePixel = (int) (((float) progress - ((float) progress / intervalNumber) *intervalNumber)/((float)intervalNumber) * intervalPixel);
+            int slidePixel = (int) (((float) progress - (int)(progress / intervalNumber) *intervalNumber)/((float)intervalNumber) * intervalPixel);
 
             graphics.pose().pushPose();
             GuiTexturesInit slider = GuiTexturesInit.O2_GAUGE_SLIDER;
