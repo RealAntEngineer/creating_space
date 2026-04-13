@@ -3,6 +3,7 @@ package com.rae.creatingspace.content.datagen.recipe;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.api.data.recipe.WashingRecipeGen;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.core.HolderLookup;
@@ -31,12 +32,12 @@ public class CSWashingRecipeGen extends WashingRecipeGen {
                 .output(.08f, ItemInit.NICKEL_NUGGET, 3)
                 .output(.04f, ItemInit.ALUMINUM_NUGGET, 3)),
 
-            CRUSHED_ALUMINUM = crushedOreNoSecondary(ItemInit.CRUSHED_ALUMINUM_ORE, ItemInit.ALUMINUM_NUGGET::get),
-            CRUSHED_NICKEL = crushedOreNoSecondary(ItemInit.CRUSHED_NICKEL_ORE, ItemInit.NICKEL_NUGGET::get),
+            CRUSHED_ALUMINUM = crushedOreNoSecondary(AllItems.CRUSHED_BAUXITE, ItemInit.ALUMINUM_NUGGET::get),
+            CRUSHED_NICKEL = crushedOreNoSecondary(AllItems.CRUSHED_NICKEL, ItemInit.NICKEL_NUGGET::get),
             CRUSHED_COBALT = crushedOreNoSecondary(ItemInit.CRUSHED_COBALT_ORE, ItemInit.COBALT_NUGGET::get);
 
 
-    public GeneratedRecipe crushedOreNoSecondary(ItemEntry<Item> crushed, Supplier<ItemLike> nugget) {
+    public GeneratedRecipe crushedOreNoSecondary(ItemEntry<? extends Item> crushed, Supplier<ItemLike> nugget) {
         return create(CreatingSpace.MODID, crushed::get, b -> b.output(nugget.get(), 9));
     }
 

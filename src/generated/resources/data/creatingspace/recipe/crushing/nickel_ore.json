@@ -8,11 +8,11 @@
   "processing_time": 400,
   "results": [
     {
-      "id": "creatingspace:crushed_nickel_ore"
+      "id": "create:crushed_raw_nickel"
     },
     {
       "chance": 0.75,
-      "id": "creatingspace:crushed_nickel_ore"
+      "id": "create:crushed_raw_nickel"
     },
     {
       "chance": 0.75,

@@ -4,7 +4,7 @@
   "cookingtime": 100,
   "experience": 0.1,
   "ingredient": {
-    "item": "creatingspace:crushed_aluminum_ore"
+    "item": "create:crushed_raw_aluminum"
   },
   "result": {
     "count": 1,

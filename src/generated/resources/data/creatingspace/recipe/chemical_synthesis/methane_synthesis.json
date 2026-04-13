@@ -3,12 +3,12 @@
   "heat_requirement": "heated",
   "ingredients": [
     {
-      "type": "fluid_stack",
+      "type": "neoforge:single",
       "amount": 100,
       "fluid": "creatingspace:liquid_co2"
     },
     {
-      "type": "fluid_stack",
+      "type": "neoforge:single",
       "amount": 286,
       "fluid": "creatingspace:liquid_hydrogen"
     }

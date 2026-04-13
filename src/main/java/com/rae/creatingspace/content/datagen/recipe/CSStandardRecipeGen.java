@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.rae.creatingspace.content.datagen.CSRecipeProvider;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.data.recipe.Mods;
@@ -90,8 +91,8 @@ public class CSStandardRecipeGen extends CSRecipeProvider {
                     .inBlastFurnace(),
 
             CRUSHED_COBALT = blastCrushedMetal(() -> ItemInit.COBALT_INGOT, ItemInit.CRUSHED_COBALT_ORE::get),
-            CRUSHED_ALUMINUM = blastCrushedMetal(() -> ItemInit.ALUMINUM_INGOT, ItemInit.CRUSHED_ALUMINUM_ORE::get),
-            CRUSHED_NICKEL = blastCrushedMetal(() -> ItemInit.NICKEL_INGOT, ItemInit.CRUSHED_NICKEL_ORE::get);
+            CRUSHED_ALUMINUM = blastCrushedMetal(() -> ItemInit.ALUMINUM_INGOT, AllItems.CRUSHED_BAUXITE::get),
+            CRUSHED_NICKEL = blastCrushedMetal(() -> ItemInit.NICKEL_INGOT, AllItems.CRUSHED_NICKEL::get);
 
 
     String currentFolder = "";

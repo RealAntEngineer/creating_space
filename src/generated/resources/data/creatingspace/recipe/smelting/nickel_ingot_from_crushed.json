@@ -4,7 +4,7 @@
   "cookingtime": 200,
   "experience": 0.1,
   "ingredient": {
-    "item": "creatingspace:crushed_nickel_ore"
+    "item": "create:crushed_raw_nickel"
   },
   "result": {
     "count": 1,

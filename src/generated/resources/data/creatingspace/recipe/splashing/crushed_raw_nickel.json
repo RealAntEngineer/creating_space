@@ -2,13 +2,13 @@
   "type": "create:splashing",
   "ingredients": [
     {
-      "item": "creatingspace:crushed_aluminum_ore"
+      "item": "create:crushed_raw_nickel"
     }
   ],
   "results": [
     {
       "count": 9,
-      "id": "creatingspace:aluminum_nugget"
+      "id": "creatingspace:nickel_nugget"
     }
   ]
 }

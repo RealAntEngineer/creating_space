@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "creatingspace:crushed_aluminum_ore"
+            "items": "create:crushed_raw_aluminum"
           }
         ]
       },

@@ -207,8 +207,8 @@ public class ItemInit {
                 //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
                 .defaultModel()
                 .register());
-        registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
-        System.out.println(collector);
+        registerTransitionItem(name); // we don't put the incomplete version in the creative tab
+        //System.out.println(collector);
         return collector;
     }
 
@@ -220,19 +220,22 @@ public class ItemInit {
                                 .transform((b) -> b.model(AssetLookup.itemModel(name))
                 )
                 .register());
-        registerSequencedItem("incomplete_" + name); // we don't put the incomplete version in the creative tab
-        System.out.println(collector);
+        REGISTRATE.item(
+                        "incomplete_"+name, SequencedAssemblyItem::new)
+                .model((c, p) ->
+                        p.getExistingFile(resource("item/incomplete_"+name)))
+                .register();
+        // we don't put the incomplete version in the creative tab
         return collector;
     }
 
-    private static ItemEntry<SequencedAssemblyItem> registerSequencedItem(String name) {
+    private static ItemEntry<SequencedAssemblyItem> registerTransitionItem(String name) {
         return REGISTRATE.item(
-                        name, SequencedAssemblyItem::new)
-                .model((c, p) -> p.withExistingParent(name,
+                        "incomplete_"+name, SequencedAssemblyItem::new)
+                .model((c, p) ->
+                        p.withExistingParent("item/incomplete_"+name,
                         "item/generated").texture("layer0",
-                        resource("item/ghost_block")))
-                //            resource("item/transition_item/" + name.substring(11))))
-                //TODO add the transitional items for missing things
+                        resource("item/transition_item/"+ name)))
                 .register();
     }
 

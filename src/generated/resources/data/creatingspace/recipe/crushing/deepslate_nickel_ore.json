@@ -9,11 +9,11 @@
   "results": [
     {
       "count": 2,
-      "id": "creatingspace:crushed_nickel_ore"
+      "id": "create:crushed_raw_nickel"
     },
     {
       "chance": 0.25,
-      "id": "creatingspace:crushed_nickel_ore"
+      "id": "create:crushed_raw_nickel"
     },
     {
       "chance": 0.75,

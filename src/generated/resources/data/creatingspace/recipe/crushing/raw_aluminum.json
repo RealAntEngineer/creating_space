@@ -8,7 +8,7 @@
   "processing_time": 400,
   "results": [
     {
-      "id": "creatingspace:crushed_aluminum_ore"
+      "id": "create:crushed_raw_aluminum"
     },
     {
       "chance": 0.75,
