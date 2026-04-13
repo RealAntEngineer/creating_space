@@ -336,10 +336,10 @@ public class ItemInit {
             .register();
 
 
-    public static final ItemEntry<Item> CRUSHED_NICKEL_ORE = CreatingSpace.REGISTRATE.item(
+    /*public static final ItemEntry<Item> CRUSHED_NICKEL_ORE = CreatingSpace.REGISTRATE.item(
             "crushed_nickel_ore",Item::new)
             .tag(commonItemTag("crushed_raw_nickel"), commonItemTag("crushed_raw_materials"))
-            .register();
+            .register();*/
 
     public static final ItemEntry<Item> NICKEL_DUST = REGISTRATE.item(
                     "nickel_dust",Item::new)
@@ -396,10 +396,10 @@ public class ItemInit {
             .register();
 
 
-    public static final ItemEntry<Item> CRUSHED_ALUMINUM_ORE = CreatingSpace.REGISTRATE.item(
+    /*public static final ItemEntry<Item> CRUSHED_ALUMINUM_ORE = CreatingSpace.REGISTRATE.item(
                     "crushed_aluminum_ore",Item::new)
             .tag(commonItemTag("crushed_raw_aluminum"), commonItemTag("crushed_raw_materials"), commonItemTag("ores/aluminum"))
-            .register();
+            .register();*/
 
 
     public static final ItemEntry<Item> ALUMINUM_INGOT = REGISTRATE.item(

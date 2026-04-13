@@ -45,15 +45,15 @@ public class CSCrushingRecipeGen extends CrushingRecipeGen {
                 .require(BlockInit.MARS_STONE)
                 .output(BlockInit.MARS_REGOLITH, 1)),
 
-        NICKEL_ORE = ore(Items.COBBLESTONE, BlockInit.NICKEL_ORE::get, ItemInit.CRUSHED_NICKEL_ORE::get, 1.75f, 400),
-        DEEPSLATE_NICKEL_ORE = ore(Items.COBBLED_DEEPSLATE, BlockInit.DEEPSLATE_NICKEL_ORE::get, ItemInit.CRUSHED_NICKEL_ORE::get, 2.25f, 400),
-        ALUMINUM_ORE = ore(BlockInit.MOON_STONE.asItem(), BlockInit.MOON_ALUMINUM_ORE::get, ItemInit.CRUSHED_ALUMINUM_ORE::get, 1.75f, 400),
+        NICKEL_ORE = ore(Items.COBBLESTONE, BlockInit.NICKEL_ORE::get, AllItems.CRUSHED_NICKEL::get, 1.75f, 400),
+        DEEPSLATE_NICKEL_ORE = ore(Items.COBBLED_DEEPSLATE, BlockInit.DEEPSLATE_NICKEL_ORE::get, AllItems.CRUSHED_NICKEL::get, 2.25f, 400),
+        ALUMINUM_ORE = ore(BlockInit.MOON_STONE.asItem(), BlockInit.MOON_ALUMINUM_ORE::get, AllItems.CRUSHED_BAUXITE::get, 1.75f, 400),
         COBALT_ORE = ore(BlockInit.MOON_STONE.asItem(), BlockInit.MOON_COBALT_ORE::get, ItemInit.CRUSHED_COBALT_ORE::get, 1.75f, 400),
-        RAW_NICKEL_ORE = rawOre("nickel", () -> commonItemTag("raw_materials/nickel"), ItemInit.CRUSHED_NICKEL_ORE::get, 1),
-        RAW_ALUMINUM_ORE = rawOre("aluminum", () -> commonItemTag("raw_materials/aluminum"), ItemInit.CRUSHED_ALUMINUM_ORE::get, 1),
+        RAW_NICKEL_ORE = rawOre("nickel", () -> commonItemTag("raw_materials/nickel"), AllItems.CRUSHED_NICKEL::get, 1),
+        RAW_ALUMINUM_ORE = rawOre("aluminum", () -> commonItemTag("raw_materials/aluminum"), AllItems.CRUSHED_BAUXITE::get, 1),
         RAW_COBALT_ORE = rawOre("cobalt", () -> commonItemTag("raw_materials/cobalt"), ItemInit.CRUSHED_COBALT_ORE::get, 1),
-        RAW_NICKEL_BLOCK = rawOreBlock("nickel", () -> commonItemTag("storage_blocks/raw_nickel"), ItemInit.CRUSHED_NICKEL_ORE::get, 1),
-        RAW_ALUMINUM_BLOCK = rawOreBlock("aluminum", () -> commonItemTag("storage_blocks/raw_aluminum"), ItemInit.CRUSHED_ALUMINUM_ORE::get, 1),
+        RAW_NICKEL_BLOCK = rawOreBlock("nickel", () -> commonItemTag("storage_blocks/raw_nickel"), AllItems.CRUSHED_NICKEL::get, 1),
+        RAW_ALUMINUM_BLOCK = rawOreBlock("aluminum", () -> commonItemTag("storage_blocks/raw_aluminum"),AllItems.CRUSHED_BAUXITE::get /*ItemInit.CRUSHED_ALUMINUM_ORE::get*/, 1),
         RAW_COBALT_BLOCK = rawOreBlock("cobalt", () -> commonItemTag("storage_blocks/raw_cobalt"), ItemInit.CRUSHED_COBALT_ORE::get, 1);
 
 protected GeneratedRecipe ore(ItemLike stoneType, Supplier<ItemLike> ore, Supplier<ItemLike> raw,
