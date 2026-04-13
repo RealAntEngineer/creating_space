@@ -25,8 +25,8 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
     private static final ResourceLocation MOON_LOCATION = ResourceLocation.fromNamespaceAndPath("creatingspace", "textures/environment/moon.png");
     private static final ResourceLocation MARS_LOCATION = ResourceLocation.fromNamespaceAndPath("creatingspace", "textures/environment/mars.png");
     private static final ResourceLocation SATURN_LOCATION = ResourceLocation.fromNamespaceAndPath("creatingspace", "textures/environment/saturn.png");
-    private static final ResourceLocation SUN_LOCATION = ResourceLocation.fromNamespaceAndPath("creatingspace","textures/environment/sun.png");
-    private static final ResourceLocation MOON_PHASES_LOCATION = ResourceLocation.fromNamespaceAndPath("creatingspace","textures/environment/moon_phases.png");
+    private static final ResourceLocation SUN_LOCATION = ResourceLocation.fromNamespaceAndPath("minecraft","textures/environment/sun.png");
+    private static final ResourceLocation MOON_PHASES_LOCATION = ResourceLocation.fromNamespaceAndPath("minecraft","textures/environment/moon_phases.png");
 
     public CustomDimensionEffects(float cloudLevel, boolean hasGround, SkyType skyType, boolean forceBrightLightmap, boolean constantAmbientLight) {
         super(cloudLevel, hasGround, skyType, forceBrightLightmap, constantAmbientLight);
@@ -243,52 +243,20 @@ public abstract class CustomDimensionEffects extends DimensionSpecialEffects {
                 Matrix4f matrix4f = poseStack.last().pose();
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, bodyTexture);
-                Tesselator tesselator = Tesselator.getInstance();
+                Tesselator    tesselator    = Tesselator.getInstance();
+                BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);//Only position and uv to set.
 
-                for (int i = 0; i < 6; ++i) {
-                    poseStack.pushPose();
-                    //make all the face
-                    if (i == 1) {
-                        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-                    }
 
-                    if (i == 2) {
-                        poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-                    }
-
-                    if (i == 3) {
-                        poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-                    }
-
-                    if (i == 4) {
-                        poseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
-                    }
-
-                    if (i == 5) {
-                        poseStack.mulPose(Axis.ZP.rotationDegrees(-90.0F));
-                    }
-
-                    int l = i % 3;
-                    int i1 = i / 4 % 2;
-                    float col_begin = (float) (l) / 3.0F;
-                    float l_begin = (float) (i1) / 2.0F;
-                    float col_end = (float) (l + 1) / 3.0F;
-                    float l_end = (float) (i1 + 1) / 2.0F;
-
-                    float size = 100.0F;
-                    float distance = 100.0F;
-                    //this is the standard brut force way to draw a square with a texture
-                    // uv is the coordinates on the texture and the addVertex takes the perspective matrix and the 3 position
-                    BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);//Only position and uv to set.
-                    bufferbuilder.addVertex(matrix4f, -size, -distance, -size).setUv(col_end, l_end);
-                    bufferbuilder.addVertex(matrix4f, -size, -distance, size).setUv(col_begin, l_end);
-                    bufferbuilder.addVertex(matrix4f, size, -distance, size).setUv(col_begin, l_begin);
-                    bufferbuilder.addVertex(matrix4f, size, -distance, -size).setUv(col_end, l_begin);
-                    BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-                    //tesselator.end();
-                }
-                poseStack.popPose();
+                //this is the standard brut force way to draw a square with a texture
+                // uv is the coordinates on the texture and the addVertex takes the perspective matrix and the 3 position
+                bufferbuilder.addVertex(matrix4f, -bodySize, bodyDistance, -bodySize).setUv(f15, f14);
+                bufferbuilder.addVertex(matrix4f, bodySize, bodyDistance, -bodySize).setUv(f13, f14);
+                bufferbuilder.addVertex(matrix4f, bodySize, bodyDistance, bodySize).setUv(f13, f16);
+                bufferbuilder.addVertex(matrix4f, -bodySize, bodyDistance, bodySize).setUv(f15, f16);
+                BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+                //tesselator.end();
             }
+            poseStack.popPose();
         }
     }
 }

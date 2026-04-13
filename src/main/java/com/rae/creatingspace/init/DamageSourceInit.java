@@ -20,8 +20,8 @@ public class DamageSourceInit {
 
     public static void bootstrap(BootstrapContext<DamageType> ctx) {
         new DamageTypeBuilder(NO_OXYGEN)
-                .scaling(DamageScaling.NEVER)
-                .effects(DamageEffects.DROWNING)
+                .scaling(DamageScaling.ALWAYS)
+                .effects(DamageEffects.HURT)
                 .exhaustion(0)
                 .deathMessageType(DeathMessageType.DEFAULT)
                 .msgId("creatingspace.no_oxygen")
