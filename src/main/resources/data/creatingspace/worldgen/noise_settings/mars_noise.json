@@ -61,7 +61,7 @@
     },
     "continents": "minecraft:overworld/continents",
     "erosion": "minecraft:overworld/erosion",
-    "depth": "minecraft:overworld/depth",
+    "depth": "creatingspace:moon/depth",
     "ridges": "minecraft:overworld/ridges",
     "initial_density_without_jaggedness": {
       "type": "minecraft:add",
@@ -353,42 +353,48 @@
           }
         }
       },
-      {
-        "type": "minecraft:condition",
-        "if_true": {
-          "type": "minecraft:stone_depth",
-          "offset": 0,
-          "surface_type": "floor",
-          "add_surface_depth": false,
-          "secondary_depth_range": 0
+      {"type": "minecraft:condition",
+        "if_true":  {
+          "type": "minecraft:biome",
+          "biome_is": ["creatingspace:mars_plains"]
         },
-        "then_run": {
-          "type": "minecraft:block",
-          "result_state": {
-            "Name": "creatingspace:mars_surface_regolith"
-          }
-        }
-      },
-      {
-        "type": "minecraft:sequence",
-        "sequence": [
-          {
-            "type": "minecraft:condition",
-            "if_true": {
-              "type": "minecraft:stone_depth",
-              "offset": 0,
-              "surface_type": "floor",
-              "add_surface_depth": true,
-              "secondary_depth_range": 0
+        "then_run":   {
+          "type": "minecraft:sequence",
+          "sequence": [
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:stone_depth",
+                "offset": 0,
+                "surface_type": "floor",
+                "add_surface_depth": false,
+                "secondary_depth_range": 0
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": {
+                  "Name": "creatingspace:mars_surface_regolith"
+                }
+              }
             },
-            "then_run": {
-              "type": "minecraft:block",
-              "result_state": {
-                "Name": "creatingspace:mars_regolith"
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:stone_depth",
+                "offset": 0,
+                "surface_type": "floor",
+                "add_surface_depth": true,
+                "secondary_depth_range": 0
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": {
+                  "Name": "creatingspace:mars_regolith"
+                }
               }
             }
-          }
-        ]
+          ]
+        }
       },
       {
         "type": "minecraft:block",
