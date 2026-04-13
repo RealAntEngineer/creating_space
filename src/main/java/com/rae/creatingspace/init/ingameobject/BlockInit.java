@@ -425,29 +425,29 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_STONE = REGISTRATE
             .block("moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
             .tag(BlockTags.NEEDS_STONE_TOOL)
+            .transform(pickaxeOnly())
             .item()
             .transform(customItemModel("moon_stone"))
             .register();
 
     public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
             .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
             .item()
             .transform(customItemModel("moon_stone_brick"))
             .register();
 
     public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
             .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p-> p.strength(1.0f).requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
             .item()
             .transform(customItemModel("polished_moon_stone"))
             .register();
 
     public static final BlockEntry<Block> MOON_REGOLITH = REGISTRATE
             .block("moon_regolith",Block::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p-> p.sound(SoundType.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
             .transform(customItemModel("moon_regolith"))
@@ -455,7 +455,7 @@ public class BlockInit {
 
     public static final BlockEntry<RegolithSurfaceBlock> MOON_SURFACE_REGOLITH = REGISTRATE
             .block("moon_surface_regolith",RegolithSurfaceBlock::new).initialProperties(()-> Blocks.DIRT)
-            .properties(p-> p.strength(1.0f).sound(SoundType.SNOW).mapColor(MapColor.SNOW))
+            .properties(p-> p.sound(SoundType.SNOW).mapColor(MapColor.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
             .transform(customItemModel("moon_surface_regolith"))
@@ -463,7 +463,6 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MARS_STONE = REGISTRATE
             .block("mars_stone", Block::new).initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
             .transform(pickaxeOnly())
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
@@ -472,7 +471,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MARS_REGOLITH = REGISTRATE
             .block("mars_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
-            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p -> p.sound(SoundType.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
@@ -481,7 +480,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MARS_SURFACE_REGOLITH = REGISTRATE
             .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
-            .properties(p -> p.strength(1.0f).sound(SoundType.SNOW))
+            .properties(p -> p.sound(SoundType.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
             //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
@@ -491,8 +490,7 @@ public class BlockInit {
     //ores
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
                     "nickel_ore", Block::new)
-            .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(() -> Blocks.GOLD_ORE)
             .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
@@ -513,7 +511,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(
                     "deepslate_nickel_ore", Block::new)
-            .initialProperties(() -> Blocks.STONE)
+            .initialProperties(() -> Blocks.DEEPSLATE_GOLD_ORE)
             .properties(p -> p.strength(4.0f).requiresCorrectToolForDrops())
             .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
@@ -534,8 +532,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
                     "moon_nickel_ore", Block::new)
-            .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(() -> Blocks.GOLD_ORE)
             .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
@@ -553,8 +550,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> RAW_NICKEL_BLOCK = REGISTRATE.block(
                     "raw_nickel_block", Block::new)
-            .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
             .transform(TagGen.pickaxeOnly())
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
@@ -595,8 +591,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
                     "moon_cobalt_ore", Block::new)
-            .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(() -> Blocks.GOLD_ORE)
             .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
@@ -615,8 +610,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> RAW_COBALT_BLOCK = REGISTRATE.block(
                     "raw_cobalt_block", Block::new)
-            .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
             .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_cobalt")))
@@ -635,8 +629,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
-            .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(3.0f).requiresCorrectToolForDrops())
+            .initialProperties(() -> Blocks.GOLD_ORE)
             .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
@@ -655,8 +648,7 @@ public class BlockInit {
 
     public static final BlockEntry<Block> RAW_ALUMINUM_BLOCK = REGISTRATE.block(
                     "raw_aluminum_block", Block::new)
-            .initialProperties(() -> Blocks.STONE)
-            .properties(p -> p.strength(1.0f).requiresCorrectToolForDrops())
+            .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_aluminum")))
@@ -713,7 +705,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/cobalt"))
+            .transform(commonTagBlockAndItem("storage_blocks/cobalt"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             //.lang("Block of Cobalt")
@@ -735,7 +727,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/copronickel"))
+            .transform(commonTagBlockAndItem("storage_blocks/copronickel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             //.lang("Block of Copronickel")
@@ -756,7 +748,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/reinforced_copper"))
+            .transform(commonTagBlockAndItem("storage_blocks/reinforced_copper"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             //.lang("Block of Reinforced Copper")
@@ -778,7 +770,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/inconel"))
+            .transform(commonTagBlockAndItem("storage_blocks/inconel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             //.lang("Block of Inconel")
@@ -799,7 +791,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/hastelloy"))
+            .transform(commonTagBlockAndItem("storage_blocks/hastelloy"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             //.lang("Block of Hastelloy")
@@ -820,7 +812,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .transform(tagBlockAndItem("storage_blocks/monel"))
+            .transform(commonTagBlockAndItem("storage_blocks/monel"))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             .register();
@@ -906,9 +898,9 @@ public class BlockInit {
             .item()
             .build().register();
 
-    private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, ItemBuilder<BlockItem, BlockBuilder<T, P>>> tagBlockAndItem(String s) {
-        return TagGen.tagBlockAndItem(BlockTags.create(ResourceLocation.withDefaultNamespace(s)),
-                ItemTags.create(ResourceLocation.withDefaultNamespace(s)));
+    private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, ItemBuilder<BlockItem, BlockBuilder<T, P>>> commonTagBlockAndItem(String s) {
+        return TagGen.tagBlockAndItem(BlockTags.create(ResourceLocation.fromNamespaceAndPath("c",s)),
+                ItemTags.create(ResourceLocation.fromNamespaceAndPath("c",s)));
     }
 
     public static void register() {}

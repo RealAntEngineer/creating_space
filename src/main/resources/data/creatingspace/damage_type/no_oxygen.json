@@ -1,5 +1,7 @@
 {
   "exhaustion": 0,
   "message_id": "creatingspace.no_oxygen",
-  "scaling": "never"
+  "scaling": "always",
+  "effects": "hurt"
+
 }

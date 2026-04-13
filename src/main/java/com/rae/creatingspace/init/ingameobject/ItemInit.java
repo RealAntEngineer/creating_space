@@ -248,6 +248,7 @@ public class ItemInit {
     }
 
     public static final ItemEntry<SequencedAssemblyItem> INCOMPLETE_ENGINE = registerSequencedEngineItem("incomplete_rocket_engine");
+
     public static final ItemEntry<DesignBlueprintItem> DESIGN_BLUEPRINT =
             REGISTRATE.item("design_blueprint", DesignBlueprintItem::new)
                     //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
@@ -434,8 +435,6 @@ public class ItemInit {
             .tag(commonItemTag("nuggets/aluminum"), commonItemTag("nuggets"))
             .register();
 
-
-
     public static final ItemEntry<Item> ALUMINUM_SHEET = REGISTRATE.item(
                     "aluminum_sheet",Item::new)
             .tag(commonItemTag("plates/aluminum"), commonItemTag("plates"))
@@ -453,12 +452,10 @@ public class ItemInit {
             .tag(commonItemTag("raw_materials/cobalt"), commonItemTag("raw_materials"))
             .register();
 
-
     public static final ItemEntry<Item> CRUSHED_COBALT_ORE = REGISTRATE.item(
                     "crushed_cobalt_ore",Item::new)
             .tag(commonItemTag("crushed_raw_cobalt"), commonItemTag("crushed_raw_materials"), commonItemTag("ores/cobalt"))
             .register();
-
 
     public static final ItemEntry<Item> COBALT_INGOT = REGISTRATE.item(
                     "cobalt_ingot",Item::new)
@@ -478,7 +475,6 @@ public class ItemInit {
             .tag(commonItemTag("ingots/cobalt"), commonItemTag("ingots"))
             .register();
 
-
     public static final ItemEntry<Item> COBALT_NUGGET = REGISTRATE.item(
                     "cobalt_nugget",Item::new)
             .recipe((c,p) ->
@@ -488,8 +484,6 @@ public class ItemInit {
                             .save(p, resource("crafting/" + c.getName())))
             .tag(commonItemTag("nuggets/cobalt"), commonItemTag("nuggets"))
             .register();
-
-
 
     public static final ItemEntry<Item> COBALT_SHEET = REGISTRATE.item(
                     "cobalt_sheet",Item::new)
@@ -503,6 +497,7 @@ public class ItemInit {
                     .model((c,p) -> p.withExistingParent("copper_oxygen_backtank_placeable",
                         "minecraft:item/barrier"))
                     .register();
+
     public static final ItemEntry<OxygenBacktankItem.Layered> COPPER_OXYGEN_BACKTANK =
             REGISTRATE
                     .item("copper_oxygen_backtank",
@@ -513,6 +508,7 @@ public class ItemInit {
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
 
     public static final ItemEntry<OxygenBacktankItem.O2BacktankBlockItem> NETHERITE_BACKTANK_PLACEABLE =
@@ -523,6 +519,7 @@ public class ItemInit {
                     .model((c,p) -> p.withExistingParent("netherite_oxygen_backtank_placeable",
                             "minecraft:item/barrier"))
                     .register();
+
     public static final ItemEntry<OxygenBacktankItem.Layered> NETHERITE_OXYGEN_BACKTANK =
             REGISTRATE
                     .item("netherite_oxygen_backtank",
@@ -534,6 +531,7 @@ public class ItemInit {
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
 
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_LEGGINGS =
@@ -550,7 +548,9 @@ public class ItemInit {
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.LEG_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
+
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_BOOTS =
             REGISTRATE
                     .item("basic_spacesuit_boots",
@@ -564,7 +564,9 @@ public class ItemInit {
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.FOOT_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
+
     public static final ItemEntry<SpacesuitHelmetItem> BASIC_SPACESUIT_HELMET =
             REGISTRATE
                     .item("basic_spacesuit_helmet",
@@ -579,6 +581,7 @@ public class ItemInit {
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.HEAD_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
 
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_LEGGINGS =
@@ -596,7 +599,9 @@ public class ItemInit {
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.LEG_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
+
     public static final ItemEntry<BaseArmorItem> ADVANCED_SPACESUIT_BOOTS =
             REGISTRATE
                     .item("advanced_spacesuit_boots",
@@ -611,7 +616,9 @@ public class ItemInit {
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.FOOT_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
+
     public static final ItemEntry<SpacesuitHelmetItem> ADVANCED_SPACESUIT_HELMET =
             REGISTRATE
                     .item("advanced_spacesuit_helmet",
@@ -627,19 +634,19 @@ public class ItemInit {
                                     .save(p, resource("crafting/armor/" + c.getName())))
                     .tag(ItemTags.HEAD_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
+                    .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
 
     public static final ItemEntry<Item> INJECTOR = REGISTRATE.item(
                     "injector", Item::new)
-            //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
+
     public static final ItemEntry<Item> REINFORCED_INJECTOR = REGISTRATE.item(
                     "reinforced_injector", Item::new)
-            //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
+
     public static final ItemEntry<Item> STURDY_PROPELLER = REGISTRATE.item(
                     "sturdy_propeller", Item::new)
-            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .recipe((c,p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('I', commonItemTag("ingots/iron"))
@@ -653,11 +660,10 @@ public class ItemInit {
 
     public static final ItemEntry<Item> INJECTOR_GRID = REGISTRATE.item(
                     "injector_grid", Item::new)
-            //.properties(p->p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
+
     public static final ItemEntry<Item> REINFORCED_INJECTOR_GRID = REGISTRATE.item(
                     "reinforced_injector_grid", Item::new)
-            //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
             .register();
 
     public static final ItemEntry<CatalystItem> NICKEL_SULFATE_CATALYST = REGISTRATE.item(
