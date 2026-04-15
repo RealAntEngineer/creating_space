@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "creatingspace:design_blueprint",
+          "functions": [
+            {
+              "function": "minecraft:set_custom_data",
+              "tag": "{\"design_type\":\"creatingspace:power_pack_type\",\"design\":\"creatingspace:catalyse_cycle\"}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 3,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "creatingspace:cobalt_ingot",
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}

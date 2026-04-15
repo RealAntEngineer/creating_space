@@ -291,7 +291,7 @@
   "item.creatingspace.space_food": "Space Food",
   "item.creatingspace.space_food.tooltip.summary": "...ew",
   "item.creatingspace.design_blueprint": "Design Blueprint",
-  "item.creatingspace.design_blueprint.tooltip.summary" : "This table is used to craft engine blueprints.",
+  "item.creatingspace.design_blueprint.tooltip.summary" : "This paper contain information on engine designs.",
   "item.creatingspace.design_blueprint.tooltip.condition1": "R-Click",
   "item.creatingspace.design_blueprint.tooltip.behaviour1": "Learn new design",
 
