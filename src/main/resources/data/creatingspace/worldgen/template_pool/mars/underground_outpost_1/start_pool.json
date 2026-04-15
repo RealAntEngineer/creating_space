@@ -1,0 +1,18 @@
+{
+  "fallback": "minecraft:bastion/bridge/legs",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+
+        "location": "creatingspace:mars/test_mars",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

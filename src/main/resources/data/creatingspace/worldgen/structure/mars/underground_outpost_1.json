@@ -1,19 +1,19 @@
 {
   "type": "minecraft:jigsaw",
 
-  "start_pool": "creatingspace:moon/crashed_ship/start_pool",
+  "start_pool": "creatingspace:mars/underground_outpost_1/start_pool",
 
   "size": 2,
 
   "max_distance_from_center": 40,
 
-  "biomes": "#creatingspace:has_structure/moon/crashed_ship",
+  "biomes": "#creatingspace:has_structure/mars/underground_outpost_1",
 
   "step": "surface_structures",
   "terrain_adaptation": "none",
 
   "start_height": {
-    "absolute": 1
+    "absolute": -30
   },
 
   "project_start_to_heightmap": "OCEAN_FLOOR",

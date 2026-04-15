@@ -89,7 +89,9 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
     @Override
     protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag,registries, clientPacket);
-        TANK.readFromNBT(registries,(CompoundTag) tag.get("Fluids"));
+        if (tag.contains("Fluids")) {
+            TANK.readFromNBT(registries, (CompoundTag) tag.get("Fluids"));
+        }
     }
 
 

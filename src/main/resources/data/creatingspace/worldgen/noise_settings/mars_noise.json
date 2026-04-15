@@ -2,7 +2,7 @@
   "sea_level": 63,
   "disable_mob_generation": false,
   "aquifers_enabled": false,
-  "ore_veins_enabled": true,
+  "ore_veins_enabled": false,
   "legacy_random_source": false,
   "default_block": {
     "Name": "creatingspace:mars_stone"
