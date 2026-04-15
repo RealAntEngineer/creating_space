@@ -34,7 +34,7 @@ description='''
 [[dependencies.creatingspace]]
 modId="create"
 mandatory=true
-versionRange="[0.6.0.6,)"
+versionRange="[0.6.0.9,)"
 ordering="NONE"
 side="BOTH"
 
