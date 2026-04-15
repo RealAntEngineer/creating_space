@@ -31,8 +31,8 @@ public class CSAirLiquefyingRecipeGen
     }
 
     @Override
-    protected AirLiquefyingRecipe.Builder getBuilder(ResourceLocation id) {
-        return new AirLiquefyingRecipe.Builder<AirLiquefyingRecipe>(AirLiquefyingRecipe::new, id);
+    protected AirLiquefyingRecipe.Builder<AirLiquefyingRecipe> getBuilder(ResourceLocation id) {
+        return new AirLiquefyingRecipe.Builder<>(AirLiquefyingRecipe::new, id);
     }
 
     {   // instance‐initializer: declare your recipes here

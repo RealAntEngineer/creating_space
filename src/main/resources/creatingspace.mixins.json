@@ -16,6 +16,7 @@
     "entity.gravity.LivingEntityMixin",
     "entity.gravity.MinecartMixin",
     "entity.gravity.PrimedTntMixin",
+    "fluid.FluidInteractionRegistryMixin",
     "kinetics.BacktankBlockEntityMixin",
     "recipe.ItemApplicationMixin",
     "recipe.ProcessingRecipeMixin",

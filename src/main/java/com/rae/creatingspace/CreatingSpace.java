@@ -110,8 +110,8 @@ public class CreatingSpace {
 
         event.enqueueWork(() -> {
 
-            FluidInit.registerFluidInteractions();
-            FluidInit.registerOpenEndedEffect();
+            //FluidInit.registerFluidInteractions();
+            //FluidInit.registerOpenEndedEffect();
         });
     }
     public static void onAddReloadListeners(AddReloadListenerEvent event)

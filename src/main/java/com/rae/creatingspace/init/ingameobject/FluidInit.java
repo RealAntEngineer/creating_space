@@ -3,6 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.VirtualFluid;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -15,11 +16,11 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class FluidInit {
@@ -101,6 +102,29 @@ public class FluidInit {
     }
 
     public static void registerFluidInteractions() {
+
+
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.LAVA_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
+                ((level, currentPos, relativePos, currentState) ->
+                        level.getFluidState(relativePos).getFluidType() == NeoForgeMod.WATER_TYPE.value()),
+                (level, currentPos, relativePos, currentState) -> {
+                    if (currentState.isSource()) {
+                        level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, Blocks.OBSIDIAN.defaultBlockState()));
+                    }
+                    else{
+                        if (level.dimension().equals(DimensionInit.MOON_LEVEL)) {
+                            level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, BlockInit.MOON_STONE.get().defaultBlockState()));
+                        } else if (level.dimension().equals(DimensionInit.MARS_LEVEL)) {
+                            level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, BlockInit.MARS_STONE.get().defaultBlockState()));
+                        } else {
+                            level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, Blocks.COBBLESTONE.defaultBlockState()));
+
+                        }
+                    }
+                    level.levelEvent(1501, currentPos, 0);
+
+                }
+        ));
 
         FluidInteractionRegistry.addInteraction(NeoForgeMod.LAVA_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 LIQUID_HYDROGEN.get().getFluidType(),
