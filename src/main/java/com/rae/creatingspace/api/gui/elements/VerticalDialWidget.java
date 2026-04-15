@@ -4,6 +4,7 @@ import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 import net.createmod.catnip.theme.Color;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -104,6 +105,11 @@ public class VerticalDialWidget extends AbstractSimiWidget {
     }
 
     public void setChase(int o2Value) {
-        lerpedValue.updateChaseTarget(o2Value);
+        value = o2Value;
+        //lerpedValue.updateChaseTarget(o2Value);
+    }
+
+    public void tickChaser(DeltaTracker deltaTracker) {
+        //lerpedValue.tickChaser();
     }
 }

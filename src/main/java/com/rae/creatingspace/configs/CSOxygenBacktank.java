@@ -1,5 +1,7 @@
 package com.rae.creatingspace.configs;
 
+import com.rae.creatingspace.content.life_support.spacesuit.RemainingO2Overlay;
+
 public class CSOxygenBacktank extends CSConfigBase {
     public final ConfigInt xOffset = i(0, Integer.MIN_VALUE, "xOffset", Comments.xOffset);
     public final ConfigInt yOffset = i(0, Integer.MIN_VALUE, "yOffset", Comments.yOffset);
@@ -8,6 +10,13 @@ public class CSOxygenBacktank extends CSConfigBase {
     @Override
     public String getName() {
         return "oxygenBacktank";
+    }
+
+
+    @Override
+    public void onReload() {
+        super.onReload();
+        RemainingO2Overlay.reload();
     }
 
     private static class Comments {

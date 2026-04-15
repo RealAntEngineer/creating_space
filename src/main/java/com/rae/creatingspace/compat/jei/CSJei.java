@@ -11,36 +11,19 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.*;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
-import com.simibubi.create.infrastructure.config.AllConfigs;
-import com.simibubi.create.infrastructure.config.CRecipes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IIngredientManager;
-import net.createmod.catnip.config.ConfigBase;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 @JeiPlugin
 @SuppressWarnings("unused")
@@ -60,7 +43,7 @@ public class CSJei implements IModPlugin {
                         .catalyst(AllBlocks.BASIN::get)
                         .doubleItemIcon(BlockInit.CATALYST_CARRIER.get(), AllBlocks.BASIN.get())
                         .emptyBackground(177, 103)
-                        .build("chemical", ChemicalSynthesisCategory::standard);
+                        .build(CreatingSpace.resource("chemical"), ChemicalSynthesisCategory::standard);
 
         CreateRecipeCategory<?> electrolysis =
                 builder(BasinRecipe.class)
@@ -69,7 +52,7 @@ public class CSJei implements IModPlugin {
                         .catalyst(AllBlocks.BASIN::get)
                         .doubleItemIcon(BlockInit.MECHANICAL_ELECTROLYZER.get(), AllBlocks.BASIN.get())
                         .emptyBackground(177, 103)
-                        .build("electrolysis", MechanicalElectrolysisCategory::standard);
+                        .build(CreatingSpace.resource("electrolysis"), MechanicalElectrolysisCategory::standard);
 
         CreateRecipeCategory<?> airLiquefying =
                 builder(AirLiquefyingRecipe.class)
@@ -77,7 +60,7 @@ public class CSJei implements IModPlugin {
                         .catalyst(BlockInit.AIR_LIQUEFIER::get)
                         .itemIcon(BlockInit.AIR_LIQUEFIER.get())
                         .emptyBackground(177, 103)
-                        .build("air_liquefying", AirLiquefyingCategory::new);
+                        .build(CreatingSpace.resource("air_liquefying"), AirLiquefyingCategory::new);
 
     }
 
@@ -92,7 +75,7 @@ public class CSJei implements IModPlugin {
         }
 
         @Override
-        public CreateRecipeCategory<T> build(ResourceLocation id, CreateRecipeCategory.Factory<T> factory) {
+        public @NotNull CreateRecipeCategory<T> build(ResourceLocation id, CreateRecipeCategory.Factory<T> factory) {
             CreateRecipeCategory<T> category = super.build(id, factory);
             allCategories.add(category);
             return category;

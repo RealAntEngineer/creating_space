@@ -6,6 +6,7 @@ import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.Direction;
 
 public class AnimatedAirLiquefier extends AnimatedKinetics {
     protected static final int SCALE = 24;
@@ -19,8 +20,13 @@ public class AnimatedAirLiquefier extends AnimatedKinetics {
         matrixStack.mulPose(Axis.XP.rotationDegrees(-12.5f));
         matrixStack.mulPose(Axis.YP.rotationDegrees(22.5f));
 
+        blockElement(shaft(Direction.Axis.Y))
+                .rotateBlock(0, 0, getCurrentAngle())
+                .scale(SCALE)
+                .render(graphics);
+
         AnimatedKinetics.defaultBlockElement(AllPartialModels.ENCASED_FAN_INNER)
-                .rotateBlock(180, 0, AnimatedKinetics.getCurrentAngle() * 16)
+                .rotateBlock(180, 0, getCurrentAngle() * 16)
                 .scale(SCALE)
                 .render(graphics);
 

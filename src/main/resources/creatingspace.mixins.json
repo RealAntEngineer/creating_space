@@ -24,6 +24,7 @@
     "recipe.SequencedAssemblyRecipeSerializerMixin"
   ],
   "client": [
+    "WindowResizeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
