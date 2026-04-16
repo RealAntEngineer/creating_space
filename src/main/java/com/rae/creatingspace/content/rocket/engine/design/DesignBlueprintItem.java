@@ -32,12 +32,12 @@ public class DesignBlueprintItem extends Item {
     public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
         if ( data!=null) {
-            CompoundTag nbt =data.copyTag();
+            CompoundTag nbt = data.copyTag();
             ResourceLocation registry = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                     nbt.get("design_type")).result().orElse(null);
             ResourceLocation location = ResourceLocation.CODEC.parse(NbtOps.INSTANCE,
                     nbt.get("design")).result().orElse(null);
-            if (registry != null) {
+            if (registry != null && location != null) {
                 components.add(Component.translatable(registry.toLanguageKey())
                         .append(" : ")
                         .append(Component.translatable(

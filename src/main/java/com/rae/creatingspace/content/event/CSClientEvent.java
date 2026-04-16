@@ -64,7 +64,7 @@ public class CSClientEvent {
     public static void addToItemTooltip(ItemTooltipEvent event) {
         if (event.getEntity() == null)
             return;
-
+        //TODO, do something a bit less hacky and improve the formating, it's ugly as hell
         ItemStack itemStack = event.getItemStack();
         List<Component> components = event.getToolTip();
         if (!(itemStack.getItem() instanceof EngineFabricationBlueprint || itemStack.getItem() instanceof EngineItem)) {
@@ -79,28 +79,26 @@ public class CSClientEvent {
                 int materialLevel = recipeData.getInt("materialLevel");
                 if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
                 if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + EngineMaterialInit.materials.get(materialLevel)));
-                try {
-                    ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).getOrThrow();
-                    components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-                } catch (Exception ignored) {
-                }
-                try {
-                    ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).getOrThrow();
-                    components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
-                } catch (Exception ignored) {
-                }
-                CompoundTag engineInfo = itemData.getCompound("blockEntity");
-                components.add(Component.literal("for engine :"));
-                appendEngineDependentText(components,engineInfo);
-            } catch (Exception ignored){
 
+                ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).getOrThrow();
+                components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
+
+                ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).getOrThrow();
+                components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
+
+                CompoundTag engineInfo = itemData.getCompound("blockEntity");
+                if(!engineInfo.isEmpty()) {
+                    components.add(Component.literal("for engine :"));
+                    appendEngineDependentText(components, engineInfo);
+                }
+            } catch (Exception exception){
+                CreatingSpace.LOGGER.error("caught exception during tooltip :", exception);
             }
         }
     }
 
     @EventBusSubscriber(value = Dist.CLIENT)
     public static class ModBusEvents {
-        //TODO look at Create's client events handler (@RealAntEngineer - Ready For Review!)
         @SubscribeEvent
         public static void addEntityRendererLayers(EntityRenderersEvent.AddLayers event) {
             EntityRenderDispatcher dispatcher = Minecraft.getInstance()
@@ -110,7 +108,7 @@ public class CSClientEvent {
         @SubscribeEvent
         public static void registerGuiOverlays(RegisterGuiLayersEvent event) {
             // Register overlays
-            event.registerAbove(VanillaGuiLayers.AIR_LEVEL, CreatingSpace.resource("remaining_oxygen"), (LayeredDraw.Layer) RemainingO2Overlay.INSTANCE);
+            event.registerAbove(VanillaGuiLayers.AIR_LEVEL, CreatingSpace.resource("remaining_oxygen"), RemainingO2Overlay.INSTANCE);
 
         }
     }
