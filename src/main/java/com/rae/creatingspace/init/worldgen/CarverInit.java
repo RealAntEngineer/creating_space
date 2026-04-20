@@ -1,8 +1,8 @@
 package com.rae.creatingspace.init.worldgen;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.worldgen.CraterCarver;
-import com.rae.creatingspace.content.worldgen.CraterCarverConfig;
+import com.rae.creatingspace.content.worldgen.carver.CraterCarver;
+import com.rae.creatingspace.content.worldgen.carver.CraterCarverConfig;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

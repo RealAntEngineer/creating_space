@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.worldgen;
+package com.rae.creatingspace.content.worldgen.carver;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

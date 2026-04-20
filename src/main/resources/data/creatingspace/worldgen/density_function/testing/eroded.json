@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:flat_cache",
+  "argument": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "creatingspace:phacelle_erosion",
+      "height_map": {
+        "type": "minecraft:mul",
+        "argument1": "creatingspace:testing/offset",
+        "argument2": 1
+      },
+      "noise": {
+        "cell_size": 10
+      }
+    },
+    "argument2": 1
+  }
+}

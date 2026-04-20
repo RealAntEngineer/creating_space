@@ -1,7 +1,7 @@
 package com.rae.creatingspace.init.worldgen;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.worldgen.FloatingIsland;
+import com.rae.creatingspace.content.worldgen.placed_feature.FloatingIsland;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
 import net.minecraftforge.eventbus.api.IEventBus;

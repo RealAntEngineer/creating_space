@@ -362,7 +362,8 @@ public class BlockInit {
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .transform(tagBlockAndItem("ores/nickel", "ores_in_ground/stone"))
+            //.transform(tagBlockAndItem("ores/nickel", "ores_in_ground/stone"))
+            .item()
             .build()
             .register();
     public static final BlockEntry<Block> MOSSY_MARS_STONE = REGISTRATE.block(

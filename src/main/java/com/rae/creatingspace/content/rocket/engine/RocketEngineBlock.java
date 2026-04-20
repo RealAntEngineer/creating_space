@@ -7,6 +7,7 @@ import com.rae.formicapi.multiblock.MBStructureBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NonnullDefault;
@@ -34,12 +37,12 @@ public class RocketEngineBlock extends MBController implements IBE<RocketEngineB
     public static final EnumProperty<Power> POWER_PACK = EnumProperty.create("power_pack",Power.class);
     public static final EnumProperty<Exhaust> EXHAUST_PACK = EnumProperty.create("exhaust", Exhaust.class);
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-    public RocketEngineBlock(Properties properties, DirectionalBlock structure) {
+    public RocketEngineBlock(Properties properties, MBStructureBlock structure) {
         super(properties, structure);
         this.registerDefaultState(this.defaultBlockState().setValue(EXHAUST_PACK, Exhaust.BELL_NOZZLE).setValue(POWER_PACK, Power.STANDARD).setValue(ACTIVE, Boolean.TRUE));
     }
 
-    @Override
+    //@Override
     protected MBShape makeShapes(DirectionalBlock structure) {//this is a bug in the API
         return MBShape.make2x1x1((MBStructureBlock) structure);
     }
@@ -98,6 +101,21 @@ public class RocketEngineBlock extends MBController implements IBE<RocketEngineB
     public void onRemove(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState newBlockState, boolean isMoving) {
         super.onRemove(blockState, level, blockPos, newBlockState, isMoving);
         IBE.onRemove(blockState, level, blockPos, newBlockState);
+    }
+
+    @Override
+    public Vec3i getDefaultOffset() {
+        return null;
+    }
+
+    @Override
+    public Vec3i getDefaultSize() {
+        return null;
+    }
+
+    @Override
+    public VoxelShape getGlobalShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        return null;
     }
 
     public enum Power implements StringRepresentable {

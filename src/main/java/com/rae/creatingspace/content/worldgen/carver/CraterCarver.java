@@ -1,7 +1,6 @@
-package com.rae.creatingspace.content.worldgen;
+package com.rae.creatingspace.content.worldgen.carver;
 
 import com.mojang.serialization.Codec;
-import com.rae.creatingspace.CreatingSpace;
 import net.createmod.catnip.data.Couple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,7 +10,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.SimpleBitStorage;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.*;

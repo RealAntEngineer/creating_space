@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:cache_2d",
+  "argument": {
+    "type": "minecraft:mul",
+    "argument1": "creatingspace:testing/continents",
+    "argument2": 0.5
+  }
+}

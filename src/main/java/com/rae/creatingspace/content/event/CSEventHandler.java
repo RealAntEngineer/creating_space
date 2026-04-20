@@ -4,13 +4,12 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.init.CSDamageSources;
+import com.rae.creatingspace.init.CommandsInit;
 import com.rae.creatingspace.init.TagsInit;
-import com.rae.creatingspace.content.rocket.engine.design.DesignCommands;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.RocketTeleporter;
-import com.rae.formicapi.math.Solvers;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +30,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.Objects;
-
-import static java.lang.Math.abs;
 
 @Mod.EventBusSubscriber(modid = CreatingSpace.MODID)
 public class CSEventHandler {
@@ -184,7 +181,7 @@ public class CSEventHandler {
     }
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
-        DesignCommands.register(event.getDispatcher());
+        CommandsInit.register(event.getDispatcher());
     }
 
     @SubscribeEvent

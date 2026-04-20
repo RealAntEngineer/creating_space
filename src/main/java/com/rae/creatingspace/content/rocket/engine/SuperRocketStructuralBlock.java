@@ -19,14 +19,14 @@ public class SuperRocketStructuralBlock extends MBStructureBlock implements  IPr
     }
     @Override
     public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
-        return stillValid(pLevel,pPos,pState)?pLevel.getBlockState(getMaster(pLevel,pPos,pState)).getBlock().getCloneItemStack(pLevel, pPos, pState):ItemStack.EMPTY;
+        return stillValid(pLevel,pPos,pState)?pLevel.getBlockState(getMaster(pLevel,pPos)).getBlock().getCloneItemStack(pLevel, pPos, pState):ItemStack.EMPTY;
     }
 
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel,
                                            BlockPos pCurrentPos, BlockPos pFacingPos) {
         if (stillValid(pLevel, pCurrentPos, pState)) {
-            BlockPos masterPos = getMaster(pLevel, pCurrentPos, pState);
+            BlockPos masterPos = getMaster(pLevel, pCurrentPos);
             Block masterBlock = pLevel.getBlockState(masterPos).getBlock();
             if (!pLevel.getBlockTicks()
                     .hasScheduledTick(masterPos, masterBlock))

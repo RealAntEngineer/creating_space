@@ -1,4 +1,4 @@
-package com.rae.creatingspace.content.worldgen;
+package com.rae.creatingspace.content.worldgen.noise;
 
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;

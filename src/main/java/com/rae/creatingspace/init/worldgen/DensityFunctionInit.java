@@ -3,6 +3,7 @@ package com.rae.creatingspace.init.worldgen;
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.worldgen.CustomDensityFunctions;
+import com.rae.creatingspace.content.worldgen.noise.PhacelleErosionNoise;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,6 +22,10 @@ public class DensityFunctionInit {
 
     public static final RegistryObject<Codec<CustomDensityFunctions.WorleyDensityFunction>> WORLEY_NOISE_FUNCTION = DENSITY_FUNCTIONS
             .register("worley_noise", CustomDensityFunctions.WorleyDensityFunction.CODEC::codec);
+
+
+    public static final RegistryObject<Codec<PhacelleErosionNoise>> PhacelleNoise = DENSITY_FUNCTIONS.register(
+            "phacelle_erosion", PhacelleErosionNoise.CODEC::codec);
 
     public static void register(IEventBus bus){
         DENSITY_FUNCTIONS.register(bus);
