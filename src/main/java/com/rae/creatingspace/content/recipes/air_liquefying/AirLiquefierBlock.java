@@ -45,15 +45,4 @@ public class AirLiquefierBlock extends DirectionalAxisKineticBlock implements IB
     public BlockEntityType<? extends AirLiquefierBlockEntity> getBlockEntityType() {
         return BlockEntityInit.AIR_LIQUEFIER.get();
     }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : ($0,pos,$1,blockEntity) -> {
-            if(blockEntity instanceof AirLiquefierBlockEntity airLiquefierBlockEntity) {
-                airLiquefierBlockEntity.tick(level,pos,state, airLiquefierBlockEntity);
-            }
-        };
-    }
-
 }

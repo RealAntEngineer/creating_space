@@ -20,10 +20,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -92,9 +90,11 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 AirLiquefierBlockEntity::getFluidInvCapability
         );
     }
-    public void tick(Level level, BlockPos pos, BlockState state, AirLiquefierBlockEntity blockEntity) {
+    @Override
+    public void tick() {
         super.tick();
-        if (!level.isClientSide()) {
+        assert getLevel() != null;
+        if (!getLevel().isClientSide()) {
             if (syncCooldown > 0) {
                 syncCooldown--;
                 if (syncCooldown == 0 && queuedSync)
@@ -102,7 +102,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
             }
         }
         float speed = Math.abs(getSpeed());
-        if ((!level.isClientSide || isVirtual())) {
+        if ((!getLevel().isClientSide || isVirtual())) {
             if (processingTicks < 0) {
                 float recipeSpeed = 1;
                 if (currentRecipe instanceof ProcessingRecipe) {
@@ -131,7 +131,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 if (level != null && !level.isClientSide) {
                     List<Recipe<?>> recipes = getMatchingRecipes();
                     if (!recipes.isEmpty()) {
-                        currentRecipe = recipes.get(0);
+                        currentRecipe = recipes.getFirst();
                         sendData();
                     }
                 }
