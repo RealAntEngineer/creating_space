@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.worldgen.debug;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
 import javax.imageio.ImageIO;
@@ -8,7 +9,7 @@ import java.io.File;
 
 public class DensityFunctionVisualizer {
 
-    public static void render2D(DensityFunction function, int size, int yLevel, File output) throws Exception {
+    public static void render2D(DensityFunction function, BlockPos center, int size, int yLevel, File output) throws Exception {
         File parent = output.getParentFile();
         if (parent != null && !parent.exists()) {
             parent.mkdirs();
@@ -27,7 +28,7 @@ public class DensityFunctionVisualizer {
                 int worldX = x - size / 2;
                 int worldZ = z - size / 2;
 
-                double v = function.compute(new DensityFunction.SinglePointContext(worldX, yLevel, worldZ));
+                double v = function.compute(new DensityFunction.SinglePointContext(center.getX() + worldX, yLevel, center.getZ() + worldZ));
                 values[x][z] = v;
 
                 if (v < min) min = v;

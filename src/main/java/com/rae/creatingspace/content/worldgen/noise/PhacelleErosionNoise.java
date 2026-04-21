@@ -33,14 +33,14 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
     private static final MapCodec<PhacelleErosionNoise> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) ->
             instance.group(
                     DensityFunction.HOLDER_HELPER_CODEC.fieldOf("height_map").forGetter(i -> i.heightMap),
-                        Codec.FLOAT.fieldOf("height_offset_value").forGetter(i -> i.heightOffsetValue),
-                    Codec.FLOAT.fieldOf("height_offset_blend").forGetter(i -> i.heightOffsetBlend),
+                        Codec.FLOAT.optionalFieldOf("height_offset_value", 0f).forGetter(i -> i.heightOffsetValue),
+                    Codec.FLOAT.optionalFieldOf("height_offset_blend", 1f).forGetter(i -> i.heightOffsetBlend),
 
-                    ErosionParams.CODEC.optionalFieldOf("erosion", new ErosionParams(0.65f, 0.22f, 0.5f, 1.5f)).forGetter(i ->
+                    ErosionParams.CODEC.optionalFieldOf("erosion", new ErosionParams(32f, 0.22f, 0.5f, 1.5f)).forGetter(i ->
                             new ErosionParams(i.erosionScale, i.erosionStrength, i.erosionGullyWeight, i.erosionDetail)),
                     RoundingParams.CODEC.optionalFieldOf("rounding", new RoundingParams(0.1f, 0.0f, 0.1f, 2.0f)).forGetter(i ->
                             new RoundingParams(i.ridgeRounding, i.creaseRounding, i.roundingMultInitial, i.roundingMultPerOctave)),
-                    OnsetParams.CODEC.optionalFieldOf("onset", new OnsetParams(0.7f, 1.25f, 2.8f, 1.5f)).forGetter(i ->
+                    OnsetParams.CODEC.optionalFieldOf("onset", new OnsetParams(1.25f, 1.25f, 2.8f, 1.5f)).forGetter(i ->
                             new OnsetParams(i.onsetInitial, i.onsetPerOctave, i.ridgeMapOnsetInitial, i.ridgeMapOnsetPerOctave)),
                     SlopeParams.CODEC.optionalFieldOf("slope", new SlopeParams(0.7f, 1.0f)).forGetter(i ->
                             new SlopeParams(i.assumedSlope, i.assumedSlopeMix)),
@@ -260,7 +260,7 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
         // Normalize height relative to center, scaled to produce -1 at valleys, +1 at peaks
         // Division by 0.15 of the range provides good sensitivity (adjustable if needed)
         float fadeTarget = heightRange > 1e-10
-                ? (float) ((height - heightCenter) / (heightRange * 0.15))
+                ? (float) ((height - heightCenter) / (heightRange * 0.6))
                 : 0.0f;
         fadeTarget = Mth.clamp(fadeTarget, -1.0f, 1.0f);
 
@@ -573,7 +573,7 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
     private record ErosionParams(float scale, float strength, float gullyWeight, float detail) {
         private static final Codec<ErosionParams> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
-                        Codec.FLOAT.optionalFieldOf("scale", 0.15f).forGetter(ErosionParams::scale),
+                        Codec.FLOAT.optionalFieldOf("scale", 32f).forGetter(ErosionParams::scale),
                         Codec.FLOAT.optionalFieldOf("strength", 0.22f).forGetter(ErosionParams::strength),
                         Codec.FLOAT.optionalFieldOf("gully_weight", 0.5f).forGetter(ErosionParams::gullyWeight),
                         Codec.FLOAT.optionalFieldOf("detail", 1.5f).forGetter(ErosionParams::detail)
@@ -593,7 +593,7 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
     private record OnsetParams(float initial, float perOctave, float ridgeMapInitial, float ridgeMapPerOctave) {
         private static final Codec<OnsetParams> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
-                        Codec.FLOAT.optionalFieldOf("initial", 0.7f).forGetter(OnsetParams::initial),
+                        Codec.FLOAT.optionalFieldOf("initial", 1.25f).forGetter(OnsetParams::initial),
                         Codec.FLOAT.optionalFieldOf("per_octave", 1.25f).forGetter(OnsetParams::perOctave),
                         Codec.FLOAT.optionalFieldOf("ridge_map_initial", 2.8f).forGetter(OnsetParams::ridgeMapInitial),
                         Codec.FLOAT.optionalFieldOf("ridge_map_per_octave", 1.5f).forGetter(OnsetParams::ridgeMapPerOctave)

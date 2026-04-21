@@ -1,28 +1,29 @@
 package com.rae.creatingspace.init;
 
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.serialization.JsonOps;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.saved.UnlockedDesignManager;
 import com.rae.creatingspace.content.worldgen.debug.Test;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import org.lwjgl.system.NonnullDefault;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.rae.creatingspace.content.worldgen.debug.DensityFunctionVisualizer.render2D;
 import static com.rae.creatingspace.init.MiscInit.getSyncedExhaustPackRegistry;
@@ -72,11 +73,6 @@ public class CommandsInit {
 
                                     renderDensityFunction(source, id);
 
-                                    try {
-                                        Test.main(new String[]{});
-                                    } catch (Exception e) {
-                                        throw new RuntimeException(e);
-                                    }
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )
@@ -87,15 +83,14 @@ public class CommandsInit {
     private static void renderDensityFunction(CommandSourceStack source, ResourceLocation id) {
 
         try {
-
             var ops = RegistryOps.create(
                     com.mojang.serialization.JsonOps.INSTANCE,
                     source.registryAccess()
             );
-            // Build JSON reference to the density function
 
+            // JSON = direct string reference
             var json = new JsonPrimitive(id.toString());
-            // Decode using HOLDER_HELPER_CODEC
+
             var result = DensityFunction.HOLDER_HELPER_CODEC
                     .parse(ops, json)
                     .resultOrPartial(error -> {
@@ -108,13 +103,15 @@ public class CommandsInit {
             }
 
             DensityFunction function = result.get();
-            function = function.mapAll(f -> f);
 
-            // Render to file
+            long seed = source.getLevel().getSeed();
+            function = function.mapAll(new SimpleNoiseWiringHelper(seed));
 
-            File file = new File("density/" + id.getPath() + ".png");
+            // Render
+            File file = new File("density/" + id.getNamespace() + "/" + id.getPath() + ".png");
 
-            render2D(function, 512, 0, file);
+            assert source.getEntity() != null;
+            render2D(function, source.getEntity().blockPosition(), 512, 0, file);
 
             source.sendSuccess(() ->
                             Component.literal("Rendered density function to " + file.getAbsolutePath()),
@@ -123,6 +120,7 @@ public class CommandsInit {
 
         } catch (Exception e) {
             source.sendFailure(Component.literal("Error: " + e.getMessage()));
+            e.printStackTrace();
         }
     }
 
@@ -147,5 +145,39 @@ public class CommandsInit {
         UnlockedDesignManager.playerLogin(player);
         // Clear other types of designs if needed
         player.displayClientMessage(Component.literal("All designs cleared!"), false);
+    }
+
+    @NonnullDefault
+    private static class SimpleNoiseWiringHelper implements DensityFunction.Visitor {
+
+        private final Map<DensityFunction, DensityFunction> cache = new HashMap<>();
+        private final long                                  seed;
+
+        public SimpleNoiseWiringHelper(long seed) {
+            this.seed = seed;
+        }
+
+        @Override
+        public DensityFunction apply(DensityFunction f) {
+            return cache.computeIfAbsent(f, this::wrap);
+        }
+
+        private DensityFunction wrap(DensityFunction f) {
+            return f;
+        }
+
+        @Override
+        public DensityFunction.NoiseHolder visitNoise(DensityFunction.NoiseHolder holder) {
+
+            var key = holder.noiseData().unwrapKey().orElseThrow();
+
+            // Create a real NormalNoise instance
+            NormalNoise noise = NormalNoise.create(
+                    new LegacyRandomSource(seed + key.location().hashCode()),
+                    holder.noiseData().value()
+            );
+
+            return new DensityFunction.NoiseHolder(holder.noiseData(), noise);
+        }
     }
 }

@@ -1,69 +1,18 @@
 {
-  "type": "minecraft:add",
-  "argument1": {
-    "type": "minecraft:mul",
+  "type": "minecraft:clamp",
+  "input": {
+    "type": "minecraft:add",
     "argument1": {
-      "type": "minecraft:add",
-      "argument1": "creatingspace:mars/ravine/ravines_folded",
-      "argument2": "creatingspace:mars/ravine/ridges_folded"
+      "type": "minecraft:mul",
+      "argument1": "creatingspace:mars/ravine/edge_erosion",
+      "argument2": "creatingspace:mars/ravine/edge_factor"
     },
     "argument2": {
-      "type": "minecraft:spline",
-      "spline": {
-        "coordinate": "creatingspace:mars/ravine/ravines_interpolator",
-        "points": [
-          {
-            "location": 0,
-            "derivative": 0,
-            "value": 0
-          },
-          {
-            "location": 0.5,
-            "derivative": 0,
-            "value": 1
-          },
-          {
-            "location": 1,
-            "derivative": 0,
-            "value": 0
-          }
-        ]
-      }
+      "type": "minecraft:mul",
+      "argument1": "creatingspace:mars/ravine/ravines_folded_base",
+      "argument2": -6
     }
   },
-  "argument2": {
-    "type": "minecraft:mul",
-    "argument1": "creatingspace:mars/ravine/ravines_folded",
-    "argument2": {
-      "type": "minecraft:add",
-      "argument1": 1,
-      "argument2": {
-        "type": "minecraft:mul",
-        "argument1": -1,
-        "argument2": {
-          "type": "minecraft:spline",
-          "spline": {
-            "coordinate": "creatingspace:mars/ravine/ravines_interpolator",
-            "points": [
-              {
-                "location": 0,
-                "derivative": 0,
-                "value": 0
-              },
-              {
-                "location": 0.5,
-                "derivative": 0,
-                "value": 1
-              },
-              {
-                "location": 1,
-                "derivative": 0,
-                "value": 0
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
+  "min": -1,
+  "max": 0
 }

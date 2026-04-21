@@ -9,7 +9,7 @@
   },
   "argument2": {
     "type": "minecraft:add",
-    "argument1": 0,
+    "argument1": "creatingspace:testing/offset",
     "argument2": {
       "type": "minecraft:mul",
       "argument1": 1,

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:spline",
+  "spline": {
+    "coordinate": "creatingspace:mars/ravine/ravines_folded_base",
+    "points": [
+      {
+        "location": -0.4,
+        "derivative": 0,
+        "value": 0
+      },
+      {
+        "location": 0.1,
+        "derivative": 0,
+        "value": 6
+      }
+    ]
+  }
+}

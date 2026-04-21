@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.worldgen.debug;
 
 import com.rae.creatingspace.content.worldgen.noise.PhacelleErosionNoise;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -12,16 +13,15 @@ import static com.rae.creatingspace.content.worldgen.debug.DensityFunctionVisual
 public class Test {
 
     public static void main(String[] args) throws Exception {
-// 1. Base heightmap
         DensityFunction base = new FixedMountainDF();
 
         DensityFunction erosion = new PhacelleErosionNoise(
                 base,
-                0,0,
+                0,1,
 
                 // erosion
-                10f,  // scale
-                0.8f,  // strength
+                30f,  // scale
+                0.22f,  // strength
                 0.5f,   // gully weight
                 1.5f,   // detail
 
@@ -32,8 +32,8 @@ public class Test {
                 2.0f,   // rounding mult per octave
 
                 // onset
-                0.7f,   // onset initial
-                1.25f,  // onset per octave
+                2.25f,   // onset initial
+                2.25f,  // onset per octave
                 2.8f,   // ridge map onset initial
                 1.5f,   // ridge map onset per octave
 
@@ -47,12 +47,12 @@ public class Test {
                 0.5f,   // gain
 
                 // noise
-                10f,   // cell scale
+                0.7f,   // cell scale
                 0.5f    // normalization
         );
 
         // 3. Render
-        render2D(erosion, 512, 0, new File("erosion.png"));
+        render2D(erosion, BlockPos.ZERO,512, 0, new File("erosion.png"));
 
         System.out.println("Done.");
     }

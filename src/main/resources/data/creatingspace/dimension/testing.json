@@ -5,7 +5,7 @@
     "settings": "creatingspace:testing",
     "biome_source": {
       "type": "minecraft:fixed",
-      "biome": "creatingspace:asteroids/space"
+      "biome": "creatingspace:space"
     }
   }
 }

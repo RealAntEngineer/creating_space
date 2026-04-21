@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:flat_cache",
+  "type": "minecraft:cache_2d",
   "argument": {
     "type": "minecraft:mul",
     "argument1": {
@@ -7,12 +7,20 @@
       "height_map": {
         "type": "minecraft:mul",
         "argument1": "creatingspace:testing/offset",
-        "argument2": 1
+        "argument2": 2
       },
-      "noise": {
-        "cell_size": 10
+      "erosion": {
+        "erosion_scale": 48
+      },
+      "fractal": {
+        "octaves": 3
+      },
+      "rounding" : {
+        "ridge_rounding" : 0,
+        "creaseRounding" : 0.5
+
       }
     },
-    "argument2": 1
+    "argument2": 0.75
   }
 }

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:add",
+  "argument1": -0.35,
+  "argument2": {
+    "type": "minecraft:abs",
+    "argument": {
+      "type": "minecraft:add",
+      "argument1": -0.58,
+      "argument2": {
+        "type": "minecraft:abs",
+        "argument": "creatingspace:mars/ravine/ravines"
+      }
+    }
+  }
+}

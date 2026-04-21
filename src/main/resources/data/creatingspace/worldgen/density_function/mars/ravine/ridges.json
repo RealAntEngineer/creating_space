@@ -1,6 +1,6 @@
 {
   "comment": "do a profiling to see if it impact worldgen of not",
-  "type": "minecraft:cache_2d",
+  "type": "minecraft:flat_cache",
   "argument": {
     "type": "minecraft:shifted_noise",
     "noise": "creatingspace:mars/ravines",
