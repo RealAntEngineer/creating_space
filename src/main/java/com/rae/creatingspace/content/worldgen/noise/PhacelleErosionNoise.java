@@ -9,16 +9,33 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import org.lwjgl.system.NonnullDefault;
 
 
-// Phacelle Noise function copyright (c) 2025 Rune Skovbo Johansen
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+/**
+ * Advanced terrain erosion filter based on stacked faded gullies.
+ * Ported from GLSL shader by Rune Skovbo Johansen.
+ * <p>
+ * For more on the technique, see:
+ * <a href="https://blog.runevision.com/2026/03/fast-and-gorgeous-erosion-filter.html">Fast and Gorgeous Erosion Filter</a>
+ * <p>
+ * This erosion technique creates realistic terrain features including:
+ * <ul>
+ * <li>Natural-looking gullies aligned with terrain slopes</li>
+ * <li>Sharp ridges on peaks with smooth valleys</li>
+ * <li>Multi-octave detail for fine erosion patterns</li>
+ * </ul>
+ * <p>
+ * Original shader copyright (c) 2025 Rune Skovbo Johansen
+ * <br>Licensed under Mozilla Public License, v. 2.0
+ * <br><a href="https://mozilla.org/MPL/2.0/">https://mozilla.org/MPL/2.0/</a>
+ */
 @NonnullDefault
 public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INeedWorldSeed {
 
     private static final MapCodec<PhacelleErosionNoise> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) ->
             instance.group(
                     DensityFunction.HOLDER_HELPER_CODEC.fieldOf("height_map").forGetter(i -> i.heightMap),
+                        Codec.FLOAT.fieldOf("height_offset_value").forGetter(i -> i.heightOffsetValue),
+                    Codec.FLOAT.fieldOf("height_offset_blend").forGetter(i -> i.heightOffsetBlend),
+
                     ErosionParams.CODEC.optionalFieldOf("erosion", new ErosionParams(0.65f, 0.22f, 0.5f, 1.5f)).forGetter(i ->
                             new ErosionParams(i.erosionScale, i.erosionStrength, i.erosionGullyWeight, i.erosionDetail)),
                     RoundingParams.CODEC.optionalFieldOf("rounding", new RoundingParams(0.1f, 0.0f, 0.1f, 2.0f)).forGetter(i ->
@@ -31,8 +48,8 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
                             new FractalParams(i.octaves, i.lacunarity, i.gain)),
                     NoiseParams.CODEC.optionalFieldOf("noise", new NoiseParams(0.7f, 0.5f)).forGetter(i ->
                             new NoiseParams(i.cellScale, i.normalization))
-            ).apply(instance, (heightMap, erosion, rounding, onset, slope, fractal, noise) ->
-                    new PhacelleErosionNoise(heightMap,
+            ).apply(instance, (heightMap,heightOffsetValue, heightOffsetBlend,  erosion, rounding, onset, slope, fractal, noise) ->
+                    new PhacelleErosionNoise(heightMap, heightOffsetValue, heightOffsetBlend,
                             erosion.scale, erosion.strength, erosion.gullyWeight, erosion.detail,
                             rounding.ridge, rounding.crease, rounding.multInitial, rounding.multPerOctave,
                             onset.initial, onset.perOctave, onset.ridgeMapInitial, onset.ridgeMapPerOctave,
@@ -43,35 +60,134 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
     public static final KeyDispatchDataCodec<PhacelleErosionNoise> CODEC = KeyDispatchDataCodec.of(DATA_CODEC);
 
     private static final float           TAU = (float) (2.0 * Math.PI);
+    /**
+     * The base heightmap to apply erosion to
+     */
     private final        DensityFunction heightMap;
-    // Erosion parameters
-    private final        float           erosionScale;
-    private final        float           erosionStrength;
-    private final        float           erosionGullyWeight;
-    private final        float           erosionDetail;
-    private final        float           ridgeRounding;
-    private final        float           creaseRounding;
-    private final        float           roundingMultInitial;
-    private final        float           roundingMultPerOctave;
-    private final        float           onsetInitial;
-    private final        float           onsetPerOctave;
-    private final        float           ridgeMapOnsetInitial;
-    private final        float           ridgeMapOnsetPerOctave;
-    private final        float           assumedSlope;
-    private final        float           assumedSlopeMix;
-    private final        int             octaves;
-    private final        float           lacunarity;
-    private final        float           gain;
-    private final        float           cellScale;
-    private final        float           normalization;
-    //the seed
-    private              long            seed;
+
+    /**
+     * The scale of the erosion effect, affecting it both horizontally and vertically.
+     */
+    private final float erosionScale;
+
+    /**
+     * The strength of the erosion effect, affecting the magnitude of all octaves,
+     * and indirectly affecting the directions of the gullies as a result.
+     */
+    private final float erosionStrength;
+
+    /**
+     * The magnitude of the gullies as a weight value from 0 to 1.
+     * A value of 0 can sharpen peaks and valleys but feature virtually no gullies.
+     * A value of 1 produces full gullies but may leave peaks and valleys rounded.
+     */
+    private final float erosionGullyWeight;
+
+    /**
+     * The overall detail of the erosion. Lower values restrict the effect of higher
+     * frequency gullies to steeper slopes.
+     */
+    private final float erosionDetail;
+
+    /**
+     * An offset value between -1 and 1, where -1 only lowers, while +1 only raises.
+     * The offset is proportional to the erosion strength parameter.
+     */
+    private final float heightOffsetValue;
+
+    /**
+     * Degree (0-1) to which the offset value is replaced by the negated fade target.
+     * This has the effect of only raising at valleys and only lowering at peaks.
+     */
+    private final float heightOffsetBlend;
+
+    /**
+     * Rounding of ridges (peaks). Higher values = more rounded ridges.
+     */
+    private final float ridgeRounding;
+
+    /**
+     * Rounding of creases (valleys). Higher values = more rounded valleys.
+     */
+    private final float creaseRounding;
+
+    /**
+     * Multiplier applied to the initial height function for rounding compensation.
+     */
+    private final float roundingMultInitial;
+
+    /**
+     * Multiplier applied to each subsequent gully octave after the first.
+     */
+    private final float roundingMultPerOctave;
+
+    /**
+     * Onset used on the initial height function.
+     */
+    private final float onsetInitial;
+
+    /**
+     * Onset used on each gully octave.
+     */
+    private final float onsetPerOctave;
+
+    /**
+     * RidgeMap-specific onset used on the initial height function.
+     */
+    private final float ridgeMapOnsetInitial;
+
+    /**
+     * RidgeMap-specific onset used on each gully octave.
+     */
+    private final float ridgeMapOnsetPerOctave;
+
+    /**
+     * An assumed slope value to override the actual slope.
+     */
+    private final float assumedSlope;
+
+    /**
+     * The amount (0-1) to override the actual slope. 0 = use actual, 1 = use assumed.
+     */
+    private final float assumedSlopeMix;
+
+    /**
+     * Number of octave layers to apply.
+     */
+    private final int octaves;
+
+    /**
+     * Controls the frequency (inverse horizontal scale) of each octave relative to the last.
+     */
+    private final float lacunarity;
+
+    /**
+     * Controls the magnitude (vertical scale) of each octave relative to the last.
+     */
+    private final float gain;
+
+    /**
+     * Controls the sizes of Voronoi-like cells relative to the overall erosion scale.
+     */
+    private final float cellScale;
+
+    /**
+     * The degree of normalization applied in the Phacelle noise, between 0 and 1.
+     */
+    private final float normalization;
+
+    /**
+     * The world seed used for randomization in the hash function.
+     */
+    private long seed;
 
     /**
      * Creates an erosion noise function with custom parameters.
      */
     public PhacelleErosionNoise(
             DensityFunction heightMap,
+            float heightOffsetValue,
+            float heightOffsetBlend,
             float erosionScale,
             float erosionStrength,
             float erosionGullyWeight,
@@ -92,6 +208,8 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
             float cellScale,
             float normalization) {
         this.heightMap = heightMap;
+        this.heightOffsetValue = heightOffsetValue;
+        this.heightOffsetBlend = heightOffsetBlend;
         this.erosionScale = erosionScale;
         this.erosionStrength = erosionStrength;
         this.erosionGullyWeight = erosionGullyWeight;
@@ -115,35 +233,39 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
 
     @Override
     public double compute(FunctionContext context) {
-        // Sample the base heightmap and compute approximate derivatives
+        // Sample the base heightmap
         double height = heightMap.compute(context);
 
         int x = context.blockX(), y = context.blockY(), z = context.blockZ();
-        //TODO, introduce a differentiable DensityFunction
 
-        // Compute slope using finite differences (sampling adjacent blocks)
-        double heightXPlus =
-                (
-                        heightMap.compute(new SinglePointContext(x + 1, y, z)) +
-                        heightMap.compute(new SinglePointContext(x - 1, y, z))
-                )/2;
-        double heightZPlus =
-                (
-                        heightMap.compute(new SinglePointContext(x, y, z + 1)) +
-                        heightMap.compute(new SinglePointContext(x, y, z - 1))
-                )/2;
+        // Compute slope using finite differences (central difference method)
+        // This approximates the derivative by sampling adjacent blocks
+        double heightXPlus  = heightMap.compute(new SinglePointContext(x + 1, y, z));
+        double heightXMinus = heightMap.compute(new SinglePointContext(x - 1, y, z));
+        double heightZPlus  = heightMap.compute(new SinglePointContext(x, y, z + 1));
+        double heightZMinus = heightMap.compute(new SinglePointContext(x, y, z - 1));
 
-        float slopeX = (float) (heightXPlus - height);
-        float slopeZ = (float) (heightZPlus - height);
+        // Central difference formula: (f(x+h) - f(x-h)) / 2h, where h=1 block
+        float slopeX = (float) ((heightXPlus - heightXMinus) * 0.5);
+        float slopeZ = (float) ((heightZPlus - heightZMinus) * 0.5);
 
-        // Define fade target based on altitude
-        // you need to look into the height_map min and max to scale it.
-        // parameters to offset it ???
+        // Define the erosion fade target based on the altitude of the pre-eroded terrain.
+        // The fade target should strive to be -1 at valleys and 1 at peaks, but overshooting is ok.
+        // Auto-resolve from heightmap min/max: map [minValue, maxValue] to [-1, 1]
+        double minHeight    = heightMap.minValue();
+        double maxHeight    = heightMap.maxValue();
+        double heightRange  = maxHeight - minHeight;
+        double heightCenter = (minHeight + maxHeight) * 0.5;
 
-        //fade target is 1 if it's a pic and -1 if it's a crease.
-        float fadeTarget = Mth.clamp((float) height, -1.0f, 1.0f);
+        // Normalize height relative to center, scaled to produce -1 at valleys, +1 at peaks
+        // Division by 0.15 of the range provides good sensitivity (adjustable if needed)
+        float fadeTarget = heightRange > 1e-10
+                ? (float) ((height - heightCenter) / (heightRange * 0.15))
+                : 0.0f;
+        fadeTarget = Mth.clamp(fadeTarget, -1.0f, 1.0f);
 
-        // Apply erosion
+        // Apply erosion filter
+        // Returns: heightDelta (x), slopeDelta (yz), magnitude (w), and ridgeMap
         ErosionResult result = applyErosion(
                 x, z,
                 slopeX,
@@ -151,17 +273,28 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
                 fadeTarget
         );
 
-        return result.heightDelta; //there is a mix to do
+        // Offset according to the height offset parameter by multiplying it with the magnitude.
+        // Control over whether the erosion effect raises or lowers the terrain:
+        //   heightOffsetValue: An offset value between -1 and 1, where -1 only lowers, +1 only raises.
+        //                      The offset is proportional to the erosion strength parameter.
+        //   heightOffsetBlend: Degree (0-1) to replace offset with -fadeTarget.
+        //                      This has the effect of only raising at valleys and only lowering at peaks,
+        //                      which largely preserves the minima and maxima of the terrain.
+        float offsetValue = Mth.lerp(heightOffsetBlend, heightOffsetValue, -fadeTarget);
+        float offset      = offsetValue * result.magnitude;
+
+        // Return only the height delta + offset (base height will be added separately)
+        return result.heightDelta + offset;
     }
 
     @Override
     public double minValue() {
-        return - erosionStrength * erosionScale * 2.0;
+        return -erosionStrength * erosionScale * 2.0;
     }
 
     @Override
     public double maxValue() {
-        return  erosionStrength * erosionScale * 2.0;
+        return erosionStrength * erosionScale * 2.0;
     }
 
     @Override
@@ -399,15 +532,15 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
      * Hash function for 2D coordinates.
      * Generates pseudo-random values in range [-1, 1] for both x and y.
      */
-    private static float[] hash2D(int x, int z) {
-        // Simple hash based on sine functions (similar to common shader hashes)
-        int n = x * 374761393 + z * 668265263;
-        n = (n ^ (n >> 13)) * 1274126177;
+    private float[] hash2D(int x, int z) {
+        // Incorporate the world seed for variation
+        long n = (x * 374761393L + z * 668265263L + seed * 1013904223L);
+        n = (n ^ (n >> 13)) * 1274126177L;
         n = n ^ (n >> 16);
 
         float fx = ((n & 0xFFFF) / 32768.0f) - 1.0f;
 
-        n = n * 1664525 + 1013904223;
+        n = n * 1664525L + 1013904223L;
         float fz = ((n & 0xFFFF) / 32768.0f) - 1.0f;
 
         return new float[]{fx, fz};
@@ -424,6 +557,7 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
     public DensityFunction mapAll(Visitor visitor) {
         return visitor.apply(
                 new PhacelleErosionNoise(heightMap.mapAll(visitor),
+                        heightOffsetValue, heightOffsetBlend,
                         erosionScale, erosionStrength, erosionGullyWeight, erosionDetail,
                         ridgeRounding, creaseRounding,
                         roundingMultInitial, roundingMultPerOctave, onsetInitial, onsetPerOctave, ridgeMapOnsetInitial, ridgeMapOnsetPerOctave,
@@ -489,6 +623,14 @@ public class PhacelleErosionNoise implements DensityFunction.SimpleFunction, INe
                         Codec.FLOAT.optionalFieldOf("cell_scale", 0.7f).forGetter(NoiseParams::cellScale),
                         Codec.FLOAT.optionalFieldOf("normalization", 0.5f).forGetter(NoiseParams::normalization)
                 ).apply(instance, NoiseParams::new));
+    }
+
+    private record HeightOffsetParams(float value, float blend) {
+        private static final Codec<HeightOffsetParams> CODEC = RecordCodecBuilder.create(instance ->
+                instance.group(
+                        Codec.FLOAT.optionalFieldOf("value", 0.0f).forGetter(HeightOffsetParams::value),
+                        Codec.FLOAT.optionalFieldOf("blend", 0.0f).forGetter(HeightOffsetParams::blend)
+                ).apply(instance, HeightOffsetParams::new));
     }
     // ========== Helper Classes ==========
 

@@ -17,6 +17,7 @@ public class Test {
 
         DensityFunction erosion = new PhacelleErosionNoise(
                 base,
+                0,0,
 
                 // erosion
                 10f,  // scale
