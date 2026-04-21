@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "item": "creatingspace:nickel_sulfate_shard"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    }
+  },
+  "pattern": [
+    " S ",
+    " I ",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "creatingspace:nickel_sulfate_catalyst"
+  }
+}

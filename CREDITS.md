@@ -1,8 +1,8 @@
 # Developers
-RealAntEngineers, KalWantPizza
+RealAntEngineer, KalWantPizza
 
 # Translators
-RealAntEngineers
+RealAntEngineer
 
 # Testers
 HeyAlexis, Foxer, elemelk

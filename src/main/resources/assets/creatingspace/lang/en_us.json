@@ -7,7 +7,7 @@
   "block.creatingspace.rocket_generator": "Rocket Generator",
   "block.creatingspace.rocket_generator.tooltip.summary": "A machine that burns methane and oxygen to produce SU, start with a signal of redstone if loaded with a starter charge",
   "block.creatingspace.catalyst_carrier": "Catalyst Carrier",
-  "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin ",
+  "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin. Can hold a catalyst for complex recipe",
 
   "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "__[DEPRECATED]__ Needed for producing methane",
