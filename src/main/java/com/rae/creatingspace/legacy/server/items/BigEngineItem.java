@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -106,7 +105,7 @@ public class BigEngineItem extends RocketEngineItem {
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
         //This can be called before registries are bounded to the deferredHolder so check for binding first
         if (PropellantTypeInit.METHALOX.isBound())
-            appendEngineTextDirect(components,PropellantTypeInit.METHALOX.get(),  (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),10000,
+            appendEngineTextDirect(components, "", PropellantTypeInit.METHALOX.get(),  (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),10000,
                 CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get());
 
         super.appendHoverText(stack, context, components, flag);

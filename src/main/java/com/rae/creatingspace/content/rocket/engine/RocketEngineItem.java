@@ -28,26 +28,27 @@ public abstract class RocketEngineItem extends BlockItem {
         super(p_40565_, p_40566_);
     }
 
-    private static void appendEngineDependentText(List<Component> components, Integer ISP, Integer mass, Integer thrust) {
-        if (ISP!=null) components.add(Component.translatable("creatingspace.science.isp")
+    private static void appendEngineDependentText(List<Component> components, String prefix, Integer ISP, Integer mass, Integer thrust) {
+        if (ISP!=null) components.add(
+                Component.literal(prefix).append(Component.translatable("creatingspace.science.isp"))
                 .append(Component.literal(" : " + ISP))
-                .append(Component.translatable("creatingspace.science.unit.second")));
-        if (mass!=null) components.add(Component.translatable("creatingspace.science.mass")
-                .append(" : " + mass).append(Component.translatable("creatingspace.science.unit.kilo_gramme")));
-        if (thrust!=null) components.add(Component.translatable("creatingspace.science.thrust")
+                .append(Component.translatable("creatingspace.science.unit.second")).withStyle(ChatFormatting.GRAY));
+        if (mass!=null) components.add(Component.literal(prefix).append(Component.translatable("creatingspace.science.mass"))
+                .append(" : " + mass).append(Component.translatable("creatingspace.science.unit.kilo_gramme")).withStyle(ChatFormatting.GRAY));
+        if (thrust!=null) components.add(Component.literal(prefix).append(Component.translatable("creatingspace.science.thrust"))
                 .append(Component.literal(" : " + CSUtil.scientificNbrFormatting((float) thrust, 10)))
-                .append(Component.translatable("creatingspace.science.unit.newton")));
+                .append(Component.translatable("creatingspace.science.unit.newton")).withStyle(ChatFormatting.GRAY));
 
     }
 
 
-    public static void appendEngineDependentText(List<Component> components, CompoundTag beTag) {
+    public static void appendEngineDependentText(List<Component> components, String prefix, CompoundTag beTag) {
         try {
             PropellantType propellantType = beTag.contains("propellantType")? PropellantTypeInit.getSyncedPropellantRegistry().getOptional(
                     ResourceLocation.CODEC.parse(NbtOps.INSTANCE, beTag.get("propellantType"))
                             .resultOrPartial(s -> {
                             }).orElseThrow()).orElseThrow():null;
-            appendEngineTextDirect(components,propellantType,
+            appendEngineTextDirect(components, prefix, propellantType,
                     beTag.contains("efficiency")&&propellantType!=null?(int) (propellantType.getMaxISP() * beTag.getFloat("efficiency")):null,
                     beTag.contains("mass")?beTag.getInt("mass"):null,
                     beTag.contains("thrust")?beTag.getInt("thrust"):null);
@@ -55,19 +56,20 @@ public abstract class RocketEngineItem extends BlockItem {
 
         }
     }
-    public static void appendEngineTextDirect(List<Component> components, PropellantType propellantType, Integer ISP, Integer mass, Integer thrust) {
-        appendEngineDependentText(components, ISP, mass, thrust);
-        appendFluidInfo(components, propellantType);
+    public static void appendEngineTextDirect(List<Component> components, String prefix, PropellantType propellantType, Integer ISP, Integer mass, Integer thrust) {
+        appendEngineDependentText(components, prefix, ISP, mass, thrust);
+        appendFluidInfo(components, prefix, propellantType);
     }
 
-    private static void appendFluidInfo(List<Component> components, PropellantType propellantType) {
-        components.add(Component.literal("ratio of fluid consumed :"));
+    private static void appendFluidInfo(List<Component> components, String prefix, PropellantType propellantType) {
+        components.add(Component.literal(prefix + "Ratio of fluid consumed :").withStyle(ChatFormatting.GRAY));
         if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
             for (TagKey<Fluid> fluidTagkey : propellantType.getPropellantRatio().keySet()) {
-                components.add(Component.translatable("fluid." + fluidTagkey.location().toLanguageKey()).withStyle(ChatFormatting.AQUA)
+                components.add(Component.literal(prefix + "  ").append(
+                        Component.translatable("fluid." + fluidTagkey.location().toLanguageKey()))
                         .append(" : ")
                         .append(Component.literal(String.valueOf(((int) (propellantType.getPropellantRatio().get(fluidTagkey) * 1000) / 10f))))
-                        .append("%")
+                        .append("%").withStyle(ChatFormatting.DARK_AQUA)
                 );
             }
         }
@@ -95,10 +97,11 @@ public abstract class RocketEngineItem extends BlockItem {
             float finalTotal = total;
             collector.forEach((k, v) -> {
                 if (finalTotal!=0)
-                        components.add(Component.translatable("fluid." + k.location().toLanguageKey()).withStyle(ChatFormatting.AQUA)
+                        components.add(Component.literal(prefix + "  ").append(
+                                Component.translatable("fluid." + k.location().toLanguageKey()))
                                 .append(" : ")
                                 .append(Component.literal(String.valueOf(((int) (collector.get(k) / finalTotal * 1000) / 10f))))
-                                .append("%")
+                                .append("%").withStyle(ChatFormatting.DARK_AQUA)
                         );
                     }
             );

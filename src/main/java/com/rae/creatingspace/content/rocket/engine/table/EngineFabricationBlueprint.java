@@ -18,8 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static com.rae.creatingspace.content.rocket.engine.RocketEngineItem.appendEngineDependentText;
-
 public class EngineFabricationBlueprint extends Item {
     public EngineFabricationBlueprint(Properties properties) {
         super(properties);
@@ -28,7 +26,7 @@ public class EngineFabricationBlueprint extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag tooltipFlag) {
         //TODO make this method static somewhere (repetition for the engine, for the engine blueprint then for every item)
-        CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
+        /*CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
         if (data!=null) {
 
             CompoundTag recipeData = data.copyTag().getCompound("engineRecipeData");
@@ -54,7 +52,7 @@ public class EngineFabricationBlueprint extends Item {
             } catch (Exception ignored) {
 
             }
-        }
+        }*/
         super.appendHoverText(itemStack, context, components, tooltipFlag);
     }
 
