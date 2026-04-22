@@ -38,9 +38,7 @@ public abstract class RocketEngineItem extends BlockItem {
         if (thrust!=null) components.add(Component.literal(prefix).append(Component.translatable("creatingspace.science.thrust"))
                 .append(Component.literal(" : " + CSUtil.scientificNbrFormatting((float) thrust, 10)))
                 .append(Component.translatable("creatingspace.science.unit.newton")).withStyle(ChatFormatting.GRAY));
-
     }
-
 
     public static void appendEngineDependentText(List<Component> components, String prefix, CompoundTag beTag) {
         try {
@@ -56,6 +54,7 @@ public abstract class RocketEngineItem extends BlockItem {
 
         }
     }
+
     public static void appendEngineTextDirect(List<Component> components, String prefix, PropellantType propellantType, Integer ISP, Integer mass, Integer thrust) {
         appendEngineDependentText(components, prefix, ISP, mass, thrust);
         appendFluidInfo(components, prefix, propellantType);
