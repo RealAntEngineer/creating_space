@@ -1,0 +1,49 @@
+{
+    "type": "create:sequenced_assembly",
+    "ingredient": {
+        "item": "create:sturdy_sheet"
+    },
+    "loops": 1,
+    "results": [
+        {
+            "id": "creatingspace:reinforced_copper_injector"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_reinforced_copper_injector"
+                },
+                {
+                    "item": "creatingspace:reinforced_copper_sheet"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_reinforced_copper_injector"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_reinforced_copper_injector"
+                },
+                {
+                    "item": "creatingspace:reinforced_copper_nugget"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_reinforced_copper_injector"
+                }
+            ]
+        }
+    ],
+    "transitional_item": {
+        "id": "creatingspace:incomplete_reinforced_copper_injector"
+    }
+}

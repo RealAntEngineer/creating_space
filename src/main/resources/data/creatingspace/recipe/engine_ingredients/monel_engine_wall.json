@@ -1,0 +1,13 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+        {
+            "item": "creatingspace:monel_sheet"
+        }
+    ],
+    "results": [
+        {
+            "id": "creatingspace:monel_engine_wall"
+        }
+    ]
+}

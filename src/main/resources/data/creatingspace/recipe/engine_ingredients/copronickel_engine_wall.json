@@ -1,0 +1,13 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+        {
+            "item": "creatingspace:copronickel_sheet"
+        }
+    ],
+    "results": [
+        {
+            "id": "creatingspace:copronickel_engine_wall"
+        }
+    ]
+}

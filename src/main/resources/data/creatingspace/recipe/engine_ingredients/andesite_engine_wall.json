@@ -1,0 +1,13 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+        {
+            "item": "create:andesite_alloy"
+        }
+    ],
+    "results": [
+        {
+            "id": "creatingspace:andesite_engine_wall"
+        }
+    ]
+}

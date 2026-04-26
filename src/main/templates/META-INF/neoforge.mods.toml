@@ -8,7 +8,6 @@ issueTrackerURL = "https://github.com/RealAntEngineer/CreatingSpace/issues"
 modId="creatingspace"
 version = "${mod_version}"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/create-creatingspace"
-updateJSONURL = "https://api.modrinth.com/updates/creatingspace/forge_updates.json?neoforge=only"
 displayName="Creating Space"
 logoFile = "logo.png"
 credits='''

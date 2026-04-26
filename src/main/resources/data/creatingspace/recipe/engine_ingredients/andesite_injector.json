@@ -1,0 +1,49 @@
+{
+    "type": "create:sequenced_assembly",
+    "ingredient": {
+        "item": "create:sturdy_sheet"
+    },
+    "loops": 1,
+    "results": [
+        {
+            "id": "creatingspace:andesite_injector"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_andesite_injector"
+                },
+                {
+                    "item": "create:andesite_alloy"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_andesite_injector"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_andesite_injector"
+                },
+                {
+                    "item": "minecraft:iron_nugget"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_andesite_injector"
+                }
+            ]
+        }
+    ],
+    "transitional_item": {
+        "id": "creatingspace:incomplete_andesite_injector"
+    }
+}

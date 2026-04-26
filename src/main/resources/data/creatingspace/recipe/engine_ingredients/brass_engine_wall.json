@@ -1,0 +1,13 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+        {
+            "item": "create:brass_sheet"
+        }
+    ],
+    "results": [
+        {
+            "id": "creatingspace:brass_engine_wall"
+        }
+    ]
+}

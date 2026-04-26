@@ -54,7 +54,7 @@ public class ScheduleEntry {
         return tag;
     }
 
-    public static ScheduleEntry fromTag(HolderLookup.Provider registries,CompoundTag tag) {
+    public static ScheduleEntry fromTag(HolderLookup.Provider registries, CompoundTag tag) {
         ScheduleEntry entry = new ScheduleEntry();
         entry.instruction = ScheduleInstruction.fromTag(registries,tag.getCompound("Instruction"));
         entry.conditions = new ArrayList<>();

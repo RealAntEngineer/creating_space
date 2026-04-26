@@ -1,0 +1,13 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+        {
+            "item": "creatingspace:inconel_sheet"
+        }
+    ],
+    "results": [
+        {
+            "id": "creatingspace:inconel_engine_wall"
+        }
+    ]
+}

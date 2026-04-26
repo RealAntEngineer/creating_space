@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
-//TODO ask Chatgpt
+
 public class CustomTeleporter {
     protected final ServerLevel level;
 

@@ -1,0 +1,49 @@
+{
+    "type": "create:sequenced_assembly",
+    "ingredient": {
+        "item": "create:sturdy_sheet"
+    },
+    "loops": 1,
+    "results": [
+        {
+            "id": "creatingspace:hastelloy_injector"
+        }
+    ],
+    "sequence": [
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_hastelloy_injector"
+                },
+                {
+                    "item": "creatingspace:hastelloy_sheet"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_hastelloy_injector"
+                }
+            ]
+        },
+        {
+            "type": "create:deploying",
+            "ingredients": [
+                {
+                    "item": "creatingspace:incomplete_hastelloy_injector"
+                },
+                {
+                    "item": "creatingspace:hastelloy_nugget"
+                }
+            ],
+            "results": [
+                {
+                    "id": "creatingspace:incomplete_hastelloy_injector"
+                }
+            ]
+        }
+    ],
+    "transitional_item": {
+        "id": "creatingspace:incomplete_hastelloy_injector"
+    }
+}
