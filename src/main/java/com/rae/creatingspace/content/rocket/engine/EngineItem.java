@@ -1,6 +1,5 @@
 package com.rae.creatingspace.content.rocket.engine;
 
-import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.SmallRocketStructuralBlock;
@@ -22,9 +21,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NonnullDefault;
 
 import java.util.List;
@@ -102,7 +98,7 @@ public class EngineItem extends RocketEngineItem {
             nbt = data.copyTag();
         }
         CompoundTag beTag = nbt.getCompound("blockEntity");
-        appendEngineDependentText(tooltipComponents, beTag);
+        appendEngineDependentText(tooltipComponents, "", beTag);
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

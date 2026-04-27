@@ -8,6 +8,7 @@ import com.rae.creatingspace.content.life_support.INeedOxygen;
 import com.rae.creatingspace.content.life_support.sealer.RoomPressuriserBlockEntity;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlockEntity;
 import com.rae.creatingspace.content.life_support.spacesuit.UpgradableEquipment;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
 import com.rae.creatingspace.init.CSDamageSources;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.CommandsInit;
@@ -212,6 +213,7 @@ public class CSEventHandler {
         public static void registerCapabilities(RegisterCapabilitiesEvent event) {
             //ChemicalSynthesizerBlockEntity.registerCapabilities(event);
             RoomPressuriserBlockEntity.registerCapabilities(event);
+            AirLiquefierBlockEntity.registerCapabilities(event);
             CryogenicTankBlockEntity.registerCapabilities(event);
             CryogenicTankItem.registerCapabilities(event);
             OxygenBacktankBlockEntity.registerCapabilities(event);

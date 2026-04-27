@@ -92,7 +92,7 @@ public class RocketSchedule {
 
     public static RocketSchedule fromTag(HolderLookup.Provider registries,CompoundTag tag) {
         RocketSchedule schedule = new RocketSchedule();
-        schedule.entries = NBTHelper.readCompoundList(tag.getList("Entries", Tag.TAG_COMPOUND), t-> ScheduleEntry.fromTag(registries, tag));
+        schedule.entries = NBTHelper.readCompoundList(tag.getList("Entries", Tag.TAG_COMPOUND), t-> ScheduleEntry.fromTag(registries, t));
         schedule.cyclic = tag.getBoolean("Cyclic");
         if (tag.contains("Progress"))
             schedule.savedProgress = tag.getInt("Progress");

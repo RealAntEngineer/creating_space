@@ -1,0 +1,13 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+        {
+            "item": "create:iron_sheet"
+        }
+    ],
+    "results": [
+        {
+            "id": "creatingspace:iron_engine_wall"
+        }
+    ]
+}

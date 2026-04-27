@@ -1,0 +1,13 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+        {
+            "item": "create:copper_sheet"
+        }
+    ],
+    "results": [
+        {
+            "id": "creatingspace:copper_engine_wall"
+        }
+    ]
+}

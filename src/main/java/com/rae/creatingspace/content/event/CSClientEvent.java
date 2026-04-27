@@ -6,21 +6,19 @@ import com.rae.creatingspace.content.life_support.spacesuit.NetheriteOxygenBackt
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankArmorLayer;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
-import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint;
+import com.rae.creatingspace.content.rocket.engine.design.DesignBlueprintItem;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.init.EngineMaterialInit;
-import com.rae.creatingspace.init.ingameobject.MaterialInit;
 import com.rae.creatingspace.CreatingSpace;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
-import net.createmod.ponder.mixin.client.WindowResizeMixin;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -67,31 +65,38 @@ public class CSClientEvent {
         //TODO, do something a bit less hacky and improve the formating, it's ugly as hell
         ItemStack itemStack = event.getItemStack();
         List<Component> components = event.getToolTip();
-        if (!(itemStack.getItem() instanceof EngineFabricationBlueprint || itemStack.getItem() instanceof EngineItem)) {
-            CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
-            if (data == null) {
-                return;
-            }
-            CompoundTag itemData = data.copyTag();
-            CompoundTag recipeData = itemData.getCompound("engineRecipeData");
+        if (!(itemStack.getItem() instanceof DesignBlueprintItem || itemStack.getItem() instanceof EngineItem)) {
             try {
-                int size = recipeData.getInt("size");
-                int materialLevel = recipeData.getInt("materialLevel");
-                if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
-                if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + EngineMaterialInit.materials.get(materialLevel)));
 
-                ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).getOrThrow();
-                components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-
-                ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).getOrThrow();
-                components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
-
-                CompoundTag engineInfo = itemData.getCompound("blockEntity");
-                if(!engineInfo.isEmpty()) {
-                    components.add(Component.literal("for engine :"));
-                    appendEngineDependentText(components, engineInfo);
+                CustomData data = itemStack.get(DataComponents.CUSTOM_DATA);
+                if (data == null) {
+                    return;
                 }
-            } catch (Exception exception){
+                CompoundTag itemData      = data.copyTag();
+                CompoundTag recipeData    = itemData.getCompound("engineRecipeData");
+                if (!recipeData.isEmpty()) {
+                    components.add(Component.literal("Recipe Information :").withStyle(ChatFormatting.GOLD));
+
+                    int size          = recipeData.getInt("size");
+                    int materialLevel = recipeData.getInt("materialLevel");
+                    if (recipeData.contains("size")) components.add(Component.literal("  Size : " + size).withStyle(ChatFormatting.GRAY));
+
+                    if (recipeData.contains("materialLevel"))
+                        components.add(Component.literal("  Material Level : " + EngineMaterialInit.materialNames.get(materialLevel)).withStyle(ChatFormatting.GRAY));
+                    ResourceLocation powerPackType        = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).resultOrPartial().orElse(null);
+                    ResourceLocation exhaustPackType      = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).resultOrPartial().orElse(null);
+                    MutableComponent powerPackComponent   = powerPackType != null ? Component.translatable(powerPackType.toLanguageKey("power_pack_type")) : Component.literal("not defined");
+                    MutableComponent exhaustPackComponent = exhaustPackType != null ? Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")) : Component.literal("not defined");
+
+                    components.add(Component.literal("  Technology : ").append(powerPackComponent).append(" | ").append(exhaustPackComponent).withStyle(ChatFormatting.GRAY));
+
+                }
+                CompoundTag engineInfo = itemData.getCompound("blockEntity");
+                if (!engineInfo.isEmpty()) {
+                    components.add(Component.literal("For engine :").withStyle(ChatFormatting.GOLD));
+                    appendEngineDependentText(components, "  ", engineInfo);
+                }
+            } catch (Exception exception) {
                 CreatingSpace.LOGGER.error("caught exception during tooltip :", exception);
             }
         }

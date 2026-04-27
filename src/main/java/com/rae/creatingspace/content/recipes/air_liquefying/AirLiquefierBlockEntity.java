@@ -2,7 +2,9 @@ package com.rae.creatingspace.content.recipes.air_liquefying;
 
 import com.rae.creatingspace.init.RecipeInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
+import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
@@ -20,10 +22,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -31,6 +31,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -40,34 +41,21 @@ import java.util.stream.Collectors;
 public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHaveGoggleInformation {
     protected Recipe<?> currentRecipe;
     private int processingTicks;
-    private Object airLiquefyingRecipesKey;
+    private static final Object airLiquefyingRecipesKey = new Object();
 
     public AirLiquefierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type,pos, state);
     }
-    @Override
-    public void sendData() {
-        if (syncCooldown > 0) {
-            queuedSync = true;
-            return;
-        }
-        super.sendData();
-        queuedSync = false;
-        syncCooldown = SYNC_RATE;
-    }
 
-    private static final int SYNC_RATE = 8;
-    protected int syncCooldown;
-    protected boolean queuedSync;
 
     protected IFluidHandler fluidCapability;
-    private boolean contentsChanged;
     protected SmartFluidTankBehaviour outputTank;
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         outputTank = new SmartFluidTankBehaviour(SmartFluidTankBehaviour.OUTPUT, this, 2, 1000, true)
-                .whenFluidUpdates(() -> contentsChanged = true)
+                .whenFluidUpdates(() -> {
+                })
                 .forbidInsertion();
         behaviours.add(outputTank);
 
@@ -79,9 +67,8 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     public @Nullable IFluidHandler getFluidInvCapability(@Nullable Direction side) {
             Direction localDir = this.getBlockState().getValue(AirLiquefierBlock.FACING);
 
-            // Check if the side is either the back, top, or bottom
-            if (side == localDir.getOpposite() || side == Direction.UP || side == Direction.DOWN) {
-                return this.fluidCapability;
+        if (side != localDir && !BlockInit.AIR_LIQUEFIER.get().hasShaftTowards(level, worldPosition,getBlockState(),side)) {
+            return this.fluidCapability;
         }
         return null;
     }
@@ -92,17 +79,13 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 AirLiquefierBlockEntity::getFluidInvCapability
         );
     }
-    public void tick(Level level, BlockPos pos, BlockState state, AirLiquefierBlockEntity blockEntity) {
+    @Override
+    public void tick() {
         super.tick();
-        if (!level.isClientSide()) {
-            if (syncCooldown > 0) {
-                syncCooldown--;
-                if (syncCooldown == 0 && queuedSync)
-                    sendData();
-            }
-        }
+        assert getLevel() != null;
+
         float speed = Math.abs(getSpeed());
-        if ((!level.isClientSide || isVirtual())) {
+        if ((!getLevel().isClientSide || isVirtual())) {
             if (processingTicks < 0) {
                 float recipeSpeed = 1;
                 if (currentRecipe instanceof ProcessingRecipe) {
@@ -131,7 +114,7 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
                 if (level != null && !level.isClientSide) {
                     List<Recipe<?>> recipes = getMatchingRecipes();
                     if (!recipes.isEmpty()) {
-                        currentRecipe = recipes.get(0);
+                        currentRecipe = recipes.getFirst();
                         sendData();
                     }
                 }
@@ -153,7 +136,6 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     }
 
     public void notifyChangeOfContents() {
-        contentsChanged = true;
     }
 
     protected boolean matchStaticFilters(RecipeHolder<? extends Recipe<?>> r) {
@@ -194,45 +176,34 @@ public class AirLiquefierBlockEntity extends KineticBlockEntity implements IHave
     @Override
     protected void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(nbt,registries,clientPacket);
-        outputTank.read(nbt,registries, clientPacket);
-        //OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(), nbt.getInt("oxygenAmount")));
-
     }
 
     @Override
     protected void write(CompoundTag nbt,HolderLookup.Provider registries, boolean clientPacket) {
-        //nbt.putInt("oxygenAmount",OXYGEN_TANK.getFluidAmount());
-        outputTank.write(nbt,registries, clientPacket);
         super.write(nbt,registries, clientPacket);
     }
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        LangBuilder mb = new LangBuilder("creatingspace").translate("generic.unit.millibuckets");
-        LangBuilder mbs = new LangBuilder("creatingspace").translate("generic.unit.fluidflow");
-        new LangBuilder("creatingspace").translate("gui.goggles.fluid_container")
-                .forGoggles(tooltip);
-        IFluidHandler fluids = outputTank.getCapability();
-        for (int i = 0; i < fluids.getTanks(); i++) {
+        LangBuilder mb = CreateLang.translate("generic.unit.millibuckets");
+        if (fluidCapability == null)
+            fluidCapability = new FluidTank(0);
 
-            FluidStack fluidStack = fluids.getFluidInTank(i);
-            String fluidName = fluidStack.getTranslationKey();
-
-            new LangBuilder("creatingspace").add(Component.translatable(fluidName))
-                    .style(ChatFormatting.GRAY)
-                    .forGoggles(tooltip, 1);
-
-            new LangBuilder("creatingspace")
-                    .add(CreateLang.number(fluidStack.getAmount())
-                            .add(mb)
-                            .style(ChatFormatting.GOLD))
-                    .text(ChatFormatting.GRAY, " / ")
-                    .add(CreateLang.number(fluids.getTankCapacity(i))
-                            .add(mb)
-                            .style(ChatFormatting.DARK_GRAY))
+        for (int i = 0; i < fluidCapability.getTanks(); i++) {
+            FluidStack fluidStack = fluidCapability.getFluidInTank(i);
+            if (fluidStack.isEmpty())
+                continue;
+            CreateLang.text("")
+                    .add(CreateLang.fluidName(fluidStack)
+                            .add(CreateLang.text(" "))
+                            .style(ChatFormatting.GRAY)
+                            .add(CreateLang.number(fluidStack.getAmount())
+                                    .add(mb)
+                                    .style(ChatFormatting.BLUE)))
                     .forGoggles(tooltip, 1);
         }
-        return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        return true;
     }
 
     public boolean acceptOutputs(List<FluidStack> outputFluids, boolean simulate) {

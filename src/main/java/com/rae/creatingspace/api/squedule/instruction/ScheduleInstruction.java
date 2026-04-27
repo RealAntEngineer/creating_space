@@ -29,7 +29,7 @@ public abstract class ScheduleInstruction extends ScheduleDataEntry {
     }
 
     public static ScheduleInstruction fromTag(HolderLookup.Provider registries, CompoundTag tag)  {
-        ResourceLocation location = ResourceLocation.tryParse(tag.getString("Id"));
+        ResourceLocation location = ResourceLocation.tryParse(tag.getString("Id"));//TODO this is not right
         Supplier<? extends ScheduleInstruction> supplier = null;
         for (Pair<ResourceLocation, Supplier<? extends ScheduleInstruction>> pair : RocketSchedule.INSTRUCTION_TYPES)
             if (pair.getFirst()

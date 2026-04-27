@@ -15,9 +15,12 @@ import com.simibubi.create.content.contraptions.TranslatingContraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -103,7 +106,26 @@ public class RocketContraption extends TranslatingContraption {
     public ContraptionType getType() {
         return CSContraptionType.ROCKET.get();
     }
-    public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(), ConsumptionInfo.CODEC);
+
+    private static @Nullable Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO;
+
+    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> getCodecMapInfo() {
+        if (CODEC_MAP_INFO == null) {
+            CODEC_MAP_INFO = Codec.unboundedMap(
+                            PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(),
+                            RocketContraption.ConsumptionInfo.CODEC)
+                    .xmap(HashMap::new, i -> i);
+        }
+        return CODEC_MAP_INFO;
+    }
+
+    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> getCodecMapInfo(RegistryAccess registries) {
+        return Codec.unboundedMap(
+                        registries.registryOrThrow(PropellantTypeInit.Keys.PROPELLANT_TYPE).byNameCodec(),
+                        RocketContraption.ConsumptionInfo.CODEC)
+                .xmap(HashMap::new, i -> i);
+    }
+
     @Override
     public void readNBT(Level world, CompoundTag nbt, boolean clientPacket) {
 
@@ -111,7 +133,7 @@ public class RocketContraption extends TranslatingContraption {
             thrust = nbt.getInt("thrust");
             dryMass = nbt.getInt("dryMass");
             Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
-            theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
+            theoreticalPerTagFluidConsumption = new HashMap<>(getCodecMapInfo(world.registryAccess()).parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
         super.readNBT(world, nbt, clientPacket);
     }
 
@@ -122,7 +144,7 @@ public class RocketContraption extends TranslatingContraption {
         nbt.putInt("thrust", thrust);
         nbt.putInt("dryMass", dryMass);
         nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
-        nbt.put("theoreticalPerTagFluidConsumption",CODEC.encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
+        nbt.put("theoreticalPerTagFluidConsumption",getCodecMapInfo().encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
 
         return nbt;
     }

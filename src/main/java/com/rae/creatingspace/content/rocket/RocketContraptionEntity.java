@@ -64,8 +64,8 @@ import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -74,8 +74,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.rae.creatingspace.content.rocket.contraption.RocketContraption.getCodecMapInfo;
 import static com.rae.creatingspace.init.ingameobject.SoundInit.ROCKET_LAUNCH;
 
+@NonnullDefault
 public class RocketContraptionEntity extends AbstractContraptionEntity implements MenuProvider {
     //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
     // (spaceport block ? to define where the rocket will go)
@@ -96,13 +98,18 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     HashMap<PropellantType, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<TagKey<Fluid>, Float> partialDrainAmountPerFluid = new HashMap<>();
     //end of inventory management
-    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(),
-                    RocketContraption.ConsumptionInfo.CODEC)
-            .xmap(HashMap::new, i -> i);
-    public static Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
-            TagKey.codec(Registries.FLUID),
-            Codec.FLOAT
-    ).xmap(HashMap::new, i -> i);
+
+    private static @Nullable Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION;
+
+    public static Codec<HashMap<TagKey<Fluid>, Float>> getCodecMapConsumption() {
+        if (CODEC_MAP_CONSUMPTION == null) {
+            CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
+                    TagKey.codec(Registries.FLUID),
+                    Codec.FLOAT
+            ).xmap(HashMap::new, i -> i);
+        }
+        return CODEC_MAP_CONSUMPTION;
+    }
     public float totalThrust = 0;
     public float initialMass;
     public ResourceLocation originDimension = Level.OVERWORLD.location();
@@ -149,7 +156,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     /**
      * should only be used on the server
      */
-    public static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity) {
+    public static void handelTrajectoryCalculation(RocketContraptionEntity rocketContraptionEntity) {
+        //TODO clean this shit
         //System.out.println(rocketContraptionEntity.deltaV());
 
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
@@ -238,6 +246,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
             CreatingSpace.LOGGER.info("speed : {}blocks/ticks", perTickSpeed);
             CreatingSpace.LOGGER.info("travel time : {} ticks", totalTickTime);
         }
+
+
         //fill the real consumption map and fill the consumedMass map for mass verification
         HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant = new HashMap<>();//just to determine if there is enough fluid
         float realPartialConsumption = consumedPropellantMass/totalTheoreticalConsumption;
@@ -250,7 +260,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
             rocketContraptionEntity.realPerTagFluidConsumption.put(propellantType, new RocketContraption.ConsumptionInfo( correctedConsumptions,info.partialThrust()));
             correctedConsumptions.keySet().forEach(
                             fluid -> consumedMassForEachPropellant.put(fluid,
-                                    (int) (consumedMassForEachPropellant.getOrDefault(fluid, 0) + correctedConsumptions.get(fluid))));
+                                    (int) (consumedMassForEachPropellant.getOrDefault(fluid, 0) + correctedConsumptions.get(fluid) * totalTickTime)));
         }
 
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
@@ -470,7 +480,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     }
 
     @Override
-    public boolean causeFallDamage(float p_146828_, float p_146829_, @NotNull DamageSource damageSource) {
+    public boolean causeFallDamage(float p_146828_, float p_146829_, DamageSource damageSource) {
         return false;
     }
 
@@ -492,7 +502,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
 
             if (destServerLevel!=null) {
 
-                this.changeDimension(new DimensionTransition(destServerLevel, this, DimensionTransition.DO_NOTHING));
+                this.changeDimension(CustomTeleporter.getTransition(this, destServerLevel));
             }
             else {
                 LOGGER.error("rocket failed to get server for destination : {}", this.destination);
@@ -764,8 +774,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         this.localPosOfFlightRecorders = CSNBTUtil.LongsToBlockPos(compound.getLongArray("localPosOfFlightRecorders"));//to remove
         this.totalThrust = compound.getFloat("thrust");
         this.initialMass = compound.getFloat("initialMass");
-        this.realPerTagFluidConsumption = CODEC_MAP_INFO.parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
-        this.partialDrainAmountPerFluid = CODEC_MAP_CONSUMPTION.parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
+        this.realPerTagFluidConsumption = getCodecMapInfo(level().registryAccess()).parse(NbtOps.INSTANCE, compound.getCompound("realPerTagFluidConsumption")).result().orElse(new HashMap<>());
+        this.partialDrainAmountPerFluid = getCodecMapConsumption().parse(NbtOps.INSTANCE, compound.getCompound("partialDrainAmountPerFluid")).result().orElse(new HashMap<>());
         this.assemblyData = FlightDataHelper.RocketAssemblyData.fromNBT(compound.getCompound("assemblyData"));
         this.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.valueOf(compound.getString("status")));
         this.destination = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, compound.get("destination")).getOrThrow();
@@ -781,8 +791,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         compound.put("initialPosMap", RocketControlsBlockEntity.putPosMap(this.initialPosMap));
         compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
         compound.putFloat("initialMass", this.initialMass);
-        compound.put("realPerTagFluidConsumption", CODEC_MAP_INFO.encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).resultOrPartial().orElseGet(CompoundTag::new));
-        compound.put("partialDrainAmountPerFluid", CODEC_MAP_CONSUMPTION.encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).resultOrPartial().orElseGet(CompoundTag::new));
+        compound.put("realPerTagFluidConsumption", getCodecMapInfo().encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).resultOrPartial().orElseGet(CompoundTag::new));
+        compound.put("partialDrainAmountPerFluid", getCodecMapConsumption().encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).resultOrPartial().orElseGet(CompoundTag::new));
 
         compound.put("assemblyData", FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));
         compound.putFloat("thrust", this.totalThrust);
@@ -800,7 +810,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     }
 
     @Override
-    public @NotNull SoundSource getSoundSource() {
+    public SoundSource getSoundSource() {
         return SoundSource.MASTER;
     }
 
@@ -859,7 +869,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     }
 
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player) {
+    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
         return ScheduleMakingMenu.create(i,inventory,this);
     }
 
@@ -879,7 +889,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return this.name().toLowerCase();
         }
     }
