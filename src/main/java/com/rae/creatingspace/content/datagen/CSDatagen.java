@@ -44,6 +44,7 @@ public class CSDatagen {
 			generator.addProvider(true, new CSAirLiquefyingRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSChemicalSynthesisRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSMechanicalElectrolysisRecipeGen(output, lookupProvider));
+			generator.addProvider(true, new CSSequencedAssemblyRecipeGen(output, lookupProvider));
             //generator.addProvider(true, new EngineSequencedAssemblyProvider(output));
 			// it doesn't quite work. the output is wrong right now and it's missing some of it
 
