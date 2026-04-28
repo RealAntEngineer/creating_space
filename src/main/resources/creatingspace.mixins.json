@@ -18,6 +18,7 @@
     "entity.gravity.PrimedTntMixin",
     "fluid.FluidInteractionRegistryMixin",
     "kinetics.BacktankBlockEntityMixin",
+    "recipe.DataComponentIngredientMixin",
     "recipe.ItemApplicationMixin",
     "recipe.ProcessingRecipeMixin",
     "recipe.ProcessingRecipeParamsMixin",
