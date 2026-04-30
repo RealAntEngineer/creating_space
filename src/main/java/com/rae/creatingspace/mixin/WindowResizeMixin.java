@@ -21,6 +21,10 @@ public class WindowResizeMixin {
 
     @Inject(method = "resizeDisplay", at = @At("TAIL"))
     private void catnip$updateWindowSize(CallbackInfo ci) {
-        RemainingO2Overlay.reload();
+        try {
+            RemainingO2Overlay.reload();
+        } catch (Exception ignore){
+
+        }
     }
 }

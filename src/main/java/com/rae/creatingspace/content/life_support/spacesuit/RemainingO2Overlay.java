@@ -16,7 +16,7 @@ import org.lwjgl.system.NonnullDefault;
 
 @NonnullDefault
 public class RemainingO2Overlay implements LayeredDraw.Layer {
-    private static      VerticalDialWidget gauge;
+    private       VerticalDialWidget gauge;
     public static final RemainingO2Overlay INSTANCE = new RemainingO2Overlay();
 
     RemainingO2Overlay() {
@@ -28,7 +28,7 @@ public class RemainingO2Overlay implements LayeredDraw.Layer {
 
     public static void reload(){
         Minecraft mc = Minecraft.getInstance();
-        gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
+        INSTANCE.gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
                 CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
                 32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
     }
