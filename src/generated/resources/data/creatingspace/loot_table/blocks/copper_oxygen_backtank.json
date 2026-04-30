@@ -11,7 +11,18 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "creatingspace:copper_oxygen_backtank_placeable"
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:enchantments",
+                "minecraft:custom_name",
+                "creatingspace:oxygen"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "creatingspace:copper_oxygen_backtank"
         }
       ],
       "rolls": 1.0

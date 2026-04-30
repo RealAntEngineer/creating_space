@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.life_support.spacesuit;
 
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.FluidInit;
@@ -13,13 +14,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -189,6 +193,35 @@ public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Namea
 	public void setCapacityEnchantLevel(int capacityEnchantLevel) {
 		this.capacityEnchantLevel = capacityEnchantLevel;
 		this.OXYGEN_TANK.setCapacity(OxygenBacktankUtil.maxOxygen(capacityEnchantLevel));
+	}
+
+	@Override
+	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+		super.collectImplicitComponents(builder);
+
+		// This pushes your current values into the Component system
+		// so the loot table can "see" and copy them.
+		builder.set(DataComponentsInit.OXYGEN_LEVEL, this.oxygenLevel);
+
+		// If you have a custom component for capacity, add it here too
+		// builder.set(DataComponentsInit.CAPACITY_LEVEL.get(), this.capacityEnchantLevel);
+
+		if (this.customName != null) {
+			builder.set(DataComponents.CUSTOM_NAME, this.customName);
+		}
+	}
+
+	@Override
+	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+		super.applyImplicitComponents(input);
+
+		// This pulls data from the item stack when you PLACE the block
+		this.oxygenLevel = input.getOrDefault(DataComponentsInit.OXYGEN_LEVEL, 0);
+
+		// Sync the internal FluidTank to match the component data
+		this.OXYGEN_TANK.setFluid(new FluidStack(FluidInit.LIQUID_OXYGEN.get(), this.oxygenLevel));
+
+		this.customName = input.get(DataComponents.CUSTOM_NAME);
 	}
 
 }
