@@ -17,8 +17,13 @@ import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareR
 
 public class PropellantTypeInit {
     //TODO use datapackRegitry(Codec,Codec)
+
     public static final DeferredRegister<PropellantType> DEFERRED_PROPELLANT_TYPE =
             DeferredRegister.create(Keys.PROPELLANT_TYPE, CreatingSpace.MODID);
+
+    public static final PropellantType METHALOX_DIRECT = new PropellantType(
+            Map.of(TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag, 2f, TagsInit.CustomFluidTags.LIQUID_METHANE.tag, 1f),
+                    460, 4500f, 1.1f, 18 );
 
     public static final DeferredHolder<PropellantType,PropellantType> METHALOX = DEFERRED_PROPELLANT_TYPE
             .register("methalox", () -> new PropellantType(
@@ -29,16 +34,6 @@ public class PropellantTypeInit {
                     4500f,
                     1.1f,
                     18
-            ));//real value is 459
-    public static final DeferredHolder<PropellantType,PropellantType> LH2LOX = DEFERRED_PROPELLANT_TYPE
-            .register("lh2lox", () -> new PropellantType(
-                    Map.of(
-                            TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag, 6f,
-                            TagsInit.CustomFluidTags.LIQUID_HYDROGEN.tag, 1f),
-                    540,
-                    4000f,
-                    1.2f,
-                    10
             ));
 
     public static Registry<PropellantType> getSyncedPropellantRegistry() {

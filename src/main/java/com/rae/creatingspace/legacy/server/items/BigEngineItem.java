@@ -104,9 +104,8 @@ public class BigEngineItem extends RocketEngineItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
         //This can be called before registries are bounded to the deferredHolder so check for binding first
-        if (PropellantTypeInit.METHALOX.isBound())
-            appendEngineTextDirect(components, "", PropellantTypeInit.METHALOX.get(),  (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),10000,
-                CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get());
+        appendEngineTextDirect(components, "", PropellantTypeInit.METHALOX_DIRECT,  (int) (PropellantTypeInit.METHALOX_DIRECT.getMaxISP() * 0.79f),10000,
+            CSConfigs.SERVER.rocketEngine.bigRocketEngineThrust.get());
 
         super.appendHoverText(stack, context, components, flag);
     }

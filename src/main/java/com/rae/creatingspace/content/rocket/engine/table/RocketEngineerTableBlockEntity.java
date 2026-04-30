@@ -2,11 +2,11 @@ package com.rae.creatingspace.content.rocket.engine.table;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.engine.design.ExhaustPackType;
 import com.rae.creatingspace.content.rocket.engine.design.PowerPackType;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.init.MiscInit;
-import com.rae.creatingspace.init.ingameobject.PropellantTypeInit;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.client.Minecraft;
@@ -46,7 +46,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
     public ResourceLocation propellantType;
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.literal("coucou");
     }
 
@@ -195,15 +195,15 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
                            ResourceLocation powerPackType, ResourceLocation propellantType) {
         public static SyncData defaultData() {
             //CompoundTag syncData = new CompoundTag();
-            return new SyncData(100000, 100, 50, MiscInit.BELL_NOZZLE.getId()
-                    , MiscInit.OPEN_CYCLE.getId(),
-                    PropellantTypeInit.METHALOX.getId());
+            return new SyncData(100000, 100, 50, CreatingSpace.resource("bell_nozzle")
+                    , CreatingSpace.resource("open_cycle"),
+                    CreatingSpace.resource("methalox"));
 
         }
         //register a static RegistryAccessor only on server side ->
         // if it null then the server is distant and we use the sync
 
-        public ExhaustPackType exhaustPackType(boolean client) {
+        /*public ExhaustPackType exhaustPackType(boolean client) {
             if (client) {
                 return getSyncedExhaustPackRegistry().get(exhaustPackType);
             } else {
@@ -221,7 +221,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
                 return Minecraft.getInstance().getConnection().registryAccess().registry(MiscInit.Keys.POWER_PACK_TYPE)
                         .orElseThrow().get(powerPackType);
             }
-        }
+        }*/
 
         public static Codec<SyncData> getCoded() {
             return RecordCodecBuilder.create(

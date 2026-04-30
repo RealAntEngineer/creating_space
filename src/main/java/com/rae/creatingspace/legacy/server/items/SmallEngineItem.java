@@ -15,9 +15,11 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.List;
 
+@NonnullDefault
 public class SmallEngineItem extends RocketEngineItem {
     public SmallEngineItem(Block p_40565_, Properties p_40566_) {
         super(p_40565_, p_40566_);
@@ -50,8 +52,7 @@ public class SmallEngineItem extends RocketEngineItem {
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         //This can be called before registries are bounded to the deferredHolder so check for binding first
-        if (PropellantTypeInit.METHALOX.isBound())
-            appendEngineTextDirect(components, "", PropellantTypeInit.METHALOX.get(), (int) (PropellantTypeInit.METHALOX.get().getMaxISP() * 0.79f),1000, CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get());
+        appendEngineTextDirect(components, "", PropellantTypeInit.METHALOX_DIRECT, (int) (PropellantTypeInit.METHALOX_DIRECT.getMaxISP() * 0.79f),1000, CSConfigs.SERVER.rocketEngine.smallRocketEngineThrust.get());
         super.appendHoverText(itemStack, context, components, flag);
     }
 }

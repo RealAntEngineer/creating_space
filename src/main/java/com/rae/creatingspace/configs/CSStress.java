@@ -62,7 +62,7 @@ public class CSStress extends CSConfigBase {
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setImpact(double value) {
         return builder -> {
-            ResourceLocation id = Create.asResource(builder.getName());
+            ResourceLocation id = CreatingSpace.resource(builder.getName());
             DEFAULT_IMPACTS.put(id, value);
             return builder;
         };
@@ -70,27 +70,15 @@ public class CSStress extends CSConfigBase {
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setCapacity(double value) {
         return builder -> {
-            ResourceLocation id = Create.asResource(builder.getName());
+            ResourceLocation id = CreatingSpace.resource(builder.getName());
             DEFAULT_CAPACITIES.put(id, value);
             return builder;
         };
     }
 
-    protected Block redirectValues(Block block) {
-        return block;
-    }
-
     @Override
     public String getName() {
         return "stressValues.v" + 3;
-    }
-
-    public Map<ResourceLocation, ConfigValue<Double>> getImpacts() {
-        return impacts;
-    }
-
-    public Map<ResourceLocation, ConfigValue<Double>> getCapacities() {
-        return capacities;
     }
 
     private static class Comments {
