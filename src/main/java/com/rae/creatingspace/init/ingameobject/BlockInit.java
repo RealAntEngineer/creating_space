@@ -13,6 +13,7 @@ import com.rae.creatingspace.content.rocket.rocket_control.RocketControlsBlock;
 import com.rae.creatingspace.content.rocket.engine.table.RocketEngineerTableBlock;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
 import com.rae.creatingspace.init.CreativeModeTabsInit;
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.graphics.SpriteShiftInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankBlock;
 import com.rae.creatingspace.legacy.server.blocks.multiblock.BigRocketStructuralBlock;
@@ -45,6 +46,7 @@ import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -60,8 +62,13 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.common.Tags;
 
 import java.util.Map;
@@ -366,17 +373,20 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/copper"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
+            .loot((lt, block) -> lt.add(block, LootTable.lootTable() // Use a fresh loot table builder
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ItemInit.COPPER_OXYGEN_BACKTANK.get()) // Explicitly drop the wearable item
+                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                                            .include(DataComponents.ENCHANTMENTS)
+                                            .include(DataComponents.CUSTOM_NAME)
+                                            .include(DataComponentsInit.OXYGEN_LEVEL)
+                                    )
+                            )
+                            .when(ExplosionCondition.survivesExplosion())
+                    )
+            ))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
-            .recipe((c,p) ->
-                    MechanicalCraftingRecipeBuilder.shapedRecipe(c.get(), 1)
-                            .key('F', ItemInit.BASIC_SPACESUIT_FABRIC.get())
-                            .key('N', commonItemTag("plates/nickel"))
-                            .key('W', Items.RED_WOOL)
-                            .key('T', AllBlocks.FLUID_TANK.get())
-                            .patternLine(" F F ")
-                            .patternLine("WTNTW")
-                            .patternLine(" FWF ")
-                            .build(p, resource("mechanical_crafting/armor/" + c.getName())))
             .transform(pickaxeOnly())
             .register();
 
@@ -385,17 +395,20 @@ public class BlockInit {
             .initialProperties(SharedProperties::netheriteMetal)
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/netherite"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
+            .loot((lt, block) -> lt.add(block, LootTable.lootTable() // Use a fresh loot table builder
+                    .withPool(LootPool.lootPool()
+                            .setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(ItemInit.NETHERITE_OXYGEN_BACKTANK.get()) // Explicitly drop the wearable item
+                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                                            .include(DataComponents.ENCHANTMENTS)
+                                            .include(DataComponents.CUSTOM_NAME)
+                                            .include(DataComponentsInit.OXYGEN_LEVEL)
+                                    )
+                            )
+                            .when(ExplosionCondition.survivesExplosion())
+                    )
+            ))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
-            .recipe((c,p) ->
-                    MechanicalCraftingRecipeBuilder.shapedRecipe(c.get(), 1)
-                            .key('F', ItemInit.ADVANCED_SPACESUIT_FABRIC.get())
-                            .key('N', commonItemTag("plates/aluminum"))
-                            .key('W', Items.WHITE_WOOL)
-                            .key('T', AllBlocks.FLUID_TANK.get())
-                            .patternLine(" F F ")
-                            .patternLine("WTNTW")
-                            .patternLine(" FWF ")
-                            .build(p, resource("mechanical_crafting/armor/" + c.getName())))
             .transform(pickaxeOnly())
             .register();
 
@@ -404,6 +417,10 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c,p)-> p.simpleBlock(c.getEntry(), p.models().getExistingFile(resource("block/cryogenic_tank"))))
             .transform(pickaxeOnly())
+            .loot((lt, block) -> lt.add(block, lt.createSingleItemTable(block)
+                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                            .include(DataComponents.CUSTOM_NAME)
+                            .include(DataComponentsInit.SIMPLE_FLUID_CONTENT))))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)

@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.fluids.storage;
 
+import com.rae.creatingspace.init.DataComponentsInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 
@@ -12,15 +13,19 @@ import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +61,7 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
         @Override
         protected void onContentsChanged() {
             super.onContentsChanged();
+            setChanged();
             notifyUpdate();
         }
 
@@ -154,5 +160,32 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
                             .style(ChatFormatting.DARK_GRAY))
                     .forGoggles(tooltip, 1);
         return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+    }
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+
+        // Convert the FluidTank's current stack into the Component format
+        FluidStack currentFluid = TANK.getFluid();
+        if (!currentFluid.isEmpty()) {
+            builder.set(DataComponentsInit.SIMPLE_FLUID_CONTENT, SimpleFluidContent.copyOf(currentFluid));
+        }
+
+        if (this.getCustomName() != null) {
+            builder.set(DataComponents.CUSTOM_NAME, this.getCustomName());
+        }
+    }
+
+    @Override
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+        super.applyImplicitComponents(input);
+
+        // Retrieve the fluid from the item component and put it back into the tank
+        SimpleFluidContent content = input.get(DataComponentsInit.SIMPLE_FLUID_CONTENT);
+        if (content != null) {
+            TANK.setFluid(content.copy()); // .copy() returns a FluidStack
+        }
+
+        this.setCustomName(input.get(DataComponents.CUSTOM_NAME));
     }
 }

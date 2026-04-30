@@ -13,6 +13,7 @@ import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
@@ -505,6 +506,16 @@ public class ItemInit {
                                     COPPER_BACKTANK_PLACEABLE))
                     .model((c,p) -> p.withExistingParent("copper_oxygen_backtank",
                             MODID + ":block/oxygen_backtank/copper"))
+                    .recipe((c,p) ->
+                            MechanicalCraftingRecipeBuilder.shapedRecipe(c.get(), 1)
+                                    .key('F', ItemInit.BASIC_SPACESUIT_FABRIC.get())
+                                    .key('N', commonItemTag("plates/nickel"))
+                                    .key('W', Items.RED_WOOL)
+                                    .key('T', AllBlocks.FLUID_TANK.get())
+                                    .patternLine(" F F ")
+                                    .patternLine("WTNTW")
+                                    .patternLine(" FWF ")
+                                    .build(p, resource("mechanical_crafting/armor/" + c.getName())))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
@@ -532,6 +543,16 @@ public class ItemInit {
                     .tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
                     .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
+                    .recipe((c,p) ->
+                            MechanicalCraftingRecipeBuilder.shapedRecipe(c.get(), 1)
+                                    .key('F', ItemInit.ADVANCED_SPACESUIT_FABRIC.get())
+                                    .key('N', commonItemTag("plates/aluminum"))
+                                    .key('W', Items.WHITE_WOOL)
+                                    .key('T', AllBlocks.FLUID_TANK.get())
+                                    .patternLine(" F F ")
+                                    .patternLine("WTNTW")
+                                    .patternLine(" FWF ")
+                                    .build(p, resource("mechanical_crafting/armor/" + c.getName())))
                     .register();
 
     public static final ItemEntry<BaseArmorItem> BASIC_SPACESUIT_LEGGINGS =
