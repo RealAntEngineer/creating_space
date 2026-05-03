@@ -58,20 +58,20 @@ public class SequencedAssemblyRecipeMixin implements IMoreNbtConditions {
     public void addTagBack(ResourceLocation id, ItemStack input, RandomSource random, CallbackInfoReturnable<ItemStack> cir) {
         if (isKeepNbt()) {
             ItemStack advancedItem = cir.getReturnValue();
-            CustomData itemData = advancedItem.get(DataComponents.CUSTOM_DATA);
+            CustomData outputData = advancedItem.get(DataComponents.CUSTOM_DATA);
             CustomData toKeepData = input.get(DataComponents.CUSTOM_DATA);
-            if (itemData != null && toKeepData != null) {
-                CompoundTag itemTag = itemData.copyTag();
-                CompoundTag toKeepTag = toKeepData.copyTag();
-                for (String key : nbtKeys) {
-                    Tag tag = toKeepTag.get(key);
-                    if (tag != null) {
-                        itemTag.put(key, Objects.requireNonNull(tag));
-                    }
+
+            CompoundTag itemTag = outputData != null?outputData.copyTag():new CompoundTag();
+            CompoundTag toKeepTag = toKeepData != null?toKeepData.copyTag():new CompoundTag();
+            for (String key : nbtKeys) {
+                Tag tag = toKeepTag.get(key);
+                if (tag != null) {
+                    itemTag.put(key, Objects.requireNonNull(tag));
                 }
-                advancedItem.set(DataComponents.CUSTOM_DATA, CustomData.of(itemTag));
-                cir.setReturnValue(advancedItem);
             }
+            advancedItem.set(DataComponents.CUSTOM_DATA, CustomData.of(itemTag));
+            cir.setReturnValue(advancedItem);
+
         }
     }
 }

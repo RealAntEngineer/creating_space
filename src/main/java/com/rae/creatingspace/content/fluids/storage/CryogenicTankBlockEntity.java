@@ -136,9 +136,9 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        LangBuilder mb = new LangBuilder("creatingspace").translate("generic.unit.millibuckets");
-        LangBuilder mbs = new LangBuilder("creatingspace").translate("generic.unit.fluidflow");
-        new LangBuilder("creatingspace").translate("gui.goggles.fluid_container")
+        LangBuilder mb = new LangBuilder("create").translate("generic.unit.millibuckets");
+        LangBuilder mbs = new LangBuilder("create").translate("generic.unit.fluidflow");
+        new LangBuilder("create").translate("gui.goggles.fluid_container")
                 .forGoggles(tooltip);
 
             FluidTank tank = TANK;
@@ -146,11 +146,11 @@ public class CryogenicTankBlockEntity extends SmartBlockEntity implements Nameab
 
             FluidStack fluidStack = tank.getFluidInTank(0);
 
-        new LangBuilder("creatingspace").add(Component.translatable(fluidName))
+        new LangBuilder("create").add(Component.translatable(fluidName))
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 1);
 
-        new LangBuilder("creatingspace")
+        new LangBuilder("create")
                     .add(CreateLang.number(fluidStack.getAmount())
                             .add(mb)
                             .style(ChatFormatting.GOLD))

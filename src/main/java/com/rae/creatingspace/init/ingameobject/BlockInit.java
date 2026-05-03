@@ -34,8 +34,6 @@ import com.rae.creatingspace.legacy.server.items.SmallEngineItem;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
-//import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
-import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 import com.simibubi.create.foundation.data.*;
@@ -121,6 +119,10 @@ public class BlockInit {
             //.initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
+            .loot((lt, block) -> lt.add(block, lt.createSingleItemTable(block)
+                    .apply(CopyComponentsFunction
+                            .copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                            .include(DataComponents.CUSTOM_DATA))))
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(resource("block/small_rocket_engine"))))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
@@ -264,7 +266,7 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
-            .transform(CSStress.setImpact(2000))
+            .transform(CSStress.setImpact(1024))
             .transform(axeOrPickaxe())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
@@ -310,6 +312,7 @@ public class BlockInit {
             .block("oxygen_sealer", RoomPressuriserBlock::new)
             .properties(p -> p.strength(1.0f).dynamicShape().requiresCorrectToolForDrops())
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
+            .transform(CSStress.setImpact(8))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
@@ -331,7 +334,7 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .properties(p-> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
-            .transform(CSStress.setImpact(500))
+            .transform(CSStress.setImpact(128))
             .transform(axeOrPickaxe())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->

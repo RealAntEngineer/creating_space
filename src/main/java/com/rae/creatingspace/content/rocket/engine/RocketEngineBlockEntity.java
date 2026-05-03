@@ -11,16 +11,23 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.List;
 import java.util.Objects;
 
+@NonnullDefault
 public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
     public RocketEngineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -39,10 +46,10 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
     public abstract int getThrust();//Newtons
 
     public static class NbtDependent extends RocketEngineBlockEntity implements IMass {
-        int                    thrust         = 1000;
-        Holder<PropellantType> propellantType = null;//= PropellantTypeInit.METHALOX.get();
-        Float                  efficiency     = 1f;
-        int                    mass           = 0;
+        int thrust = 1000;
+        @Nullable Holder<PropellantType> propellantType = null;//= PropellantTypeInit.METHALOX.get();
+        Float efficiency = 1f;
+        int   mass       = 0;
 
         public NbtDependent(BlockEntityType<?> type, BlockPos pos, BlockState state) {
             super(type, pos, state);
@@ -61,18 +68,24 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
         @Override
         protected void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+            serializeToNbt(nbt);
+            super.write(nbt, registries, clientPacket);
+        }
+
+        private void serializeToNbt(CompoundTag nbt) {
             nbt.putInt("thrust", thrust);
             nbt.putInt("mass", mass);
             nbt.putFloat("efficiency", efficiency);
-            try {
-                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,
-                        Objects.requireNonNull(propellantType.getKey()).location()).getOrThrow());
-            } catch (Throwable error) {
-                CreatingSpace.LOGGER.warn("catch exception will saving engine : " + propellantType);
-                CreatingSpace.LOGGER.warn("exeption : " + error.getMessage());
-                nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, CreatingSpace.resource("methalox")).getOrThrow());//PropellantTypeInit.METHALOX.getId()));
+            if (propellantType != null) {
+                try {
+                    nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE,
+                            Objects.requireNonNull(propellantType.getKey()).location()).getOrThrow());
+                } catch (Throwable error) {
+                    CreatingSpace.LOGGER.warn("catch exception will saving engine : {}", propellantType);
+                    CreatingSpace.LOGGER.error("exception : ", error);
+                    nbt.put("propellantType", ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, CreatingSpace.resource("methalox")).getOrThrow());//PropellantTypeInit.METHALOX.getId()));
+                }
             }
-            super.write(nbt, registries, clientPacket);
         }
 
         @Override
@@ -102,7 +115,7 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
 
         @Override
         public PropellantType getPropellantType() {
-            return propellantType.value();
+            return propellantType != null ? propellantType.value() : PropellantTypeInit.METHALOX_DIRECT;
         }
 
         @Override
@@ -122,6 +135,28 @@ public abstract class RocketEngineBlockEntity extends SmartBlockEntity {
         @Override
         public float getMass() {
             return mass;
+        }
+
+        @Override
+        protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+            super.applyImplicitComponents(input);
+
+            // This pulls data from the item stack when you PLACE the block
+            //it's already taken care of by the placement logic
+        }
+
+        @Override
+        protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+            super.collectImplicitComponents(builder);
+
+            // This pushes your current values into the Component system
+            // so the loot table can "see" and copy them.
+            CompoundTag nbt = new CompoundTag();
+            CompoundTag be  = new CompoundTag();
+            serializeToNbt(be);
+            nbt.put("blockEntity", be);
+            builder.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
+
         }
     }
 

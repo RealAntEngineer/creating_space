@@ -49,7 +49,6 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
         };
     }
 
-
     @Override
     public Vec3i getSize(Direction facing) {
         return new Vec3i(1, 2, 1);
@@ -81,13 +80,16 @@ public class SuperEngineBlock extends RocketEngineBlock implements IBE<RocketEng
         Item item = asItem();
 
         ItemStack stack = new ItemStack(item);
-        Optional<RocketEngineBlockEntity.NbtDependent> blockEntityOptional = getBlockEntityOptional(level, pos);
+        RocketEngineBlockEntity.NbtDependent be = getBlockEntity(level, pos);
 
-
-        CompoundTag tag = Objects.requireNonNull(stack.get(DataComponents.CUSTOM_DATA)).copyTag();
-        CompoundTag beData = blockEntityOptional.orElseThrow().saveWithoutMetadata(level.registryAccess());
-        tag.put("blockEntity", beData);
-        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        if (be != null) {
+            CustomData  data = stack.get(DataComponents.CUSTOM_DATA);
+            CompoundTag tag  = new CompoundTag();
+            if (data != null) tag = data.copyTag();
+            CompoundTag beData = be.saveWithoutMetadata(level.registryAccess());
+            tag.put("blockEntity", beData);
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        }
         return stack;
     }
 

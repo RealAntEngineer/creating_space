@@ -18,7 +18,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:engine_blueprint"
+          "item": "creatingspace:incomplete_rocket_engine"
         },
         {
           "item": "creatingspace:power_pack"
@@ -30,7 +30,7 @@
       ],
       "results": [
         {
-          "id": "creatingspace:engine_blueprint"
+          "id": "creatingspace:incomplete_rocket_engine"
         }
       ]
     },
@@ -38,7 +38,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "creatingspace:engine_blueprint"
+          "item": "creatingspace:incomplete_rocket_engine"
         },
         {
           "item": "creatingspace:exhaust_pack"
@@ -50,12 +50,12 @@
       ],
       "results": [
         {
-          "id": "creatingspace:engine_blueprint"
+          "id": "creatingspace:incomplete_rocket_engine"
         }
       ]
     }
   ],
   "transitional_item": {
-    "id": "creatingspace:engine_blueprint"
+    "id": "creatingspace:incomplete_rocket_engine"
   }
 }

@@ -34,18 +34,20 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.List;
 
+@NonnullDefault
 public class OxygenBacktankBlockEntity extends SmartBlockEntity implements Nameable {
 
 	public int oxygenLevel;
 	public int oxygenLevelTimer;
 	private int prevOxygenLevel;
 	private final Component defaultName;
-	private Component customName;
+	private @Nullable Component customName;
 	private int capacityEnchantLevel;
-	private DataComponentPatch componentPatch;
+	private @Nullable DataComponentPatch componentPatch;
 
 	private final FluidTank OXYGEN_TANK = new FluidTank(1000) {
 		@Override

@@ -39,6 +39,8 @@
   "block.creatingspace.cryogenic_tank.tooltip.summary": "It's both a bucket and a fluid tank for cold liquid, keep it's content after breaking. Can be use in a filter",
 
   "block.creatingspace.moon_stone": "Moon Stone",
+  "block.creatingspace.polished_moon_stone": "Polished Moon Stone",
+  "block.creatingspace.moon_stone_brick": "Moon Stone Brick",
   "block.creatingspace.moon_regolith": "Moon Regolith",
   "block.creatingspace.moon_surface_regolith": "Moon Surface Regolith",
   "block.creatingspace.mars_stone": "Mars Stone",
