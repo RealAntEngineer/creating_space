@@ -2,6 +2,7 @@ package com.rae.creatingspace.init.worldgen;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.worldgen.placed_feature.FloatingIsland;
+import com.rae.creatingspace.content.worldgen.placed_feature.PiercingRockFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,7 +14,12 @@ import net.minecraftforge.registries.RegistryObject;
 public class FeatureInit {
     private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, CreatingSpace.MODID);
 
-    public static final RegistryObject<FloatingIsland> FLOATING_ISLAND= FEATURES.register("floating_island", () -> new FloatingIsland(BlockPileConfiguration.CODEC));
+    public static final RegistryObject<FloatingIsland> FLOATING_ISLAND = FEATURES.register("floating_island",
+            () -> new FloatingIsland(BlockPileConfiguration.CODEC));
+
+    public static final RegistryObject<PiercingRockFeature> PIERCING_ROCK_FEATURE = FEATURES.register("piercing_rock_feature",
+            () -> new PiercingRockFeature(PiercingRockFeature.Configuration.CODEC));
+
     public static void register(IEventBus bus){
         FEATURES.register(bus);
     }

@@ -55,7 +55,11 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
         double zTilt = (eastY - westY)/radius/2;
         double zStart = ((westY + eastY)/2d - initialY)/radius;
 
-        double depthMultiplier = (1 - ((random.nextDouble() - 0.5) * 0.3))*(1+Math.min(Math.abs(xTilt)*3 + Math.abs(zTilt)*3, 6));
+        // Tilt magnitude for depth adjustment
+        double tiltMagnitude = Math.sqrt(xTilt*xTilt + zTilt*zTilt);
+
+        // Base depth multiplier with random variation AND tilt-based increase
+        double depthMultiplier = (1 - ((random.nextDouble() - 0.5) * 0.3)) * (1 + Math.min(tiltMagnitude * 3, 6));
         boolean fresh = random.nextInt(16) == 1;
 
         SimpleBitStorage rawData = new SimpleBitStorage(Mth.ceillog2(chunk.getHeight() + 1),256);
@@ -77,10 +81,14 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
                         zDev /= radius;
                         final double sqrtY = xDev * xDev + zDev * zDev ;//ellipse
                         double yDev = (sqrtY * sqrtY ) * 6 ;//ellipse squared
-                        double craterDepth = 5 - yDev ;
+
+                        double craterDepth = 5 - yDev;
                         craterDepth *= depthMultiplier;
-                        //if (craterDepth > 0.0) {
-                        double toDig = craterDepth - (zDev * zTilt + xDev * xTilt + (xStart + zStart)/2)*radius;
+
+                        // Apply tilt offset with quadratic falloff to keep center flat
+                        double tiltOffset = (zDev * zTilt + xDev * xTilt + (xStart + zStart)/2) * radius;
+                        double tiltFactor = Math.sqrt(sqrtY); // 0 at center, 1 at edge - linear falloff
+                        double toDig = craterDepth - tiltOffset * tiltFactor;
                         //}
 
 
@@ -115,6 +123,7 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
                                             chunk.setBlockState(mutable, AIR, true);//this never manages to update the hightmap correctly. That's why we do a dirt hack
                                             carvingMask.set(innerChunkX, relativeY, innerChunkZ);
                                             if (!fresh && dug + 1 >= toDig && !chunk.getBlockState(copy.set(mutable).move(Direction.DOWN, 2)).isAir()) {
+                                                //TODO get the old surface not the bottom, otherwise will get weird with caves
                                                 context.topMaterial(posToBiome, chunk, mutable, true).ifPresent(blockStates -> chunk.setBlockState(mutable.move(Direction.DOWN), blockStates, true));
                                             }
                                         }

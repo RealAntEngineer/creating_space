@@ -1,0 +1,35 @@
+{
+  "type": "creatingspace:piercing_rock_feature",
+  "config": {
+    "state_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "creatingspace:mars_stone"
+      }
+    },
+    "spike_length": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 10,
+        "max_inclusive": 15
+      }
+    },
+    "base_radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 4,
+        "max_inclusive": 10
+      }
+    },
+    "max_angle_from_vertical": 20.0,
+    "width_function": "circular",
+    "taper_strength": 1.5,
+    "vertical_offset": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": -8,
+        "max_inclusive": -5
+      }
+    }
+  }
+}

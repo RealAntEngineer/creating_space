@@ -22,7 +22,8 @@
   },
   "features": [
     [
-      "creatingspace:mars/crystal_geode"
+      "creatingspace:mars/crystal_geode",
+      "creatingspace:mars/rock"
     ]
   ]
 }

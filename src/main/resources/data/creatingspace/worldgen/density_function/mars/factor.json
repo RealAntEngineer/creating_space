@@ -5,10 +5,10 @@
     "argument": {
       "type": "minecraft:spline",
       "spline": {
-        "coordinate": "creatingspace:mars/erosion",
+        "coordinate": "creatingspace:mars/continentalness",
         "points": [
           {
-            "location": -1,
+            "location": 1,
             "derivative": 0,
             "value": {
               "coordinate": "creatingspace:mars/weirdness",
@@ -48,7 +48,7 @@
             }
           },
           {
-            "location": -0.6,
+            "location": 0.6,
             "derivative": 0,
             "value": {
               "coordinate": "creatingspace:mars/weirdness",
@@ -87,7 +87,7 @@
             }
           },
           {
-            "location": -0.4,
+            "location": 0.4,
             "derivative": 0,
             "value": {
               "coordinate": "creatingspace:mars/weirdness",
@@ -126,7 +126,7 @@
             }
           },
           {
-            "location": -0.2,
+            "location": 0.2,
             "derivative": 0,
             "value": {
               "coordinate": "creatingspace:mars/weirdness",
@@ -165,12 +165,12 @@
             }
           },
           {
-            "location": -0.1,
+            "location": 0.1,
             "derivative": 0,
             "value": 12
           },
           {
-            "location": 0.5,
+            "location": -0.5,
             "derivative": 0,
             "value": 15
           }

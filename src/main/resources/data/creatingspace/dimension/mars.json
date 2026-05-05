@@ -10,7 +10,7 @@
           "biome": "creatingspace:mars/mountains",
           "parameters": {
             "temperature": [
-              0.2,
+              -1,
               1
             ],
             "humidity": [
@@ -18,34 +18,7 @@
               1
             ],
             "continentalness": [
-              0.3,
-              1
-            ],
-            "erosion": [
-              -1,
-              1
-            ],
-            "weirdness": [
-              -0.3,
-              1
-            ],
-            "depth": [-1,0.2],
-            "offset": 0
-          }
-        },
-        {
-          "biome": "creatingspace:mars/frozen_mountains",
-          "parameters": {
-            "temperature": [
-              -1,
-              0.1
-            ],
-            "humidity": [
-              -1,
-              1
-            ],
-            "continentalness": [
-              0.3,
+              0.6,
               1
             ],
             "erosion": [
@@ -64,7 +37,7 @@
           "biome": "creatingspace:mars/plains",
           "parameters": {
             "temperature": [
-              -0.2,
+              -1,
               1
             ],
             "humidity": [
@@ -72,8 +45,8 @@
               1
             ],
             "continentalness": [
-              -1,
-              0.3
+              -0.45,
+              0.55
             ],
             "erosion": [
               -1,
@@ -88,11 +61,11 @@
           }
         },
         {
-          "biome": "creatingspace:mars/frozen_plains",
+          "biome": "creatingspace:mars/ocean",
           "parameters": {
             "temperature": [
               -1,
-              -0.3
+              1
             ],
             "humidity": [
               -1,
@@ -100,14 +73,14 @@
             ],
             "continentalness": [
               -1,
-              0.3
+              -0.5
             ],
             "erosion": [
               -1,
               1
             ],
             "weirdness": [
-             -0.3,
+              -0.3,
               1
             ],
             "depth": [-1,0.2],

@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.rae.creatingspace.content.worldgen.noise.INeedWorldSeed;
 import com.rae.creatingspace.content.worldgen.noise.PhacelleErosionNoise;
 import com.rae.creatingspace.content.worldgen.noise.WorleyNoise;
+import com.rae.creatingspace.content.worldgen.noise.WorleyNoise2D;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -166,6 +167,46 @@ public class CustomDensityFunctions {
         @Override
         public double compute(FunctionContext context) {
             return noise.getValue(context.blockX(),context.blockY(),context.blockZ());
+        }
+
+        @Override
+        public double minValue() {
+            return -1;
+        }
+
+        @Override
+        public double maxValue() {
+            return 1;
+        }
+
+        @Override
+        public KeyDispatchDataCodec<? extends DensityFunction> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public void setSeed(long seed) {
+            noise.setSeed(seed);
+        }
+    }
+
+    public static final class Worley2DDensityFunction implements DensityFunction.SimpleFunction, INeedWorldSeed {
+        WorleyNoise2D noise;
+
+        public static final MapCodec<Worley2DDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(
+                                Codec.FLOAT.fieldOf("cell_size").forGetter(i -> i.noise.getCellSize()))
+                        .apply(instance, Worley2DDensityFunction::new));
+
+        public static final KeyDispatchDataCodec<Worley2DDensityFunction> CODEC = KeyDispatchDataCodec.of(DATA_CODEC);
+
+        public Worley2DDensityFunction(float cell_size){
+            noise = new WorleyNoise2D(cell_size);//scale factor is useless. maybe octaves ?
+        }
+
+        @Override
+        public double compute(FunctionContext context) {
+            return noise.getValue(context.blockX(),context.blockZ());
         }
 
         @Override

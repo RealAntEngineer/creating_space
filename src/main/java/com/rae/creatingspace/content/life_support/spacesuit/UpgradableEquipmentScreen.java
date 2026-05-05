@@ -12,11 +12,11 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
-public class UpgradableEquipementScreen extends AbstractSimiContainerScreen<UpgradableEquipmentMenu> {
+public class UpgradableEquipmentScreen extends AbstractSimiContainerScreen<UpgradableEquipmentMenu> {
     //go to SelectionSrollInput (SchematicTableScreen)
     private final GuiTexturesInit background;
 
-    public UpgradableEquipementScreen(UpgradableEquipmentMenu container, Inventory inv, Component title) {
+    public UpgradableEquipmentScreen(UpgradableEquipmentMenu container, Inventory inv, Component title) {
         super(container, inv, title);
         background = GuiTexturesInit.UPGRADABLE_EQUIPMENT;
     }

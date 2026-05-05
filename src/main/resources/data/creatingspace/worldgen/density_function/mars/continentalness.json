@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:cache_2d",
+  "argument": {
+    "type": "minecraft:shifted_noise",
+    "noise": "creatingspace:mars/continentalness",
+    "xz_scale": 0.25,
+    "y_scale": 0,
+    "shift_x": 0,
+    "shift_y": 0,
+    "shift_z": 0
+  }
+}

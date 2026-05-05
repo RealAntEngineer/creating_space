@@ -1,0 +1,35 @@
+{
+  "type": "creatingspace:piercing_rock_feature",
+  "config": {
+    "state_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "creatingspace:moon_stone"
+      }
+    },
+    "spike_length": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 10,
+        "max_inclusive": 20
+      }
+    },
+    "base_radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 4,
+        "max_inclusive": 6
+      }
+    },
+    "max_angle_from_vertical": 90.0,
+    "width_function": "diamond",
+    "taper_strength": 0.5,
+    "vertical_offset": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": -5,
+        "max_inclusive": -2
+      }
+    }
+  }
+}

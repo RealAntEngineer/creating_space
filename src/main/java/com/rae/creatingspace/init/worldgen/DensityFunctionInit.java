@@ -12,17 +12,18 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class DensityFunctionInit {
     private static final DeferredRegister<Codec<? extends DensityFunction>> DENSITY_FUNCTIONS = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, CreatingSpace.MODID);
-    //TODO add linear_interpolation + sin interpolation
 
-    public static final RegistryObject<Codec<CustomDensityFunctions.SinInterpolationDF>> SIN_INTEROPOL = DENSITY_FUNCTIONS
+    public static final RegistryObject<Codec<CustomDensityFunctions.SinInterpolationDF>> SIN_INTERPOLATION = DENSITY_FUNCTIONS
             .register("sin_interpolation", CustomDensityFunctions.SinInterpolationDF.CODEC::codec);
 
-    public static final RegistryObject<Codec<CustomDensityFunctions.LinearInterpolationDF>> LIN_INTEROPOL = DENSITY_FUNCTIONS
+    public static final RegistryObject<Codec<CustomDensityFunctions.LinearInterpolationDF>> LINEAR_INTERPOLATION = DENSITY_FUNCTIONS
             .register("linear_interpolation", CustomDensityFunctions.LinearInterpolationDF.CODEC::codec);
 
-    public static final RegistryObject<Codec<CustomDensityFunctions.WorleyDensityFunction>> WORLEY_NOISE_FUNCTION = DENSITY_FUNCTIONS
+    public static final RegistryObject<Codec<CustomDensityFunctions.WorleyDensityFunction>> WORLEY_NOISE = DENSITY_FUNCTIONS
             .register("worley_noise", CustomDensityFunctions.WorleyDensityFunction.CODEC::codec);
 
+    public static final RegistryObject<Codec<CustomDensityFunctions.Worley2DDensityFunction>> WORLEY_NOISE_2D = DENSITY_FUNCTIONS
+            .register("worley_noise_2d", CustomDensityFunctions.Worley2DDensityFunction.CODEC::codec);
 
     public static final RegistryObject<Codec<PhacelleErosionNoise>> PhacelleNoise = DENSITY_FUNCTIONS.register(
             "phacelle_erosion", PhacelleErosionNoise.CODEC::codec);

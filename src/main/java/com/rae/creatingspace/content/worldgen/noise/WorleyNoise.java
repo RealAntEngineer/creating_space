@@ -101,6 +101,13 @@ public class WorleyNoise {
             int cellY = Piy + yi;
             int cellZ = Piz + zi;
 
+            // Only skip if the cell's CLOSEST POSSIBLE point is still out of bounds
+            float cellYMin = cellY - jitter * Ko; // Minimum Y this cell could have
+            float cellYMax = cellY + jitter * Ko; // Maximum Y this cell could have
+
+            // Skip only if the entire cell is completely out of bounds
+            if (cellYMax < yMinOffset || cellYMin > yMaxOffset) continue;
+
             float dx = xi - Pfx;
             float dy = yi - Pfy;
             float dz = zi - Pfz;
@@ -108,13 +115,19 @@ public class WorleyNoise {
             float permuted = permute(permute(permute(cellX) + cellY) + cellZ);
 
             float fk = permuted * K;
+
             float jitterX = (fk - Mth.floor(fk) - Ko) * jitter;
             float jitterY = ((Mth.floor(fk) % 8) * K - Ko) * jitter;
             float jitterZ = ((Mth.floor(permuted * K2)) * Kz - Kzo) * jitter;
 
-            float ytest = cellY + jitterY;
 
-            if (ytest  < yMinOffset || ytest > yMaxOffset) continue;
+            // Otherwise, calculate normally with the jittered position
+            float featureY = cellY + jitterY;
+
+            // NOW check if THIS specific feature point is out of bounds
+            if (featureY < yMinOffset || featureY > yMaxOffset) {
+                continue; // Skip this specific feature, but we checked other nearby cells
+            }
 
             float distX = dx + jitterX;
             float distY = dy + jitterY;

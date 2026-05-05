@@ -1,5 +1,5 @@
 {
-  "sea_level": -10,
+  "sea_level": 60,
   "disable_mob_generation": false,
   "aquifers_enabled": true,
   "ore_veins_enabled": false,
@@ -28,12 +28,8 @@
       "xz_scale": 1,
       "y_scale": 0
     },
-    "vegetation": "creatingspace:mars/ravine/ridges_folded",
-    "continents": {
-      "type": "minecraft:mul",
-      "argument1": "creatingspace:mars/erosion",
-      "argument2": -1
-    },
+    "vegetation": 0,
+    "continents": "creatingspace:mars/continentalness",
     "erosion": "creatingspace:mars/ravine/ravines_folded",
     "depth": "creatingspace:mars/depth",
     "ridges": {
@@ -83,7 +79,7 @@
                         "type": "minecraft:quarter_negative",
                         "argument": {
                           "type": "minecraft:mul",
-                          "argument1": "creatingspace:mars/depth",
+                          "argument1": "creatingspace:mars/depth_simplified",
                           "argument2": {
                             "type": "minecraft:cache_2d",
                             "argument": "creatingspace:mars/factor"
@@ -102,6 +98,10 @@
       }
     },
     "final_density": {
+      "type": "minecraft:interpolated",
+      "argument": "creatingspace:mars/sloped_cheese"
+    },
+    "real_final_density": {
       "type": "minecraft:min",
       "argument1": {
         "type": "minecraft:squeeze",
@@ -216,7 +216,7 @@
                                           "argument2": {
                                             "type": "minecraft:mul",
                                             "argument1": -0.64,
-                                            "argument2": "creatingspace:mars/slopped_cheese"
+                                            "argument2": "creatingspace:mars/sloped_cheese"
                                           }
                                         },
                                         "min": 0,

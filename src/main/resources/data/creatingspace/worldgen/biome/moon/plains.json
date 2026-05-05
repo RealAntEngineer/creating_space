@@ -34,7 +34,8 @@
     [
       "creatingspace:moon/aluminum_ore",
       "creatingspace:moon/cobalt_ore",
-      "creatingspace:moon/nickel_ore"
+      "creatingspace:moon/nickel_ore",
+      "creatingspace:moon/rock"
     ]
   ]
 }

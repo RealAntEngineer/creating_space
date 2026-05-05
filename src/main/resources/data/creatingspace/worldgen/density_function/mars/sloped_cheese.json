@@ -2,7 +2,7 @@
   "type": "minecraft:add",
   "argument1": {
     "type": "minecraft:mul",
-    "argument1": 4,
+    "argument1": 6,
     "argument2": {
       "type": "minecraft:quarter_negative",
       "argument": {
@@ -17,5 +17,5 @@
       }
     }
   },
-  "argument2":"creatingspace:mars/base_3d_noise"
+  "argument2": "creatingspace:mars/base_3d_noise"
 }

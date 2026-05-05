@@ -1,0 +1,19 @@
+{
+  "type": "creatingspace:phacelle_erosion",
+  "height_map": {
+    "type": "minecraft:mul",
+    "argument1": "creatingspace:mars/offset",
+    "argument2": 4
+  },
+  "erosion": {
+    "scale": 64,
+    "gully_weight": 0.8
+  },
+  "fractal": {
+    "octaves": 3
+  },
+  "rounding": {
+    "ridge": 0.5,
+    "crease": 0.5
+  }
+}
