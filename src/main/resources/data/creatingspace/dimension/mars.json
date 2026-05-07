@@ -14,11 +14,11 @@
               1
             ],
             "humidity": [
-              -1,
+              -0.3,
               1
             ],
             "continentalness": [
-              0.6,
+              0.5,
               1
             ],
             "erosion": [
@@ -26,7 +26,7 @@
               1
             ],
             "weirdness": [
-              -0.3,
+              0,
               1
             ],
             "depth": [-1,0.2],
@@ -41,20 +41,47 @@
               1
             ],
             "humidity": [
-              -1,
+              -0.3,
               1
             ],
             "continentalness": [
               -0.45,
-              0.55
+              0.5
             ],
             "erosion": [
               -1,
               1
             ],
             "weirdness": [
-             -0.3,
+             -1,
               1
+            ],
+            "depth": [-1,0.2],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:mars/plains",
+          "parameters": {
+            "temperature": [
+              -1,
+              1
+            ],
+            "humidity": [
+              -0.3,
+              1
+            ],
+            "continentalness": [
+              0.4,
+              0.8
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              0
             ],
             "depth": [-1,0.2],
             "offset": 0
@@ -68,7 +95,7 @@
               1
             ],
             "humidity": [
-              -1,
+              -0.3,
               1
             ],
             "continentalness": [
@@ -80,7 +107,7 @@
               1
             ],
             "weirdness": [
-              -0.3,
+              -1,
               1
             ],
             "depth": [-1,0.2],
@@ -96,7 +123,7 @@
             ],
             "humidity": [
               -1,
-              1
+              -0.7
             ],
             "continentalness": [
               -1,
@@ -108,7 +135,7 @@
             ],
             "weirdness": [
               -1,
-              -0.7
+              1
             ],
             "depth": [-1,0.2],
             "offset": 0
@@ -122,8 +149,8 @@
               1
             ],
             "humidity": [
-              -1,
-              1
+              -0.6,
+              -0.4
             ],
             "continentalness": [
               -1,
@@ -134,8 +161,8 @@
               1
             ],
             "weirdness": [
-              -0.6,
-              -0.4
+              -1,
+              1
             ],
             "depth": [-1,0.2],
             "offset": 0

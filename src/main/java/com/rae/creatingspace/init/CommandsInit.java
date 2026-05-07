@@ -4,13 +4,18 @@ package com.rae.creatingspace.init;
 import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.saved.UnlockedDesignManager;
 import com.rae.creatingspace.content.worldgen.debug.Test;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
@@ -66,6 +71,20 @@ public class CommandsInit {
                                 }))
                 .then(Commands.literal("renderDensity")
                         .then(Commands.argument("id", ResourceLocationArgument.id())
+                                .suggests((context, builder) -> {
+                                    // Get the registry or your collection of valid IDs
+                                    CommandSourceStack source         = context.getSource();
+                                    RegistryAccess     registryAccess = source.getLevel().registryAccess();
+
+                                    //Suggest density functions from the registry
+                                    Registry<DensityFunction> registry = registryAccess.registryOrThrow(Registries.DENSITY_FUNCTION);
+
+                                    // Add all registry keys as suggestions
+                                    return SharedSuggestionProvider.suggestResource(
+                                            registry.keySet().stream(),
+                                            builder
+                                    );
+                                })
                                 .executes(context -> {
 
                                     ResourceLocation id = ResourceLocationArgument.getId(context, "id");
@@ -120,7 +139,7 @@ public class CommandsInit {
 
         } catch (Exception e) {
             source.sendFailure(Component.literal("Error: " + e.getMessage()));
-            e.printStackTrace();
+            CreatingSpace.LOGGER.error("Error: ",e);
         }
     }
 

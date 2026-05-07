@@ -8,18 +8,18 @@
         "coordinate": "creatingspace:mars/humidity",
         "points": [
           {
-            "location": -0.1,
+            "location": -0.5,
             "derivative": 0,
             "value": 0
           },
           {
-            "location": 0.5,
+            "location": 0,
             "derivative": 0,
             "value": {
               "coordinate": "creatingspace:mars/continentalness",
               "points": [
                 {
-                  "location": 0.7,
+                  "location": -0.8,
                   "derivative": 0,
                   "value": 0
                 },
@@ -29,7 +29,7 @@
                   "value": 1
                 },
                 {
-                  "location": -0.5,
+                  "location": 0.5,
                   "derivative": 0,
                   "value": 0
                 }

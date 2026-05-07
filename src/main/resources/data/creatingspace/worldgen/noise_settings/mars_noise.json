@@ -14,29 +14,24 @@
     "min_y": -64,
     "height": 384,
     "size_horizontal": 1,
-    "size_vertical": 2
+    "size_vertical": 1
   },
   "noise_router": {
     "barrier": 0,
-    "fluid_level_floodedness": 2,
+    "fluid_level_floodedness": 0,
     "fluid_level_spread": 0,
     "lava": 0,
-    "comment": "vegetation and erosion are unused",
-    "temperature": {
-      "type": "minecraft:noise",
-      "noise": "creatingspace:mars/temperature",
-      "xz_scale": 1,
-      "y_scale": 0
-    },
-    "vegetation": 0,
-    "continents": "creatingspace:mars/continentalness",
-    "erosion": "creatingspace:mars/ravine/ravines_folded",
-    "depth": "creatingspace:mars/depth",
-    "ridges": {
+    "comment": "erosion is unused",
+    "temperature": 0,
+    "vegetation": {
       "type": "minecraft:mul",
       "argument1": "creatingspace:mars/ravine/ravines_final",
       "argument2": "creatingspace:mars/ravine/ravine_factor"
     },
+    "continents": "creatingspace:mars/continentalness",
+    "erosion": 0,
+    "depth": "creatingspace:mars/depth",
+    "ridges": "creatingspace:mars/hills",
     "initial_density_without_jaggedness": {
       "type": "minecraft:add",
       "argument1": 0.1171875,
@@ -494,7 +489,7 @@
                           "then_run": {
                             "type": "minecraft:block",
                             "result_state": {
-                              "Name": "minecraft:water"
+                              "Name": "minecraft:mud"
                             }
                           }
                         }
