@@ -21,7 +21,7 @@
     "fluid_level_floodedness": 0,
     "fluid_level_spread": 0,
     "lava": 0,
-    "comment": "erosion is unused",
+    "comment": "temperature is unused",
     "temperature": 0,
     "vegetation": {
       "type": "minecraft:mul",
@@ -29,7 +29,7 @@
       "argument2": "creatingspace:mars/ravine/ravine_factor"
     },
     "continents": "creatingspace:mars/continentalness",
-    "erosion": 0,
+    "erosion": "creatingspace:mars/eroded_offset",
     "depth": "creatingspace:mars/depth",
     "ridges": "creatingspace:mars/hills",
     "initial_density_without_jaggedness": {

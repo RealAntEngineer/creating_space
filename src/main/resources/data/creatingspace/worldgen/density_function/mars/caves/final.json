@@ -2,8 +2,8 @@
   "type": "minecraft:mul",
   "argument1": {
     "type": "minecraft:add",
-    "argument1": "creatingspace:venus/cave/spaghetti_2d",
-    "argument2": "creatingspace:venus/cave/noodle"
+    "argument1": "creatingspace:mars/cave/spaghetti_2d",
+    "argument2": "creatingspace:mars/cave/noodle"
   },
   "argument2": 10000
 }

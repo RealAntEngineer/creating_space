@@ -19,9 +19,14 @@
               "coordinate": "creatingspace:mars/continentalness",
               "points": [
                 {
-                  "location": -0.8,
+                  "location": -0.4,
                   "derivative": 0,
                   "value": 0
+                },
+                {
+                  "location": -0.3,
+                  "derivative": 0,
+                  "value": 1
                 },
                 {
                   "location": 0,
