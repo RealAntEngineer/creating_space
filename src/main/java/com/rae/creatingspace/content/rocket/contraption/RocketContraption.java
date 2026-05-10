@@ -2,6 +2,7 @@ package com.rae.creatingspace.content.rocket.contraption;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
@@ -112,7 +113,15 @@ public class RocketContraption extends TranslatingContraption {
     public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> getCodecMapInfo() {
         if (CODEC_MAP_INFO == null) {
             CODEC_MAP_INFO = Codec.unboundedMap(
-                            PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(),
+                            PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec().xmap(
+                                    // decode
+                                    type -> type,
+
+                                    // encode
+                                    type -> type == PropellantTypeInit.METHALOX_DIRECT
+                                            ? PropellantTypeInit.getSyncedPropellantRegistry().get(CreatingSpace.resource("methalox"))
+                                            : type
+                            ),
                             RocketContraption.ConsumptionInfo.CODEC)
                     .xmap(HashMap::new, i -> i);
         }
@@ -121,7 +130,15 @@ public class RocketContraption extends TranslatingContraption {
 
     public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> getCodecMapInfo(RegistryAccess registries) {
         return Codec.unboundedMap(
-                        registries.registryOrThrow(PropellantTypeInit.Keys.PROPELLANT_TYPE).byNameCodec(),
+                        registries.registryOrThrow(PropellantTypeInit.Keys.PROPELLANT_TYPE).byNameCodec().xmap(
+                                // decode
+                                type -> type,
+
+                                // encode
+                                type -> type == PropellantTypeInit.METHALOX_DIRECT
+                                        ? registries.registryOrThrow(PropellantTypeInit.Keys.PROPELLANT_TYPE).get(CreatingSpace.resource("methalox"))
+                                        : type
+                        ),
                         RocketContraption.ConsumptionInfo.CODEC)
                 .xmap(HashMap::new, i -> i);
     }
