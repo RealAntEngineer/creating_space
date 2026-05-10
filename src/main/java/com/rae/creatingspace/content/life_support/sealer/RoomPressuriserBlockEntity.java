@@ -1,7 +1,10 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlock;
+import com.rae.creatingspace.content.recipes.air_liquefying.AirLiquefierBlockEntity;
 import com.rae.creatingspace.init.TagsInit;
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
+import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.EntityInit;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -19,6 +22,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -46,15 +50,17 @@ public class RoomPressuriserBlockEntity extends KineticBlockEntity implements IH
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
                 BlockEntityInit.ROOM_PRESSURIZER.get(),
-                (be, context) -> {
-                    Direction localDir = be.getBlockState().getValue(RoomPressuriserBlock.FACING);
-                    if (localDir.getOpposite() == context) {
-                        return be.OXYGEN_TANK;
-                    }
-                    return null;
-                }
-
+                RoomPressuriserBlockEntity::getFluidInvCapability
         );
+    }
+
+    public @Nullable IFluidHandler getFluidInvCapability(@Nullable Direction side) {
+        Direction localDir = this.getBlockState().getValue(AirLiquefierBlock.FACING);
+
+        if (side != localDir && !BlockInit.OXYGEN_SEALER.get().hasShaftTowards(level, worldPosition, getBlockState(), side)) {
+            return this.OXYGEN_TANK;
+        }
+        return null;
     }
     public void tryRoom() {
         assert level != null;
