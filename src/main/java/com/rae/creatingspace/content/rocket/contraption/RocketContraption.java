@@ -108,7 +108,7 @@ public class RocketContraption extends TranslatingContraption {
         return CSContraptionType.ROCKET.get();
     }
 
-    private static @Nullable Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO;
+    /*private static @Nullable Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> CODEC_MAP_INFO;
 
     public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> getCodecMapInfo() {
         if (CODEC_MAP_INFO == null) {
@@ -126,7 +126,7 @@ public class RocketContraption extends TranslatingContraption {
                     .xmap(HashMap::new, i -> i);
         }
         return CODEC_MAP_INFO;
-    }
+    }*/
 
     public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> getCodecMapInfo(RegistryAccess registries) {
         return Codec.unboundedMap(
@@ -161,7 +161,7 @@ public class RocketContraption extends TranslatingContraption {
         nbt.putInt("thrust", thrust);
         nbt.putInt("dryMass", dryMass);
         nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
-        nbt.put("theoreticalPerTagFluidConsumption",getCodecMapInfo().encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
+        nbt.put("theoreticalPerTagFluidConsumption", getCodecMapInfo((RegistryAccess) registries).encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
 
         return nbt;
     }

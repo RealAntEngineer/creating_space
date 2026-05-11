@@ -29,6 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -330,7 +331,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         compound.put("initialPosMap", RocketControlsBlockEntity.putPosMap(this.initialPosMap));
         compound.putLongArray("localPosOfFlightRecorders", CSNBTUtil.BlockPosToLong(this.localPosOfFlightRecorders));//to remove
         compound.putFloat("initialMass", this.initialMass);
-        compound.put("realPerTagFluidConsumption", getCodecMapInfo().encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).resultOrPartial().orElseGet(CompoundTag::new));
+        compound.put("realPerTagFluidConsumption", getCodecMapInfo((RegistryAccess) registries).encodeStart(NbtOps.INSTANCE, this.realPerTagFluidConsumption).resultOrPartial().orElseGet(CompoundTag::new));
         compound.put("partialDrainAmountPerFluid", getCodecMapConsumption().encodeStart(NbtOps.INSTANCE, this.partialDrainAmountPerFluid).resultOrPartial().orElseGet(CompoundTag::new));
 
         compound.put("assemblyData", FlightDataHelper.RocketAssemblyData.toNBT(this.assemblyData));

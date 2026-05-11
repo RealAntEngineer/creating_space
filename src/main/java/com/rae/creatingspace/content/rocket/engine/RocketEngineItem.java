@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.rocket.engine;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.configs.CSCfgServer;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;
@@ -62,7 +63,7 @@ public abstract class RocketEngineItem extends BlockItem {
 
     private static void appendFluidInfo(List<Component> components, String prefix, PropellantType propellantType) {
         components.add(Component.literal(prefix + "Ratio of fluid consumed :").withStyle(ChatFormatting.GRAY));
-        if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
+        if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
             for (TagKey<Fluid> fluidTagkey : propellantType.getPropellantRatio().keySet()) {
                 components.add(Component.literal(prefix + "  ").append(
                         Component.translatable("fluid." + fluidTagkey.location().toLanguageKey()))
@@ -72,7 +73,7 @@ public abstract class RocketEngineItem extends BlockItem {
                 );
             }
         }
-        if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.VOLUMETRIC)) {
+        if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
             HashMap<TagKey<Fluid>, Float> collector = new HashMap<>();
             float total = 0;
             for (TagKey<Fluid> fluidTagkey : propellantType.getPropellantRatio().keySet()) {

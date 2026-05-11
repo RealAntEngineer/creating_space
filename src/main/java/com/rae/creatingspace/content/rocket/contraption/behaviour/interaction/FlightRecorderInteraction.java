@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
 import com.rae.creatingspace.configs.CSCfgClient;
+import com.rae.creatingspace.configs.CSCfgServer;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
@@ -90,8 +91,22 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                     float emptyMass = inertFluidMass + contraption.getDryMass();
                     serverPlayer.sendSystemMessage(
                             Component.literal(
-                                    "current empty mass : " + emptyMass + "kg (dry mass :" + contraption.getDryMass() + "kg | inert fluid " + inertFluidMass + "kg)"
+                                    "current empty mass : " + emptyMass
                             )
+                    );
+                    serverPlayer.sendSystemMessage(
+                            Component.literal(
+                                    "(dry mass : " + contraption.getDryMass() + "kg | inert fluid : " + inertFluidMass + "kg)"
+                            )
+                    );
+                    serverPlayer.sendSystemMessage(
+                            Component.literal("Mean Isp : " + meanVe/9.81 +"s")
+                    );
+                    serverPlayer.sendSystemMessage(
+                            Component.literal("Propellant mass : " + initialPropellantMass+"kg")
+                    );
+                    serverPlayer.sendSystemMessage(
+                            Component.literal("Computed deltaV : " + meanVe * Math.log((emptyMass + inertFluidMass + initialPropellantMass)/(emptyMass + inertFluidMass)) + "m/s")
                     );
                 } else if (lastAssemblyData != null && lastAssemblyData.hasFailed()) {
                     if (lastAssemblyData.propellantStatusData().status().isFailReason) {
@@ -109,7 +124,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                             if (fluidMass == null) {
                                 fluidMass = 0;
                             }
-                            if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
+                            if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
                                 serverPlayer.sendSystemMessage(
                                         Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
                                                 .append(" ")
@@ -123,7 +138,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                                                         .append(Component.translatable("creatingspace.science.unit.metric_ton"))
                                                         .withStyle(ChatFormatting.GOLD))
                                         , shouldBeDisplayed);
-                            } else if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.VOLUMETRIC)) {
+                            } else if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
                                 AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
                                 getSideAwareRegistry(Registries.FLUID).entrySet().forEach(
