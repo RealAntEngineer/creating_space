@@ -37,7 +37,7 @@
                 "argument1": 8,
                 "argument2": {
                   "type": "minecraft:noise",
-                  "noise": "minecraft:spaghetti_2d_elevation",
+                  "noise": "creatingspace:mars/caves/spaghetti_2d_elevation",
                   "xz_scale": 1,
                   "y_scale": 0
                 }

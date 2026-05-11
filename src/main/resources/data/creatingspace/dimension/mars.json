@@ -10,16 +10,46 @@
           "biome": "creatingspace:mars/mountains",
           "parameters": {
             "temperature": [
-              -1,
+              -0.3,
               1
             ],
             "humidity": [
+              -1,
+              1
+            ],
+            "continentalness": [
+              0.8,
+              1
+            ],
+            "erosion": [
+              -1,
+              1
+            ],
+            "weirdness": [
+              -1,
+              1
+            ],
+            "depth": [
+              -1,
+              0.2
+            ],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "creatingspace:mars/mountains",
+          "parameters": {
+            "temperature": [
               -0.3,
+              1
+            ],
+            "humidity": [
+              -1,
               1
             ],
             "continentalness": [
               0.3,
-              1
+              0.8
             ],
             "erosion": [
               -1,
@@ -29,7 +59,10 @@
               -0.2,
               1
             ],
-            "depth": [-1,0.2],
+            "depth": [
+              -1,
+              0.2
+            ],
             "offset": 0
           }
         },
@@ -37,26 +70,29 @@
           "biome": "creatingspace:mars/plains",
           "parameters": {
             "temperature": [
-              -1,
+              -0.3,
               1
             ],
             "humidity": [
-              -0.3,
+              -1,
               1
             ],
             "continentalness": [
               -0.45,
-              0.2
+              0.3
             ],
             "erosion": [
               -1,
               1
             ],
             "weirdness": [
-             -1,
+              -1,
               1
             ],
-            "depth": [-1,0.2],
+            "depth": [
+              -1,
+              0.2
+            ],
             "offset": 0
           }
         },
@@ -64,11 +100,11 @@
           "biome": "creatingspace:mars/plains",
           "parameters": {
             "temperature": [
-              -1,
+              -0.3,
               1
             ],
             "humidity": [
-              -0.3,
+              -1,
               1
             ],
             "continentalness": [
@@ -81,9 +117,12 @@
             ],
             "weirdness": [
               -1,
-              -0.3
+              -0.2
             ],
-            "depth": [-1,0.2],
+            "depth": [
+              -1,
+              0.2
+            ],
             "offset": 0
           }
         },
@@ -91,11 +130,11 @@
           "biome": "creatingspace:mars/ocean",
           "parameters": {
             "temperature": [
-              -1,
+              -0.3,
               1
             ],
             "humidity": [
-              -0.3,
+              -1,
               1
             ],
             "continentalness": [
@@ -110,7 +149,10 @@
               -1,
               1
             ],
-            "depth": [-1,0.2],
+            "depth": [
+              -1,
+              0.2
+            ],
             "offset": 0
           }
         },
@@ -119,7 +161,7 @@
           "parameters": {
             "temperature": [
               -1,
-              1
+              -0.7
             ],
             "humidity": [
               -1,
@@ -137,7 +179,10 @@
               -1,
               1
             ],
-            "depth": [-1,0.2],
+            "depth": [
+              -1,
+              0.2
+            ],
             "offset": 0
           }
         },
@@ -145,12 +190,12 @@
           "biome": "creatingspace:mars/mossy_ravine",
           "parameters": {
             "temperature": [
-              -1,
-              1
-            ],
-            "humidity": [
               -0.6,
               -0.4
+            ],
+            "humidity": [
+              -1,
+              1
             ],
             "continentalness": [
               -1,
@@ -164,7 +209,10 @@
               -1,
               1
             ],
-            "depth": [-1,0.2],
+            "depth": [
+              -1,
+              0.2
+            ],
             "offset": 0
           }
         },

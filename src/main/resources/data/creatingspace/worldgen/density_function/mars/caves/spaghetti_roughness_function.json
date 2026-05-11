@@ -10,7 +10,7 @@
         "argument1": -0.05,
         "argument2": {
           "type": "minecraft:noise",
-          "noise": "minecraft:spaghetti_roughness_modulator",
+          "noise": "creatingspace:mars/caves/spaghetti_roughness_modulator",
           "xz_scale": 1,
           "y_scale": 1
         }
@@ -23,7 +23,7 @@
         "type": "minecraft:abs",
         "argument": {
           "type": "minecraft:noise",
-          "noise": "minecraft:spaghetti_roughness",
+          "noise": "creatingspace:mars/caves/spaghetti_roughness",
           "xz_scale": 1,
           "y_scale": 1
         }

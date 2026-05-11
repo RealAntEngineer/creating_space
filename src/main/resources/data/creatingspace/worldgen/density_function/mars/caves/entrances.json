@@ -9,7 +9,7 @@
         "argument1": 0.37,
         "argument2": {
           "type": "minecraft:noise",
-          "noise": "creatingspace:mars/caves/cave_entrance",
+          "noise": "creatingspace:mars/caves/entrance",
           "xz_scale": 0.75,
           "y_scale": 0.5
         }
@@ -42,7 +42,7 @@
                   "y_scale": 1
                 }
               },
-              "noise": "minecraft:spaghetti_3d_1",
+              "noise": "creatingspace:mars/caves/spaghetti_3d_1",
               "rarity_value_mapper": "type_1"
             },
             "argument2": {
@@ -56,7 +56,7 @@
                   "y_scale": 1
                 }
               },
-              "noise": "minecraft:spaghetti_3d_2",
+              "noise": "creatingspace:mars/caves/spaghetti_3d_2",
               "rarity_value_mapper": "type_1"
             }
           },
