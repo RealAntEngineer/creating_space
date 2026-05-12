@@ -33,7 +33,7 @@
           "argument1": "creatingspace:mars/ravine/ravines_rivers_folded",
           "argument2": {
             "type": "minecraft:mul",
-            "argument1": 0.6,
+            "argument1": 0,
             "argument2": "creatingspace:mars/ravine/ravine_factor"
           }
         }

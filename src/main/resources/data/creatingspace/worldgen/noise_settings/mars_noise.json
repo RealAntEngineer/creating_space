@@ -21,7 +21,6 @@
     "fluid_level_floodedness": 0,
     "fluid_level_spread": 0,
     "lava": 0,
-    "comment": "temperature is unused",
     "temperature": {
       "type": "minecraft:mul",
       "argument1": "creatingspace:mars/ravine/ravines_final",
@@ -140,7 +139,7 @@
                           "argument2": {
                             "type": "minecraft:range_choice",
                             "input": "creatingspace:mars/sloped_cheese",
-                            "max_exclusive": 1.5625,
+                            "max_exclusive": 3,
                             "min_inclusive": -1000000,
                             "when_in_range": {
                               "type": "minecraft:min",
@@ -207,11 +206,7 @@
                                   },
                                   "argument2": "creatingspace:mars/caves/entrances"
                                 },
-                                "argument2": {
-                                  "type": "minecraft:add",
-                                  "argument1": "creatingspace:mars/caves/spaghetti_2d",
-                                  "argument2": "creatingspace:mars/caves/spaghetti_roughness_function"
-                                }
+                                "argument2": 0.1
                               },
                               "argument2": {
                                 "type": "minecraft:range_choice",
