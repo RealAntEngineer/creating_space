@@ -1,17 +1,26 @@
-buildscript {
-    repositories {
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
-    }
-    dependencies {
-        classpath "org.spongepowered:mixingradle:${mixingradle_version}"
-    }
-}
 plugins {
+    id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '6.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
+
+//Load local environement variables
+def loadEnv() {
+    def envFile = rootProject.file(".env")
+    if (envFile.exists()) {
+        envFile.eachLine { line ->
+            def matcher = line =~ /^\s*([\w\.]+)\s*=\s*(.*)\s*$/
+            if (matcher.matches()) {
+                def key = matcher[0][1]
+                def value = matcher[0][2]
+                System.setProperty(key, value)
+            }
+        }
+    }
+}
+loadEnv()
 
 version = mod_version
 group = mod_group_id
@@ -30,8 +39,6 @@ minecraft {
 
     copyIdeResources = true
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformers.cfg')
-
     runs {
         // applies to all the run configs below
         configureEach {
@@ -40,7 +47,7 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
 
-            //property 'forge.logging.console.level', 'debug'
+            property 'forge.logging.console.level', 'debug'
 
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -66,6 +73,9 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
+
+        accessTransformer = file('src/main/resources/META-INF/accesstransformers.cfg')
+
         data {
             // example of overriding the workingDirectory set in configureEach above
             workingDirectory project.file('run-data')
@@ -80,50 +90,22 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
+    flatDir {
+        dir 'libs'
+    }
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://maven.tterrag.com" } // Registrate
-
-    //JEI
-
+    //maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
     maven {
-
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
     }
     maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://modmaven.dev"
-    }
-
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-    }
-
-    //curios
-    maven {
+        name = "Illusive Soulworks maven"
         url = "https://maven.theillusivec4.top/"
     }
-
-    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
-
-    //TODO maybe use Jitpack
-    /*maven {
-        url = "https://maven.pkg.github.com/RealAntEngineer/Formic_API" // maven for Formic_API (temporary)
-        credentials {
-            username = "RealAntEngineer"
-            password = System.getProperty("READ_TOKEN")// this is a read only token
-        }
-    }*/
-    maven {
-        url "https://cursemaven.com"
-
-    }
-
-    maven { url 'https://jitpack.io' }
-
-
 
 }
 
@@ -144,27 +126,14 @@ dependencies {
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+    implementation fg.deobf("blank:formic-api-${minecraft_version}:${formicapi_version}") // Needs to be placed in libs folder (temporary solution)
 
     //curios
 
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
-
-    //implementation fg.deobf("curse.maven:formicapi-1282701:6707561")
-    //implementation(fg.deobf("com.rae.formicapi:formic-api-${minecraft_version}:${formicapi_version}"))
+    runtimeOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
+    compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api"))
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-
-    implementation fg.deobf('com.github.RealAntEngineer:FormicAPI:v1.20.1-1.7.1:slim')
-    //implementation fg.deobf('com.rae.formicapi:FormicAPI:1.20.1-1.7.1:slim')
-
-    //worldgen tool
-    //worldgen-devtools:4rikEHY9
-    //runtimeOnly fg.deobf("maven.modrinth:worldgen-devtools:1.0.0-bata.2+1.20.5") -> dependent on minecraft too high use it for 1.21.1
-    //runtimeOnly fg.deobf("maven.modrinth:connector:1.0.0-beta.46+1.20.1")
-    //runtimeOnly fg.deobf("maven.modrinth:forgified-fabric-api:0.92.2+1.11.12+1.20.1")
-
-
 }
 mixin {
     add sourceSets.main, 'creatingspace.refmap.json'
@@ -232,12 +201,4 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-}
-
-// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
-    }
 }
