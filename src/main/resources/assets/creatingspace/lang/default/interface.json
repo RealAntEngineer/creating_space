@@ -15,20 +15,17 @@
   "creatingspace.ponder.rocket_building.text_6": "the flight recorder can help in those moments",
 
   "creatingspace.ponder.rocket_debugging.header": "Rockets debugging",
-  "creatingspace.ponder.rocket_debugging.text_1": "The flight recorder give info about it's last flight or no past flight if it's just placed,",
+  "creatingspace.ponder.rocket_debugging.text_1": "The flight recorder give info about its last flight or no past flight if it's just placed,",
   "creatingspace.ponder.rocket_debugging.text_2": "no past flight",
-  "creatingspace.ponder.rocket_debugging.text_3": "If there is not enough propellant mass, you will get this :",
+  "creatingspace.ponder.rocket_debugging.text_3": "If there isn't enough propellant mass, you will get this :",
   "creatingspace.ponder.rocket_debugging.text_4": "not enough propellants",
   "creatingspace.ponder.rocket_debugging.text_5": "add more of the missing propellant to solve the issue :",
-  "creatingspace.ponder.rocket_debugging.text_6": "If there is enough propellant mass but the proportion are wrong, you will get this :",
+  "creatingspace.ponder.rocket_debugging.text_6": "If there is enough propellant mass but the proportions are wrong, you will get this :",
   "creatingspace.ponder.rocket_debugging.text_7": "wrong propellant ratio",
   "creatingspace.ponder.rocket_debugging.text_8": "equilibrate the propellants to solve the issue",
   "creatingspace.ponder.rocket_debugging.text_9": "if the rocket is too heavy you will get :",
   "creatingspace.ponder.rocket_debugging.text_10": "not enough thrust",
   "creatingspace.ponder.rocket_debugging.text_11": "add more engines to solve the issue",
-
-
-
 
   "creatingspace.ponder.synthesizer.header": "Crafting Methane",
   "creatingspace.ponder.synthesizer.text_1": "You need to put hydrogen in it...",
@@ -50,14 +47,14 @@
   "gui.engineer_table_screen.thrust_selection": "Select Thrust",
   "gui.engineer_table_screen.size_selection": "Select the size",
 
-  "creatingspace.overlay.flight_recorder.title": "last flight :",
-  "creatingspace.overlay.flight_recorder.no_failure": "no failure",
-  "creatingspace.overlay.flight_recorder.no_flight": "no past flight",
-  "creatingspace.overlay.flight_recorder.propellant_status.not_enough_propellant": "not enough propellant",
-  "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "wrong ratio of propellant",
-  "creatingspace.overlay.flight_recorder.not_enough_thrust": "not enough thrust",
-  "creatingspace.overlay.flight_recorder.thrust1": "thrust",
-  "creatingspace.overlay.flight_recorder.thrust2": "weight",
+  "creatingspace.overlay.flight_recorder.title": "Last flight :",
+  "creatingspace.overlay.flight_recorder.no_failure": "No failure",
+  "creatingspace.overlay.flight_recorder.no_flight": "No past flight",
+  "creatingspace.overlay.flight_recorder.propellant_status.not_enough_propellant": "Not enough propellant",
+  "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "Wrong ratio of propellants",
+  "creatingspace.overlay.flight_recorder.not_enough_thrust": "Not enough thrust",
+  "creatingspace.overlay.flight_recorder.thrust1": "Thrust",
+  "creatingspace.overlay.flight_recorder.thrust2": "Weight",
 
   "creatingspace:earth_orbit": "Earth Orbit",
   "creatingspace:moon_orbit": "Moon Orbit",
@@ -74,7 +71,6 @@
 
   "creatingspace.biome.moon_cave": "Moon Cave",
   "creatingspace.biome.venus_hellground": "Venus Hellground",
-
 
   "adastra:earth_orbit": "Earth Orbit",
   "adastra:moon_orbit": "Moon Orbit",
@@ -98,11 +94,12 @@
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
-  "creatingspace.recipe.chemical": "chemical",
-  "creatingspace.recipe.electrolysis": "electrolysis",
+  "creatingspace.recipe.chemical": "Chemical Reaction",
+  "creatingspace.recipe.electrolysis": "Electrolysis",
+  "block.creatingspace.air_liquefier" : "Air Liquefying",
   "propellant_type.creatingspace.methalox": "Metha/LOX",
   "propellant_type.creatingspace.lh2lox": "LH2/LOX",
-  "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
+  "propellant_type.creatingspace.metalic_hydrogen": "Metallic Hydrogen",
   "exhaust_pack_type.creatingspace.bell_nozzle": "Bell Nozzle",
   "exhaust_pack_type.creatingspace.aerospike": "Aerospike",
   "power_pack_type.creatingspace.open_cycle": "Open Cycle",
@@ -126,11 +123,11 @@
   "item.creatingspace.design_blueprint.message": "unlocked :",
   "creatingspace.power_pack_type": "Power Pack",
   "creatingspace.exhaust_pack_type": "Exhaust Pack",
-  "creatingspace.gui.engineer_table.engine_size_hint": "heavier but decrease material requirement",
-  "creatingspace.gui.engineer_table.engine_thrust_hint": "more thrust but increase material requirement",
-  "creatingspace.gui.engineer_table.expansion_ratio": "expansion ratio :",
-  "creatingspace.gui.engineer_table.propellant_type_hint": "using a better propellant will mean using better materials",
-  "creatingspace.gui.engineer_table.max_isp": "max isp : %d s",
+  "creatingspace.gui.engineer_table.engine_size_hint": "Heavier but decreases material requirements",
+  "creatingspace.gui.engineer_table.engine_thrust_hint": "More thrust but increases material requirements",
+  "creatingspace.gui.engineer_table.expansion_ratio": "Expansion ratio : ",
+  "creatingspace.gui.engineer_table.propellant_type_hint": "Using a better propellant will allow using better materials",
+  "creatingspace.gui.engineer_table.max_isp": "Max isp : %d s",
   "creatingspace.gui.engineer_table.material_level": "Material Lvl : %d",
   "creatingspace.gui.engineer_table.engine_mass": "Mass : %f t",
   "creatingspace.gui.engineer_table.engine_temperature": "T : %d °C",
@@ -138,5 +135,4 @@
   "creatingspace.gui.engineer_table.isp": "ISP : %d s",
   "creatingspace.gui.engineer_table.engine_size_input": "%i mb",
   "creatingspace.gui.engineer_table.engine_thrust_input": "%iN"
-
 }
