@@ -6,22 +6,6 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-//Load local environement variables
-def loadEnv() {
-    def envFile = rootProject.file(".env")
-    if (envFile.exists()) {
-        envFile.eachLine { line ->
-            def matcher = line =~ /^\s*([\w\.]+)\s*=\s*(.*)\s*$/
-            if (matcher.matches()) {
-                def key = matcher[0][1]
-                def value = matcher[0][2]
-                System.setProperty(key, value)
-            }
-        }
-    }
-}
-loadEnv()
-
 version = mod_version
 group = mod_group_id
 
@@ -39,6 +23,8 @@ minecraft {
 
     copyIdeResources = true
 
+    accessTransformer = file('src/main/resources/META-INF/accesstransformers.cfg')
+
     runs {
         // applies to all the run configs below
         configureEach {
@@ -47,7 +33,7 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
 
-            property 'forge.logging.console.level', 'debug'
+            //property 'forge.logging.console.level', 'debug'
 
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
@@ -72,9 +58,6 @@ minecraft {
         gameTestServer {
             property 'forge.enabledGameTestNamespaces', mod_id
         }
-
-
-        accessTransformer = file('src/main/resources/META-INF/accesstransformers.cfg')
 
         data {
             // example of overriding the workingDirectory set in configureEach above
@@ -126,7 +109,9 @@ dependencies {
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
-    implementation fg.deobf("blank:formic-api-${minecraft_version}:${formicapi_version}") // Needs to be placed in libs folder (temporary solution)
+
+    implementation fg.deobf("com.github.RealAntEngineer:FormicAPI:v${minecraft_version}-${formicapi_version}:slim")
+    //implementation fg.deobf('com.rae.formicapi:FormicAPI:1.20.1-1.7.1:slim')
 
     //curios
 
@@ -201,4 +186,12 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

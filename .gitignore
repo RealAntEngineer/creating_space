@@ -16,6 +16,9 @@ out
 # gradle
 build
 .gradle
+.vscode
+libs
+.DS_Store
 
 # other
 eclipse
