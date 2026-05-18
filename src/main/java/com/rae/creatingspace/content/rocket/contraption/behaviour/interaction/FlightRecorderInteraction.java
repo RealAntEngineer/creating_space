@@ -1,6 +1,5 @@
 package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
-import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSCfgServer;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
