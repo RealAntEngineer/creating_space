@@ -75,9 +75,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
-    flatDir {
+    /*flatDir {
         dir 'libs'
-    }
+    }*/
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://maven.tterrag.com" } // Registrate
     //maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
@@ -89,7 +89,12 @@ repositories {
         name = "Illusive Soulworks maven"
         url = "https://maven.theillusivec4.top/"
     }
+    maven {
+        url "https://cursemaven.com"
 
+    }
+
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {

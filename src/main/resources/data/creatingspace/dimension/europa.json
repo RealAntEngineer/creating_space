@@ -9,7 +9,7 @@
         {
           "biome": "creatingspace:europa/surface",
           "parameters": {
-            "temperature": [-2,-0.4],
+            "temperature": [-2, -0.4],
             "humidity": [-2, 2],
             "continentalness": [-2, 2],
             "erosion": [-2, 2],
@@ -17,8 +17,7 @@
             "depth": [-2, 2],
             "offset": 0
           }
-        },
-        {
+        }, {
           "biome": "creatingspace:europa/plains",
           "parameters": {
             "temperature": [-0.5, 0.5],
@@ -29,11 +28,10 @@
             "depth": [-2, 2],
             "offset": 0
           }
-        },
-        {
+        }, {
           "biome": "creatingspace:europa/volcanic_rift",
           "parameters": {
-            "temperature": [0.6,2],
+            "temperature": [0.6, 2],
             "humidity": [-2, 2],
             "continentalness": [0.3, 2],
             "erosion": [-2, 2],
