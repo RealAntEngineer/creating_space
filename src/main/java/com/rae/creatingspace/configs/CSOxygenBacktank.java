@@ -19,6 +19,12 @@ public class CSOxygenBacktank extends CSConfigBase {
         RemainingO2Overlay.reload();
     }
 
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        RemainingO2Overlay.reload();
+    }
+
     private static class Comments {
         static String xOffset = "the horizontal offset compared to default location";
         static String yOffset = "the vertical offset compared to default location";

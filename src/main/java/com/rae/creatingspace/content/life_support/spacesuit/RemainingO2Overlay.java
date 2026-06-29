@@ -2,6 +2,7 @@ package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.rae.creatingspace.api.gui.elements.VerticalDialWidget;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.configs.CSOxygenBacktank;
 import com.rae.creatingspace.init.DataComponentsInit;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -21,9 +22,16 @@ public class RemainingO2Overlay implements LayeredDraw.Layer {
 
     RemainingO2Overlay() {
         Minecraft mc = Minecraft.getInstance();
-        gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
-                CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
-                32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+
+        try {
+            gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
+                    CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
+                    32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+        } catch (IllegalStateException stateException){
+            gauge = new VerticalDialWidget(CSOxygenBacktank.PlaceSelection.BOTTOM_LEFT.getX(mc.getWindow().getGuiScaledWidth()),
+                    CSOxygenBacktank.PlaceSelection.BOTTOM_LEFT.getY(mc.getWindow().getGuiScaledWidth()),
+                    32, 64, CSOxygenBacktank.ColorSelection.WHITE.getColor());
+        }
     }
 
     public static void reload(){

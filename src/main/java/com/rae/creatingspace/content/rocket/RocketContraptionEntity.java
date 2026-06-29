@@ -147,7 +147,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
 
     //put that in a rocket assembly helper class ?
     //TODO put every static method into a helper class ( make an api ?)
-    //TODO make a python program that does that for testing purpose
+    //TODO make a Python program that does that for testing purpose
 
     //the rocket kill itself upon arrival in other dim
     public float deltaV() {
