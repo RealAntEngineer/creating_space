@@ -2,6 +2,6 @@
   "exhaustion": 0,
   "message_id": "creatingspace.no_oxygen",
   "scaling": "always",
-  "effects": "drowning"
+  "effects": "hurt"
 
 }

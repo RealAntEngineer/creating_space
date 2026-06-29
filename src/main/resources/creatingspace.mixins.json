@@ -6,7 +6,24 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "creatingspace.refmap.json",
   "plugin": "com.rae.creatingspace.mixin.CSMixinPlugin",
-  "mixins": ["entity.EntityMixin", "entity.LivingEntityMixin", "entity.PlayerMixin", "entity.gravity.BoatMixin", "entity.gravity.FallingBlockEntityMixin", "entity.gravity.ItemEntityMixin", "entity.gravity.LivingEntityMixin", "entity.gravity.MinecartMixin", "entity.gravity.PrimedTntMixin", "fluid.FluidInteractionRegistryMixin", "kinetics.BacktankBlockEntityMixin", "recipe.ItemApplicationMixin", "recipe.ProcessingRecipeMixin", "recipe.ProcessingRecipeSerializerMixin", "recipe.SequencedAssemblyRecipeMixin", "recipe.SequencedAssemblyRecipeSerializerMixin"],
+  "mixins": [
+    "entity.EntityMixin",
+    "entity.LivingEntityMixin",
+    "entity.PlayerMixin",
+    "entity.gravity.BoatMixin",
+    "entity.gravity.FallingBlockEntityMixin",
+    "entity.gravity.ItemEntityMixin",
+    "entity.gravity.LivingEntityMixin",
+    "entity.gravity.MinecartMixin",
+    "entity.gravity.PrimedTntMixin",
+    "fluid.FluidInteractionRegistryMixin",
+    "kinetics.BacktankBlockEntityMixin",
+    "recipe.ItemApplicationMixin",
+    "recipe.ProcessingRecipeMixin",
+    "recipe.ProcessingRecipeSerializerMixin",
+    "recipe.SequencedAssemblyRecipeMixin",
+    "recipe.SequencedAssemblyRecipeSerializerMixin"
+  ],
   "client": [
   ],
   "injectors": {

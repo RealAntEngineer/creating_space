@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "creatingspace:moon/crashed_ship",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1642174,
+
+    "spacing": 10,
+
+    "separation": 6,
+
+    "type": "minecraft:random_spread"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "structures": [
+    {
+      "structure": "creatingspace:mars/underground_outpost_1",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 536536,
+
+    "spacing": 10,
+
+    "separation": 6,
+
+    "type": "minecraft:random_spread"
+  }
+}

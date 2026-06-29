@@ -1,0 +1,23 @@
+{
+
+  "name": "creatingspace:moon/crashed_rocket/start_pool",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+
+      "weight": 1,
+      "element": {
+
+        "location": "creatingspace:moon/crashed_rocket",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

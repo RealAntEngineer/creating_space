@@ -7,7 +7,7 @@
   "block.creatingspace.rocket_generator": "Rocket Generator",
   "block.creatingspace.rocket_generator.tooltip.summary": "A machine that burns methane and oxygen to produce SU, start with a signal of redstone if loaded with a starter charge",
   "block.creatingspace.catalyst_carrier": "Catalyst Carrier",
-  "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin ",
+  "block.creatingspace.catalyst_carrier.tooltip.summary": "Allow reaction between liquid in a basin. Can hold a catalyst for complex recipe",
 
   "block.creatingspace.chemical_synthesizer": "Chemical Synthesizer",
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "__[DEPRECATED]__ Needed for producing methane",
@@ -39,19 +39,21 @@
   "block.creatingspace.cryogenic_tank.tooltip.summary": "It's both a bucket and a fluid tank for cold liquid, keep it's content after breaking. Can be use in a filter",
 
   "block.creatingspace.moon_stone": "Moon Stone",
+  "block.creatingspace.polished_moon_stone": "Polished Moon Stone",
+  "block.creatingspace.moon_stone_brick": "Moon Stone Brick",
   "block.creatingspace.moon_regolith": "Moon Regolith",
   "block.creatingspace.moon_surface_regolith": "Moon Surface Regolith",
   "block.creatingspace.mars_stone": "Mars Stone",
   "block.creatingspace.mars_regolith": "Mars Regolith",
   "block.creatingspace.mars_surface_regolith": "Mars Surface Regolith",
-  "block.creatingspace.crystal_block": "Nickel Sulfate Block",
-  "block.creatingspace.budding_crystal": "Budding Nickel Sulfate",
-  "block.creatingspace.crystal_cluster": "Nickel Sulfate Cluster",
-  "block.creatingspace.large_crystal_bud": "Large Nickel Sulfate Bud",
-  "block.creatingspace.medium_crystal_bud": "Medium Nickel Sulfate Bud",
-  "block.creatingspace.small_crystal_bud": "Small Nickel Sulfate Bud",
-  "item.creatingspace.crystal_shard": "Nickel Sulfate Shard",
 
+  "block.creatingspace.nickel_sulfate_block": "Nickel Sulfate Block",
+  "block.creatingspace.budding_nickel_sulfate": "Budding Nickel Sulfate",
+  "block.creatingspace.nickel_sulfate_cluster": "Nickel Sulfate Cluster",
+  "block.creatingspace.large_nickel_sulfate_bud": "Large Nickel Sulfate Bud",
+  "block.creatingspace.medium_nickel_sulfate_bud": "Medium Nickel Sulfate Bud",
+  "block.creatingspace.small_nickel_sulfate_bud": "Small Nickel Sulfate Bud",
+  "item.creatingspace.nickel_sulfate_shard": "Nickel Sulfate Shard",
 
   "block.creatingspace.nickel_ore": "Nickel Ore",
   "block.creatingspace.deepslate_nickel_ore": "Deepslate Nickel Ore",
@@ -62,6 +64,14 @@
   "block.creatingspace.raw_nickel_block": "Raw Nickel Block",
   "block.creatingspace.raw_cobalt_block": "Raw Cobalt Block",
   "block.creatingspace.raw_aluminum_block": "Raw Aluminum Block",
+  "block.creatingspace.nickel_block": "Block of Nickel",
+  "block.creatingspace.cobalt_block": "Block of Cobalt",
+  "block.creatingspace.aluminum_block": "Block of Aluminum",
+  "block.creatingspace.copronickel_block": "Block of Copronickel",
+  "block.creatingspace.reinforced_copper_block": "Block of Reinforced Copper",
+  "block.creatingspace.monel_block": "Block of Monel",
+  "block.creatingspace.inconel_block": "Block of Inconel",
+  "block.creatingspace.hastelloy_block": "Block of Hastelloy",
 
   "item.creatingspace.basic_spacesuit_helmet": "Basic Spacesuit Helmet",
   "item.creatingspace.copper_oxygen_backtank" : "Copper Oxygen Backtank",
@@ -74,10 +84,7 @@
   "item.creatingspace.advanced_spacesuit_boots": "Advanced Spacesuit Boots",
 
   "item.creatingspace.basic_spacesuit_fabric": "Basic Spacesuit Fabric",
-  "item.creatingspace.incomplete_basic_spacesuit_fabric": "Incomplete Basic Spacesuit Fabric",
-
   "item.creatingspace.advanced_spacesuit_fabric": "Advanced Spacesuit Fabric",
-  "item.creatingspace.incomplete_advanced_spacesuit_fabric": "Incomplete Advanced Spacesuit Fabric",
 
 
   "item.creatingspace.injector": "Injector",
@@ -95,12 +102,15 @@
   "item.creatingspace.incomplete_combustion_chamber": "Incomplete Combustion Chamber",
 
   "item.creatingspace.bell_nozzle": "Bell Nozzle",
+  "item.creatingspace.incomplete_bell_nozzle": "Incomplete Bell Nozzle",
   "item.creatingspace.copper_coil":"Copper Coil",
   "item.creatingspace.basic_catalyst":"Basic Catalyst",
+  "item.creatingspace.nickel_sulfate_catalyst":"Nickel Sulfate Catalyst",
   "item.creatingspace.aerospike_plug": "Aerospike Plug",
+  "item.creatingspace.incomplete_aerospike_plug": "Incomplete Aerospike Plug",
   "item.creatingspace.exhaust_pack":"Exhaust Pack",
+  "item.creatingspace.power_pack": "Power Pack",
   "item.creatingspace.incomplete_exhaust_pack":"Incomplete Exhaust Pack",
-  "item.creatingspace.power_pack":"Power Pack",
   "item.creatingspace.incomplete_power_pack":"Incomplete Power Pack",
 
   "item.creatingspace.andesite_ingot": "Andesite Ingot",
@@ -182,7 +192,6 @@
   "item.creatingspace.copronickel_nugget": "Copronickel Nugget",
   "item.creatingspace.copronickel_sheet": "Copronickel Sheet",
   "item.creatingspace.copronickel_blisk": "Copronickel Blisk",
-  "item.creatingspace.copronickel_incomplete_blisk": "Copronickel Incomplete Blisk",
   "item.creatingspace.copronickel_turbine": "Copronickel Turbine",
   "item.creatingspace.copronickel_turbine_shaft": "Copronickel Turbine",
   "item.creatingspace.incomplete_copronickel_turbine": "Copronickel Incomplete Turbine",
@@ -262,6 +271,15 @@
   "item.creatingspace.crushed_aluminum_ore": "Crushed Aluminum Ore",
   "item.creatingspace.raw_aluminum": "Raw Aluminum",
 
+  "item.creatingspace.nickel_block": "Block of Nickel",
+  "item.creatingspace.cobalt_block": "Block of Cobalt",
+  "item.creatingspace.aluminum_block": "Block of Aluminum",
+  "item.creatingspace.copronickel_block": "Block of Copronickel",
+  "item.creatingspace.reinforced_copper_block": "Block of Reinforced Copper",
+  "item.creatingspace.monel_block": "Block of Monel",
+  "item.creatingspace.inconel_block": "Block of Inconel",
+  "item.creatingspace.hastelloy_block": "Block of Hastelloy",
+
   "item.creatingspace.liquid_methane_bucket": "Bucket of Liquid Methane",
   "item.creatingspace.liquid_oxygen_bucket": "Bucket of Liquid Oxygen",
   "item.creatingspace.liquid_hydrogen_bucket": "Bucket of Liquid Hydrogen",
@@ -270,12 +288,13 @@
   "fluid.creatingspace.liquid_oxygen" : "Liquid Oxygen",
   "fluid.creatingspace.liquid_hydrogen" : "Liquid Hydrogen",
   "fluid.creatingspace.liquid_co2": "Liquid CO2",
+  "fluid.creatingspace.monopropellant": "Monopropellant",
 
 
   "item.creatingspace.space_food": "Space Food",
   "item.creatingspace.space_food.tooltip.summary": "...ew",
   "item.creatingspace.design_blueprint": "Design Blueprint",
-  "item.creatingspace.design_blueprint.tooltip.summary" : "This table is used to craft engine blueprints.",
+  "item.creatingspace.design_blueprint.tooltip.summary" : "This paper contain information on engine designs.",
   "item.creatingspace.design_blueprint.tooltip.condition1": "R-Click",
   "item.creatingspace.design_blueprint.tooltip.behaviour1": "Learn new design",
 
@@ -350,6 +369,8 @@
   "creatingspace:mars": "Mars",
   "creatingspace:mars_orbit": "Mars Orbit",
   "creatingspace:venus": "Venus",
+  "minecraft:the_end": "The End",
+  "minecraft:the_nether": "The Nether",
 
   "creatingspace.biome.venus": "Venus",
   "creatingspace.biome.space": "Space",
@@ -384,15 +405,21 @@
   "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
   "creatingspace.recipe.chemical": "chemical",
   "creatingspace.recipe.electrolysis": "electrolysis",
+
   "propellant_type.creatingspace.methalox": "Metha/LOX",
   "propellant_type.creatingspace.lh2lox": "LH2/LOX",
   "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
+  "propellant_type.creatingspace.monoprop": "Premixed methalox",
+
   "exhaust_pack_type.creatingspace.bell_nozzle": "Bell Nozzle",
   "exhaust_pack_type.creatingspace.aerospike": "Aerospike",
+
   "power_pack_type.creatingspace.open_cycle": "Open Cycle",
   "power_pack_type.creatingspace.ox_rich_staged_cycle": "Ox Rich Flow",
   "power_pack_type.creatingspace.fuel_rich_staged_cycle": "Fuel Rich Flow",
   "power_pack_type.creatingspace.full_flow_staged_cycle": "Full Flow",
+  "power_pack_type.creatingspace.catalyse_cycle": "Catalyse Cycle",
+
   "creatingspace.gui.rocket_controls.assemble": "Assemble",
   "rocket.assemble.new_rocket": "Create New Rocket",
   "creatingspace.gui.rocket_controls.disassemble": "Disassemble",

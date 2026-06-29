@@ -1,0 +1,9 @@
+{
+  "propellantRatio": {
+    "creatingspace:monopropellant": 1
+  },
+  "maxIsp": 600,
+  "Cp": 4500,
+  "gamma": 1.1,
+  "M": 18
+}

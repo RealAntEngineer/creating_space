@@ -6,6 +6,7 @@
     64
   ],
   "textures": {
+    "particle": "creatingspace:block/small_rocket_engine/nozzle",
     "6": "creatingspace:block/small_rocket_engine/nozzle"
   },
   "elements": [

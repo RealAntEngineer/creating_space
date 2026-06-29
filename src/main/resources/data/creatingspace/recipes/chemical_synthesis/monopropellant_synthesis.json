@@ -1,0 +1,26 @@
+{
+  "type": "creatingspace:chemical_synthesis",
+  "heat_requirement": "heated",
+  "catalyst" : {
+    "item": "creatingspace:nickel_sulfate_catalyst"
+  },
+  "ingredients": [
+    {
+      "type": "neoforge:single",
+      "amount": 100,
+      "fluid": "creatingspace:liquid_methane"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 286,
+      "fluid": "creatingspace:liquid_oxygen"
+    }
+  ],
+  "processing_time": 200,
+  "results": [
+    {
+      "amount": 80,
+      "id": "creatingspace:monopropellant"
+    }
+  ]
+}

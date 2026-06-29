@@ -27,6 +27,13 @@
     },{
       "type": "single",
       "resource": "creatingspace:fluid/liquid_co2_still"
+    },
+    {
+      "type": "single",
+      "resource": "creatingspace:fluid/monopropellant_flow"
+    },{
+      "type": "single",
+      "resource": "creatingspace:fluid/monopropellant_still"
     }
   ]
 }
