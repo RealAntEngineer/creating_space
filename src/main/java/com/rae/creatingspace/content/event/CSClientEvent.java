@@ -75,16 +75,16 @@ public class CSClientEvent {
 
                     if (recipeData.contains("materialLevel"))
                         components.add(Component.literal("  Material Level : " + EngineMaterialInit.materialNames.get(materialLevel)).withStyle(ChatFormatting.GRAY));
-                    ResourceLocation powerPackType        = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).resultOrPartial().orElse(null);
-                    ResourceLocation exhaustPackType      = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).resultOrPartial().orElse(null);
+                    ResourceLocation powerPackType        = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).result().orElse(null);
+                    ResourceLocation exhaustPackType      = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).result().orElse(null);
                     MutableComponent powerPackComponent   = powerPackType != null ? Component.translatable(powerPackType.toLanguageKey("power_pack_type")) : Component.literal("not defined");
                     MutableComponent exhaustPackComponent = exhaustPackType != null ? Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")) : Component.literal("not defined");
 
                     components.add(Component.literal("  Technology : ").append(powerPackComponent).append(" | ").append(exhaustPackComponent).withStyle(ChatFormatting.GRAY));
 
                 }
-                CompoundTag engineInfo = itemData.getCompound("blockEntity");
-                if (!engineInfo.isEmpty()) {
+                CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
+                if (engineInfo!=null && !engineInfo.isEmpty()) {
                     components.add(Component.literal("For engine :").withStyle(ChatFormatting.GOLD));
                     appendEngineDependentText(components, "  ", engineInfo);
                 }

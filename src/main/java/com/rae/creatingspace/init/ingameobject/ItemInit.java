@@ -13,6 +13,7 @@ import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
@@ -518,7 +519,7 @@ public class ItemInit {
                                     .patternLine(" FWF ")
                                     .build(p, resource("mechanical_crafting/armor/" + c.getName())))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
-                    .tag(ItemTags.CHEST_ARMOR)
+                    //.tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
                     .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .register();
@@ -541,7 +542,7 @@ public class ItemInit {
                     .model((c,p) -> p.withExistingParent("netherite_oxygen_backtank",
                             MODID + ":block/oxygen_backtank/netherite"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
-                    .tag(ItemTags.CHEST_ARMOR)
+                    //.tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
                     .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
                     .recipe((c,p) ->

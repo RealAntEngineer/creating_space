@@ -10,7 +10,11 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.CustomTeleporter;
+import com.rae.creatingspace.init.ingameobject.BlockInit;
+import com.rae.creatingspace.init.ingameobject.ItemInit;
+import com.simibubi.create.AllItems;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -18,8 +22,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -27,6 +33,7 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.MissingMappingsEvent;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +41,35 @@ import java.util.Objects;
 @Mod.EventBusSubscriber(modid = CreatingSpace.MODID)
 public class CSEventHandler {
     public CSEventHandler() {
+    }
+
+    @SubscribeEvent
+    public static void missingEntries(MissingMappingsEvent event){
+
+        // Remap items
+        for (MissingMappingsEvent.Mapping<Item> mapping : event.getMappings(Registries.ITEM, "creatingspace")) {
+            switch (mapping.getKey().getPath()) {
+                case "crystal_shard" -> mapping.remap(ItemInit.NICKEL_SULFATE_SHARD.get());
+                case "crystal_block" -> mapping.remap(BlockInit.NICKEL_SULFATE_BLOCK.get().asItem());
+                case "crystal_cluster" -> mapping.remap(BlockInit.NICKEL_SULFATE_CLUSTER.get().asItem());
+                case "budding_crystal" -> mapping.remap(BlockInit.BUDDING_NICKEL_SULFATE.get().asItem());
+                case "large_crystal_bug" -> mapping.remap(BlockInit.LARGE_NICKEL_SULFATE_BUD.get().asItem());
+                case "medium_crystal_bug" -> mapping.remap(BlockInit.MEDIUM_NICKEL_SULFATE_BUD.get().asItem());
+                case "small_crystal_bug" -> mapping.remap(BlockInit.SMALL_NICKEL_SULFATE_BUD.get().asItem());
+            }
+        }
+
+        // Remap blocks
+        for (MissingMappingsEvent.Mapping<Block> mapping : event.getMappings(Registries.BLOCK, "creatingspace")) {
+            switch (mapping.getKey().getPath()) {
+                case "crystal_block" -> mapping.remap(BlockInit.NICKEL_SULFATE_BLOCK.get());
+                case "crystal_cluster" -> mapping.remap(BlockInit.NICKEL_SULFATE_CLUSTER.get());
+                case "budding_crystal" -> mapping.remap(BlockInit.BUDDING_NICKEL_SULFATE.get());
+                case "large_crystal_bug" -> mapping.remap(BlockInit.LARGE_NICKEL_SULFATE_BUD.get());
+                case "medium_crystal_bug" -> mapping.remap(BlockInit.MEDIUM_NICKEL_SULFATE_BUD.get());
+                case "small_crystal_bug" -> mapping.remap(BlockInit.SMALL_NICKEL_SULFATE_BUD.get());
+            }
+        }
     }
 
     @SubscribeEvent
@@ -97,6 +133,7 @@ public class CSEventHandler {
             }
         }
     }
+
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
         //the overworld control the clock for every dimensions, so if we sleep it's the overworld that need to get updated
@@ -140,6 +177,7 @@ public class CSEventHandler {
         return flag;
 
     }
+
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         CommandsInit.register(event.getDispatcher());

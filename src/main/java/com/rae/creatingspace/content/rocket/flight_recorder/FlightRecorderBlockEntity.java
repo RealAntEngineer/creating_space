@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.rocket.flight_recorder;
 
 import com.rae.creatingspace.configs.CSCfgClient;
+import com.rae.creatingspace.configs.CSCfgServer;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
@@ -97,7 +98,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                         if (fluidMass == null) {
                             fluidMass = 0;
                         }
-                        if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.MASS)) {
+                        if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
                             CreateLang.builder()
                                     .add(
                                             Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
@@ -113,7 +114,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                                                             .withStyle(ChatFormatting.GOLD))
                                     )
                                     .forGoggles(tooltip, 2);
-                        } else if (CSConfigs.CLIENT.recorder_measurement.get().equals(CSCfgClient.Measurement.VOLUMETRIC)) {
+                        } else if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
                             AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
                             ForgeRegistries.FLUIDS.getEntries().forEach(

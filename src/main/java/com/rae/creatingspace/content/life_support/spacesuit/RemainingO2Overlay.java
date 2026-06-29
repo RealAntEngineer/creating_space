@@ -2,6 +2,7 @@ package com.rae.creatingspace.content.life_support.spacesuit;
 
 import com.rae.creatingspace.api.gui.elements.VerticalDialWidget;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.configs.CSOxygenBacktank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -18,16 +19,27 @@ public class RemainingO2Overlay implements IGuiOverlay {
 
     RemainingO2Overlay() {
         Minecraft mc = Minecraft.getInstance();
-        gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
-                CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
-                32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+
+        try {
+            gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
+                    CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
+                    32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+        } catch (IllegalStateException stateException){
+            gauge = new VerticalDialWidget(0, 0,
+                    32, 64, CSOxygenBacktank.ColorSelection.WHITE.getColor());
+        }
     }
 
     public static void reload(){
         Minecraft mc = Minecraft.getInstance();
-        INSTANCE.gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
-                CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
-                32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+        try {
+            INSTANCE.gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
+                    CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
+                    32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+        } catch (IllegalStateException stateException){
+            INSTANCE.gauge = new VerticalDialWidget(0, 0,
+                    32, 64, CSOxygenBacktank.ColorSelection.WHITE.getColor());
+        }    
     }
 
     @Override

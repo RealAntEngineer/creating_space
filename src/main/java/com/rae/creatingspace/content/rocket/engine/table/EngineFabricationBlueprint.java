@@ -27,7 +27,7 @@ public class EngineFabricationBlueprint extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         //TODO make this method static somewhere (repetition for the engine, for the engine blueprint then for every item)
-        CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
+        /*CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
         try {
             if (recipeData != null) {
                 int size = recipeData.getInt("size");
@@ -48,11 +48,11 @@ public class EngineFabricationBlueprint extends Item {
             CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
             if (engineInfo != null) {
                 components.add(Component.literal("for engine :"));
-                appendEngineDependentText(components,engineInfo);
+                appendEngineDependentText(components,"",engineInfo);
             }
         } catch (Exception ignored){
 
-        }
+        }*/
         super.appendHoverText(itemStack, level, components, tooltipFlag);
     }
 
