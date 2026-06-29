@@ -2,6 +2,7 @@ package com.rae.creatingspace.content.rocket.contraption;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
@@ -14,6 +15,7 @@ import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -103,15 +105,29 @@ public class RocketContraption extends TranslatingContraption {
     public ContraptionType getType() {
         return CSContraptionType.ROCKET.get();
     }
-    public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(), ConsumptionInfo.CODEC);
+    //public static final Codec<Map<PropellantType, ConsumptionInfo>> CODEC = Codec.unboundedMap(PropellantTypeInit.getSyncedPropellantRegistry().byNameCodec(), ConsumptionInfo.CODEC);
+    public static Codec<HashMap<PropellantType, RocketContraption.ConsumptionInfo>> getCodecMapInfo(RegistryAccess registries) {
+        return Codec.unboundedMap(
+                        registries.registryOrThrow(PropellantTypeInit.Keys.PROPELLANT_TYPE).byNameCodec().xmap(
+                                // decode
+                                type -> type,
+
+                                // encode
+                                type -> type == PropellantTypeInit.METHALOX_DIRECT
+                                        ? registries.registryOrThrow(PropellantTypeInit.Keys.PROPELLANT_TYPE).get(CreatingSpace.resource("methalox"))
+                                        : type
+                        ),
+                        RocketContraption.ConsumptionInfo.CODEC)
+                .xmap(HashMap::new, i -> i);
+    }
     @Override
     public void readNBT(Level world, CompoundTag nbt, boolean clientPacket) {
 
         //TODO add data for server/client sync (possible solution of Interactive bug)
-            thrust = nbt.getInt("thrust");
-            dryMass = nbt.getInt("dryMass");
-            Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
-            theoreticalPerTagFluidConsumption = new HashMap<>(CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
+        thrust = nbt.getInt("thrust");
+        dryMass = nbt.getInt("dryMass");
+        Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
+        theoreticalPerTagFluidConsumption = new HashMap<>(getCodecMapInfo(getContraptionWorld().registryAccess()).parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
         super.readNBT(world, nbt, clientPacket);
     }
 
@@ -122,7 +138,7 @@ public class RocketContraption extends TranslatingContraption {
         nbt.putInt("thrust", thrust);
         nbt.putInt("dryMass", dryMass);
         nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
-        nbt.put("theoreticalPerTagFluidConsumption",CODEC.encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
+        nbt.put("theoreticalPerTagFluidConsumption", getCodecMapInfo(getContraptionWorld().registryAccess()).encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
 
         return nbt;
     }

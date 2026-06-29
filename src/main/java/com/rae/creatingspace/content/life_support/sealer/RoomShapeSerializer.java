@@ -5,9 +5,11 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.phys.AABB;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.List;
 
+@NonnullDefault
 public class RoomShapeSerializer implements EntityDataSerializer<RoomShape> {
     public RoomShapeSerializer() {
     }

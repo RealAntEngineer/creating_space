@@ -8,17 +8,25 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.lwjgl.system.NonnullDefault;
 
+import java.util.function.Function;
+@NonnullDefault
 public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<CatalystCarrierBlockEntity> {
 
     public CatalystCarrierBlock(Properties properties) {
@@ -72,6 +80,39 @@ public class CatalystCarrierBlock extends HorizontalKineticBlock implements IBE<
     @Override
     public boolean isPathfindable(BlockState state, BlockGetter reader, BlockPos pos, PathComputationType type) {
         return false;
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos,
+                                    Player player, InteractionHand hand, BlockHitResult hitResult) {
+
+        ItemStack heldByPlayer = player.getItemInHand(hand).copy();
+
+        // Let non-catalyst items pass through (blocks, tools, etc.)
+        if (!heldByPlayer.isEmpty() && !(heldByPlayer.getItem() instanceof CatalystItem))
+            return InteractionResult.PASS;
+
+        if (level.isClientSide)
+            return InteractionResult.SUCCESS;
+
+        withBlockEntityDo(level, pos, be -> {
+            ItemStack currentCatalyst = be.getCatalyst().copy();
+
+            // Both empty → nothing to do
+            if (currentCatalyst.isEmpty() && heldByPlayer.isEmpty())
+                return;
+
+            player.setItemInHand(hand, currentCatalyst);
+            be.setCatalyst(heldByPlayer);
+            be.sendData();
+        });
+
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public InteractionResult onBlockEntityUse(BlockGetter world, BlockPos pos, Function<CatalystCarrierBlockEntity, InteractionResult> action) {
+        return IBE.super.onBlockEntityUse(world, pos, action);
     }
 
 }

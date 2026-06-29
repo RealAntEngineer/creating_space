@@ -1,7 +1,6 @@
 package com.rae.creatingspace.content.life_support.sealer;
 
 import com.rae.creatingspace.init.ingameobject.BlockEntityInit;
-import com.rae.creatingspace.legacy.server.blockentities.atmosphere.SealerBlockEntity;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
@@ -13,18 +12,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
 import static com.rae.creatingspace.init.graphics.ShapesInit.AIR_LIQUEFIER;
 
+@NonnullDefault
 public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements IBE<RoomPressuriserBlockEntity> {
     public RoomPressuriserBlock(Properties properties) {
         super(properties);
@@ -55,23 +53,7 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
         }
         return super.use(state, level, pos, player, hand, hitResult);
     }
-    /*
-    @OnlyIn(value = Dist.CLIENT)
-    protected void displayScreen(SealerBlockEntity be, Player player) {
-        if (!(player instanceof LocalPlayer))
-            return;
-        ScreenOpener.open(new SealerScreen(be));
-    }*/
 
-    /*@Override
-    public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState state, boolean isMoving) {
-        BlockEntity be = this.getBlockEntity(level,pos);
-        if (be instanceof SealerBlockEntity sealerBlockEntity){
-            sealerBlockEntity.removeO2inRoom(level);
-        }
-        super.onRemove(blockState, level, pos, state, isMoving);
-    }
-*/
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         IBE.onRemove(state, world, pos, newState);
@@ -85,15 +67,4 @@ public class RoomPressuriserBlock extends DirectionalAxisKineticBlock implements
     public BlockEntityType<? extends RoomPressuriserBlockEntity> getBlockEntityType() {
         return BlockEntityInit.ROOM_PRESSURIZER.get();
     }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : ($0, pos, $1, blockEntity) -> {
-            if (blockEntity instanceof SealerBlockEntity sealerBlockEntity) {
-                sealerBlockEntity.tick(level, pos, state);
-            }
-        };
-    }
-
 }

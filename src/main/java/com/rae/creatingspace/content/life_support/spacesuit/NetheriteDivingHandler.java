@@ -62,7 +62,7 @@ public final class NetheriteDivingHandler {
 			return;
 		}
 
-		bits |= 1 << slot.getIndex();
+		bits |= (byte) (1 << slot.getIndex());
 		nbt.putByte(NETHERITE_DIVING_BITS_KEY, bits);
 
 		if ((bits & 0b1111) == 0b1111) {

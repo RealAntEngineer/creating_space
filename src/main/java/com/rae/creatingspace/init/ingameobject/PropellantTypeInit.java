@@ -21,6 +21,11 @@ public class PropellantTypeInit {
     //TODO use datapackRegitry(Codec,Codec)
     public static final DeferredRegister<PropellantType> DEFERRED_PROPELLANT_TYPE =
             DeferredRegister.create(Keys.PROPELLANT_TYPE, CreatingSpace.MODID);
+
+    public static final PropellantType METHALOX_DIRECT = new PropellantType(
+            Map.of(TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag, 2f, TagsInit.CustomFluidTags.LIQUID_METHANE.tag, 1f),
+            460, 4500f, 1.1f, 18 );
+
     public static final Supplier<IForgeRegistry<PropellantType>> PROPELLANT_TYPE = DEFERRED_PROPELLANT_TYPE.makeRegistry(
             () -> new RegistryBuilder<PropellantType>().allowModification());//.disableSaving());
                     //.dataPackRegistry(PropellantType.DIRECT_CODEC, PropellantType.DIRECT_CODEC));
@@ -33,27 +38,18 @@ public class PropellantTypeInit {
                     4500f,
                     1.1f,
                     18
-            ));//real value is 459
-    public static final RegistryObject<PropellantType> LH2LOX = DEFERRED_PROPELLANT_TYPE
-            .register("lh2lox", () -> new PropellantType(
-                    Map.of(
-                            TagsInit.CustomFluidTags.LIQUID_OXYGEN.tag, 6f,
-                            TagsInit.CustomFluidTags.LIQUID_HYDROGEN.tag, 1f),
-                    540,
-                    4000f,
-                    1.2f,
-                    10
             ));
 
     public static Registry<PropellantType> getSyncedPropellantRegistry() {
         return getSideAwareRegistry(Keys.PROPELLANT_TYPE);
     }
+
     public static void register(IEventBus modEventBus) {
         DEFERRED_PROPELLANT_TYPE.register(modEventBus);
     }
 
     public static class Keys {
         public static final ResourceKey<Registry<PropellantType>> PROPELLANT_TYPE =
-                ResourceKey.createRegistryKey(new ResourceLocation("creatingspace:propellant_type"));
+                ResourceKey.createRegistryKey(CreatingSpace.resource("propellant_type"));
     }
 }

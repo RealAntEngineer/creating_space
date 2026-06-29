@@ -3,6 +3,7 @@ package com.rae.creatingspace.api.planets;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
+import com.rae.creatingspace.CreatingSpace;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public class RocketAccessibleDimension {
     public static final ResourceKey<Registry<RocketAccessibleDimension>> REGISTRY_KEY =
-            ResourceKey.createRegistryKey(new ResourceLocation("creatingspace:rocket_accessible_dimension"));
+            ResourceKey.createRegistryKey(CreatingSpace.resource("rocket_accessible_dimension"));
     public static final ResourceLocation BASE_BODY = new ResourceLocation("sun");
     public static final UnboundedMapCodec<ResourceLocation, AccessibilityParameter> ADJACENT_DIMENSIONS_CODEC =
             Codec.unboundedMap(ResourceLocation.CODEC, AccessibilityParameter.CODEC);

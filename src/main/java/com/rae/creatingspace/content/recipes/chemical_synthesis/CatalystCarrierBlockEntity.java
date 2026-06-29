@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,17 +27,20 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
 public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
-    private static final Object shapelessOrMixingRecipesKey = new Object();
+    private static final Object chemistryRecipesKey = new Object();
 
     public int runningTicks;
     public int processingTicks;
-    public boolean running;
+    public boolean   running;
+    private @NotNull ItemStack catalyst = ItemStack.EMPTY;
 
     public CatalystCarrierBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -80,6 +84,16 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         runningTicks = compound.getInt("Ticks");
         super.read(compound, clientPacket);
 
+        CompoundTag catalyst = (CompoundTag) compound.get("catalyst");
+        if (catalyst != null) {
+            if (catalyst.isEmpty()) {//redundant
+                this.catalyst = ItemStack.EMPTY;
+            } else {
+                this.catalyst  = ItemStack.of(catalyst);
+            }
+        } else {
+            this.catalyst = ItemStack.EMPTY;
+        }
         if (clientPacket && hasLevel())
             getBasin().ifPresent(bte -> bte.setAreFluidsMoving(running && runningTicks <= 20));
     }
@@ -88,6 +102,11 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
     public void write(CompoundTag compound, boolean clientPacket) {
         compound.putBoolean("Running", running);
         compound.putInt("Ticks", runningTicks);
+        assert level != null;
+        if (!level.isClientSide) {
+            if (!catalyst.isEmpty())
+                compound.put("catalyst", catalyst.save(new CompoundTag()));
+        }
         super.write(compound, clientPacket);
     }
 
@@ -146,6 +165,14 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         }
     }
 
+    @Override
+    protected void applyBasinRecipe() {
+        super.applyBasinRecipe();
+        if (!catalyst.isEmpty()){
+            catalyst.setDamageValue(catalyst.getDamageValue() + 1);
+        }
+    }
+
     public void renderParticles() {
     }
 
@@ -159,6 +186,14 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
         target = VecHelper.offsetRandomly(target.subtract(offset), level.random, 1 / 128f);
         level.addParticle(data, center.x, center.y - 1.75f, center.z, target.x, target.y, target.z);
     }
+
+    @Override
+    protected <C extends Container> boolean matchBasinRecipe(Recipe<C> recipe) {
+        return super.matchBasinRecipe(recipe) &&
+                recipe instanceof ChemicalSynthesisRecipe chemicalSynthesisRecipe &&
+                chemicalSynthesisRecipe.catalyst.test(catalyst);
+    }
+
 
     @Override
     protected <C extends Container> boolean matchStaticFilters(Recipe<C> r) {
@@ -190,7 +225,7 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
 
     @Override
     protected Object getRecipeCacheKey() {
-        return shapelessOrMixingRecipesKey;
+        return chemistryRecipesKey;
     }
 
     @Override
@@ -217,4 +252,17 @@ public class CatalystCarrierBlockEntity extends BasinOperatingBlockEntity {
          */
     }
 
+    public @NotNull ItemStack getCatalyst() {
+        return catalyst;
+    }
+
+    public void setCatalyst(@Nullable ItemStack held) {
+        if (held == null) {
+            catalyst = ItemStack.EMPTY;
+            notifyUpdate();
+            return;
+        }
+        catalyst = held.copy();
+        notifyUpdate();
+    }
 }

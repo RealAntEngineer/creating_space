@@ -27,20 +27,6 @@ public class OxygenBacktankItem extends UpgradableEquipment {
         this.blockItem = placeable;
     }
 
-    @Override
-    public void inventoryTick(ItemStack backtank, Level level, Entity entity, int nbr, boolean isMoving) {
-        CompoundTag tag = backtank.getOrCreateTag();
-
-        float o2amount = tag.getFloat("Oxygen");
-        float prevO2amount = tag.getFloat("prevOxygen");
-        boolean toUpdate = tag.getBoolean("toUpdate");
-        if (toUpdate) {
-            tag.putFloat("prevOxygen",o2amount);
-            tag.putBoolean("toUpdate", false);
-        }
-        // may be ? -> in the ticking entity logic make the server update the itemstack -> here don't now what is before and after
-    }
-
     @Nullable
     public static OxygenBacktankItem getWornBy(Entity entity) {
         if (!(entity instanceof LivingEntity livingEntity)) {

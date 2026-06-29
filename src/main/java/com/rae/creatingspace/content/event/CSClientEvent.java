@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.event;
 
+import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.life_support.spacesuit.RemainingO2Overlay;
 import com.rae.creatingspace.content.life_support.spacesuit.CopperOxygenBacktankFirstPersonRenderer;
 import com.rae.creatingspace.content.life_support.spacesuit.NetheriteOxygenBacktankFirstPersonRenderer;
@@ -11,11 +12,13 @@ import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.init.EngineMaterialInit;
 import com.rae.creatingspace.init.ingameobject.MaterialInit;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -63,29 +66,30 @@ public class CSClientEvent {
         if (!(itemStack.getItem() instanceof EngineFabricationBlueprint || itemStack.getItem() instanceof EngineItem)) {
             CompoundTag recipeData = itemStack.getTagElement("engineRecipeData");
             try {
-                if (recipeData != null) {
-                    int size = recipeData.getInt("size");
-                    int materialLevel = recipeData.getInt("materialLevel");
-                    if (recipeData.contains("size")) components.add(Component.literal("size : " + size));
-                    if (recipeData.contains("materialLevel")) components.add(Component.literal("materialLevel : " + EngineMaterialInit.materials.get(materialLevel)));
-                    try {
-                        ResourceLocation exhaustPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).get().orThrow();
-                        components.add(Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")));
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        ResourceLocation powerPackType = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).get().orThrow();
-                        components.add(Component.translatable(powerPackType.toLanguageKey("power_pack_type")));
-                    } catch (Exception ignored) {
-                    }
-                }
-                CompoundTag engineInfo = itemStack.getTagElement("blockEntity");
-                if (engineInfo != null) {
-                    components.add(Component.literal("for engine :"));
-                    appendEngineDependentText(components,engineInfo);
-                }
-            } catch (Exception ignored){
+                if (recipeData != null && !recipeData.isEmpty()) {
+                    components.add(Component.literal("Recipe Information :").withStyle(ChatFormatting.GOLD));
 
+                    int size          = recipeData.getInt("size");
+                    int materialLevel = recipeData.getInt("materialLevel");
+                    if (recipeData.contains("size")) components.add(Component.literal("  Size : " + size).withStyle(ChatFormatting.GRAY));
+
+                    if (recipeData.contains("materialLevel"))
+                        components.add(Component.literal("  Material Level : " + EngineMaterialInit.materialNames.get(materialLevel)).withStyle(ChatFormatting.GRAY));
+                    ResourceLocation powerPackType        = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).resultOrPartial().orElse(null);
+                    ResourceLocation exhaustPackType      = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).resultOrPartial().orElse(null);
+                    MutableComponent powerPackComponent   = powerPackType != null ? Component.translatable(powerPackType.toLanguageKey("power_pack_type")) : Component.literal("not defined");
+                    MutableComponent exhaustPackComponent = exhaustPackType != null ? Component.translatable(exhaustPackType.toLanguageKey("exhaust_pack_type")) : Component.literal("not defined");
+
+                    components.add(Component.literal("  Technology : ").append(powerPackComponent).append(" | ").append(exhaustPackComponent).withStyle(ChatFormatting.GRAY));
+
+                }
+                CompoundTag engineInfo = itemData.getCompound("blockEntity");
+                if (!engineInfo.isEmpty()) {
+                    components.add(Component.literal("For engine :").withStyle(ChatFormatting.GOLD));
+                    appendEngineDependentText(components, "  ", engineInfo);
+                }
+            } catch (Exception exception) {
+                CreatingSpace.LOGGER.error("caught exception during tooltip :", exception);
             }
         }
     }

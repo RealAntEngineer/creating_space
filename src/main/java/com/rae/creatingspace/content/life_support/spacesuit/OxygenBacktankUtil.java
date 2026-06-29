@@ -69,7 +69,6 @@ public class OxygenBacktankUtil {
 		float oxygen = getOxygen(backtank);
 		float newOxygen = Math.max(oxygen - i, 0);
 		tag.putFloat("Oxygen", Math.min(newOxygen, maxOxygen));
-		tag.putBoolean("toUpdate",true);
 		backtank.setTag(tag);
 
 		if (!(entity instanceof ServerPlayer player))

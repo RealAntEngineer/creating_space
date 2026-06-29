@@ -19,7 +19,7 @@ import static com.rae.creatingspace.init.MiscInit.getSyncedPowerPackRegistry;
 public class CommandsInit {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        // Root command: /crowns
+        // Root command: /creatingspace
         dispatcher.register(Commands.literal("creatingspace")
                 .requires(source -> source.hasPermission(2)) // Operator permission for all subcommands
                 .then(Commands.literal("addAllDesigns")

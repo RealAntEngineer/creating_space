@@ -97,7 +97,7 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.ALUMINUM_NUGGET);
                         output.accept(ItemInit.ALUMINUM_SHEET);
                         output.accept(ItemInit.ALUMINUM_SHEET);
-                        output.accept(ItemInit.CRYSTAL_SHARD);
+                        output.accept(ItemInit.NICKEL_SULFATE_SHARD);
                         output.accept(ItemInit.BASIC_SPACESUIT_FABRIC);
                         output.accept(ItemInit.ADVANCED_SPACESUIT_FABRIC);
                         output.accept(ItemInit.BASIC_SPACESUIT_HELMET);
@@ -132,16 +132,12 @@ public class CreativeModeTabsInit {
                         output.accept(BlockInit.MARS_STONE);
                         output.accept(BlockInit.MARS_REGOLITH);
                         output.accept(BlockInit.MARS_SURFACE_REGOLITH);
-                        output.accept(BlockInit.CRYSTAL_BLOCK);
-                        output.accept(BlockInit.BUDDING_CRYSTAL);
-                        output.accept(BlockInit.CRYSTAL_CLUSTER);
-                        output.accept(BlockInit.LARGE_CRYSTAL_BUD);
-                        output.accept(BlockInit.MEDIUM_CRYSTAL_BUD);
-                        output.accept(BlockInit.SMALL_CRYSTAL_BUD);
-
-                        //output.accept(FluidInit.CREATIVE_BUCKET_HYDROGEN);
-                        //output.accept(FluidInit.CREATIVE_BUCKET_OXYGEN);
-                        //output.accept(FluidInit.CREATIVE_BUCKET_METHANE);
+                        output.accept(BlockInit.NICKEL_SULFATE_BLOCK);
+                        output.accept(BlockInit.BUDDING_NICKEL_SULFATE);
+                        output.accept(BlockInit.NICKEL_SULFATE_CLUSTER);
+                        output.accept(BlockInit.LARGE_NICKEL_SULFATE_BUD);
+                        output.accept(BlockInit.MEDIUM_NICKEL_SULFATE_BUD);
+                        output.accept(BlockInit.SMALL_NICKEL_SULFATE_BUD);
                     })
                     .build());
 

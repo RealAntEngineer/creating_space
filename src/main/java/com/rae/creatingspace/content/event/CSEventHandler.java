@@ -42,7 +42,7 @@ public class CSEventHandler {
         Level level = entityLiving.level();
         ResourceLocation dimension = level.dimension().location();
         //fall from orbit
-        if (CSDimensionUtil.isOrbit(level.dimensionTypeId())){
+        if (CSDimensionUtil.isOrbit(level.dimension().location())){
             if (!level.isClientSide){
                 if (entityLiving instanceof ServerPlayer player){
                     if (player.getY() < level.dimensionType().minY()+10){

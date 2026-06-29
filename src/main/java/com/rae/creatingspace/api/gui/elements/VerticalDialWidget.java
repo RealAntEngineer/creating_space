@@ -22,7 +22,6 @@ public class VerticalDialWidget extends AbstractSimiWidget {
     public int value;
 
     public LerpedFloat lerpedValue;
-    public int prevValue;
     public VerticalDialWidget(int x, int y, int width, int height) {
         this(x, y, width, height, 0xFFFFFF);
     }
@@ -33,7 +32,6 @@ public class VerticalDialWidget extends AbstractSimiWidget {
         font = Minecraft.getInstance().font;
         min = 0;
         value = 0;
-        prevValue = 0;
         max = 1000;
         lerpedValue = LerpedFloat.linear().startWithValue(value);
 
@@ -52,10 +50,11 @@ public class VerticalDialWidget extends AbstractSimiWidget {
     public void setMax(int max) {
         this.max = max;
     }
+
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         if (visible){
-            int progress = (int) Mth.lerp(partialTicks,prevValue, value);
+            int progress;
 
             lerpedValue.chase(value,1, LerpedFloat.Chaser.EXP);
             lerpedValue.tickChaser();
@@ -65,7 +64,7 @@ public class VerticalDialWidget extends AbstractSimiWidget {
             int intervalNumber = (max-min)/50;
             int intervalPixel = 10;
 
-            int slidePixel = (int) (((float) progress - (progress / intervalNumber) *intervalNumber)/((float)intervalNumber) * intervalPixel);
+            int slidePixel = (int) (((float) progress - (int)(progress / intervalNumber) *intervalNumber)/((float)intervalNumber) * intervalPixel);
 
             graphics.pose().pushPose();
             GuiTexturesInit slider = GuiTexturesInit.O2_GAUGE_SLIDER;
@@ -102,8 +101,8 @@ public class VerticalDialWidget extends AbstractSimiWidget {
         }
     }
 
-    public void setValues(int value, int prevValue) {
-        this.prevValue = prevValue;
-        this.value = value;
+    public void setChase(int o2Value) {
+        value = o2Value;
+        //lerpedValue.updateChaseTarget(o2Value);
     }
 }

@@ -337,7 +337,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                                             syncData
                                     ));
         } catch (Exception ignored){
-            System.out.println(ignored.getMessage());
+
         }
     }
 
