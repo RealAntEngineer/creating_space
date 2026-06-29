@@ -28,17 +28,21 @@ public class RemainingO2Overlay implements LayeredDraw.Layer {
                     CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
                     32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
         } catch (IllegalStateException stateException){
-            gauge = new VerticalDialWidget(CSOxygenBacktank.PlaceSelection.BOTTOM_LEFT.getX(mc.getWindow().getGuiScaledWidth()),
-                    CSOxygenBacktank.PlaceSelection.BOTTOM_LEFT.getY(mc.getWindow().getGuiScaledWidth()),
+            gauge = new VerticalDialWidget(0, 0,
                     32, 64, CSOxygenBacktank.ColorSelection.WHITE.getColor());
         }
     }
 
     public static void reload(){
         Minecraft mc = Minecraft.getInstance();
-        INSTANCE.gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
-                CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
-                32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+        try {
+            INSTANCE.gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
+                    CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
+                    32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
+        } catch (IllegalStateException stateException){
+            INSTANCE.gauge = new VerticalDialWidget(0, 0,
+                    32, 64, CSOxygenBacktank.ColorSelection.WHITE.getColor());
+        }
     }
 
     @Override
