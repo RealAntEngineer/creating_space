@@ -50,16 +50,16 @@ import org.lwjgl.system.NonnullDefault;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 @NonnullDefault
-public class OxygenBacktankBlock extends HorizontalDirectionalBlock
-	implements IBE<OxygenBacktankBlockEntity>, SimpleWaterloggedBlock {
+public class OxygenBacktankBlock extends HorizontalDirectionalBlock implements IBE<OxygenBacktankBlockEntity>, SimpleWaterloggedBlock {
 	static final MapCodec<OxygenBacktankBlock> CODEC = simpleCodec(OxygenBacktankBlock::new);
 
 	public OxygenBacktankBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
 	}
-	//TODO make this according to other codec implementation (copy past with correct name of the class)
+
 	@Override
 	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
 		return CODEC;
@@ -91,7 +91,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighbourState,
 		LevelAccessor world, BlockPos pos, BlockPos neighbourPos) {
-		if (state.getValue(BlockStateProperties.WATERLOGGED)) 
+		if (state.getValue(BlockStateProperties.WATERLOGGED))
 			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		return state;
 	}
@@ -148,24 +148,24 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 		return InteractionResult.SUCCESS;
 	}
 
-	@Override
+    @Override
+    @SuppressWarnings("deprecation")
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        Item item = asItem();
+        if (item instanceof OxygenBacktankItem.O2BacktankBlockItem placeable) {
+            item = placeable.getActualItem();
+        }
 
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		Item item = asItem();
-		if (item instanceof OxygenBacktankItem.O2BacktankBlockItem placeable) {
-			item = placeable.getActualItem();
-		}
+        Optional<OxygenBacktankBlockEntity> blockEntityOptional = getBlockEntityOptional(level, pos);
 
-		Optional<OxygenBacktankBlockEntity> blockEntityOptional = getBlockEntityOptional(level, pos);
-
-		DataComponentPatch components = blockEntityOptional.map(OxygenBacktankBlockEntity::getComponentPatch)
-				.orElse(DataComponentPatch.EMPTY);
-		int air = blockEntityOptional.map(OxygenBacktankBlockEntity::getOxygenLevel)
+        DataComponentPatch components = blockEntityOptional.map(OxygenBacktankBlockEntity::getComponentPatch)
+                .orElse(DataComponentPatch.EMPTY);
+        int air = blockEntityOptional.map(OxygenBacktankBlockEntity::getOxygenLevel)
                 .orElse(0);
-		ItemStack stack = new ItemStack(item.builtInRegistryHolder(), 1, components);
-		stack.set(DataComponentsInit.OXYGEN_LEVEL, air);
-		return stack;
-	}
+        ItemStack stack = new ItemStack(item.builtInRegistryHolder(), 1, components);
+        stack.set(DataComponentsInit.OXYGEN_LEVEL, air);
+        return stack;
+    }
 
 	@Override
 	public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos,
@@ -177,7 +177,7 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 	public Class<OxygenBacktankBlockEntity> getBlockEntityClass() {
 		return OxygenBacktankBlockEntity.class;
 	}
-	
+
 	@Override
 	public BlockEntityType<? extends OxygenBacktankBlockEntity> getBlockEntityType() {
 		return BlockEntityInit.OXYGEN_BACKTANK.get();
@@ -208,6 +208,4 @@ public class OxygenBacktankBlock extends HorizontalDirectionalBlock
 				})
 				.toList();
 	}
-
-
 }

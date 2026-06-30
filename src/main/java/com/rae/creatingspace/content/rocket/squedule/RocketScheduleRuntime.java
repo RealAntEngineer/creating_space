@@ -1,13 +1,12 @@
-package com.rae.creatingspace.api.squedule;
+package com.rae.creatingspace.content.rocket.squedule;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.instruction.ChangeTitleInstruction;
-import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondition;
+import com.rae.creatingspace.content.rocket.squedule.instruction.ChangeTitleInstruction;
+import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -37,7 +36,6 @@ public class RocketScheduleRuntime {
     RocketContraptionEntity rocket;
     RocketSchedule schedule;
 
-    public boolean isAutoSchedule;
     public boolean paused;
     public boolean completed;
     public int currentEntry;
@@ -210,13 +208,11 @@ public class RocketScheduleRuntime {
         return null;
     }
 
-    public void setSchedule(RocketSchedule schedule, boolean auto) {
+    public void setSchedule(RocketSchedule schedule, boolean paused) {
         reset();
         this.schedule = schedule;
         currentEntry = Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
-        paused = false;
-        isAutoSchedule = auto;
-        //train.status.newSchedule();
+        this.paused = paused;
         predictionTicks = new ArrayList<>();
         schedule.entries.forEach($ -> predictionTicks.add(TBD));
         displayLinkUpdateRequested = true;
@@ -234,7 +230,6 @@ public class RocketScheduleRuntime {
     private void reset() {
         paused = true;
         completed = false;
-        isAutoSchedule = false;
         currentEntry = 0;
         currentTitle = "";
         schedule = null;
@@ -247,7 +242,6 @@ public class RocketScheduleRuntime {
     public CompoundTag write(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         tag.putInt("CurrentEntry", currentEntry);
-        tag.putBoolean("AutoSchedule", isAutoSchedule);
         tag.putBoolean("Paused", paused);
         tag.putBoolean("Completed", completed);
         if (schedule != null)
@@ -263,7 +257,6 @@ public class RocketScheduleRuntime {
         reset();
         paused = tag.getBoolean("Paused");
         completed = tag.getBoolean("Completed");
-        isAutoSchedule = tag.getBoolean("AutoSchedule");
         currentEntry = tag.getInt("CurrentEntry");
         if (tag.contains("Schedule"))
             schedule = RocketSchedule.fromTag(registries,tag.getCompound("Schedule"));

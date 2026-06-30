@@ -14,12 +14,12 @@ import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.catnip.theme.Color;
 import net.neoforged.neoforge.client.gui.widget.ExtendedButton;
 import org.joml.Matrix4f;
-import com.rae.creatingspace.api.squedule.RocketSchedule;
-import com.rae.creatingspace.api.squedule.ScheduleEntry;
-import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.condition.ScheduledDelay;
-import com.rae.creatingspace.api.squedule.instruction.DestinationInstruction;
-import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.content.rocket.squedule.RocketSchedule;
+import com.rae.creatingspace.content.rocket.squedule.ScheduleEntry;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondition;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduledDelay;
+import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
 import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
 import com.rae.creatingspace.init.graphics.GuiTexturesInit;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
@@ -62,6 +62,9 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
     private final List<LerpedFloat> horizontalScrolls = new ArrayList<>();
     private final RocketSchedule schedule;
     private IconButton cyclicButton;
+    private IconButton pauseButton;
+    private Indicator pauseIndicator;
+    private boolean schedulePaused;
     private Indicator cyclicIndicator;
     private IconButton resetProgress;
     private IconButton skipProgress;
@@ -96,6 +99,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
         // schedule
         this.schedule = container.contentHolder.schedule.getSchedule() == null ? new RocketSchedule() : container.contentHolder.schedule.getSchedule();
         this.editorSubWidgets = new ModularGuiLine();
+        this.schedulePaused = container.contentHolder.schedule.paused;
     }
 
     //todo : zoom on double clic
@@ -154,7 +158,20 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
 
         addRenderableWidget(cyclicButton);
 
-        resetProgress = new IconButton(x + 45, y + 202, AllIcons.I_PRIORITY_VERY_HIGH);
+        pauseIndicator = new Indicator(x + 21+18, y + 196, Component.empty());
+        pauseIndicator.state = schedulePaused ? Indicator.State.ON : Indicator.State.OFF;
+
+        pauseButton = new IconButton(x + 21+18, y + 202, AllIcons.I_PAUSE);
+        pauseButton.withCallback(() -> {
+            schedulePaused = !schedulePaused;
+            pauseIndicator.state = schedulePaused ? Indicator.State.ON : Indicator.State.OFF;
+        });
+        addRenderableWidget(pauseButton);
+        addRenderableWidget(pauseIndicator);
+
+
+
+        resetProgress = new IconButton(x + 45+16, y + 202, AllIcons.I_PRIORITY_VERY_HIGH);
         resetProgress.withCallback(() -> {
             schedule.savedProgress = 0;
             resetProgress.active = false;
@@ -163,7 +180,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
         resetProgress.setToolTip(CreateLang.translateDirect("schedule.reset"));
         addRenderableWidget(resetProgress);
 
-        skipProgress = new IconButton(x + 63, y + 202, AllIcons.I_PRIORITY_LOW);
+        skipProgress = new IconButton(x + 63+16, y + 202, AllIcons.I_PRIORITY_LOW);
         skipProgress.withCallback(() -> {
             schedule.savedProgress++;
             schedule.savedProgress %= schedule.entries.size();
@@ -630,6 +647,8 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
 
     protected void startEditing(IScheduleInput field, Consumer<Boolean> onClose, boolean allowDeletion) {
         onEditorClose = onClose;
+        pauseButton.visible = false;
+        pauseIndicator.visible = false;
         validateSetting.visible = true;
         validateSetting.active = true;
         cyclicButton.visible = false;
@@ -1057,13 +1076,16 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
     // (there is a need for a sync on the entity side : sync data ?)
     @Override
     public void removed() {
-        CatnipServices.NETWORK.sendToServer(new RocketScheduleEditPacket(schedule, getMenu().contentHolder.getId()));
+        CatnipServices.NETWORK.sendToServer(new RocketScheduleEditPacket(schedule, pauseIndicator.state == Indicator.State.ON, getMenu().contentHolder.getId()
+        ));
         //set the client side schedule
-        getMenu().contentHolder.schedule.setSchedule(schedule, true);
+        getMenu().contentHolder.schedule.setSchedule(schedule, pauseIndicator.state == Indicator.State.ON);
         super.removed();
     }
 
     protected void stopEditing() {
+        pauseButton.visible = true;
+        pauseIndicator.visible = true;
         cyclicButton.visible = true;
         cyclicIndicator.visible = true;
         skipProgress.visible = true;

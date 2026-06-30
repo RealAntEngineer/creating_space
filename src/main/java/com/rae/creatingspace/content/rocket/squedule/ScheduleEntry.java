@@ -1,7 +1,7 @@
-package com.rae.creatingspace.api.squedule;
+package com.rae.creatingspace.content.rocket.squedule;
 
-import com.rae.creatingspace.api.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.api.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondition;
+import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
 import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.HolderLookup;

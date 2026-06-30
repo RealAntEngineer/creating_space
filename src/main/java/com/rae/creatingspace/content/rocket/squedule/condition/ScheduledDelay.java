@@ -1,4 +1,4 @@
-package com.rae.creatingspace.api.squedule.condition;
+package com.rae.creatingspace.content.rocket.squedule.condition;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;

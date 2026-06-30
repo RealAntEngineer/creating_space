@@ -1,9 +1,8 @@
-package com.rae.creatingspace.api.squedule.instruction;
+package com.rae.creatingspace.content.rocket.squedule.instruction;
 
 import com.google.common.collect.ImmutableList;
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.CreateLang;

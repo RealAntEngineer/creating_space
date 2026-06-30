@@ -123,7 +123,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                             if (fluidMass == null) {
                                 fluidMass = 0;
                             }
-                            if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
+                            if (CSConfigs.COMMON.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
                                 serverPlayer.sendSystemMessage(
                                         Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
                                                 .append(" ")
@@ -137,7 +137,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                                                         .append(Component.translatable("creatingspace.science.unit.metric_ton"))
                                                         .withStyle(ChatFormatting.GOLD))
                                         , shouldBeDisplayed);
-                            } else if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
+                            } else if (CSConfigs.COMMON.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
                                 AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
                                 getSideAwareRegistry(Registries.FLUID).entrySet().forEach(

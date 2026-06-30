@@ -1,6 +1,6 @@
 package com.rae.creatingspace.content.rocket.network;
 
-import com.rae.creatingspace.api.squedule.RocketSchedule;
+import com.rae.creatingspace.content.rocket.squedule.RocketSchedule;
 import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
 import com.rae.creatingspace.init.PacketInit;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
@@ -14,22 +14,25 @@ public class RocketScheduleEditPacket implements ServerboundPacketPayload {
 
 	private final RocketSchedule schedule;
 	private final int rocketId;
+	private final boolean paused;
 
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, RocketScheduleEditPacket> STREAM_CODEC = StreamCodec.composite(
 			RocketSchedule.STREAM_CODEC, packet -> packet.schedule,
+            ByteBufCodecs.BOOL, packet -> packet.paused,
 			ByteBufCodecs.INT, packet -> packet.rocketId,
 			RocketScheduleEditPacket::new
 	);
-	public RocketScheduleEditPacket(RocketSchedule schedule, int rocketId) {
+	public RocketScheduleEditPacket(RocketSchedule schedule, boolean paused, int rocketId) {
 		this.schedule = schedule;
 		this.rocketId = rocketId;
+        this.paused = paused;
 	}
 	@Override
 	public void handle(ServerPlayer player) {
 		Entity entity = player.level().getEntity(rocketId);
 		if (entity instanceof RocketContraptionEntity contraptionEntity) {
-			contraptionEntity.schedule.setSchedule(schedule, true);
+			contraptionEntity.schedule.setSchedule(schedule, paused);
 			contraptionEntity.sendPacket();
 		}
 	}

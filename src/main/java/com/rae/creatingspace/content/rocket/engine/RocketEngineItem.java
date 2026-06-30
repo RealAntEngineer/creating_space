@@ -63,7 +63,7 @@ public abstract class RocketEngineItem extends BlockItem {
 
     private static void appendFluidInfo(List<Component> components, String prefix, PropellantType propellantType) {
         components.add(Component.literal(prefix + "Ratio of fluid consumed :").withStyle(ChatFormatting.GRAY));
-        if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
+        if (CSConfigs.COMMON.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
             for (TagKey<Fluid> fluidTagkey : propellantType.getPropellantRatio().keySet()) {
                 components.add(Component.literal(prefix + "  ").append(
                         Component.translatable("fluid." + fluidTagkey.location().toLanguageKey()))
@@ -73,7 +73,7 @@ public abstract class RocketEngineItem extends BlockItem {
                 );
             }
         }
-        if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
+        if (CSConfigs.COMMON.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
             HashMap<TagKey<Fluid>, Float> collector = new HashMap<>();
             float total = 0;
             for (TagKey<Fluid> fluidTagkey : propellantType.getPropellantRatio().keySet()) {

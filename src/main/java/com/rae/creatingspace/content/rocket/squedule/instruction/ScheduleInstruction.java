@@ -1,7 +1,7 @@
-package com.rae.creatingspace.api.squedule.instruction;
+package com.rae.creatingspace.content.rocket.squedule.instruction;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.api.squedule.RocketSchedule;
+import com.rae.creatingspace.content.rocket.squedule.RocketSchedule;
 import com.simibubi.create.content.trains.schedule.ScheduleDataEntry;
 import com.simibubi.create.foundation.codec.CreateStreamCodecs;
 import net.createmod.catnip.data.Pair;
