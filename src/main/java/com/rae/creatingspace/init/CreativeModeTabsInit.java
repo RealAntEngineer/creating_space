@@ -72,10 +72,10 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.BASIC_CATALYST);
                         output.accept(ItemInit.COAL_DUST);
                         output.accept(ItemInit.STURDY_PROPELLER);
-                        ItemInit.COMBUSTION_CHAMBER.forEach(output::accept);
-                        ItemInit.BELL_NOZZLE.forEach(output::accept);
-                        ItemInit.AEROSPIKE_PLUG.forEach(output::accept);
-                        ItemInit.AEROSPIKE_PLUG.forEach(output::accept);
+                        output.accept( ItemInit.COMBUSTION_CHAMBER);
+                        output.accept(ItemInit.BELL_NOZZLE);
+                        output.accept(ItemInit.AEROSPIKE_PLUG);
+                        output.accept(ItemInit.AEROSPIKE_PLUG);
                         ItemInit.EXHAUST_PACK.forEach(output::accept);
                         ItemInit.POWER_PACK.forEach(output::accept);
                         ItemInit.ENGINE_INGREDIENTS.forEach(output::accept);

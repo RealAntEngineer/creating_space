@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:copper_casing"
+    },
+    "N": {
+      "tag": "forge:plates/nickel"
+    },
+    "P": {
+      "item": "create:propeller"
+    },
+    "T": {
+      "item": "create:fluid_tank"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "CTC",
+    "CCC"
+  ],
+  "result": {
+    "item": "creatingspace:oxygen_sealer"
+  },
+  "show_notification": true
+}

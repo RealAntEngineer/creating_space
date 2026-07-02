@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "forge:plates/gold"
+    },
+    "N": {
+      "tag": "forge:ingots/nickel"
+    },
+    "P": {
+      "item": "create:mechanical_press"
+    }
+  },
+  "pattern": [
+    " G ",
+    "NPN",
+    " G "
+  ],
+  "result": {
+    "item": "creatingspace:catalyst_carrier"
+  },
+  "show_notification": true
+}

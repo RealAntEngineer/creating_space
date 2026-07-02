@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/monel"
+    },
+    "N": {
+      "tag": "forge:nuggets/monel"
+    },
+    "P": {
+      "tag": "forge:plates/monel"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "item": "creatingspace:monel_blisk"
+  },
+  "show_notification": true
+}

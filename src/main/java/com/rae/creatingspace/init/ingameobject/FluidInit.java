@@ -3,6 +3,7 @@ package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.init.TagsInit;
+import com.rae.creatingspace.init.worldgen.DimensionInit;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.VirtualFluid;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidInteractionRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import org.joml.Vector3f;
@@ -79,6 +81,12 @@ public class FluidInit {
                     .tag(TagsInit.CustomFluidTags.LIQUID_CO2.tag)
                     .register();
 
+    public static final FluidEntry<VirtualFluid> MONOPROPELLANT =
+            registrateCustomVirtualLiquid("monopropellant")
+                    .properties(p -> p.viscosity(1000).temperature(80).density(350))
+                    .tag(TagsInit.CustomFluidTags.MONOPROPELLANT.tag)
+                    .register();
+
     /*public static final ItemEntry<BucketItem> CREATIVE_BUCKET_CO2 =
             CreatingSpace.REGISTRATE.item("liquid_co2_bucket",
                             p -> new BucketItem(LIQUID_CO2.get(), p))
@@ -97,13 +105,24 @@ public class FluidInit {
     public static void registerFluidInteractions() {
 
         FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
-                LIQUID_HYDROGEN.get().getFluidType(),
-                fluidState -> {
-                    if (fluidState.isSource()) {
-                        return Blocks.OBSIDIAN.defaultBlockState();
-                    } else {
-                        return Blocks.COBBLESTONE.defaultBlockState();
+                ((level, currentPos, relativePos, currentState) ->
+                        level.getFluidState(relativePos).getFluidType() == ForgeMod.WATER_TYPE.get()),
+                (level, currentPos, relativePos, currentState) -> {
+                    if (currentState.isSource()) {
+                        level.setBlockAndUpdate(currentPos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, currentPos, currentPos, Blocks.OBSIDIAN.defaultBlockState()));
                     }
+                    else{
+                        if (level.dimension().equals(DimensionInit.MOON_LEVEL)) {
+                            level.setBlockAndUpdate(currentPos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, currentPos, currentPos, BlockInit.MOON_STONE.get().defaultBlockState()));
+                        } else if (level.dimension().equals(DimensionInit.MARS_LEVEL)) {
+                            level.setBlockAndUpdate(currentPos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, currentPos, currentPos, BlockInit.MARS_STONE.get().defaultBlockState()));
+                        } else {
+                            level.setBlockAndUpdate(currentPos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, currentPos, currentPos, Blocks.COBBLESTONE.defaultBlockState()));
+
+                        }
+                    }
+                    level.levelEvent(1501, currentPos, 0);
+
                 }
         ));
         FluidInteractionRegistry.addInteraction(ForgeMod.WATER_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(

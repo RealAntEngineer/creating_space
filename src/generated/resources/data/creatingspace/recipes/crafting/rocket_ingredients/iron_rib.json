@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "N": {
+      "tag": "forge:nuggets/iron"
+    }
+  },
+  "pattern": [
+    "NIN",
+    " N "
+  ],
+  "result": {
+    "item": "creatingspace:iron_rib"
+  },
+  "show_notification": true
+}

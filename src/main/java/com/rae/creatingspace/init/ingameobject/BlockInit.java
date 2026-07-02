@@ -40,9 +40,9 @@ import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -52,9 +52,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -63,8 +61,10 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-//import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import net.minecraftforge.common.Tags;
@@ -87,7 +87,8 @@ public class BlockInit {
     //just blocks
     public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
             .block("rocket_engineer_table", RocketEngineerTableBlock::new)
-            .properties(p -> p.strength(1.0f).noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(BlockBehaviour.Properties::noOcclusion)
             .blockstate((c, p)-> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
@@ -104,8 +105,8 @@ public class BlockInit {
 
     public static final BlockEntry<SmallEngineBlock> SMALL_ROCKET_ENGINE = REGISTRATE
             .block("small_rocket_engine", SmallEngineBlock::new)
-            //.initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p -> p.dynamicShape().noOcclusion())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
@@ -116,13 +117,26 @@ public class BlockInit {
 
     public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
             .block("rocket_engine", SuperEngineBlock::new)
-            //.initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p -> p.dynamicShape().noOcclusion())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
-            /*.loot((lt, block) -> lt.add(block, lt.createSingleItemTable(block)
-                    .apply(CopyComponentsFunction
-                            .copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                            .include(DataComponents.CUSTOM_DATA))))*/
+            .loot((lt, block) -> lt
+                    .add(block, lt.createSingleItemTable(block)
+                            .apply(CopyNameFunction
+                                    .copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+                            .apply(CopyNbtFunction
+                                    .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("thrust", "blockEntity.thrust"))
+                            .apply(CopyNbtFunction
+                                    .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("efficiency", "blockEntity.efficiency"))
+                            .apply(CopyNbtFunction
+                                    .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("propellant_type", "blockEntity.propellant_type"))
+                            .apply(CopyNbtFunction
+                                    .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("mass", "blockEntity.mass"))
+                    ))
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(resource("block/small_rocket_engine"))))
             .onRegister(movementBehaviour(new EngineMovementBehaviour()))
@@ -132,8 +146,8 @@ public class BlockInit {
 
     public static final BlockEntry<BigEngineBlock> BIG_ROCKET_ENGINE = REGISTRATE
             .block("big_rocket_engine", BigEngineBlock::new)
-            //.initialProperties(SharedProperties::copperMetal)
-            .properties(p-> p.strength(1.0f).dynamicShape().noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p-> p.dynamicShape().noOcclusion())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .transform(axeOrPickaxe())
@@ -144,8 +158,7 @@ public class BlockInit {
 
     public static final BlockEntry<BigRocketStructuralBlock> BIG_ENGINE_STRUCTURAL =
             REGISTRATE.block("big_engine_structure", BigRocketStructuralBlock::new)
-                    //.initialProperties(SharedProperties::copperMetal)
-                    .properties(p-> p.strength(1.0f))
+                    .initialProperties(SharedProperties::copperMetal)
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getExistingFile(p.modLoc("block/structural/big_engine"))))
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE))
@@ -156,8 +169,7 @@ public class BlockInit {
 
     public static final BlockEntry<SuperRocketStructuralBlock> ENGINE_STRUCTURAL =
             REGISTRATE.block("engine_structure", SuperRocketStructuralBlock::new)
-                    //.initialProperties(SharedProperties::copperMetal)
-                    .properties(p -> p.strength(1.0f))
+                    .initialProperties(SharedProperties::copperMetal)
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getExistingFile(p.modLoc("block/structural/super_engine"))))                    .properties(BlockBehaviour.Properties::noOcclusion)
                     .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
@@ -166,8 +178,7 @@ public class BlockInit {
 
     public static final BlockEntry<SmallRocketStructuralBlock> SMALL_ENGINE_STRUCTURAL =
             REGISTRATE.block("small_engine_structure", SmallRocketStructuralBlock::new)
-                    //.initialProperties(SharedProperties::copperMetal)
-                    .properties(p-> p.strength(1.0f))
+                    .initialProperties(SharedProperties::copperMetal)
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getExistingFile(p.modLoc("block/structural/small_engine"))))
                     .properties(p -> p.mapColor(MapColor.METAL))
@@ -178,7 +189,6 @@ public class BlockInit {
 
     public static final BlockEntry<Block> CLAMPS = REGISTRATE
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p -> p.strength(1.0f))
             .tag(AllTags.AllBlockTags.NON_MOVABLE.tag)
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
@@ -196,6 +206,7 @@ public class BlockInit {
 
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
             .block("rocket_casing", CasingBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
             .transform(BuilderTransformers.casing(() -> SpriteShiftInit.ROCKET_CASING))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c, p) ->
@@ -215,7 +226,7 @@ public class BlockInit {
                     "rocket_controls", RocketControlsBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
-            .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
+            .properties(p -> p.dynamicShape().noOcclusion())
             .transform(axeOrPickaxe())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .onRegister(interactionBehaviour(new RocketControlInteraction()))
@@ -235,6 +246,14 @@ public class BlockInit {
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName() + "_reset"));
             })
+            .loot((lt, block) -> lt
+                    .add(block, lt.createSingleItemTable(block)
+                                    .apply(CopyNbtFunction
+                                            .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                            .copy("initialPosMap", "initialPosMap"))
+
+
+            ))
             .item(RocketControlsItem::new)
             .transform(customItemModel("rocket_controls"))
             .register();
@@ -242,7 +261,7 @@ public class BlockInit {
     public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
                     "flight_recorder", FlightRecorderBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p-> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
+            .properties(p-> p.dynamicShape().noOcclusion())
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .transform(axeOrPickaxe())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
@@ -264,7 +283,7 @@ public class BlockInit {
     public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .properties(BlockBehaviour.Properties::noOcclusion)
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .transform(CSStress.setImpact(1024))
             .transform(axeOrPickaxe())
@@ -289,7 +308,7 @@ public class BlockInit {
     public static final BlockEntry<CatalystCarrierBlock> CATALYST_CARRIER = REGISTRATE.block(
                     "catalyst_carrier", CatalystCarrierBlock::new)
             .initialProperties(SharedProperties::stone)
-            .properties(p -> p.noOcclusion())
+            .properties(BlockBehaviour.Properties::noOcclusion)
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .transform(CSStress.setImpact(8.0))
@@ -376,19 +395,20 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/copper"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
-            /*.loot((lt, block) -> lt.add(block, LootTable.lootTable() // Use a fresh loot table builder
+            .loot((lt, block) -> lt.add(block, LootTable.lootTable() // Use a fresh loot table builder
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ItemInit.COPPER_OXYGEN_BACKTANK.get()) // Explicitly drop the wearable item
-                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                                            .include(DataComponents.ENCHANTMENTS)
-                                            .include(DataComponents.CUSTOM_NAME)
-                                            .include(DataComponentsInit.OXYGEN_LEVEL)
-                                    )
+                            .add(LootItem.lootTableItem(ItemInit.COPPER_OXYGEN_BACKTANK.get())
+                                    .apply(CopyNbtFunction
+                                            .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                            .copy("Enchantments", "Enchantments"))
+                                    .apply(CopyNbtFunction
+                                            .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                            .copy("Oxygen", "Oxygen"))
                             )
                             .when(ExplosionCondition.survivesExplosion())
                     )
-            ))*/
+            ))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .transform(pickaxeOnly())
             .register();
@@ -398,19 +418,20 @@ public class BlockInit {
             .initialProperties(SharedProperties::netheriteMetal)
             .blockstate((c,p)-> p.horizontalBlock(c.getEntry(),p.models().getExistingFile(resource("block/oxygen_backtank/netherite"))))
             .properties(BlockBehaviour.Properties::dynamicShape)
-            /*.loot((lt, block) -> lt.add(block, LootTable.lootTable() // Use a fresh loot table builder
+            .loot((lt, block) -> lt.add(block, LootTable.lootTable() // Use a fresh loot table builder
                     .withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1))
-                            .add(LootItem.lootTableItem(ItemInit.NETHERITE_OXYGEN_BACKTANK.get()) // Explicitly drop the wearable item
-                                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                                            .include(DataComponents.ENCHANTMENTS)
-                                            .include(DataComponents.CUSTOM_NAME)
-                                            .include(DataComponentsInit.OXYGEN_LEVEL)
-                                    )
+                            .add(LootItem.lootTableItem(ItemInit.NETHERITE_OXYGEN_BACKTANK.get())
+                                    .apply(CopyNbtFunction
+                                            .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                            .copy("Enchantments", "Enchantments"))
+                                    .apply(CopyNbtFunction
+                                            .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                            .copy("Oxygen", "Oxygen"))
                             )
                             .when(ExplosionCondition.survivesExplosion())
                     )
-            ))*/
+            ))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .transform(pickaxeOnly())
             .register();
@@ -420,10 +441,12 @@ public class BlockInit {
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c,p)-> p.simpleBlock(c.getEntry(), p.models().getExistingFile(resource("block/cryogenic_tank"))))
             .transform(pickaxeOnly())
-            /*.loot((lt, block) -> lt.add(block, lt.createSingleItemTable(block)
-                    .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
-                            .include(DataComponents.CUSTOM_NAME)
-                            .include(DataComponentsInit.SIMPLE_FLUID_CONTENT))))*/
+            .loot((lt, block) -> lt
+                    .add(block, lt.createSingleItemTable(block)
+                            .apply(CopyNbtFunction
+                                    .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                    .copy("Fluid", "Fluid", CopyNbtFunction.MergeStrategy.REPLACE))
+                    ))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
@@ -485,7 +508,6 @@ public class BlockInit {
             .block("mars_stone", Block::new).initialProperties(() -> Blocks.STONE)
             .transform(pickaxeOnly())
             .item()
-            //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel("mars_stone"))
             .register();
 
@@ -494,7 +516,6 @@ public class BlockInit {
             .properties(p -> p.sound(SoundType.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
-            //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel("mars_regolith"))
             .register();
 
@@ -503,7 +524,6 @@ public class BlockInit {
             .properties(p -> p.sound(SoundType.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
-            //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel("mars_surface_regolith"))
             .register();
 
@@ -511,17 +531,17 @@ public class BlockInit {
     public static final BlockEntry<Block> NICKEL_ORE = REGISTRATE.block(
                     "nickel_ore", Block::new)
             .initialProperties(() -> Blocks.GOLD_ORE)
-            /*.loot((lt, b) -> {
-                HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
-                lt.add(b,
-                        RegistrateBlockLootTables.createSilkTouchDispatchTable(b,
-                                lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_NICKEL.get())
-                                        .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.BLOCK_FORTUNE))))));
-            })*/
+            .loot((lt, b) ->
+                    lt.add(b, RegistrateBlockLootTables
+                            .createSilkTouchDispatchTable(b,
+
+                                    lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_NICKEL.get())
+                                            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))
+                            )))
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "ores/nickel")))
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "ores_in_ground/stone")))
+            .tag(TagKey.create(Registries.BLOCK, new ResourceLocation("forge", "ores/nickel")))
+            .tag(TagKey.create(Registries.BLOCK, new ResourceLocation("forge", "ores_in_ground/stone")))
             .transform(TagGen.pickaxeOnly())
             .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items(),
                     Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE
@@ -532,18 +552,17 @@ public class BlockInit {
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(
                     "deepslate_nickel_ore", Block::new)
             .initialProperties(() -> Blocks.DEEPSLATE_GOLD_ORE)
-            .properties(p -> p.strength(4.0f).requiresCorrectToolForDrops())
-            /*.loot((lt, b) -> {
-                HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
-                lt.add(b,
-                        lt.createSilkTouchDispatchTable(b,
-                                lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_NICKEL)
-                                        .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
-            })*/
+            .loot((lt, b) ->
+                    lt.add(b, RegistrateBlockLootTables
+                            .createSilkTouchDispatchTable(b,
+
+                                    lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_NICKEL.get())
+                                            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))
+                            )))
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "ores/nickel")))
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "ores_in_ground/stone")))
+            .tag(TagKey.create(Registries.BLOCK, new ResourceLocation("forge", "ores/nickel")))
+            .tag(TagKey.create(Registries.BLOCK, new ResourceLocation("forge", "ores_in_ground/stone")))
             .transform(TagGen.pickaxeOnly())
             .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items(),
                     Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE
@@ -553,18 +572,17 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_NICKEL_ORE = REGISTRATE.block(
                     "moon_nickel_ore", Block::new)
             .initialProperties(() -> Blocks.GOLD_ORE)
-            /*.loot((lt, b) -> {
-                HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
-                lt.add(b,
-                        lt.createSilkTouchDispatchTable(b,
-                                lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_NICKEL.get())
-                                        .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
-            })*/
+            .loot((lt, b) ->
+                    lt.add(b, RegistrateBlockLootTables
+                            .createSilkTouchDispatchTable(b,
+
+                                    lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_NICKEL.get())
+                                            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))
+                            )))
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.ORES)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "ores/nickel")))
             .transform(TagGen.pickaxeOnly())
-            .transform(TagGen.tagBlockAndItem(Map.of(CommonMetal.NICKEL.ores.blocks(), CommonMetal.NICKEL.ores.items())))
+            .transform(TagGen.tagBlockAndItem(CommonMetal.NICKEL.ores))
             .transform(customItemModel("moon_nickel_ore"))
             .register();
 
@@ -595,7 +613,6 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "storage_blocks/nickel")))
             .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', forgeItemTag("ingots/nickel"))
@@ -612,19 +629,17 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_COBALT_ORE = REGISTRATE.block(
                     "moon_cobalt_ore", Block::new)
             .initialProperties(() -> Blocks.GOLD_ORE)
-            /*.loot((lt, b) -> {
-                HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
-                lt.add(b,
-                        lt.createSilkTouchDispatchTable(b,
-                                lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_COBALT.get())
-                                        .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
-            })*/
+            .loot((lt, b) ->
+                    lt.add(b, RegistrateBlockLootTables
+                            .createSilkTouchDispatchTable(b,
+
+                                    lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_COBALT.get())
+                    .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))
+                            )))
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "ores/cobalt")))
             .transform(TagGen.pickaxeOnly())
-            .item()
-            .tag(TagKey.create(Registries.ITEM, ResourceLocation.tryBuild("forge", "ores/cobalt")))
+            .transform(commonTagBlockAndItem("ores/cobalt"))
             .transform(customItemModel("moon_cobalt_ore"))
             .register();
 
@@ -633,7 +648,6 @@ public class BlockInit {
             .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "storage_blocks/raw_cobalt")))
             .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', forgeItemTag("raw_materials/cobalt"))
@@ -642,27 +656,24 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .item()
-            .tag(TagKey.create(Registries.ITEM, ResourceLocation.tryBuild("forge", "storage_blocks/raw_cobalt")))
+            .transform(commonTagBlockAndItem("storage_blocks/raw_cobalt"))
             .transform(customItemModel("raw_cobalt_block"))
             .register();
 
     public static final BlockEntry<Block> MOON_ALUMINUM_ORE = REGISTRATE.block(
                     "moon_aluminum_ore", Block::new)
             .initialProperties(() -> Blocks.GOLD_ORE)
-            /*.loot((lt, b) -> {
-                HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
-                lt.add(b,
-                        lt.createSilkTouchDispatchTable(b,
-                                lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_ALUMINUM.get())
-                                        .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
-            })*/
+            .loot((lt, b) ->
+                    lt.add(b, RegistrateBlockLootTables
+                            .createSilkTouchDispatchTable(b,
+
+                                    lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.RAW_ALUMINUM.get())
+                                            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))
+                            )))
             .tag(Tags.Blocks.ORES)
             .tag(BlockTags.NEEDS_IRON_TOOL)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "ores/aluminum")))
             .transform(TagGen.pickaxeOnly())
-            .item()
-            .tag(TagKey.create(Registries.ITEM, ResourceLocation.tryBuild("forge", "ores/aluminum")))
+            .transform(TagGen.tagBlockAndItem(CommonMetal.ALUMINUM.ores))
             .transform(customItemModel("moon_aluminum_ore"))
             .register();
 
@@ -671,7 +682,6 @@ public class BlockInit {
             .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "storage_blocks/raw_aluminum")))
             .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', forgeItemTag("raw_materials/aluminum"))
@@ -680,8 +690,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .item()
-            .tag(TagKey.create(Registries.ITEM, ResourceLocation.tryBuild("forge", "storage_blocks/raw_aluminum")))
+            .transform(TagGen.tagBlockAndItem(CommonMetal.ALUMINUM.rawStorageBlocks))
             .transform(customItemModel("raw_aluminum_block"))
             .register();
 
@@ -693,7 +702,6 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "storage_blocks/aluminum")))
             .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', forgeItemTag("ingots/aluminum"))
@@ -702,8 +710,7 @@ public class BlockInit {
                             .pattern("###")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .item()
-            .tag(TagKey.create(Registries.ITEM, ResourceLocation.tryBuild("forge", "storage_blocks/aluminum")))
+            .transform(TagGen.tagBlockAndItem(CommonMetal.ALUMINUM.storageBlocks))
             .tag(Tags.Items.STORAGE_BLOCKS)
             .build()
             .register();
@@ -716,7 +723,6 @@ public class BlockInit {
             .tag(BlockTags.NEEDS_IRON_TOOL)
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(BlockTags.BEACON_BASE_BLOCKS)
-            .tag(TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("forge", "storage_blocks/cobalt")))
             .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
                             .define('#', forgeItemTag("ingots/cobalt"))
@@ -858,13 +864,13 @@ public class BlockInit {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 5))
-            /*.loot((lt, b) ->  {
-                HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
-                lt.add(b,
-                        lt.createSilkTouchDispatchTable(b,
-                                lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.NICKEL_SULFATE_SHARD.get())
-                                        .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
-            })*/
+            .loot((lt, b) ->
+                    lt.add(b, RegistrateBlockLootTables
+                            .createSilkTouchDispatchTable(b,
+
+                                    lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.NICKEL_SULFATE_SHARD.get())
+                                            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))
+                            )))
             .item()
             .transform((b) -> b.model(AssetLookup.itemModel("nickel_sulfate_cluster")))
             .build().register();
@@ -920,8 +926,8 @@ public class BlockInit {
             .build().register();
 
     private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, ItemBuilder<BlockItem, BlockBuilder<T, P>>> commonTagBlockAndItem(String s) {
-        return TagGen.tagBlockAndItem(BlockTags.create(ResourceLocation.tryBuild("forge",s)),
-                ItemTags.create(ResourceLocation.tryBuild("forge",s)));
+        return TagGen.tagBlockAndItem(BlockTags.create(new ResourceLocation("forge",s)),
+                ItemTags.create(new ResourceLocation("forge",s)));
     }
 
     public static void register() {}

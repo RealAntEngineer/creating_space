@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "creatingspace:rocket_controls"
+    }
+  ],
+  "result": {
+    "item": "creatingspace:rocket_controls"
+  }
+}

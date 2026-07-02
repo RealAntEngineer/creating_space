@@ -1,0 +1,23 @@
+{
+  "values": [
+    "creatingspace:rocket_engineer_table",
+    "creatingspace:small_rocket_engine",
+    "creatingspace:rocket_engine",
+    "creatingspace:big_rocket_engine",
+    "creatingspace:big_engine_structure",
+    "creatingspace:engine_structure",
+    "creatingspace:small_engine_structure",
+    "creatingspace:clamps",
+    "creatingspace:rocket_casing",
+    "creatingspace:rocket_controls",
+    "creatingspace:flight_recorder",
+    "creatingspace:mechanical_electrolyzer",
+    "creatingspace:catalyst_carrier",
+    "creatingspace:oxygen_sealer",
+    "creatingspace:air_liquefier",
+    "creatingspace:flow_meter",
+    "creatingspace:copper_oxygen_backtank",
+    "creatingspace:netherite_oxygen_backtank",
+    "creatingspace:cryogenic_tank"
+  ]
+}

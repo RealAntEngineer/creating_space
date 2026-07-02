@@ -6,12 +6,10 @@
   },
   "ingredients": [
     {
-      "type": "neoforge:single",
       "amount": 100,
       "fluid": "creatingspace:liquid_methane"
     },
     {
-      "type": "neoforge:single",
       "amount": 286,
       "fluid": "creatingspace:liquid_oxygen"
     }
@@ -20,7 +18,7 @@
   "results": [
     {
       "amount": 80,
-      "id": "creatingspace:monopropellant"
+      "fluid": "creatingspace:monopropellant"
     }
   ]
 }

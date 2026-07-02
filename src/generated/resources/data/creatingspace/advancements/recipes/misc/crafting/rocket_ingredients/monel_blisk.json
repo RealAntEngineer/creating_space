@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_monel_blisk": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "creatingspace:monel_blisk"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "creatingspace:crafting/rocket_ingredients/monel_blisk"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_monel_blisk",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "creatingspace:crafting/rocket_ingredients/monel_blisk"
+    ]
+  },
+  "sends_telemetry_event": false
+}

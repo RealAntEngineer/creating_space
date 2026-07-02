@@ -98,7 +98,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                         if (fluidMass == null) {
                             fluidMass = 0;
                         }
-                        if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
+                        if (CSConfigs.COMMON.recorder_measurement.get().equals(CSCfgServer.Measurement.MASS)) {
                             CreateLang.builder()
                                     .add(
                                             Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
@@ -114,7 +114,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                                                             .withStyle(ChatFormatting.GOLD))
                                     )
                                     .forGoggles(tooltip, 2);
-                        } else if (CSConfigs.SERVER.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
+                        } else if (CSConfigs.COMMON.recorder_measurement.get().equals(CSCfgServer.Measurement.VOLUMETRIC)) {
                             AtomicReference<Fluid> fluidRef = new AtomicReference<>();
 
                             ForgeRegistries.FLUIDS.getEntries().forEach(

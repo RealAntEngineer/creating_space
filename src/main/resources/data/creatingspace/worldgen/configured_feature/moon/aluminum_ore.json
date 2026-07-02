@@ -10,7 +10,7 @@
           "tag": "creatingspace:moon_stone_ore_replaceable"
         },
         "state": {
-          "Name": "creatingspace:moon_aluminum_ore"
+          "Name": "creatingspace:moon/aluminum_ore"
         }
       }
     ]

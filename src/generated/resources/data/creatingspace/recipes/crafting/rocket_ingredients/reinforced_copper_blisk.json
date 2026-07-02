@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/reinforced_copper"
+    },
+    "N": {
+      "tag": "forge:nuggets/reinforced_copper"
+    },
+    "P": {
+      "tag": "forge:plates/reinforced_copper"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "item": "creatingspace:reinforced_copper_blisk"
+  },
+  "show_notification": true
+}

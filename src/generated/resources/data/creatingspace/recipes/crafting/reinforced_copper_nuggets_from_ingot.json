@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/reinforced_copper"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "creatingspace:reinforced_copper_nugget"
+  }
+}

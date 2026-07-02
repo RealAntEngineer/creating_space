@@ -4,7 +4,6 @@ import com.rae.creatingspace.CreatingSpace;
 
 
 import com.simibubi.create.Create;
-import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -41,7 +40,7 @@ public class CSStress extends ConfigBase {
         builder.pop();
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     public DoubleSupplier getImpact(Block block) {
         ResourceLocation id = CatnipServices.REGISTRIES.getKeyOrThrow(block);
         ForgeConfigSpec.ConfigValue<Double> value = this.impacts.get(id);
@@ -61,7 +60,7 @@ public class CSStress extends ConfigBase {
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setImpact(double value) {
         return builder -> {
-            ResourceLocation id = Create.asResource(builder.getName());
+            ResourceLocation id = CreatingSpace.resource(builder.getName());
             DEFAULT_IMPACTS.put(id, value);
             return builder;
         };
@@ -69,7 +68,7 @@ public class CSStress extends ConfigBase {
 
     public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setCapacity(double value) {
         return builder -> {
-            ResourceLocation id = Create.asResource(builder.getName());
+            ResourceLocation id = CreatingSpace.resource(builder.getName());
             DEFAULT_CAPACITIES.put(id, value);
             return builder;
         };
@@ -98,5 +97,4 @@ public class CSStress extends ConfigBase {
                 "Configure the individual stress impact of mechanical blocks. Note that this cost is doubled for every speed increase it receives.";
         static String capacity = "Configure how much stress a source can accommodate for.";
     }
-
 }

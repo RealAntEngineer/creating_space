@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "tag": "forge:plates/nickel"
+    },
+    "T": {
+      "item": "create:fluid_tank"
+    },
+    "W": {
+      "item": "minecraft:red_wool"
+    }
+  },
+  "pattern": [
+    "NWN",
+    "WTW",
+    "NWN"
+  ],
+  "result": {
+    "item": "creatingspace:cryogenic_tank"
+  },
+  "show_notification": true
+}

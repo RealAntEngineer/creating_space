@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/brass"
+    },
+    "N": {
+      "tag": "forge:nuggets/brass"
+    },
+    "P": {
+      "tag": "forge:plates/brass"
+    }
+  },
+  "pattern": [
+    "NPN",
+    "PIP",
+    "NPN"
+  ],
+  "result": {
+    "item": "creatingspace:brass_blisk"
+  },
+  "show_notification": true
+}
