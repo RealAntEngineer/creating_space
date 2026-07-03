@@ -80,12 +80,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     // to avoid player falling out of the rocket ( do we force the player to be transported to where the rocket is
     // (it may move while the player is away)
     private static final Logger LOGGER = LogUtils.getLogger();
-    static int ROCKET_SOUND_LENGTH = 60;
+    static int ROCKET_SOUND_LENGTH = 35;
     private static @Nullable Codec<HashMap<TagKey<Fluid>, Float>> CODEC_MAP_CONSUMPTION;
     public  float            totalThrust     = 0;
     public  float            initialMass;
-    public  ResourceLocation originDimension = Level.OVERWORLD.location();
-    public  ResourceLocation destination;
     public @Nullable FlightDataHelper.RocketAssemblyData assemblyData;
     //end of inventory management
     //TODO make a record and CODEC
@@ -94,18 +92,14 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     double clientOffsetDiff;
     double speed;
     int    soundEffectTickCount = 0;
-    boolean                                                    shouldHandleCalculation    = false;
-    //inventory management
-    // maybe we could make it simpler ?
-    HashMap<PropellantType, RocketContraption.ConsumptionInfo> theoreticalPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
-    HashMap<PropellantType, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
+    HashMap<TagKey<Fluid>, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<TagKey<Fluid>, Float>                              partialDrainAmountPerFluid = new HashMap<>();
-    private       List<BlockPos>                                                    localPosOfFlightRecorders;
+    private       List<BlockPos>                               localPosOfFlightRecorders;
     private             HashMap<ResourceLocation, BlockPos>      initialPosMap;
+    public RocketPath nextPath;
 
 
     //initializing and saving methods
-
     //make the launch after the assembling of the rocket.
     public RocketContraptionEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -149,19 +143,16 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //both research of every consumable fluid and addition of the total consumption
         float totalTheoreticalConsumption = 0;
         //TODO that could be in the inventory manager of the rocket -> 1.8
-        for (PropellantType combination : ((RocketContraption) this.contraption).getTPTFluidConsumption().keySet()) {
-            RocketContraption.ConsumptionInfo info = ((RocketContraption) this.contraption).getTPTFluidConsumption().get(combination);
+        for (TagKey<Fluid> fluidTagKey : ((RocketContraption) this.contraption).getTPTFluidConsumption().keySet()) {
+            //PropellantType combination = PropellantTypeInit.getSyncedPropellantRegistry().get(location);
+            RocketContraption.ConsumptionInfo info = ((RocketContraption) this.contraption).getTPTFluidConsumption().get(fluidTagKey);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
-            for (float consumption :
-                    info.propellantConsumption().values()) {
-                totalTheoreticalConsumption += consumption;
-            }
+            totalTheoreticalConsumption += info.fluidConsumption();
+
             totalThrust += info.partialThrust();
             //initialise if not present
-            for (TagKey<Fluid> fluid :
-                    combination.getPropellantRatio().keySet()) {
-                addToConsumableFluids(this, fluid);
-            }
+            searchForFluid(this, fluidTagKey);
+
         }
 
         float meanVe = totalThrust > 0 ? totalThrust / totalTheoreticalConsumption : 0;
@@ -184,18 +175,16 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         float emptyMass = inertFluidsMass + ((RocketContraption) contraption).getDryMass();
         return (float) (meanVe * Math.log((emptyMass + initialPropellantMass) / (emptyMass)));
     }
-
-    public static void addToConsumableFluids(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> consumedFluid) {
-        rocketContraptionEntity.consumableFluids.put(consumedFluid, new ArrayList<>());
+    private static void searchForFluid(RocketContraptionEntity rocketContraptionEntity, TagKey<Fluid> tag) {
+        rocketContraptionEntity.consumableFluids.put(tag, new ArrayList<>());
         IFluidHandler fluidHandler = rocketContraptionEntity.contraption.getStorage().getFluids();
-        if (fluidHandler != null) {
-            int nbrOfTank = fluidHandler.getTanks();
-            for (int i = 0; i < nbrOfTank; i++) {
-                FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
-                if (fluidInTank.getFluid().is(consumedFluid)) {
-                    if (!rocketContraptionEntity.consumableFluids.get(consumedFluid).contains(fluidInTank.getFluid())) {
-                        rocketContraptionEntity.consumableFluids.get(consumedFluid).add(fluidInTank.getFluid());
-                    }
+        int nbrOfTank = fluidHandler.getTanks();
+
+        for (int i = 0; i < nbrOfTank; i++) {
+            FluidStack fluidInTank = fluidHandler.getFluidInTank(i);
+            if (fluidInTank.getFluid().is(tag)) {
+                if (!rocketContraptionEntity.consumableFluids.get(tag).contains(fluidInTank.getFluid())) {
+                    rocketContraptionEntity.consumableFluids.get(tag).add(fluidInTank.getFluid());
                 }
             }
         }
@@ -230,8 +219,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
     @Override
     public void tick() {
-        ROCKET_SOUND_LENGTH = 35;
-
         //movement is bugged when in ground -> avoid collision by slowing down upon landing ? or breaking blocks
         boolean wasRunning = isInPropulsionPhase();
         if (isInPropulsionPhase()) {
@@ -241,12 +228,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                 soundEffectTickCount = ROCKET_SOUND_LENGTH;
             } else {
                 soundEffectTickCount--;
-            }
-            //put the handleTrajectory calculation on the start path
-            if (!level().isClientSide() && shouldHandleCalculation) {
-                //so the pos is initialized
-                handelTrajectoryCalculation(this);
-                shouldHandleCalculation = false;
             }
         }
         schedule.tick(level());
@@ -281,9 +262,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
                 if (ContraptionCollider.collideBlocks(this) && !(level().getMaxBuildHeight() < this.getBoundingBox().maxY + movementVec.y)) {
                     //stopRocket();
-                    getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.BLOCKED);
-                    setContraptionMotion(Vec3.ZERO);
-                    //disassemble();
+                    getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
+                    //setContraptionMotion(Vec3.ZERO);
 
                 } else if (tickCount > 2) {//that means the rocket takes 2 ticks more than expected to go up
                     movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
