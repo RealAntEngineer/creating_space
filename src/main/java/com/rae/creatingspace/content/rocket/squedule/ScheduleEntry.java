@@ -14,13 +14,7 @@ public class ScheduleEntry {
     public ScheduleInstruction instruction;
     public List<List<ScheduleWaitCondition>> conditions;
 
-    public ScheduleEntry(ScheduleInstruction instruction, List<List<ScheduleWaitCondition>> conditions) {
-        this.instruction = instruction;
-        this.conditions = conditions;
-    }
-
     public ScheduleEntry() {
-        instruction = null;
         conditions = new ArrayList<>();
     }
 

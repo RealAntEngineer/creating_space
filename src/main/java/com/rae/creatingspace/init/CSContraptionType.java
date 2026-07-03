@@ -1,7 +1,7 @@
 package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption;
 import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.api.registry.CreateRegistries;
 import net.minecraftforge.eventbus.api.IEventBus;

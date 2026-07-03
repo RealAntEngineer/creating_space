@@ -31,7 +31,7 @@ public class RocketSchedule {
         registerCondition("item_threshold", ItemThresholdCondition::new);
         //registerCondition("redstone_link", RedstoneLinkCondition::new);
         registerCondition("player_count", PlayerPassengerCondition::new);
-        //registerCondition("idle", IdleCargoCondition::new);
+        registerCondition("idle", IdleCargoCondition::new);
         //registerCondition("unloaded", StationUnloadedCondition::new);
         //registerCondition("powered", StationPoweredCondition::new);
     }

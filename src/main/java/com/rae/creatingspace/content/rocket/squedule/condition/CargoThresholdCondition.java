@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.lang.Lang;
@@ -18,12 +18,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class CargoThresholdCondition extends LazyTickedScheduleCondition {
-    public static enum Ops {
+    public enum Ops {
         GREATER(">"), LESS("<"), EQUAL("=");
 
         public String formatted;
 
-        private Ops(String formatted) {
+        Ops(String formatted) {
             this.formatted = formatted;
         }
 
@@ -64,8 +64,6 @@ public abstract class CargoThresholdCondition extends LazyTickedScheduleConditio
         context.putInt("CurrentDisplay", amount);
         super.requestStatusToUpdate(context);
     }
-
-    ;
 
     protected int getLastDisplaySnapshot(CompoundTag context) {
         if (!context.contains("CurrentDisplay"))

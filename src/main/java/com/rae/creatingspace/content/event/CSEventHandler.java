@@ -9,10 +9,9 @@ import com.rae.creatingspace.init.CommandsInit;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.rae.creatingspace.content.rocket.CustomTeleporter;
+import com.rae.creatingspace.content.rocket.RocketTeleporter;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
-import com.simibubi.create.AllItems;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -92,11 +91,11 @@ public class CSEventHandler {
                                 Entity vehicle = player.getVehicle();
                                 assert vehicle != null;
                                 vehicle.ejectPassengers();
-                                vehicle.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
-                                player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                vehicle.changeDimension(destServerLevel, new RocketTeleporter(destServerLevel));
+                                player.changeDimension(destServerLevel, new RocketTeleporter(destServerLevel));
                                 player.startRiding(vehicle,true);
                             } else {
-                                player.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                                player.changeDimension(destServerLevel, new RocketTeleporter(destServerLevel));
 
                             }
                         }

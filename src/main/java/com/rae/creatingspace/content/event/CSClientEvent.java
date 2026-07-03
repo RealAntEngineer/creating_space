@@ -6,11 +6,10 @@ import com.rae.creatingspace.content.life_support.spacesuit.CopperOxygenBacktank
 import com.rae.creatingspace.content.life_support.spacesuit.NetheriteOxygenBacktankFirstPersonRenderer;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankArmorLayer;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.content.rocket.engine.table.EngineFabricationBlueprint;
 import com.rae.creatingspace.content.rocket.engine.EngineItem;
 import com.rae.creatingspace.init.EngineMaterialInit;
-import com.rae.creatingspace.init.ingameobject.MaterialInit;
 import com.simibubi.create.content.trains.CameraDistanceModifier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

@@ -2,9 +2,9 @@ package com.rae.creatingspace.content.rocket.rocket_control;
 
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;

@@ -2,8 +2,8 @@ package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
 import com.rae.creatingspace.configs.CSCfgServer;
 import com.rae.creatingspace.configs.CSConfigs;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
-import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.rae.creatingspace.legacy.utilities.data.FlightDataHelper;
@@ -28,8 +28,8 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
-import static com.rae.creatingspace.content.rocket.RocketContraptionEntity.addToConsumableFluids;
-import static com.rae.creatingspace.content.rocket.RocketContraptionEntity.getMassMap;
+import static com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity.addToConsumableFluids;
+import static com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity.getMassMap;
 
 public class FlightRecorderInteraction extends MovingInteractionBehaviour {
     private static final boolean shouldBeDisplayed = false;
@@ -44,29 +44,22 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
             if (contraptionEntity instanceof RocketContraptionEntity rocket) {
                 FlightDataHelper.RocketAssemblyData lastAssemblyData = rocket.assemblyData;
                 if (sneaking) {
-                    RocketContraption contraption     = (RocketContraption) rocket.getContraption();
-                    float             totalThrust     = 0;
-                    float         totalFluidMass = 0;
-                    IFluidHandler fluidHandler   = contraption.getStorage().getFluids();
-                    int           nbrOfTank      = fluidHandler.getTanks();
+                    RocketContraption contraption    = (RocketContraption) rocket.getContraption();
+                    float             totalThrust    = 0;
+                    float             totalFluidMass = 0;
+                    IFluidHandler     fluidHandler   = contraption.getStorage().getFluids();
+                    int               nbrOfTank      = fluidHandler.getTanks();
                     //both research of every consumable fluid and addition of the total consumption
                     float totalTheoreticalConsumption = 0;
                     //TODO that could be in the inventory manager of the rocket -> 1.8
-                    for (PropellantType combination : contraption.getTPTFluidConsumption().keySet()) {
-                        RocketContraption.ConsumptionInfo info = contraption.getTPTFluidConsumption().get(combination);
-                        //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
-                        for (float consumption :
-                                info.propellantConsumption().values()) {
-                            totalTheoreticalConsumption += consumption;
-                        }
+                    for (TagKey<Fluid> fluid : contraption.getTPTFluidConsumption().keySet()) {
+                        RocketContraption.ConsumptionInfo info = contraption.getTPTFluidConsumption().get(fluid);
+
+                        totalTheoreticalConsumption += info.fluidConsumption();
+
                         totalThrust += info.partialThrust();
 
-                        //initialize if not present
-                        for (TagKey<Fluid> fluid :
-                                combination.getPropellantRatio().keySet()) {
-                            addToConsumableFluids(rocket, fluid);
-                        }
-
+                        addToConsumableFluids(rocket, fluid);
                     }
 
                     float meanVe = totalThrust > 0 ? totalThrust / totalTheoreticalConsumption : 0;
@@ -87,7 +80,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                         initialPropellantMass += mass;
                     }
                     float inertFluidMass = totalFluidMass - initialPropellantMass;
-                    float emptyMass = inertFluidMass + contraption.getDryMass();
+                    float emptyMass      = inertFluidMass + contraption.getDryMass();
                     serverPlayer.sendSystemMessage(
                             Component.literal(
                                     "current empty mass : " + emptyMass
@@ -99,13 +92,13 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                             )
                     );
                     serverPlayer.sendSystemMessage(
-                            Component.literal("Mean Isp : " + meanVe/9.81 +"s")
+                            Component.literal("Mean Isp : " + meanVe / 9.81 + "s")
                     );
                     serverPlayer.sendSystemMessage(
-                            Component.literal("Propellant mass : " + initialPropellantMass+"kg")
+                            Component.literal("Propellant mass : " + initialPropellantMass + "kg")
                     );
                     serverPlayer.sendSystemMessage(
-                            Component.literal("Computed deltaV : " + meanVe * Math.log((emptyMass + inertFluidMass + initialPropellantMass)/(emptyMass + inertFluidMass)) + "m/s")
+                            Component.literal("Computed deltaV : " + meanVe * Math.log((emptyMass + inertFluidMass + initialPropellantMass) / (emptyMass + inertFluidMass)) + "m/s")
                     );
                 } else if (lastAssemblyData != null && lastAssemblyData.hasFailed()) {
                     if (lastAssemblyData.propellantStatusData().status().isFailReason) {
@@ -117,7 +110,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
 
                         );
                         for (TagKey<Fluid> fluidTagKey : lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().keySet()) {
-                            Integer consumedMass = lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey);
+                            Float   consumedMass = Float.valueOf(lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey));
                             Integer fluidMass    = lastAssemblyData.propellantStatusData().massForEachPropellant().get(fluidTagKey);
 
                             if (fluidMass == null) {
@@ -179,6 +172,8 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                 } else {
                     serverPlayer.sendSystemMessage(Component.translatable(tradKey + "no_failure"), shouldBeDisplayed);
                 }
+            } else {
+                serverPlayer.sendSystemMessage(Component.translatable(tradKey + "no_flight"), shouldBeDisplayed);
             }
         }
         return super.handlePlayerInteraction(player, activeHand, localPos, contraptionEntity);

@@ -1,5 +1,6 @@
 package com.rae.creatingspace.content.rocket;
 
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.init.graphics.MenuTypesInit;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import net.minecraft.client.Minecraft;

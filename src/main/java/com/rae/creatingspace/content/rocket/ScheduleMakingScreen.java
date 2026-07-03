@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Pair;
@@ -77,7 +78,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     private Button disassembleButton;
     HashMap<ResourceLocation, BlockPos> initialPosMap;
     private final RocketContraptionEntity rocketContraption;
-    private final ResourceLocation currentDimension;
+    private final ResourceLocation        currentDimension;
     private ResourceLocation destination;//TODO replace with a call to a getDestination calling ResourceLocation.tryParse(editingDestination.getData().getString("Text"))))
     private LabeledBoxWidget destinationCost;
     private EditBox Xinput;

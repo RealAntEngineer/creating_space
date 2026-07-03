@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.rocket;
 
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -11,10 +12,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
-public class CustomTeleporter implements ITeleporter {
+public class RocketTeleporter implements ITeleporter {
     protected final ServerLevel level;
 
-    public CustomTeleporter(ServerLevel level) {
+    public RocketTeleporter(ServerLevel level) {
         this.level = level;
     }
 

@@ -1,9 +1,9 @@
 package com.rae.creatingspace.init.ingameobject;
 
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntityRenderer;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntityRenderer;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphereRenderer;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.render.ContraptionVisual;

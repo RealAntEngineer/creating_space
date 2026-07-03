@@ -70,7 +70,7 @@ public class FlightDataHelper {
     public record PropellantStatusData(
             PropellantStatus status,HashMap<TagKey<Fluid>,
             Integer> massForEachPropellant,
-            HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant,
+            HashMap<TagKey<Fluid>, Integer> consumedMassForEachPropellant,
             float finalPropellantMass){
         public static PropellantStatusData createFromPropellantMap(HashMap<TagKey<Fluid>, Integer> massForEachPropellant, HashMap<TagKey<Fluid>,Integer> consumedMassForEachPropellant, float finalPropellantMass){
             PropellantStatus status = PropellantStatus.ENOUGH_PROPELLANT;

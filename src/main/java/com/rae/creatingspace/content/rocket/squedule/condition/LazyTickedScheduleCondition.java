@@ -1,6 +1,6 @@
 package com.rae.creatingspace.content.rocket.squedule.condition;
 
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 

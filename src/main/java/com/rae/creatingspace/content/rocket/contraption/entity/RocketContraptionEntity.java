@@ -1,14 +1,14 @@
-package com.rae.creatingspace.content.rocket;
+package com.rae.creatingspace.content.rocket.contraption.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.content.rocket.RocketTeleporter;
 import com.rae.creatingspace.content.rocket.squedule.RocketPath;
 import com.rae.creatingspace.content.rocket.squedule.RocketScheduleRuntime;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
 import com.rae.creatingspace.content.rocket.engine.design.PropellantType;
 import com.rae.creatingspace.content.rocket.network.RocketContraptionUpdatePacket;
 import com.rae.creatingspace.content.rocket.network.RocketEntryPosMapClientPacket;
@@ -67,7 +67,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.rae.creatingspace.content.rocket.contraption.RocketContraption.getCodecMapInfo;
+import static com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption.getCodecMapInfo;
 import static com.rae.creatingspace.init.ingameobject.SoundInit.ROCKET_LAUNCH;
 
 public class RocketContraptionEntity extends AbstractContraptionEntity {
@@ -115,9 +115,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public static RocketContraptionEntity create(Level level, RocketContraption contraption, ResourceLocation destination) {
         RocketContraptionEntity entity =
                 new RocketContraptionEntity(EntityInit.ROCKET_CONTRAPTION.get(), level);
-        entity.originDimension = level.dimension().location();
-        entity.destination = destination;//will be set after the
-
         entity.setContraption(contraption);
         entity.realPerTagFluidConsumption = new HashMap<>();
         entity.consumableFluids = new HashMap<>();
@@ -461,7 +458,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
             if (destServerLevel != null) {
 
-                this.changeDimension(destServerLevel, new CustomTeleporter(destServerLevel));
+                this.changeDimension(destServerLevel, new RocketTeleporter(destServerLevel));
             } else {
                 LOGGER.error("rocket failed to get server for destination : {}", this.destination);
                 this.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.ON_FINAL);
@@ -486,45 +483,38 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
             return;
         }
         RocketContraption rocketContraption = (RocketContraption) rocketContraptionEntity.contraption;
-        IFluidHandler     fluidHandler      = rocketContraption.getStorage().getFluids();
+        IFluidHandler fluidHandler = rocketContraption.getStorage().getFluids();
         //need to construct a map of drainAmount and partial drain -> map of couple/record(int,float)
         //make in a loop so it look for every one ?
-        for (PropellantType combination : realPerTagFluidConsumption.keySet()) {
-            RocketContraption.ConsumptionInfo info = realPerTagFluidConsumption.get(combination);
-
-
-            //temporary fix : don't consume if the list is empty. It should never happen though
-            for (TagKey<Fluid> fluidTag :
-                    info.propellantConsumption().keySet()) {
-                Float            prevPartialDrainValue = partialDrainAmountPerFluid.get(fluidTag);
-                ArrayList<Fluid> fluids                = consumableFluids.get(fluidTag);
+        for (TagKey<Fluid> fluidTag : realPerTagFluidConsumption.keySet()) {
+            RocketContraption.ConsumptionInfo info = realPerTagFluidConsumption.get(fluidTag);
+                Float prevPartialDrainValue = partialDrainAmountPerFluid.get(fluidTag);
+                ArrayList<Fluid> fluids = consumableFluids.get(fluidTag);
                 if (!(fluids == null || fluids.isEmpty())) {
 
                     Fluid oxFluid = fluids.get(0);
 
                     FluidType oxFluidType = oxFluid.getFluidType();
-                    float     oxRo        = (float) oxFluidType.getDensity() / 1000;
+                    float rho = (float) oxFluidType.getDensity() / 1000;
 
-                    float oxAmount = info.propellantConsumption().get(fluidTag) / oxRo; // oxConsumption in kg, oxRo in kg/mb
+                    float amount = info.fluidConsumption() / rho; // oxConsumption in kg, rho in kg/mb
                     if (prevPartialDrainValue == null) {
                         prevPartialDrainValue = 0f;
                     }
-                    float partialOxConsumedAmount = prevPartialDrainValue;
-                    partialOxConsumedAmount = partialOxConsumedAmount + oxAmount - ((int) oxAmount);
+                    float partialConsumedAmount = prevPartialDrainValue;
+                    partialConsumedAmount = partialConsumedAmount + amount - ((int) amount);
 
-                    if (partialOxConsumedAmount >= 1) {
-                        oxAmount = oxAmount + 1;
-                        partialOxConsumedAmount = partialOxConsumedAmount - 1;
+                    if (partialConsumedAmount >= 1) {
+                        amount = amount + 1;
+                        partialConsumedAmount = partialConsumedAmount - 1;
                     }
-                    partialDrainAmountPerFluid.put(fluidTag, partialOxConsumedAmount);
+                    partialDrainAmountPerFluid.put(fluidTag, partialConsumedAmount);
 
 
-                    int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) oxAmount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
+                    int consumedOx = fluidHandler.drain(new FluidStack(oxFluid, (int) amount), IFluidHandler.FluidAction.EXECUTE).getAmount();//drain ox
 
                     if (consumedOx == 0) {
-                        RocketContraptionEntity.addToConsumableFluids(this, fluidTag);
-
-                    }
+                        RocketContraptionEntity.searchForFluid(this, fluidTag);
                 }
             }
         }
@@ -752,11 +742,11 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                     passenger.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, passenger.getYRot(), passenger.getXRot());
 
                                     if (passenger instanceof ServerPlayer player) {
-                                        player.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                        player.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                         entity.addSittingPassenger(player, i);
                                     } else {
                                         if (!(passenger instanceof Player)) {
-                                            passenger.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                            passenger.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                             entity.addSittingPassenger(passenger, i);
                                         }
                                     }
@@ -766,10 +756,10 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                     movedEntity.moveTo(portalinfo.pos.x + posDif.getX(), portalinfo.pos.y + posDif.getY(), portalinfo.pos.z + posDif.getZ(), movedEntity.getYRot(), movedEntity.getXRot());
 
                                     if (movedEntity instanceof ServerPlayer player) {
-                                        player.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                        player.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                     } else {
                                         if (!(movedEntity instanceof Player)) {
-                                            movedEntity.changeDimension(destLevel, new CustomTeleporter(destLevel));
+                                            movedEntity.changeDimension(destLevel, new RocketTeleporter(destLevel));
                                         }
                                     }
                                 }
@@ -779,7 +769,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
                                     //entity.disassemble();
                                     entity.stopRocket();
                                     entity.schedule.destinationReached();
-                                } else {
+                                }
+                                else{
                                     entity.entityData.set(STATUS_DATA_ACCESSOR, RocketStatus.ON_FINAL);
                                 }
                             }
@@ -840,13 +831,12 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     public int startNavigation(RocketPath nextPath) {
         if (!level().isClientSide()) {
             //so the pos is initialized
-            this.originDimension = nextPath.origin;
-            this.destination = nextPath.destination;
+            this.nextPath = nextPath;
+            //this.rocketEntryCoordinate = new BlockPos(nextPath.XZCoord.x,CSDimensionUtil.arrivalHeight(nextPath.destination),nextPath.XZCoord.y);
             getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.TRAVELING);
 
-            shouldHandleCalculation = false;
             handelTrajectoryCalculation(this);
-            if (getEntityData().get(STATUS_DATA_ACCESSOR).equals(RocketStatus.BLOCKED)) {
+            if (getEntityData().get(STATUS_DATA_ACCESSOR).equals(RocketStatus.COLLISION)) {
                 return -1;
             }
         }
@@ -858,7 +848,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         //replacement for the RUNNING_ENTITY_DATA_ACCESSOR and REENTRY_ENTITY_DATA_ACCESSOR
         IDLE(false),
         TRAVELING(true),//going up to the next dimension
-        BLOCKED(false),//used when physically blocked and when not enough fuel, -> separate into several cases ?
+        PROPULSION_ISSUE(false),//going up to the next dimension
+        COLLISION(false),//used when physically blocked
+        FUEL_ISSUE(false),
         ON_FINAL(true);
         final boolean propelled_phase;
 

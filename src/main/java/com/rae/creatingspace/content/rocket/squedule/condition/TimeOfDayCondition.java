@@ -2,7 +2,7 @@ package com.rae.creatingspace.content.rocket.squedule.condition;
 
 import com.google.common.collect.ImmutableList;
 import com.rae.creatingspace.CreatingSpace;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
@@ -169,7 +169,7 @@ public class TimeOfDayCondition extends ScheduleWaitCondition {
     public MutableComponent getWaitingStatus(Level level, RocketContraptionEntity train, CompoundTag tag) {
         int targetHour = intData("Hour");
         int targetMinute = intData("Minute");
-        int dayTime = (int) (level.getDayTime() % getRotation());//TODO the time is no longer the same in dev
+        int dayTime = (int) (level.getDayTime() % getRotation());
         int targetTicks =
                 (int) ((((targetHour + 18) % 24) * 1000 + Math.ceil(targetMinute / 60f * 1000)) % getRotation());
         int diff = targetTicks - dayTime;

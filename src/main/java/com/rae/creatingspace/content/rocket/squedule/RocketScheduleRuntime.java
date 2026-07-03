@@ -5,8 +5,9 @@ import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondi
 import com.rae.creatingspace.content.rocket.squedule.instruction.ChangeTitleInstruction;
 import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
 import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraption;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -35,13 +36,12 @@ public class RocketScheduleRuntime {
     RocketContraptionEntity rocket;
     RocketSchedule schedule;
 
-    public boolean isAutoSchedule;
     public boolean paused;
     public boolean completed;
     public int currentEntry;
     public State state;
 
-    static final int INTERVAL = 40;
+    static final int INTERVAL = 40;//retry interval
     int cooldown;
     List<Integer> conditionProgress;
     List<CompoundTag> conditionContext;
@@ -176,6 +176,9 @@ public class RocketScheduleRuntime {
 
             displayLinkUpdateRequested |= i == 0 && prevVersion != tag.getInt("StatusVersion");
         }
+        if (rocket.getContraption() instanceof RocketContraption rc && rc.getStorage() != null){
+            rc.getStorage().tickIdleCargoTracker();
+        }
     }
 
     public RocketPath startCurrentInstruction() {
@@ -195,7 +198,7 @@ public class RocketScheduleRuntime {
             if (cost <= 0) {
                 return null;
             } else {
-                return new RocketPath(currentWorld, destinationWorld, cost);
+                return new RocketPath(currentWorld, destinationWorld, destination.getXYCoord(),cost);
             }
         }
 
@@ -208,13 +211,11 @@ public class RocketScheduleRuntime {
         return null;
     }
 
-    public void setSchedule(RocketSchedule schedule, boolean auto) {
+    public void setSchedule(RocketSchedule schedule, boolean paused) {
         reset();
         this.schedule = schedule;
         currentEntry = Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
-        paused = false;
-        isAutoSchedule = auto;
-        //train.status.newSchedule();
+        this.paused = paused;
         predictionTicks = new ArrayList<>();
         schedule.entries.forEach($ -> predictionTicks.add(TBD));
         displayLinkUpdateRequested = true;
@@ -232,7 +233,6 @@ public class RocketScheduleRuntime {
     private void reset() {
         paused = true;
         completed = false;
-        isAutoSchedule = false;
         currentEntry = 0;
         currentTitle = "";
         schedule = null;
@@ -245,7 +245,6 @@ public class RocketScheduleRuntime {
     public CompoundTag write() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("CurrentEntry", currentEntry);
-        tag.putBoolean("AutoSchedule", isAutoSchedule);
         tag.putBoolean("Paused", paused);
         tag.putBoolean("Completed", completed);
         if (schedule != null)
@@ -261,7 +260,6 @@ public class RocketScheduleRuntime {
         reset();
         paused = tag.getBoolean("Paused");
         completed = tag.getBoolean("Completed");
-        isAutoSchedule = tag.getBoolean("AutoSchedule");
         currentEntry = tag.getInt("CurrentEntry");
         if (tag.contains("Schedule"))
             schedule = RocketSchedule.fromTag(tag.getCompound("Schedule"));

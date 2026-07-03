@@ -1,7 +1,7 @@
 package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 
 import com.rae.creatingspace.content.rocket.RocketMenu;
-import com.rae.creatingspace.content.rocket.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import net.minecraft.core.BlockPos;
