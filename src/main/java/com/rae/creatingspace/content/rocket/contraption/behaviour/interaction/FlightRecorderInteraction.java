@@ -3,8 +3,8 @@ package com.rae.creatingspace.content.rocket.contraption.behaviour.interaction;
 import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
-import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightDataHelper;
+import com.rae.creatingspace.legacy.utilities.CSUtil;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import net.minecraft.ChatFormatting;
@@ -37,15 +37,15 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                     if (lastAssemblyData.hasFailed()) {
                         if (lastAssemblyData.propellantStatusData().status().isFailReason) {
                             serverPlayer.sendSystemMessage(Component.translatable(tradKey + "propellant_status." +
-                                    String.valueOf(
-                                            lastAssemblyData.propellantStatusData()
-                                                    .status()).toLowerCase(Locale.ROOT)
+                                            String.valueOf(
+                                                    lastAssemblyData.propellantStatusData()
+                                                            .status()).toLowerCase(Locale.ROOT)
                                     , shouldBeDisplayed)
 
                             );
                             for (TagKey<Fluid> fluidTagKey : lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().keySet()) {
-                                Float consumedMass = lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey);
-                                Integer fluidMass = lastAssemblyData.propellantStatusData().massForEachPropellant().get(fluidTagKey);
+                                Float   consumedMass = lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey);
+                                Integer fluidMass    = lastAssemblyData.propellantStatusData().massForEachPropellant().get(fluidTagKey);
 
                                 if (fluidMass == null) {
                                     fluidMass = 0;
@@ -60,7 +60,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                                                                     ChatFormatting.DARK_RED :
                                                                     ChatFormatting.DARK_GREEN))
                                                     .append(Component.literal(" / " +
-                                                                    CSUtil.scientificNbrFormatting((float) consumedMass / 1000, 5))
+                                                                    CSUtil.scientificNbrFormatting(consumedMass / 1000, 5))
                                                             .append(Component.translatable("creatingspace.science.unit.metric_ton"))
                                                             .withStyle(ChatFormatting.GOLD))
                                             , shouldBeDisplayed);
@@ -79,16 +79,16 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
                                     } else {
                                         float fluidVolume = (float) (fluidMass / fluidRef.get().getFluidType().getDensity()); //in minecraft's bucket
                                         serverPlayer.sendSystemMessage(Component.translatable("fluid." + fluidTagKey.location().toLanguageKey())
-                                                .append(" ")
-                                                .append(Component.literal(CSUtil.scientificNbrFormatting(fluidVolume, 5))
-                                                        .append(Component.literal("B"))
-                                                        .withStyle(consumedMass >= fluidMass ?
-                                                                ChatFormatting.DARK_RED :
-                                                                ChatFormatting.DARK_GREEN))
-                                                .append(Component.literal(" / " +
-                                                                CSUtil.scientificNbrFormatting((float) consumedMass / fluidRef.get().getFluidType().getDensity(), 5))
-                                                        .append(Component.literal("B"))
-                                                        .withStyle(ChatFormatting.GOLD))
+                                                        .append(" ")
+                                                        .append(Component.literal(CSUtil.scientificNbrFormatting(fluidVolume, 5))
+                                                                .append(Component.literal("B"))
+                                                                .withStyle(consumedMass >= fluidMass ?
+                                                                        ChatFormatting.DARK_RED :
+                                                                        ChatFormatting.DARK_GREEN))
+                                                        .append(Component.literal(" / " +
+                                                                        CSUtil.scientificNbrFormatting(consumedMass / fluidRef.get().getFluidType().getDensity(), 5))
+                                                                .append(Component.literal("B"))
+                                                                .withStyle(ChatFormatting.GOLD))
                                                 , shouldBeDisplayed);
                                     }
                                 }

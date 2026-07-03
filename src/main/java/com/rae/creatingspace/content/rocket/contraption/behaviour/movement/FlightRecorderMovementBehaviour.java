@@ -16,7 +16,7 @@ public class FlightRecorderMovementBehaviour implements MovementBehaviour {
 
     @Override
     public void tick(MovementContext context) {
-        if (context.world == null ||  context.position == null
+        if (context.world == null || context.position == null
                 || context.disabled || !context.world.isClientSide()) {
         }
         //TODO make an animation for the rocket flight ->  rotate the roll ?

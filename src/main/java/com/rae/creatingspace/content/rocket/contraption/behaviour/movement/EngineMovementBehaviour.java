@@ -4,9 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.rae.creatingspace.api.rendering.GeometryRendering;
-import com.rae.creatingspace.init.ingameobject.BlockInit;
-import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import com.simibubi.create.content.contraptions.render.ContraptionMatrices;
@@ -23,12 +23,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class EngineMovementBehaviour implements MovementBehaviour {
     //TODO make a render type for the plume to avoid the default texture
-    static RandomSource r = RandomSource.create();
-    static float baseRadius = 0.45f;
-    static int segments = 4; // Number of segments for the base circle
-    static int N = 50;
-    static float maxDistance = 10f;
-    static float step = (float) 1 / N;
+    static RandomSource r           = RandomSource.create();
+    static float        baseRadius  = 0.45f;
+    static int          segments    = 4; // Number of segments for the base circle
+    static int          N           = 50;
+    static float        maxDistance = 10f;
+    static float        step        = (float) 1 / N;
 
 
     @Override
@@ -56,7 +56,7 @@ public class EngineMovementBehaviour implements MovementBehaviour {
     public void renderInContraption(MovementContext context, VirtualRenderWorld renderWorld, ContraptionMatrices matrices, MultiBufferSource buffer) {
         if (isActive(context)) {
             VertexConsumer vertexBuilder = buffer.getBuffer(RenderTypes.itemGlowingTranslucent());
-            PoseStack matrixStack = matrices.getViewProjection();
+            PoseStack      matrixStack   = matrices.getViewProjection();
 
             matrixStack.pushPose();
             // Translate and rotate the cone to the entity's position and orientation
@@ -65,9 +65,9 @@ public class EngineMovementBehaviour implements MovementBehaviour {
             matrixStack.translate(firstOffset.x, firstOffset.y, firstOffset.z);
             matrixStack.mulPose(Axis.YP.rotationDegrees(-45.10F));
             // just for debug mode
-            int overlay = LightTexture.FULL_BRIGHT;
-            float z = 0;
-            float w = baseRadius;
+            int   overlay = LightTexture.FULL_BRIGHT;
+            float z       = 0;
+            float w       = baseRadius;
             for (float t = 0; t < 1f; t += step) {
                 z += d_z(t) * step;
                 float prev_w = w;

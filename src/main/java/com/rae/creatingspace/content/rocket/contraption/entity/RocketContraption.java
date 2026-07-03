@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.UnboundedMapCodec;
 import com.rae.creatingspace.configs.CSConfigs;
+import com.rae.creatingspace.content.rocket.CSMassUtil;
 import com.rae.creatingspace.content.rocket.engine.RocketEngineBlockEntity;
 import com.rae.creatingspace.content.rocket.flight_recorder.FlightRecorderBlock;
 import com.rae.creatingspace.init.CSContraptionType;
-import com.rae.creatingspace.content.rocket.CSMassUtil;
 import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
@@ -28,20 +28,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class RocketContraption extends TranslatingContraption {
-    private int thrust = 0;
-    private int dryMass = 0;
+    public static final UnboundedMapCodec<TagKey<Fluid>, ConsumptionInfo> TPTF_CODEC                = Codec.unboundedMap(TagKey.codec(Registries.FLUID), ConsumptionInfo.CODEC);
+    private final       ArrayList<BlockPos>                               localPosOfFlightRecorders = new ArrayList<>();
+    private int                                     thrust                            = 0;
+    private int                                     dryMass                           = 0;
     //private final HashMap<Couple<TagKey<Fluid>>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
     private HashMap<TagKey<Fluid>, ConsumptionInfo> theoreticalPerTagFluidConsumption = new HashMap<>();
-
-    private final ArrayList<BlockPos> localPosOfFlightRecorders = new ArrayList<>();
-    public static final UnboundedMapCodec<TagKey<Fluid>, ConsumptionInfo> TPTF_CODEC = Codec.unboundedMap(TagKey.codec(Registries.FLUID), ConsumptionInfo.CODEC);
 
     public RocketContraption() {
         storage = new RocketStorageManager();
     }
-    public RocketStorageManager getStorage(){
-        return (RocketStorageManager) storage;
-    }
+
     @Override
     public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 
@@ -53,17 +50,28 @@ public class RocketContraption extends TranslatingContraption {
         getStorage().onContraptionAssemble(this);
         return true;
     }
-    @Override
-    protected void addBlock(Level level,BlockPos pos, Pair<StructureTemplate.StructureBlockInfo, BlockEntity> pair) {
-        Block blockAdded = pair.getLeft().state().getBlock();
-        BlockEntity blockEntityAdded = pair.getRight();
-        BlockPos localPos = pos.subtract(anchor);
 
-        if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity){
+    @Override
+    public ContraptionType getType() {
+        return CSContraptionType.ROCKET.get();
+    }
+
+    @Override
+    protected boolean moveBlock(Level world, @Nullable Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited) throws AssemblyException {
+        return super.moveBlock(world, forcedDirection, frontier, visited);
+    }
+
+    @Override
+    protected void addBlock(Level level, BlockPos pos, Pair<StructureTemplate.StructureBlockInfo, BlockEntity> pair) {
+        Block       blockAdded       = pair.getLeft().state().getBlock();
+        BlockEntity blockEntityAdded = pair.getRight();
+        BlockPos    localPos         = pos.subtract(anchor);
+
+        if (blockEntityAdded instanceof RocketEngineBlockEntity engineBlockEntity) {
 
             this.thrust += engineBlockEntity.getThrust();//verify what's it's doing
             float totalPropellantMassFlow = (float) (engineBlockEntity.getThrust() / (
-                    engineBlockEntity.getIsp()* CSConfigs.SERVER.rocketEngine.ISPModifier.get() *9.81));
+                    engineBlockEntity.getIsp() * CSConfigs.SERVER.rocketEngine.ISPModifier.get() * 9.81));
             // -> go to FluidTagKeys.
             HashMap<TagKey<Fluid>, Float> PFTMassFlow = new HashMap<>(engineBlockEntity.getPropellantType().getPropellantRatio());
             multiplyMap(PFTMassFlow, totalPropellantMassFlow);
@@ -78,33 +86,28 @@ public class RocketContraption extends TranslatingContraption {
 
         }
         this.dryMass += CSMassUtil.mass(blockAdded.defaultBlockState(), blockEntityAdded);
-        if (blockAdded instanceof FlightRecorderBlock){
+        if (blockAdded instanceof FlightRecorderBlock) {
             this.localPosOfFlightRecorders.add(localPos);
         }
-        super.addBlock(level,pos, pair);
+        super.addBlock(level, pos, pair);
     }
-    @Override
-    protected boolean moveBlock(Level world, @Nullable Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited) throws AssemblyException {
-        return super.moveBlock(world, forcedDirection, frontier, visited);
-    }
+
     @Override
     protected boolean isAnchoringBlockAt(BlockPos pos) {
         return false;
     }
-    @Override
-    public ContraptionType getType() {
-        return CSContraptionType.ROCKET.get();
-    }
+
     @Override
     public void readNBT(Level world, CompoundTag nbt, boolean clientPacket) {
 
         //TODO add data for server/client sync (possible solution of Interactive bug)
-            thrust = nbt.getInt("thrust");
-            dryMass = nbt.getInt("dryMass");
-            Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
-            theoreticalPerTagFluidConsumption = new HashMap<>(TPTF_CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
+        thrust = nbt.getInt("thrust");
+        dryMass = nbt.getInt("dryMass");
+        Arrays.stream(nbt.getLongArray("localPosOfFlightRecorders")).forEach(l -> localPosOfFlightRecorders.add(BlockPos.of(l)));
+        theoreticalPerTagFluidConsumption = new HashMap<>(TPTF_CODEC.parse(NbtOps.INSTANCE, nbt.get("theoreticalPerTagFluidConsumption")).result().orElse(new HashMap<>()));
         super.readNBT(world, nbt, clientPacket);
     }
+
     @Override
     public CompoundTag writeNBT(boolean spawnPacket) {
         //TODO add data for server/client sync
@@ -112,9 +115,13 @@ public class RocketContraption extends TranslatingContraption {
         nbt.putInt("thrust", thrust);
         nbt.putInt("dryMass", dryMass);
         nbt.putLongArray("localPosOfFlightRecorders", localPosOfFlightRecorders.stream().map(BlockPos::asLong).toList());
-        nbt.put("theoreticalPerTagFluidConsumption", TPTF_CODEC.encodeStart(NbtOps.INSTANCE,theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
+        nbt.put("theoreticalPerTagFluidConsumption", TPTF_CODEC.encodeStart(NbtOps.INSTANCE, theoreticalPerTagFluidConsumption).result().orElse(new CompoundTag()));
 
         return nbt;
+    }
+
+    public RocketStorageManager getStorage() {
+        return (RocketStorageManager) storage;
     }
 
     //Custom logic
@@ -130,10 +137,11 @@ public class RocketContraption extends TranslatingContraption {
         return localPosOfFlightRecorders;
     }
 
-    public float getDryMass(){
+    public float getDryMass() {
         return this.dryMass;
     }
-    public float getThrust(){
+
+    public float getThrust() {
         return this.thrust;
     }
 
@@ -155,7 +163,7 @@ public class RocketContraption extends TranslatingContraption {
         public ConsumptionInfo add(Float propellantConsumption, int partialThrust) {
             return new ConsumptionInfo(
                     this.fluidConsumption + propellantConsumption,
-                            this.partialThrust + partialThrust);
+                    this.partialThrust + partialThrust);
         }
     }
 }
