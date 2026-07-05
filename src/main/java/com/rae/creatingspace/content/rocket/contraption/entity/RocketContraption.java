@@ -164,7 +164,6 @@ public class RocketContraption extends TranslatingContraption {
                 .xmap(HashMap::new, i -> i);
     }
 
-    //public record ConsumptionInfo(float oxConsumption, float fuelConsumption, int partialThrust){
     public record ConsumptionInfo(Float fluidConsumption, int partialThrust) {
         public static final Codec<ConsumptionInfo> CODEC = RecordCodecBuilder.create(
                 instance ->
