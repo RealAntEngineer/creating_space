@@ -1,9 +1,9 @@
 {
 
-  "creatingspace.fluid.liquid_oxygen": "Liquid Oxygen",
-  "creatingspace.fluid.liquid_methane": "Liquid Methane",
-  "creatingspace.fluid.liquid_hydrogen": "Liquid Hydrogen",
-  "creatingspace.fluid.monopropellant": "Monopropellant",
+  "fluid.creatingspace.liquid_oxygen": "Liquid Oxygen",
+  "fluid.creatingspace.liquid_methane": "Liquid Methane",
+  "fluid.creatingspace.liquid_hydrogen": "Liquid Hydrogen",
+  "fluid.creatingspace.monopropellant": "Monopropellant",
 
   "creatingspace.subtitle.rocket_launch": "Rocket Roar",
 
