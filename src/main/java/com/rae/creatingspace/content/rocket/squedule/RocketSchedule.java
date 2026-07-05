@@ -11,11 +11,14 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+@NonnullDefault
 public class RocketSchedule {
 
     public static List<Pair<ResourceLocation, Supplier<? extends ScheduleInstruction>>>   INSTRUCTION_TYPES =
@@ -79,8 +82,9 @@ public class RocketSchedule {
         return tag;
     }
 
-    public static RocketSchedule fromTag(CompoundTag tag) {
+    public static RocketSchedule fromTag(@Nullable CompoundTag tag) {
         RocketSchedule schedule = new RocketSchedule();
+        if (tag == null) return schedule;
         schedule.entries = NBTHelper.readCompoundList(tag.getList("Entries", Tag.TAG_COMPOUND), ScheduleEntry::fromTag);
         schedule.cyclic = tag.getBoolean("Cyclic");
         if (tag.contains("Progress"))

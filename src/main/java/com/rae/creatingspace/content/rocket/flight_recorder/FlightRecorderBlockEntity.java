@@ -1,6 +1,5 @@
 package com.rae.creatingspace.content.rocket.flight_recorder;
 
-import com.rae.creatingspace.configs.CSCfgClient;
 import com.rae.creatingspace.configs.CSCfgServer;
 import com.rae.creatingspace.configs.CSConfigs;
 import com.rae.creatingspace.legacy.utilities.CSUtil;
@@ -92,7 +91,7 @@ public class FlightRecorderBlockEntity extends KineticBlockEntity implements IHa
                             )
                             .forGoggles(tooltip, 1);
                     for (TagKey<Fluid> fluidTagKey : lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().keySet()) {
-                        Integer consumedMass = lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey);
+                        Float consumedMass = lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey);
                         Integer fluidMass = lastAssemblyData.propellantStatusData().massForEachPropellant().get(fluidTagKey);
 
                         if (fluidMass == null) {

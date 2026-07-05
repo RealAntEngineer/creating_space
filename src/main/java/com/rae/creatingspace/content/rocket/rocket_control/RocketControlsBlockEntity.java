@@ -30,7 +30,6 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     protected AssemblyException lastException;
 
     private boolean assembleNextTick = false;
-    private ResourceLocation destination;
 
     public HashMap<ResourceLocation,BlockPos> initialPosMap = new HashMap<>();
 
@@ -64,13 +63,6 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         registerAwardables(behaviours, AllAdvancements.CONTRAPTION_ACTORS);
 
     }
-    /*@Override
-    public void initialize() {
-        super.initialize();
-        if (!getBlockState().canSurvive(level, worldPosition))
-            level.destroyBlock(worldPosition, true);
-
-    }*/
 
 
     @Override
@@ -78,15 +70,10 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         return lastException;
     }
 
-    public void queueAssembly(ResourceLocation destination) {
-        this.assembleNextTick = true;
-        this.destination = destination;
-    }
-
     public void queueAssembly() {
         this.assembleNextTick = true;
-        this.destination = null;
     }
+
 
     private void assemble() {
 
@@ -115,17 +102,10 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
 
         contraption.removeBlocksFromWorld(level, BlockPos.ZERO);
 
-        if (destination == null){
-            destination = level.dimension().location();
-        }
-
         RocketContraptionEntity rocketContraptionEntity =
-                RocketContraptionEntity.create(level, contraption, destination);
+                RocketContraptionEntity.create(level, contraption);
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
-        rocketContraptionEntity.setInitialPosMap(initialPosMap);
-        //we should make that a little better -> no initialisation of entry point before launch
-        //rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination, this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);
 
         AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(level, worldPosition);

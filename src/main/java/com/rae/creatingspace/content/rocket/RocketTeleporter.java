@@ -32,9 +32,9 @@ public class RocketTeleporter implements ITeleporter {
         if ( entity instanceof RocketContraptionEntity rocketContraptionEntity){
 
             position = new Vec3(
-                    rocketContraptionEntity.getInitialPosMap().get(destWorld.dimension().location()).getX(),
+                    rocketContraptionEntity.nextPath.XZCoord.x,
                     height,
-                    rocketContraptionEntity.getInitialPosMap().get(destWorld.dimension().location()).getZ());
+                    rocketContraptionEntity.nextPath.XZCoord.y);
 
         }
         else {

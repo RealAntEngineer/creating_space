@@ -26,10 +26,8 @@ public enum PacketInit {
     // C2S
     CRAFT_ENGINE(EngineerTableCraft.class, EngineerTableCraft::new, PLAY_TO_SERVER),
     SYNC_ROCKET_ENGINEER_BE(RocketEngineerTableSync.class, RocketEngineerTableSync::new, PLAY_TO_SERVER),
-    ASSEMBLE_ROCKET_2(NewRocketAssemblePacket.class, NewRocketAssemblePacket::new, PLAY_TO_SERVER),
+    ASSEMBLE_ROCKET_2(RocketAssemblePacket.class, RocketAssemblePacket::new, PLAY_TO_SERVER),
     ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket::new,PLAY_TO_SERVER),
-    LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket::new, PLAY_TO_SERVER),
-    SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket::new,PLAY_TO_SERVER),
     DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket::new, PLAY_TO_SERVER),
     ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket::new, PLAY_TO_SERVER),
 

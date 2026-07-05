@@ -254,6 +254,7 @@ public class RocketStorageManager extends MountedStorageManager {
     private void calculateVe(){
         float totalThrust = 0;
         float totalTheoreticalConsumption = 0;
+        assert theoreticalPerTagFluidConsumption != null;
         for (TagKey<Fluid> fluidTagKey : theoreticalPerTagFluidConsumption.keySet()) {
             RocketContraption.ConsumptionInfo info = theoreticalPerTagFluidConsumption.get(fluidTagKey);
             //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel

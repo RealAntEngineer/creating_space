@@ -1,5 +1,13 @@
 {
 
+  "creatingspace.fluid.liquid_oxygen": "Liquid Oxygen",
+  "creatingspace.fluid.liquid_methane": "Liquid Methane",
+  "creatingspace.fluid.liquid_hydrogen": "Liquid Hydrogen",
+  "creatingspace.fluid.monopropellant": "Monopropellant",
+
+  "creatingspace.subtitle.rocket_launch": "Rocket Roar",
+
+
   "itemGroup.creatingspace.machine_tab": "Machine Tab",
   "itemGroup.creatingspace.component_tab": "Component Tab",
   "itemGroup.creatingspace.minerals_tab": "Minerals Tab",

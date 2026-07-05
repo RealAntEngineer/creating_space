@@ -4,7 +4,29 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
+import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity;
+import com.rae.creatingspace.content.rocket.contraption.entity.RocketStorageManager;
+import com.rae.creatingspace.content.rocket.network.RocketContraptionDisassemblePacket;
+import com.rae.creatingspace.content.rocket.network.RocketScheduleEditPacket;
+import com.rae.creatingspace.content.rocket.squedule.RocketSchedule;
+import com.rae.creatingspace.content.rocket.squedule.ScheduleEntry;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondition;
+import com.rae.creatingspace.content.rocket.squedule.condition.ScheduledDelay;
+import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
+import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
+import com.rae.creatingspace.init.PacketInit;
+import com.rae.creatingspace.init.graphics.GuiTexturesInit;
+import com.simibubi.create.content.trains.schedule.IScheduleInput;
+import com.simibubi.create.foundation.gui.AllGuiTextures;
+import com.simibubi.create.foundation.gui.AllIcons;
+import com.simibubi.create.foundation.gui.ModularGuiLine;
+import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
+import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
+import com.simibubi.create.foundation.gui.widget.*;
+import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.utility.CreateLang;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Couple;
 import net.createmod.catnip.data.Pair;
@@ -12,33 +34,11 @@ import net.createmod.catnip.gui.UIRenderHelper;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.theme.Color;
-import org.joml.Matrix4f;
-import com.rae.creatingspace.content.rocket.squedule.RocketSchedule;
-import com.rae.creatingspace.content.rocket.squedule.ScheduleEntry;
-import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondition;
-import com.rae.creatingspace.content.rocket.squedule.condition.ScheduledDelay;
-import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
-import com.rae.creatingspace.content.rocket.squedule.instruction.ScheduleInstruction;
-import com.rae.creatingspace.api.gui.elements.LabeledBoxWidget;
-import com.rae.creatingspace.init.PacketInit;
-import com.rae.creatingspace.init.graphics.GuiTexturesInit;
-import com.rae.creatingspace.content.planets.CSDimensionUtil;
-import com.rae.creatingspace.legacy.utilities.CSUtil;
-import com.rae.creatingspace.content.rocket.network.RocketContraptionDisassemblePacket;
-import com.rae.creatingspace.content.rocket.network.RocketScheduleEditPacket;
-import com.simibubi.create.content.trains.schedule.IScheduleInput;
-import com.simibubi.create.foundation.gui.*;
-import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
-import com.simibubi.create.foundation.gui.widget.*;
-import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.utility.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -46,60 +46,64 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.NonnullDefault;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
+@NonnullDefault
 public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu> {
     //TODO transform hard coded schedule stuff to widgets
     //beginning of schedule logic
-    private static final int CARD_HEADER = 22;
-    private static final int CARD_WIDTH = 195;
-    private final LerpedFloat scroll = LerpedFloat.linear()
+    private static final int                     CARD_HEADER       = 22;
+    private static final int                     CARD_WIDTH        = 195;
+    private static final int                     TOP_BORDER_WIDTH  = 16;
+    private static final int                     SIDE_BORDER_WIDTH = 33;
+    private static final int                     CHEST_BORD_HEIGHT = 173;
+    private static final int                     CHEST_BORD_WIDTH  = 220;
+    private final        LerpedFloat             scroll            = LerpedFloat.linear()
             .startWithValue(0);
-    private final List<LerpedFloat> horizontalScrolls = new ArrayList<>();
-    private final RocketSchedule schedule;
-    private IconButton cyclicButton;
-    private Indicator cyclicIndicator;
-    private IconButton resetProgress;
-    private IconButton skipProgress;
-    private ScheduleInstruction editingDestination;
-    private ScheduleWaitCondition editingCondition;
-    private SelectionScrollInput scrollInput;//only for conditions
-    private Label scrollInputLabel;
-    private IconButton editorConfirm, editorDelete;
-    private final ModularGuiLine editorSubWidgets;//only for conditions not for destination
-    private Consumer<Boolean> onEditorClose;
-    //end of schedule logic
-    private boolean destinationChanged;
-    private Button disassembleButton;
-    HashMap<ResourceLocation, BlockPos> initialPosMap;
-    private final RocketContraptionEntity rocketContraption;
-    private final ResourceLocation        currentDimension;
-    private ResourceLocation destination;//TODO replace with a call to a getDestination calling ResourceLocation.tryParse(editingDestination.getData().getString("Text"))))
-    private LabeledBoxWidget destinationCost;
-    private EditBox Xinput;
-    private EditBox Zinput;
-    IconButton validateSetting;
+    private final        List<LerpedFloat>       horizontalScrolls = new ArrayList<>();
+    private final        RocketSchedule          schedule;
+    private final        ModularGuiLine          editorSubWidgets;//only for conditions not for destination
+    private final        RocketContraptionEntity rocketContraption;
+    private final        ResourceLocation        currentDimension;
+    private final        Component               clickToEdit       = CreateLang.translateDirect("gui.schedule.lmb_edit")
+            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC);
+    private final        Component               rClickToDelete    = CreateLang.translateDirect("gui.schedule.rmb_remove")
+            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC);
+    private @Nullable    IconButton              cyclicButton;
+    private @Nullable    IconButton              pauseButton;
+    private @Nullable    Indicator               pauseIndicator;
+    private              boolean                 schedulePaused;
+    private @Nullable    Indicator               cyclicIndicator;
+    private @Nullable    IconButton              resetProgress;
+    private @Nullable    IconButton              skipProgress;
+    private @Nullable    ScheduleInstruction     editingDestination;
+    private @Nullable    ScheduleWaitCondition   editingCondition;
+    private @Nullable    SelectionScrollInput    scrollInput;//only for conditions
+    private @Nullable    Label                   scrollInputLabel;
+    private @Nullable    IconButton              editorConfirm, editorDelete;
+    private @Nullable    Consumer<Boolean>       onEditorClose;
+    private @Nullable    LabeledBoxWidget        destinationCost;
+
+
     public ScheduleMakingScreen(RocketMenu container, Inventory inv, Component title) {
-        //TODO this screen will swith bwn normal selection (single trip), schedule and rocket overview.
-        super(container, inv, Component.translatable("gui.destination_screen.title"));
+        super(container, inv, title);
         this.rocketContraption = container.contentHolder;
-        this.initialPosMap = new HashMap<>(container.contentHolder.getInitialPosMap());
-        //this.background = GuiTexturesInit.ROCKET_CONTROLS;
         this.currentDimension = container.contentHolder.level().dimension().location();
-        //initialise the map in the server side blockEntity to avoid issues
-        //this.mapOfAccessibleDimensionAndV = new HashMap<>(CSDimensionUtil.travelMap.get(currentDimension).adjacentDimensions());//rocket.getMapOfAccessibleDimensionAndV() == null ? new HashMap<>() : new HashMap<>(rocket.getMapOfAccessibleDimensionAndV());
-        this.destinationChanged = false;
         // schedule
         this.schedule = container.contentHolder.schedule.getSchedule() == null ? new RocketSchedule() : container.contentHolder.schedule.getSchedule();
         this.editorSubWidgets = new ModularGuiLine();
+        this.schedulePaused = container.contentHolder.schedule.paused;
     }
 
-    //todo : zoom on double clic
     @Override
     protected void init() {
         setWindowSize(width, height);
@@ -109,7 +113,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         int y = topPos;
 
         //everything else
-        disassembleButton = new ExtendedButton(width - 110, y + 120, 16 * 4, 20,
+        Button disassembleButton = new ExtendedButton(width - 110, y + 120, 16 * 4, 20,
                 Component.translatable("creatingspace.gui.rocket_controls.disassemble"),
                 ($) -> {
 
@@ -121,20 +125,6 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         addRenderableWidget(disassembleButton);
         destinationCost = new LabeledBoxWidget(width - 97, y + 20, Component.literal("  500 "));
         destinationCost.setToolTip(Component.translatable("creatingspace.gui.rocket_controls.destination_cost"));
-        validateSetting = new IconButton(width - 45, y + 70, AllIcons.I_CONFIG_SAVE);
-        validateSetting.setToolTip(
-                Component.translatable("creatingspace.gui.rocket_controls.send_setting"));
-        validateSetting.withCallback(this::updatePosMap);
-
-        Xinput = new EditBox(font, width - 100, y + 63,
-                50, 14, Component.literal(""));
-        Zinput = new EditBox(font, width - 100, y + 83,
-                50, 14, Component.literal(""));
-
-        addRenderableWidget(Xinput);
-        //addRenderableWidget(Yinput);
-        addRenderableWidget(Zinput);
-        addRenderableWidget(validateSetting);
         addRenderableWidget(destinationCost);
 
         cyclicIndicator = new Indicator(x + 21, y + 196, Component.empty());
@@ -156,7 +146,19 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
         addRenderableWidget(cyclicButton);
 
-        resetProgress = new IconButton(x + 45, y + 202, AllIcons.I_PRIORITY_VERY_HIGH);
+        pauseIndicator = new Indicator(x + 21 + 18, y + 196, Component.empty());
+        pauseIndicator.state = schedulePaused ? Indicator.State.ON : Indicator.State.OFF;
+
+        pauseButton = new IconButton(x + 21 + 18, y + 202, AllIcons.I_PAUSE);
+        pauseButton.withCallback(() -> {
+            schedulePaused = !schedulePaused;
+            pauseIndicator.state = schedulePaused ? Indicator.State.ON : Indicator.State.OFF;
+        });
+        addRenderableWidget(pauseButton);
+        addRenderableWidget(pauseIndicator);
+
+
+        resetProgress = new IconButton(x + 45 + 16, y + 202, AllIcons.I_PRIORITY_VERY_HIGH);
         resetProgress.withCallback(() -> {
             schedule.savedProgress = 0;
             resetProgress.active = false;
@@ -165,7 +167,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         resetProgress.setToolTip(CreateLang.translateDirect("schedule.reset"));
         addRenderableWidget(resetProgress);
 
-        skipProgress = new IconButton(x + 63, y + 202, AllIcons.I_PRIORITY_LOW);
+        skipProgress = new IconButton(x + 63 + 16, y + 202, AllIcons.I_PRIORITY_LOW);
         skipProgress.withCallback(() -> {
             schedule.savedProgress++;
             schedule.savedProgress %= schedule.entries.size();
@@ -188,30 +190,19 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         addRenderableWidget(launchButton);
     }
 
-    private void updatePosMap() {
-        if (destination!=null) {
-            BlockPos pos = initialPosMap.get(destination);
-            if (pos == null) {
-                pos = this.rocketContraption.getOnPos();
-            }
-            String X = Xinput.getValue().replace(" ", ""),/*Y = Yinput.getValue().replace(" ",""),*/
-                    Z = Zinput.getValue().replace(" ", "");
-            if (CSUtil.isInteger(X)) {
-                pos = new BlockPos(Integer.parseInt(X), pos.getY(), pos.getZ());
-            } else {
-                Xinput.setValue(String.valueOf(pos.getX()));
-            }
-            if (CSUtil.isInteger(Z)) {
-                pos = new BlockPos(pos.getX(), pos.getY(), Integer.parseInt(Z));
-            } else {
-                Zinput.setValue(String.valueOf(pos.getZ()));
-            }
+    @Override
+    public void containerTick() {
+        //handleTooltips();
+        //copied from schedule screen
+        scroll.tickChaser();
+        for (LerpedFloat lerpedFloat : horizontalScrolls)
+            lerpedFloat.tickChaser();
 
-            initialPosMap.put(destination, pos);
-            rocketContraption.setInitialPosMap(initialPosMap);//PacketInit.getChannel().sendToServer(RocketControlsSettingsPacket.sendSettings(this.rocketContraption.getOnPos(), initialPosMap));
-        }
+        schedule.savedProgress =
+                schedule.entries.isEmpty() ? 0 : Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
+        resetProgress.active = schedule.savedProgress > 0;
+        skipProgress.active = schedule.entries.size() > 1;
     }
-
 
     @Override
     public void render(GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
@@ -227,44 +218,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
     @Override
     protected void renderForeground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-        int x = leftPos;
-        int y = topPos;
-        if (editingDestination != null) {
-            if (destinationChanged) {
-                updateXZInput();
-                destinationChanged = false;
-            }
-            Xinput.visible = true;
-            Xinput.active = true;
-            //TODO use labels
-
-            //Yinput.visible = true;
-            //Yinput.active = true;
-            Zinput.visible = true;
-            Zinput.active = true;
-
-            //disassembleButton.active = true;
-            validateSetting.active = true;
-            validateSetting.visible = true;
-            destinationCost.visible = true;
-            destinationCost.setTextAndTrim(
-                    Component.literal(
-                            String.valueOf(CSDimensionUtil.cost(currentDimension,
-                                    destination != null ? destination : ResourceLocation.tryParse(editingDestination.getData().getString("Text"))))),
-                    true, 112);
-
-        } else {
-            Xinput.visible = false;
-            Xinput.active = false;
-            //Yinput.visible = false;
-            //Yinput.active = false;
-            Zinput.visible = false;
-            Zinput.active = false;
-            //disassembleButton.active = false;
-            validateSetting.active = false;
-            validateSetting.visible = false;
-            destinationCost.visible = false;
-        }
+        destinationCost.visible = editingDestination != null;
 
         //schedule
 
@@ -274,13 +228,22 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
     }
 
-    private void updateXZInput() {
-        BlockPos pos = initialPosMap.get(destination);
-        if (pos == null) {
-            pos = this.rocketContraption.getOnPos();
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        if (editorConfirm != null && editorConfirm.isMouseOver(pMouseX, pMouseY) && onEditorClose != null) {
+            onEditorClose.accept(true);
+            stopEditing();
+            return true;
         }
-        Xinput.setValue(String.valueOf(pos.getX()));
-        Zinput.setValue(String.valueOf(pos.getZ()));
+        if (editorDelete != null && editorDelete.isMouseOver(pMouseX, pMouseY) && onEditorClose != null) {
+            onEditorClose.accept(false);
+            stopEditing();
+            return true;
+        }
+        if (action(null, pMouseX, pMouseY, pButton))
+            return true;
+
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
     @Override
@@ -290,11 +253,13 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         GuiTexturesInit.ROCKET_INFO.render(graphics, width - 130, 10);
         renderSchedule(graphics, partialTicks);
         //render the background of the
-
-        if (editingCondition == null && editingDestination == null) {
-            return;
+        if (editingDestination != null) {
+            GuiTexturesInit.INSTRUCTION_BACKGROUND.render(graphics, leftPos + 1, topPos + 40);
         }
-        AllGuiTextures.SCHEDULE_EDITOR.render(graphics, leftPos - 2, topPos + 40);
+        if (editingCondition != null) {
+            AllGuiTextures.SCHEDULE_EDITOR.render(graphics, leftPos - 2, topPos + 40);
+        }
+
         PoseStack pPoseStack = graphics.pose();
 
         pPoseStack.pushPose();
@@ -305,18 +270,16 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         //background.render(graphics, 0, 0, this);
     }
 
+    //maybe on save data ? (menu logic rather than screen logic)
+    //do a ::setSchedule on the menu and then on save data send the schedule to the rocket
+    // (there is a need for a sync on the entity side : sync data ?)
     @Override
-    public void containerTick() {
-        //handleTooltips();
-        //copied from schedule screen
-        scroll.tickChaser();
-        for (LerpedFloat lerpedFloat : horizontalScrolls)
-            lerpedFloat.tickChaser();
-
-        schedule.savedProgress =
-                schedule.entries.isEmpty() ? 0 : Mth.clamp(schedule.savedProgress, 0, schedule.entries.size() - 1);
-        resetProgress.active = schedule.savedProgress > 0;
-        skipProgress.active = schedule.entries.size() > 1;
+    public void removed() {
+        //set the server side schedule -> Schedule / paused / entityId
+        PacketInit.getChannel().sendToServer(new RocketScheduleEditPacket(schedule, pauseIndicator.state == Indicator.State.ON, getMenu().contentHolder.getId()));
+        //set the client side schedule
+        getMenu().contentHolder.schedule.setSchedule(schedule, pauseIndicator.state == Indicator.State.ON);
+        super.removed();
     }
 
     private void fillToolTip(IconButton button, String tooltipKey) {
@@ -327,10 +290,12 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         tip.addAll(TooltipHelper
                 .cutTextComponent(Component.translatable("creatingspace.gui.rocket_controls." + tooltipKey + ".description"), FontHelper.Palette.ALL_GRAY));
     }
+
     private void renderActionTooltip(@Nullable GuiGraphics graphics, List<Component> tooltip, int mx, int my) {
         if (graphics != null)
             graphics.renderTooltip(font, tooltip, Optional.empty(), mx, my);
     }
+
     //schedule logic
     protected void renderSchedule(GuiGraphics graphics, float partialTicks) {
         PoseStack matrixStack = graphics.pose();
@@ -339,27 +304,27 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         UIRenderHelper.drawStretched(graphics, leftPos + 33, topPos + 16, 3, 173, -100,
                 AllGuiTextures.SCHEDULE_STRIP_DARK);
 
-        int yOffset = 25;
-        List<ScheduleEntry> entries = schedule.entries;
-        float scrollOffset = -scroll.getValue(partialTicks);
+        int                 yOffset      = 25;
+        List<ScheduleEntry> entries      = schedule.entries;
+        float               scrollOffset = -scroll.getValue(partialTicks);
 
         for (int i = 0; i <= entries.size(); i++) {
 
             if (schedule.savedProgress == i && !schedule.entries.isEmpty()) {
                 matrixStack.pushPose();
                 float expectedY = scrollOffset + topPos + yOffset + 4;
-                float actualY = Mth.clamp(expectedY, topPos + 18, topPos + 170);
+                float actualY   = Mth.clamp(expectedY, topPos + 18, topPos + 170);
                 matrixStack.translate(0, actualY, 0);
                 (expectedY == actualY ? AllGuiTextures.SCHEDULE_POINTER : AllGuiTextures.SCHEDULE_POINTER_OFFSCREEN)
                         .render(graphics, leftPos, 0);
                 matrixStack.popPose();
             }
 
-            startStencil(graphics, leftPos + 16, topPos + 16, 220, 173);
+            startStencil(graphics, leftPos + TOP_BORDER_WIDTH, topPos + TOP_BORDER_WIDTH, CHEST_BORD_WIDTH, CHEST_BORD_HEIGHT);
             matrixStack.pushPose();
             matrixStack.translate(0, scrollOffset, 0);
             if (i == 0 || entries.size() == 0)
-                UIRenderHelper.drawStretched(graphics, leftPos + 33, topPos + 16, 3, 10, -100,
+                UIRenderHelper.drawStretched(graphics, leftPos + SIDE_BORDER_WIDTH, topPos + TOP_BORDER_WIDTH, 3, 10, -100,
                         AllGuiTextures.SCHEDULE_STRIP_LIGHT);
 
             if (i == entries.size()) {
@@ -373,8 +338,8 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
             }
 
             ScheduleEntry scheduleEntry = entries.get(i);
-            int cardY = yOffset;
-            int cardHeight = renderScheduleEntry(graphics, scheduleEntry, cardY);
+            int           cardY         = yOffset;
+            int           cardHeight    = renderScheduleEntry(graphics, scheduleEntry, cardY);
             yOffset += cardHeight;
 
             if (i + 1 < entries.size()) {
@@ -388,13 +353,13 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
             if (!scheduleEntry.instruction.supportsConditions())
                 continue;
 
-            float h = cardHeight - 26;
+            float h  = cardHeight - 26;
             float y1 = cardY + 24 + scrollOffset;
             float y2 = y1 + h;
             if (y2 > 189)
                 h -= y2 - 189;
-            if (y1 < 16) {
-                float correction = 16 - y1;
+            if (y1 < TOP_BORDER_WIDTH) {
+                float correction = TOP_BORDER_WIDTH - y1;
                 y1 += correction;
                 h -= correction;
             }
@@ -410,7 +375,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
             endStencil();
 
             if (isConditionAreaScrollable(scheduleEntry)) {
-                startStencil(graphics, leftPos + 16, topPos + 16, 220, 173);
+                startStencil(graphics, leftPos + TOP_BORDER_WIDTH, topPos + TOP_BORDER_WIDTH, CHEST_BORD_WIDTH, CHEST_BORD_HEIGHT);
                 matrixStack.pushPose();
                 matrixStack.translate(0, scrollOffset, 0);
                 int center = (cardHeight - 8 + CARD_HEADER) / 2;
@@ -425,9 +390,9 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
             }
         }
         int zLevel = 200;
-        graphics.fillGradient(leftPos + 16, topPos + 16, leftPos + 16 + 220, topPos + 16 + 10, zLevel, 0x77000000,
+        graphics.fillGradient(leftPos + TOP_BORDER_WIDTH, topPos + TOP_BORDER_WIDTH, leftPos + TOP_BORDER_WIDTH + CHEST_BORD_WIDTH, topPos + TOP_BORDER_WIDTH + 10, zLevel, 0x77000000,
                 0x00000000);
-        graphics.fillGradient(leftPos + 16, topPos + 179, leftPos + 16 + 220, topPos + 179 + 10, zLevel, 0x00000000,
+        graphics.fillGradient(leftPos + TOP_BORDER_WIDTH, topPos + 179, leftPos + TOP_BORDER_WIDTH + CHEST_BORD_WIDTH, topPos + 179 + 10, zLevel, 0x00000000,
                 0x77000000);
         UIRenderHelper.swapAndBlitColor(UIRenderHelper.framebuffer, minecraft.getMainRenderTarget());
 
@@ -436,17 +401,17 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
     public int renderScheduleEntry(GuiGraphics graphics, ScheduleEntry entry, int yOffset) {
         int zLevel = -100;
 
-        AllGuiTextures light = AllGuiTextures.SCHEDULE_CARD_LIGHT;
+        AllGuiTextures light  = AllGuiTextures.SCHEDULE_CARD_LIGHT;
         AllGuiTextures medium = AllGuiTextures.SCHEDULE_CARD_MEDIUM;
-        AllGuiTextures dark = AllGuiTextures.SCHEDULE_CARD_DARK;
+        AllGuiTextures dark   = AllGuiTextures.SCHEDULE_CARD_DARK;
 
-        int cardWidth = CARD_WIDTH;
+        int cardWidth  = CARD_WIDTH;
         int cardHeader = CARD_HEADER;
-        int maxRows = 0;
+        int maxRows    = 0;
         for (List<ScheduleWaitCondition> list : entry.conditions)
             maxRows = Math.max(maxRows, list.size());
         boolean supportsConditions = entry.instruction.supportsConditions();
-        int cardHeight = cardHeader + (supportsConditions ? 24 + maxRows * 18 : 4);
+        int     cardHeight         = cardHeader + (supportsConditions ? 24 + maxRows * 18 : 4);
 
         PoseStack matrixStack = graphics.pose();
 
@@ -489,13 +454,13 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
     public void renderScheduleConditions(GuiGraphics graphics, ScheduleEntry entry, int yOffset,
                                          float partialTicks, int cardHeight, int entryIndex) {
-        int cardWidth = CARD_WIDTH;
-        int cardHeader = CARD_HEADER;
+        int       cardWidth   = CARD_WIDTH;
+        int       cardHeader  = CARD_HEADER;
         PoseStack matrixStack = graphics.pose();
 
         matrixStack.pushPose();
         matrixStack.translate(leftPos + 25, topPos + yOffset, 0);
-        int xOffset = 26;
+        int   xOffset      = 26;
         float scrollOffset = getConditionScroll(entry, partialTicks, entryIndex);
 
         matrixStack.pushPose();
@@ -518,23 +483,16 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         AllGuiTextures.SCHEDULE_CONDITION_NEW.render(graphics, xOffset - 3, 29);
         matrixStack.popPose();
 
-        if (xOffset + 16 > cardWidth - 26) {
+        if (xOffset + TOP_BORDER_WIDTH > cardWidth - 26) {
             matrixStack.mulPose(Axis.ZN.rotationDegrees(90));
             Matrix4f m = matrixStack.last()
                     .pose();
             graphics.fillGradient(200, -cardHeight + 2, 18, -2 - cardHeader, 28, 0x44000000, 0x00000000);
-            graphics.fillGradient( 200, -cardHeight + 2, cardWidth - 26, -2 - cardHeader, cardWidth - 16,
+            graphics.fillGradient(200, -cardHeight + 2, cardWidth - 26, -2 - cardHeader, cardWidth - 16,
                     0x00000000, 0x44000000);
         }
 
         matrixStack.popPose();
-    }
-
-    private boolean isConditionAreaScrollable(ScheduleEntry entry) {
-        int xOffset = 26;
-        for (List<ScheduleWaitCondition> list : entry.conditions)
-            xOffset += getConditionColumnWidth(list) + 10;
-        return xOffset + 16 > CARD_WIDTH - 26;
     }
 
     private float getConditionScroll(ScheduleEntry entry, float partialTicks, int entryIndex) {
@@ -542,7 +500,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         float scrollIndex = horizontalScrolls.get(entryIndex)
                 .getValue(partialTicks);
         for (List<ScheduleWaitCondition> list : entry.conditions) {
-            int maxWidth = getConditionColumnWidth(list);
+            int   maxWidth            = getConditionColumnWidth(list);
             float partialOfThisColumn = Math.min(1, scrollIndex);
             scrollOffset += (maxWidth + 10) * partialOfThisColumn;
             scrollIndex -= partialOfThisColumn;
@@ -550,26 +508,12 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         return scrollOffset;
     }
 
-    private int getConditionColumnWidth(List<ScheduleWaitCondition> list) {
-        int maxWidth = 0;
-        for (ScheduleWaitCondition scheduleWaitCondition : list)
-            maxWidth = Math.max(maxWidth, getFieldSize(32, scheduleWaitCondition.getSummary()));
-        return maxWidth;
-    }
-
-    private int getFieldSize(int minSize, Pair<ItemStack, Component> pair) {
-        ItemStack stack = pair.getFirst();
-        Component text = pair.getSecond();
-        boolean hasItem = !stack.isEmpty();
-        return Math.max((text == null ? 0 : font.width(text)) + (hasItem ? 20 : 0) + 16, minSize);
-    }
-
     protected int renderInput(GuiGraphics graphics, Pair<ItemStack, Component> pair, int x, int y, boolean clean,
                               int minSize) {
-        ItemStack stack = pair.getFirst();
-        Component text = pair.getSecond();
-        boolean hasItem = !stack.isEmpty();
-        int fieldSize = Math.min(getFieldSize(minSize, pair), 150);
+        ItemStack stack       = pair.getFirst();
+        Component text        = pair.getSecond();
+        boolean   hasItem     = !stack.isEmpty();
+        int       fieldSize   = Math.min(getFieldSize(minSize, pair), 150);
         PoseStack matrixStack = graphics.pose();
 
         matrixStack.pushPose();
@@ -577,11 +521,11 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         AllGuiTextures left =
                 clean ? AllGuiTextures.SCHEDULE_CONDITION_LEFT_CLEAN : AllGuiTextures.SCHEDULE_CONDITION_LEFT;
         AllGuiTextures middle = AllGuiTextures.SCHEDULE_CONDITION_MIDDLE;
-        AllGuiTextures item = AllGuiTextures.SCHEDULE_CONDITION_ITEM;
-        AllGuiTextures right = AllGuiTextures.SCHEDULE_CONDITION_RIGHT;
+        AllGuiTextures item   = AllGuiTextures.SCHEDULE_CONDITION_ITEM;
+        AllGuiTextures right  = AllGuiTextures.SCHEDULE_CONDITION_RIGHT;
 
         matrixStack.translate(x, y, 0);
-        UIRenderHelper.drawStretched(graphics, 0, 0, fieldSize, 16, -100, middle);
+        UIRenderHelper.drawStretched(graphics, 0, 0, fieldSize, TOP_BORDER_WIDTH, -100, middle);
         left.render(graphics, clean ? 0 : -3, 0);
         right.render(graphics, fieldSize - 2, 0);
         if (hasItem)
@@ -632,16 +576,16 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
     protected void startEditing(IScheduleInput field, Consumer<Boolean> onClose, boolean allowDeletion) {
         onEditorClose = onClose;
-        validateSetting.visible = true;
-        validateSetting.active = true;
+        pauseButton.visible = false;
+        pauseIndicator.visible = false;
         cyclicButton.visible = false;
         cyclicIndicator.visible = false;
         skipProgress.visible = false;
         resetProgress.visible = false;
 
-        scrollInput = new SelectionScrollInput(leftPos + 56, topPos + 65, 143, 16);
+        scrollInput = new SelectionScrollInput(leftPos + 56, topPos + 65, 143, TOP_BORDER_WIDTH);
         scrollInputLabel = new Label(leftPos + 59, topPos + 69, Component.empty()).withShadow();
-        editorConfirm = new IconButton(leftPos + 56 + 168, topPos + 65 + 22, AllIcons.I_CONFIRM);
+        editorConfirm = new IconButton(leftPos + 56 - 45, topPos + 65, AllIcons.I_CONFIRM);
         if (allowDeletion)
             editorDelete = new IconButton(leftPos + 56 - 45, topPos + 65 + 22, AllIcons.I_TRASH);
 
@@ -735,32 +679,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                 Component.literal(
                         String.valueOf(CSDimensionUtil.cost(currentDimension, CSDimensionUtil.getPlanets().get(e)))),
                 true, 112);
-        destinationCost.withBorderColors(rocketContraption.deltaV() < CSDimensionUtil.cost(currentDimension, CSDimensionUtil.getPlanets().get(e)) ? Couple.create(Color.RED, Color.RED) : Couple.create(Color.GREEN, Color.GREEN));
-        destination = CSDimensionUtil.getPlanets().get(e);
-        destinationChanged = true;
-    }
-
-    private final Component clickToEdit = CreateLang.translateDirect("gui.schedule.lmb_edit")
-            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC);
-    private final Component rClickToDelete = CreateLang.translateDirect("gui.schedule.rmb_remove")
-            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC);
-
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (editorConfirm != null && editorConfirm.isMouseOver(pMouseX, pMouseY) && onEditorClose != null) {
-            onEditorClose.accept(true);
-            stopEditing();
-            return true;
-        }
-        if (editorDelete != null && editorDelete.isMouseOver(pMouseX, pMouseY) && onEditorClose != null) {
-            onEditorClose.accept(false);
-            stopEditing();
-            return true;
-        }
-        if (action(null, pMouseX, pMouseY, pButton))
-            return true;
-
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
+        destinationCost.withBorderColors(((RocketStorageManager) rocketContraption.getContraption().getStorage()).getCurrentDeltaV() < CSDimensionUtil.cost(currentDimension, CSDimensionUtil.getPlanets().get(e)) ? Couple.create(Color.RED, Color.RED) : Couple.create(Color.GREEN, Color.GREEN));
     }
 
     @Override
@@ -770,10 +689,10 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
         if (hasShiftDown()) {
             List<ScheduleEntry> entries = schedule.entries;
-            int y = (int) (pMouseY - topPos - 25 + scroll.getValue());
+            int                 y       = (int) (pMouseY - topPos - 25 + scroll.getValue());
             for (int i = 0; i < entries.size(); i++) {
-                ScheduleEntry entry = entries.get(i);
-                int maxRows = 0;
+                ScheduleEntry entry   = entries.get(i);
+                int           maxRows = 0;
                 for (List<ScheduleWaitCondition> list : entry.conditions)
                     maxRows = Math.max(maxRows, list.size());
                 int cardHeight = CARD_HEADER + 24 + maxRows * 18;
@@ -810,7 +729,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         }
 
         float chaseTarget = scroll.getChaseTarget();
-        float max = 40 - 173;
+        float max         = 40 - CHEST_BORD_HEIGHT;
         for (ScheduleEntry scheduleEntry : schedule.entries) {
             int maxRows = 0;
             for (List<ScheduleWaitCondition> list : scheduleEntry.conditions)
@@ -827,6 +746,27 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         return super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
 
+    private boolean isConditionAreaScrollable(ScheduleEntry entry) {
+        int xOffset = 26;
+        for (List<ScheduleWaitCondition> list : entry.conditions)
+            xOffset += getConditionColumnWidth(list) + 10;
+        return xOffset + TOP_BORDER_WIDTH > CARD_WIDTH - 26;
+    }
+
+    private int getConditionColumnWidth(List<ScheduleWaitCondition> list) {
+        int maxWidth = 0;
+        for (ScheduleWaitCondition scheduleWaitCondition : list)
+            maxWidth = Math.max(maxWidth, getFieldSize(32, scheduleWaitCondition.getSummary()));
+        return maxWidth;
+    }
+
+    private int getFieldSize(int minSize, Pair<ItemStack, Component> pair) {
+        ItemStack stack   = pair.getFirst();
+        Component text    = pair.getSecond();
+        boolean   hasItem = !stack.isEmpty();
+        return Math.max((text == null ? 0 : font.width(text)) + (hasItem ? 20 : 0) + TOP_BORDER_WIDTH, minSize);
+    }
+
     //used for mouse clicking (hard coded widgets)
     public boolean action(GuiGraphics graphics, double mouseX, double mouseY, int click) {
 
@@ -837,8 +777,8 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
         int mx = (int) mouseX;
         int my = (int) mouseY;
-        int x = mx - leftPos - 25;
-        int y = my - topPos - 25;
+        int x  = mx - leftPos - 25;
+        int y  = my - topPos - 25;
         int x2 = width - mx;
 
 
@@ -847,7 +787,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                 List<Component> components = new ArrayList<>();
                 if (y > 36 && y < 52) {
                     components.add(Component.translatable("creatingspace.gui.rocket_controls.x_entry_coord"));
-                    renderActionTooltip(graphics, components,  mx, my);
+                    renderActionTooltip(graphics, components, mx, my);
                 }
                 if (y > 56 && y < 73) {
                     components.add(Component.translatable("creatingspace.gui.rocket_controls.z_entry_coord"));
@@ -859,14 +799,14 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
         if (x < 0 || x >= 205)
             return false;
-        if (y < 0 || y >= 173)
+        if (y < 0 || y >= CHEST_BORD_HEIGHT)
             return false;
         y += scroll.getValue(0);
 
         List<ScheduleEntry> entries = schedule.entries;
         for (int i = 0; i < entries.size(); i++) {
-            ScheduleEntry entry = entries.get(i);
-            int maxRows = 0;
+            ScheduleEntry entry   = entries.get(i);
+            int           maxRows = 0;
             for (List<ScheduleWaitCondition> list : entry.conditions)
                 maxRows = Math.max(maxRows, list.size());
             int cardHeight = CARD_HEADER + (entry.instruction.supportsConditions() ? 24 + maxRows * 18 : 4);
@@ -884,7 +824,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                 components.addAll(entry.instruction.getTitleAs("instruction"));
                 components.add(empty);
                 components.add(clickToEdit);
-                renderActionTooltip(graphics, components,  mx, my);
+                renderActionTooltip(graphics, components, mx, my);
                 if (click == 0)
                     startEditing(entry.instruction, confirmed -> {
                         if (confirmed)
@@ -926,7 +866,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                     return true;
                 }
                 if (y > 20 && y <= 33 && i < entries.size() - 1) {
-                    renderActionTooltip(graphics, ImmutableList.of(CreateLang.translateDirect("gui.schedule.move_down")),  mx,
+                    renderActionTooltip(graphics, ImmutableList.of(CreateLang.translateDirect("gui.schedule.move_down")), mx,
                             my);
                     if (click == 0) {
                         entries.remove(entry);
@@ -974,7 +914,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
                 int row = y / 18;
                 if (row < conditions.size() && row >= 0) {
-                    boolean canRemove = conditions.size() > 1 || columns.size() > 1;
+                    boolean         canRemove  = conditions.size() > 1 || columns.size() > 1;
                     List<Component> components = new ArrayList<>();
                     components.add(CreateLang.translateDirect("schedule.condition_type")
                             .withStyle(ChatFormatting.GRAY));
@@ -1033,7 +973,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
             return true;
         }
 
-        if (x < 18 || x > 33 || y > 14)
+        if (x < 18 || x > SIDE_BORDER_WIDTH || y > 14)
             return false;
 
         renderActionTooltip(graphics, ImmutableList.of(CreateLang.translateDirect("gui.schedule.add_entry")), mx, my);
@@ -1042,8 +982,8 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
                 if (!confirmed)
                     return;
 
-                ScheduleEntry entry = new ScheduleEntry();
-                ScheduledDelay delay = new ScheduledDelay();
+                ScheduleEntry                    entry             = new ScheduleEntry();
+                ScheduledDelay                   delay             = new ScheduledDelay();
                 ArrayList<ScheduleWaitCondition> initialConditions = new ArrayList<>();
                 initialConditions.add(delay);
                 entry.instruction = editingDestination;
@@ -1054,18 +994,9 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
         return true;
     }
 
-    //maybe on save data ? (menu logic rather than screen logic)
-    //do a ::setSchedule on the menu and then on save data send the schedule to the rocket
-    // (there is a need for a sync on the entity side : sync data ?)
-    @Override
-    public void removed() {
-        PacketInit.getChannel().sendToServer(new RocketScheduleEditPacket(schedule, getMenu().contentHolder.getId()));
-        //set the client side schedule
-        getMenu().contentHolder.schedule.setSchedule(schedule, true);
-        super.removed();
-    }
-
     protected void stopEditing() {
+        pauseButton.visible = true;
+        pauseIndicator.visible = true;
         cyclicButton.visible = true;
         cyclicIndicator.visible = true;
         skipProgress.visible = true;
@@ -1073,11 +1004,6 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu
 
         if (editingCondition == null && editingDestination == null)
             return;
-
-        validateSetting.runCallback(validateSetting.getX()+1,validateSetting.getY()+1);
-
-        validateSetting.visible = false;
-        validateSetting.active = false;
 
         removeWidget(scrollInput);
         removeWidget(scrollInputLabel);

@@ -11,23 +11,27 @@ import java.util.Objects;
 
 public class RocketScheduleEditPacket extends SimplePacketBase {
 
-	private RocketSchedule schedule;
-	private int rocketId;
+	private final RocketSchedule schedule;
+	private final int rocketId;
+	private final boolean paused;
 
-	public RocketScheduleEditPacket(RocketSchedule schedule, int rocketId) {
+	public RocketScheduleEditPacket(RocketSchedule schedule,boolean paused, int rocketId) {
 		this.schedule = schedule;
 		this.rocketId = rocketId;
+		this.paused = paused;
 	}
 
 	public RocketScheduleEditPacket(FriendlyByteBuf buffer) {
 		schedule = RocketSchedule.fromTag(buffer.readNbt());
 		rocketId = buffer.readInt();
+		paused = buffer.readBoolean();
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeNbt(schedule.write());
 		buffer.writeInt(rocketId);
+		buffer.writeBoolean(paused);
 	}
 
 	@Override
@@ -35,7 +39,7 @@ public class RocketScheduleEditPacket extends SimplePacketBase {
 		context.enqueueWork(() -> {
 			Entity entity = Objects.requireNonNull(context.getSender()).level().getEntity(rocketId);
 			if (entity instanceof RocketContraptionEntity contraptionEntity) {
-				contraptionEntity.schedule.setSchedule(schedule, true);
+				contraptionEntity.schedule.setSchedule(schedule, paused);
 				contraptionEntity.sendPacket();
 			}
 		});

@@ -28,8 +28,8 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
-import static com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity.addToConsumableFluids;
 import static com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity.getMassMap;
+import static com.rae.creatingspace.content.rocket.contraption.entity.RocketContraptionEntity.searchForFluid;
 
 public class FlightRecorderInteraction extends MovingInteractionBehaviour {
     private static final boolean shouldBeDisplayed = false;
@@ -59,7 +59,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
 
                         totalThrust += info.partialThrust();
 
-                        addToConsumableFluids(rocket, fluid);
+                        searchForFluid(rocket, fluid);
                     }
 
                     float meanVe = totalThrust > 0 ? totalThrust / totalTheoreticalConsumption : 0;
