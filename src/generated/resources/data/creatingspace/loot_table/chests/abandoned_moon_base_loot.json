@@ -1,0 +1,94 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:custom_data": {
+                  "design": "creatingspace:ox_rich_staged_cycle",
+                  "design_type": "creatingspace:power_pack_type"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "creatingspace:design_blueprint"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:custom_data": {
+                  "design": "creatingspace:fuel_rich_staged_cycle",
+                  "design_type": "creatingspace:power_pack_type"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "creatingspace:design_blueprint"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:custom_data": {
+                  "design": "creatingspace:aerospike",
+                  "design_type": "creatingspace:exhaust_pack_type"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "creatingspace:design_blueprint"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "components": {
+                "minecraft:custom_data": {
+                  "design": "creatingspace:full_flow_staged_cycle",
+                  "design_type": "creatingspace:power_pack_type"
+                }
+              },
+              "function": "minecraft:set_components"
+            }
+          ],
+          "name": "creatingspace:design_blueprint"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "creatingspace:cobalt_ingot",
+          "weight": 2
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "creatingspace:chests/abandoned_moon_base_loot"
+}
