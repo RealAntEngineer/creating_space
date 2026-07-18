@@ -8,7 +8,7 @@ public class CSKinetics extends CSConfigBase{
         return "kinetics";
     }
 
-    private class Comments {
+    private static class Comments {
         static String stress = "Fine tune the kinetic stats of individual components";
 
     }

@@ -27,7 +27,7 @@ public class RemainingO2Overlay implements LayeredDraw.Layer {
             gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
                     CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
                     32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
-        } catch (IllegalStateException stateException){
+        } catch (Exception stateException){
             gauge = new VerticalDialWidget(0, 0,
                     32, 64, CSOxygenBacktank.ColorSelection.WHITE.getColor());
         }
@@ -39,7 +39,7 @@ public class RemainingO2Overlay implements LayeredDraw.Layer {
             INSTANCE.gauge = new VerticalDialWidget(CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getX(mc.getWindow().getGuiScaledWidth()),
                     CSConfigs.CLIENT.oxygenBacktank.sliderPlace.get().getY(mc.getWindow().getGuiScaledHeight()),
                     32, 64, CSConfigs.CLIENT.oxygenBacktank.sliderColor.get().getColor());
-        } catch (IllegalStateException stateException){
+        } catch (Exception stateException){
             INSTANCE.gauge = new VerticalDialWidget(0, 0,
                     32, 64, CSOxygenBacktank.ColorSelection.WHITE.getColor());
         }

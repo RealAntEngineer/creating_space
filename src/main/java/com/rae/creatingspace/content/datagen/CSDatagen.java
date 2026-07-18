@@ -5,10 +5,9 @@ import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
 
 import com.rae.creatingspace.content.datagen.recipe.*;
-import com.rae.creatingspace.content.datagen.recipe.engine.EngineSequencedAssemblyProvider;
+import com.simibubi.create.Create;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.RegistrateDataProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -19,11 +18,15 @@ import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-import static com.rae.creatingspace.CreatingSpace.REGISTRATE;
-
 public class CSDatagen {
+    public static void gatherDataHighPriority(GatherDataEvent event) {
+        if (event.getMods().contains(CreatingSpace.MODID))
+            addExtraRegistrateData();
+    }
+
 	public static void gatherData(GatherDataEvent event) {
-		addExtraRegistrateData();
+        if (!event.getMods().contains(CreatingSpace.MODID))
+            return;
 
 		DataGenerator generator = event.getGenerator();
 		PackOutput output = generator.getPackOutput();
@@ -56,8 +59,8 @@ public class CSDatagen {
 	private static void addExtraRegistrateData() {
 		//CreateRegistrateTags.addGenerators();
 
-		/*
-		REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
+
+		CreatingSpace.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
 			BiConsumer<String, String> langConsumer = provider::add;
 
 			provideDefaultLang("interface", langConsumer);
@@ -66,7 +69,7 @@ public class CSDatagen {
 			//AllSoundEvents.provideLang(langConsumer);
 			providePonderLang(langConsumer);
 		});
-		 */
+
 	}
 
 	private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {
