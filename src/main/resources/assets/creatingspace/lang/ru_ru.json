@@ -1,5 +1,5 @@
 {
-  "block.creatingspace.small_rocket_engine": "Маленький ракетный двигатель",
+  "block.creatingspace.small_rocket_engine": "Малый ракетный двигатель",
   "block.creatingspace.big_rocket_engine": "Большой ракетный двигатель",
 
   "block.creatingspace.rocket_controls": "Контроллер ракеты",
@@ -117,5 +117,27 @@
   "creatingspace.science.unit.newton": "N",
   "creatingspace.science.isp": "ISP",
   "creatingspace.science.unit.second": "s",
-  "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t"
+  "creatingspace.science.unit.flow.millibucket_by_ticks": "mb/t",
+
+  "block.creatingspace.rocket_controls.tooltip.summary": "Необходимый блок, используемый пилотом для управления ракетой.",
+  "block.creatingspace.rocket_generator.tooltip.summary": "Машина, которая сжигает метан и кислород для производства SU. Запускается сигналом редстоуна при наличии стартового заряда.",
+  "block.creatingspace.catalyst_carrier.tooltip.summary": "Обеспечивает реакцию между жидкостями в чане.",
+  "block.creatingspace.chemical_synthesizer.tooltip.summary": "__[УСТАРЕЛО]__ Необходим для производства метана.",
+  "block.creatingspace.flight_recorder.tooltip.summary": "Отображает информацию при отказе ракеты. Для просмотра необходимы инженерные очки.",
+  "block.creatingspace.air_liquefier.tooltip.summary": "Извлекает газы из воздуха и сжижает их.",
+  "block.creatingspace.rocket_engineer_table.tooltip.summary": "Этот стол используется для создания чертежей двигателей.",
+  "block.creatingspace.rocket_engineer_table.tooltip.behaviour1": "Введите желаемые параметры двигателя, и вы получите чертёж.",
+  "block.creatingspace.clamps.tooltip.summary": "Предотвращает движение конструкций. Перемещается поршнями.",
+  "block.creatingspace.cryogenic_tank.tooltip.summary": "Одновременно ведро и бак для холодной жидкости. Сохраняет содержимое после разрушения.",
+  "item.creatingspace.starter_charge.tooltip.summary": "Взрывчатый заряд, необходимый для запуска ракетного генератора.",
+  "item.creatingspace.design_blueprint": "Чертёж конструкции",
+  "item.creatingspace.design_blueprint.tooltip.summary": "Используется для создания чертежей двигателей.",
+  "item.creatingspace.design_blueprint.tooltip.condition1": "ПКМ",
+  "item.creatingspace.design_blueprint.tooltip.behaviour1": "Изучить новую конструкцию",
+  "item.creatingspace.engine_blueprint": "Чертёж двигателя",
+  "item.creatingspace.engine_blueprint.tooltip.summary": "Используется для создания ракетных двигателей и компонентов.",
+  "fluid.creatingspace.liquid_co2": "Жидкий CO2",
+  "creatingspace.ponder.rocket_building.header": "Постройка ракеты",
+  "creatingspace.ponder.rocket_debugging.header": "Отладка ракеты",
+  "creatingspace.overlay.flight_recorder.propellant_status.one_or_more_propellant_is_missing": "неверное соотношение топлива"
 }

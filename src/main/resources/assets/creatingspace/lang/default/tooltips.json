@@ -13,7 +13,7 @@
   "block.creatingspace.rocket_engineer_table.tooltip.summary" : "This table is used to create engine blueprints.",
   "block.creatingspace.rocket_engineer_table.tooltip.behaviour1": "Enter your desired properties for your engine, It will give you a blueprint.",
 
-  "block.creatingspace.clamps.tooltip.summary": "A means of preventing a contraption from moving, movable by pistons.",
+  "block.creatingspace.clamps.tooltip.summary": "Prevent a contraption from moving, movable by pistons. Literally a clamp",
 
   "block.creatingspace.cryogenic_tank.tooltip.summary": "It's both a bucket and a fluid tank for cold liquid, keep it's content after breaking. Can be use in a filter",
 

@@ -13,7 +13,11 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -49,26 +53,31 @@ public class AirLiquefyingCategory extends CreateRecipeCategory<AirLiquefyingRec
 
     @Override
     public void draw(AirLiquefyingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
-        HeatCondition requiredHeat = recipe.getRequiredHeat();
+        ResourceLocation dimension = recipe.getDimension();
 
-        boolean noHeat = requiredHeat == HeatCondition.NONE;
+        graphics.drawString(Minecraft.getInstance().font,
+                Component.literal("In dimension : ").append(Component.translatable(dimension.toString())),
+                (int)(SCALE * 1.5), (int)(SCALE * 3.5), 0x4F * 0x010101, false);
+
 
         int vRows = (1 + recipe.getFluidResults().size() + recipe.getRollableResults().size()) / 2;
 
         if (vRows <= 2)
             AllGuiTextures.JEI_DOWN_ARROW.render(graphics, 136, -19 * (vRows - 1) + 32);
 
-        AllGuiTextures shadow = noHeat ? AllGuiTextures.JEI_SHADOW : AllGuiTextures.JEI_LIGHT;
-        shadow.render(graphics, 70, 58 + (noHeat ? 10 : 30));
+        AllGuiTextures shadow = AllGuiTextures.JEI_SHADOW;
+
+        shadow.render(graphics, SCALE * 2, (int) (SCALE * 2.5));
         airLiquefier.draw(graphics, getBackground().getWidth() / 2 + 3, 34);
         PoseStack matrixStack = graphics.pose();
         matrixStack.pushPose();
-        matrixStack.translate(80, 60, 0);
+        matrixStack.translate(SCALE * 2, SCALE * 2, 0);
         matrixStack.mulPose(Axis.XP.rotationDegrees(-12.5f));
         matrixStack.mulPose(Axis.YP.rotationDegrees(22.5f));
 
         GuiGameElement.of(ForgeRegistries.BLOCKS.getValue(recipe.getBlockInFront()).defaultBlockState())
                 .lighting(DEFAULT_LIGHTING)
+                .atLocal(0, 0, 2)
                 .scale(SCALE)
                 .render(graphics);
         matrixStack.popPose();
