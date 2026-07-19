@@ -33,8 +33,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.slf4j.Logger;
 
 @Mod(CreatingSpace.MODID)
@@ -100,6 +98,7 @@ public class CreatingSpace {
         CSContraptionType.register(modEventBus);
 
         modEventBus.addListener(CreatingSpace::init);
+        modEventBus.addListener(EventPriority.HIGHEST, CSDatagen::gatherDataHighPriority);
         modEventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
         forgeEventBus.addListener(CreatingSpace::onAddReloadListeners);
         //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
