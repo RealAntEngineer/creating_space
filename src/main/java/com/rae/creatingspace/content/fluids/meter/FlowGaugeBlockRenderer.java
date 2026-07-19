@@ -24,25 +24,21 @@ public class FlowGaugeBlockRenderer extends SafeBlockEntityRenderer<FlowGaugeBlo
         BlockState blockState = gaugeBlockEntity.getBlockState();
         VertexConsumer vb = bufferSource.getBuffer(RenderType.solid());
         ms.pushPose();
-        ms.translate(1 / 2f, 0.5, 1 / 2f);
-
 
         float dialPivot = 5.75f / 16;
         float progress = Mth.lerp(partialTicks, gaugeBlockEntity.prevDialState, gaugeBlockEntity.dialState);
         Direction direction = blockState.getValue(FlowGaugeBlock.FACING);
 
-        ms.pushPose();
-
+        // Mirror Create's GaugeRenderer so the needle sits on the gauge face
+        // regardless of the block's horizontal orientation.
         CachedBuffers.partial(AllPartialModels.GAUGE_DIAL, blockState)
-                .rotateY(((-direction.toYRot() - 90) ))
-                .uncenter()
-                .translate((double) -1 /16, 0, 0)
+                .rotateCentered((float) ((-direction.toYRot() - 90) / 180 * Math.PI), Direction.UP)
                 .translate(0, dialPivot, dialPivot)
-                .rotateX(-90 * progress)
+                .rotate((float) (Math.PI / 2 * -progress), Direction.EAST)
                 .translate(0, -dialPivot, -dialPivot)
                 .light(light)
                 .renderInto(ms, vb);
-        ms.popPose();
+
         ms.popPose();
 
     }
