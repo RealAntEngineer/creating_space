@@ -64,7 +64,12 @@ public class CSDimensionGen {
 //        registerFlatOrbit(context, VENUS_ORBIT_STEM_KEY, VENUS_ORBIT_TYPE, biomeGetter);
 
         // Terrain worlds (noise-based)
-        registerFixedNoiseWorld(context, MARS_STEM_KEY, MARS_TYPE, "mars_noise", "mars_plains", noiseGetter, biomeGetter);
+        registerMultiNoiseWorld(context, MARS_STEM_KEY, MARS_TYPE, "mars_noise",
+                List.of(
+                    new BiomeParams("mars_plains",-1F, 1F, -1F, 1F, -1F, 1F, -1F, 1F, -1F, 1F, 0.0F, 0.0F, 0.0F),
+                    new BiomeParams("mars_cave",-1F, 1F, -1F, 1F, -1F, 1F, -1F, 1F, -1F, 1F, 0.2F, 0.9F, 0.0F)
+                ),
+                noiseGetter, biomeGetter);
         registerMultiNoiseWorld(context, MOON_STEM_KEY, MOON_TYPE, "moon_noise",
                 List.of(
                     new BiomeParams("moon_plains", -1F, 1F, -1F, 1F, -1F, 1F, -1F, 1F, -1F, 1F, 0.0F, 0.0F, 0.0F),

@@ -23,6 +23,10 @@ public class DimensionInit {
             ResourceKey.create(Registries.DIMENSION,
                     resource("the_moon"));
 
+    public static final ResourceKey<Level> MARS_KEY =
+            ResourceKey.create(Registries.DIMENSION,
+                    resource("mars"));
+
     public static final ResourceKey<DimensionType> EARTH_ORBIT_TYPE =
             ResourceKey.create(Registries.DIMENSION_TYPE,
                    resource("earth_orbit"));

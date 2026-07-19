@@ -18,12 +18,12 @@ public class CSRocketAccessibleDimensionGen {
                 new RocketAccessibleDimension(
                         100,
                         ResourceLocation.withDefaultNamespace("overworld"),
-                        200,
+                        64,
                         0f,
                         Map.of(
-                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(600, 200),
+                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(600, 64),
                                 ResourceLocation.withDefaultNamespace("overworld"), new RocketAccessibleDimension.AccessibilityParameter(200, 200),
-                                resource("mars_orbit"), new RocketAccessibleDimension.AccessibilityParameter(1000, 200),
+                                resource("mars_orbit"), new RocketAccessibleDimension.AccessibilityParameter(1000, 64),
                                 resource("venus"), new RocketAccessibleDimension.AccessibilityParameter(2200, 200)
                         )
                 )
@@ -35,10 +35,10 @@ public class CSRocketAccessibleDimensionGen {
                 new RocketAccessibleDimension(
                         400,
                         ResourceLocation.withDefaultNamespace("overworld"),
-                        200,
+                        64,
                         1.6f,
                         Map.of(
-                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(300, 200)
+                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(300, 64)
                         )
                 )
         );
@@ -49,11 +49,11 @@ public class CSRocketAccessibleDimensionGen {
                 new RocketAccessibleDimension(
                         100,
                         resource("the_moon"),
-                        200,
+                        64,
                         0f,
                         Map.of(
-                                resource("earth_orbit"), new RocketAccessibleDimension.AccessibilityParameter(200, 200),
-                                resource("mars_orbit"), new RocketAccessibleDimension.AccessibilityParameter(1000, 200),
+                                resource("earth_orbit"), new RocketAccessibleDimension.AccessibilityParameter(200, 64),
+                                resource("mars_orbit"), new RocketAccessibleDimension.AccessibilityParameter(1000, 64),
                                 resource("venus"), new RocketAccessibleDimension.AccessibilityParameter(2200, 200),
                                 resource("the_moon"), new RocketAccessibleDimension.AccessibilityParameter(300, 200)
                         )
@@ -69,7 +69,7 @@ public class CSRocketAccessibleDimensionGen {
                         200,
                         3.71f,
                         Map.of(
-                                resource("mars_orbit"), new RocketAccessibleDimension.AccessibilityParameter(400, 200)
+                                resource("mars_orbit"), new RocketAccessibleDimension.AccessibilityParameter(400, 64)
                         )
                 )
         );
@@ -80,11 +80,11 @@ public class CSRocketAccessibleDimensionGen {
                 new RocketAccessibleDimension(
                         100,
                         resource("mars"),
-                        200,
+                        64,
                         0f,
                         Map.of(
-                                resource("earth_orbit"), new RocketAccessibleDimension.AccessibilityParameter(500, 200),
-                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(300, 200),
+                                resource("earth_orbit"), new RocketAccessibleDimension.AccessibilityParameter(500, 64),
+                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(300, 64),
                                 resource("mars"), new RocketAccessibleDimension.AccessibilityParameter(300, 200)
                         )
                 )
@@ -99,8 +99,8 @@ public class CSRocketAccessibleDimensionGen {
                         200,
                         1.6f,
                         Map.of(
-                                resource("earth_orbit"), new RocketAccessibleDimension.AccessibilityParameter(1800, 200),
-                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(2000, 200)
+                                resource("earth_orbit"), new RocketAccessibleDimension.AccessibilityParameter(1800, 64),
+                                resource("moon_orbit"), new RocketAccessibleDimension.AccessibilityParameter(2000, 64)
                         )
                 )
         );
