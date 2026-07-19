@@ -19,14 +19,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class CSDatagen {
-    public static void gatherDataHighPriority(GatherDataEvent event) {
-        if (event.getMods().contains(CreatingSpace.MODID))
-            addExtraRegistrateData();
-    }
+	public static void gatherDataHighPriority(GatherDataEvent event) {
+		if (event.getMods().contains(CreatingSpace.MODID))
+			addExtraRegistrateData();
+	}
 
 	public static void gatherData(GatherDataEvent event) {
-        if (!event.getMods().contains(CreatingSpace.MODID))
-            return;
+		if (!event.getMods().contains(CreatingSpace.MODID))
+			return;
 
 		DataGenerator generator = event.getGenerator();
 		PackOutput output = generator.getPackOutput();
@@ -48,11 +48,12 @@ public class CSDatagen {
 			generator.addProvider(true, new CSChemicalSynthesisRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSMechanicalElectrolysisRecipeGen(output, lookupProvider));
 			generator.addProvider(true, new CSSequencedAssemblyRecipeGen(output, lookupProvider));
-            //generator.addProvider(true, new EngineSequencedAssemblyProvider(output));
+			generator.addProvider(true, new CSLootTableProvider(output, lookupProvider));
+			//generator.addProvider(true, new EngineSequencedAssemblyProvider(output));
 			// it doesn't quite work. the output is wrong right now and it's missing some of it
 
 
-            // event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
+			// event.getGenerator().addProvider(true, new RegistrateDataProvider(REGISTRATE, CreatingSpace.MODID, event));
 		}
 	}
 

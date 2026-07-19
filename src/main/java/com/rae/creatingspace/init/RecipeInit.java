@@ -65,7 +65,7 @@ public enum RecipeInit implements IRecipeTypeInfo , StringRepresentable {
     RecipeInit(StandardProcessingRecipe.Factory<?> processingFactory) {
         this(() -> new StandardProcessingRecipe.Serializer<>(processingFactory));
     }
-    RecipeInit(ProcessingRecipe.Factory<AirLiquefyingRecipeParam, ? extends AirLiquefyingRecipe> liquefyingRecipeParamFactory) {
+    RecipeInit(ProcessingRecipe.Factory<AirLiquefyingRecipeParam, AirLiquefyingRecipe> liquefyingRecipeParamFactory) {
         this(() -> new AirLiquefyingRecipe.Serializer<>(liquefyingRecipeParamFactory));
     }
 

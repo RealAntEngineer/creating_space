@@ -16,6 +16,8 @@
   "block.creatingspace.clamps.tooltip.summary": "Prevent a contraption from moving, movable by pistons. Literally a clamp",
 
   "block.creatingspace.cryogenic_tank.tooltip.summary": "It's both a bucket and a fluid tank for cold liquid, keep it's content after breaking. Can be use in a filter",
+  "block.creatingspace.copper_oxygen_backtank.tooltip.summary": "Fill the backtank connecting a pipe to the bottom of the tank and pumping in liquid oxygen.",
+  "block.creatingspace.netherite_oxygen_backtank.tooltip.summary": "Fill the backtank connecting a pipe to the bottom of the tank and pumping in liquid oxygen",
 
   "item.creatingspace.space_food.tooltip.summary": "...ew",
   "item.creatingspace.design_blueprint.tooltip.summary" : "This paper contain information on engine designs.",
