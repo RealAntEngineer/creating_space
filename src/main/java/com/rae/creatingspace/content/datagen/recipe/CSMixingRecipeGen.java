@@ -42,6 +42,7 @@ public class CSMixingRecipeGen extends MixingRecipeGen {
                     .require(Items.IRON_NUGGET)
                     .require(Items.IRON_NUGGET)
                     .require(commonItemTag("ingots/nickel"))
+
                     .output(BuiltInRegistries.ITEM.get(resource("inconel_ingot")), 1)
                     .requiresHeat(HeatCondition.SUPERHEATED)),
 

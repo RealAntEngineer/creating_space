@@ -3,10 +3,13 @@
   "heat_requirement": "superheated",
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:iron_nugget"
     },
     {
-      "tag": "c:ingots/nickel"
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:iron_nugget"
     },
     {
       "tag": "c:ingots/nickel"
