@@ -1,0 +1,14 @@
+{
+  "adjacentDimensions": {
+    "creatingspace:earth_orbit": {
+      "deltaV": 1800
+    },
+    "creatingspace:moon_orbit": {
+      "deltaV": 2000
+    }
+  },
+  "arrivalHeight": 200,
+  "distanceToOrbitingBody": 400,
+  "gravity": 1.6,
+  "orbitedBody": "creatingspace:sun"
+}

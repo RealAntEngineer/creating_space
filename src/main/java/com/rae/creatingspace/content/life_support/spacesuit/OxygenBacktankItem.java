@@ -12,6 +12,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +56,15 @@ public class OxygenBacktankItem extends UpgradableEquipment {
     @Override
     public boolean isEnchantable(ItemStack p_77616_1_) {
         return true;
+    }
+
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        // Same rule as Create's own BacktankItem: a tank of air/oxygen has nothing to repair
+        // and no durability to preserve, so these two enchantments make no sense on it.
+        if (enchantment.is(Enchantments.MENDING) || enchantment.is(Enchantments.UNBREAKING))
+            return false;
+        return super.supportsEnchantment(stack, enchantment);
     }
 
     @Override
