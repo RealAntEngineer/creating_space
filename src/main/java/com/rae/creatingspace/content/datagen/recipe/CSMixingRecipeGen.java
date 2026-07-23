@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.datagen.recipe;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.api.data.recipe.MixingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import net.minecraft.core.HolderLookup;
@@ -20,9 +21,10 @@ public class CSMixingRecipeGen extends MixingRecipeGen {
 
             COPRONICKEL_INGOT = create("copronickel_ingot", b -> b
                     .require(Items.COPPER_INGOT)
-                    .require(Items.COPPER_INGOT)
-                    .require(commonItemTag("ingots/nickel"))
-                    .output(BuiltInRegistries.ITEM.get(resource("copronickel_ingot")), 2)
+                    .require(commonItemTag("nuggets/nickel"))
+                    .require(commonItemTag("nuggets/nickel"))
+                    .require(commonItemTag("nuggets/nickel"))
+                    .output(BuiltInRegistries.ITEM.get(resource("copronickel_ingot")), 1)
                     .requiresHeat(HeatCondition.HEATED)),
 
             HASTELLOY_INGOT = create("hastelloy_ingot", b -> b
@@ -36,22 +38,25 @@ public class CSMixingRecipeGen extends MixingRecipeGen {
                     .requiresHeat(HeatCondition.SUPERHEATED)),
 
             INCONEL_INGOT = create("inconel_ingot", b -> b
-                    .require(Items.IRON_INGOT)
-                    .require(commonItemTag("ingots/nickel"))
+                    .require(Items.IRON_NUGGET)
+                    .require(Items.IRON_NUGGET)
+                    .require(Items.IRON_NUGGET)
                     .require(commonItemTag("ingots/nickel"))
                     .output(BuiltInRegistries.ITEM.get(resource("inconel_ingot")), 1)
                     .requiresHeat(HeatCondition.SUPERHEATED)),
 
             MONEL_INGOT = create("monel_ingot", b -> b
-                    .require(Items.COPPER_INGOT)
-                    .require(commonItemTag("ingots/nickel"))
+                    .require(AllItems.COPPER_NUGGET)
+                    .require(AllItems.COPPER_NUGGET)
+                    .require(AllItems.COPPER_NUGGET)
                     .require(commonItemTag("ingots/nickel"))
                     .output(BuiltInRegistries.ITEM.get(resource("monel_ingot")), 1)
                     .requiresHeat(HeatCondition.SUPERHEATED)),
 
             REINFORCED_COPPER_INGOT = create("reinforced_copper_ingot", b -> b
-                    .require(Items.IRON_INGOT)
-                    .require(Items.COPPER_INGOT)
+                    .require(Items.IRON_NUGGET)
+                    .require(Items.IRON_NUGGET)
+                    .require(Items.IRON_NUGGET)
                     .require(Items.COPPER_INGOT)
                     .output(BuiltInRegistries.ITEM.get(resource("reinforced_copper_ingot")), 1)
                     .requiresHeat(HeatCondition.HEATED));
