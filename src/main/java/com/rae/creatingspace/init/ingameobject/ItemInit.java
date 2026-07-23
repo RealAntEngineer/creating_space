@@ -517,6 +517,7 @@ public class ItemInit {
                                     .patternLine(" FWF ")
                                     .build(p, resource("mechanical_crafting/armor/" + c.getName())))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
+                    .tag(AllTags.AllItemTags.PRESSURIZED_AIR_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
                     .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
@@ -540,6 +541,7 @@ public class ItemInit {
                     .model((c,p) -> p.withExistingParent("netherite_oxygen_backtank",
                             MODID + ":block/oxygen_backtank/netherite"))
                     .tag(TagsInit.CustomItemTags.OXYGEN_SOURCES.tag)
+                    .tag(AllTags.AllItemTags.PRESSURIZED_AIR_SOURCES.tag)
                     .tag(ItemTags.CHEST_ARMOR)
                     .tag(ItemTags.TRIMMABLE_ARMOR)
                     .tag(TagsInit.CustomItemTags.SPACESUIT.tag)
