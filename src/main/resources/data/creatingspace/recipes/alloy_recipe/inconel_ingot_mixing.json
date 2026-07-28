@@ -5,10 +5,13 @@
       "tag": "forge:ingots/nickel"
     },
     {
-      "tag": "forge:ingots/nickel"
+      "tag": "forge:nuggets/iron"
     },
     {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:nuggets/iron"
+    },
+    {
+      "tag": "forge:nuggets/iron"
     }
   ],
   "results": [

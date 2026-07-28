@@ -73,7 +73,7 @@ public class CSClientEvent {
                     if (recipeData.contains("size")) components.add(Component.literal("  Size : " + size).withStyle(ChatFormatting.GRAY));
 
                     if (recipeData.contains("materialLevel"))
-                        components.add(Component.literal("  Material Level : " + EngineMaterialInit.materialNames.get(materialLevel)).withStyle(ChatFormatting.GRAY));
+                        components.add(Component.literal("  Material Level : " + EngineMaterialInit.EngineMaterial.values()[materialLevel]).withStyle(ChatFormatting.GRAY));
                     ResourceLocation powerPackType        = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("powerPackType")).result().orElse(null);
                     ResourceLocation exhaustPackType      = ResourceLocation.CODEC.parse(NbtOps.INSTANCE, recipeData.get("exhaustPackType")).result().orElse(null);
                     MutableComponent powerPackComponent   = powerPackType != null ? Component.translatable(powerPackType.toLanguageKey("power_pack_type")) : Component.literal("not defined");

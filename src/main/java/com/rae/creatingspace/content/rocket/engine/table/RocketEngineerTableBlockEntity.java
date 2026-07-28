@@ -38,6 +38,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
     public int size = 100;
     public int thrust = 100000;
     public int expansionRatio = 50;
+    public int materialLevel = 0;
     public ResourceLocation powerPackType;
     public ResourceLocation exhaustPackType;
     public ResourceLocation propellantType;
@@ -97,7 +98,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
 
     //should be replaced by craft blueprint
     public void craftEngine(ItemStack newEngine) {
-        System.out.println(newEngine);
+        //System.out.println(newEngine);
         if (inventory.isItemValid(0, newEngine)) {
             inventory.insertItem(0, newEngine, false);
         }
@@ -108,6 +109,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         screenInfo.putInt("thrust", thrust);
         screenInfo.putInt("size", size);
         screenInfo.putInt("expansionRatio", expansionRatio);
+        screenInfo.putInt("materialLevel", materialLevel);
         screenInfo.put("exhaustPack", ResourceLocation.CODEC
                 .encodeStart(NbtOps.INSTANCE, exhaustPackType)
                 .result().orElse(new CompoundTag()));
@@ -124,6 +126,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         thrust = screenInfo.getInt("thrust");
         size = screenInfo.getInt("size");
         expansionRatio = screenInfo.getInt("expansionRatio");
+        materialLevel = screenInfo.getInt("materialLevel");
         propellantType = ResourceLocation.CODEC
                 .parse(NbtOps.INSTANCE, screenInfo.get("propellantType")).result().orElse(null);
         exhaustPackType = ResourceLocation.CODEC
@@ -136,6 +139,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
     public void readScreenData(SyncData screenInfo) {
         thrust = screenInfo.thrust;
         size = screenInfo.size;
+        materialLevel = screenInfo.materialLevel;
         expansionRatio = screenInfo.expansionRatio;
         exhaustPackType = screenInfo.exhaustPackType;
         powerPackType = screenInfo.powerPackType;
@@ -153,16 +157,6 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
     protected void read(CompoundTag tag, boolean clientPacket) {
         super.read(tag, clientPacket);
         inventory.deserializeNBT((CompoundTag) tag.get("inventory"));
-        //seems to be buggy
-        /*if (clientPacket) {
-            if (inventory != null) inventory.setSize(
-                    getSyncedExhaustPackRegistry().get(exhaustPackType).getSlots().size() +
-                            getSyncedPowerPackRegistry().get(powerPackType).getSlots().size() + 1);
-        } else {
-            if (inventory != null)
-                inventory.setSize(getSyncedExhaustPackRegistry().get(exhaustPackType).getSlots().size() +
-                        getSyncedPowerPackRegistry().get(powerPackType).getSlots().size() + 1);
-        }*/
         CompoundTag screenInfo = (CompoundTag) tag.get("screenInfo");
         assert screenInfo != null;
         readScreenData(screenInfo);
@@ -183,11 +177,11 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
 
     //use for sync packet bwn the screen and the BE (use resource location for ease of use) ->
     // use ResourceLocation to ensure it could be encoded properly
-    public record SyncData(int thrust, int size, int expansionRatio, ResourceLocation exhaustPackType,
+    public record  SyncData(int thrust, int size, int expansionRatio, int materialLevel, ResourceLocation exhaustPackType,
                            ResourceLocation powerPackType, ResourceLocation propellantType) {
         public static SyncData defaultData() {
             //CompoundTag syncData = new CompoundTag();
-            return new SyncData(100000, 100, 50, MiscInit.BELL_NOZZLE.getId()
+            return new SyncData(100000, 100, 50, 0,MiscInit.BELL_NOZZLE.getId()
                     , MiscInit.OPEN_CYCLE.getId(),
                     PropellantTypeInit.METHALOX.getId());
 
@@ -222,6 +216,8 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
                                             Codec.INT.fieldOf("thrust").forGetter(i -> i.thrust),
                                             Codec.INT.fieldOf("size").forGetter(i -> i.size),
                                             Codec.INT.fieldOf("expansionRatio").forGetter(i -> i.expansionRatio),
+                                            Codec.INT.fieldOf("materialLevel").forGetter(i -> i.materialLevel),
+
                                             ResourceLocation.CODEC
                                                     .fieldOf("exhaustPack").forGetter(i -> i.exhaustPackType),
                                             ResourceLocation.CODEC

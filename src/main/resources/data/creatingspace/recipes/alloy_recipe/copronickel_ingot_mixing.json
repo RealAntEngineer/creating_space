@@ -5,7 +5,10 @@
       "item": "minecraft:copper_ingot"
     },
     {
-      "item": "minecraft:copper_ingot"
+      "tag": "forge:ingots/nickel"
+    },
+    {
+      "tag": "forge:ingots/nickel"
     },
     {
       "tag": "forge:ingots/nickel"

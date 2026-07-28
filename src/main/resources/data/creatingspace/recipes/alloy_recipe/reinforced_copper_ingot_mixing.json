@@ -2,14 +2,16 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "item": "minecraft:copper_ingot"
+      "tag": "forge:nuggets/iron"
     },
     {
-      "item": "minecraft:copper_ingot"
+      "tag": "forge:nuggets/iron"
     },
     {
-      "item": "minecraft:iron_ingot",
-      "count": 1
+      "tag": "forge:nuggets/iron"
+    },
+    {
+      "tag": "forge:ingots/copper"
     }
   ],
   "results": [

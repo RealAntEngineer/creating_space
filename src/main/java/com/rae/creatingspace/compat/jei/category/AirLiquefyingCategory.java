@@ -18,6 +18,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -74,8 +76,8 @@ public class AirLiquefyingCategory extends CreateRecipeCategory<AirLiquefyingRec
         matrixStack.translate(SCALE * 2, SCALE * 2, 0);
         matrixStack.mulPose(Axis.XP.rotationDegrees(-12.5f));
         matrixStack.mulPose(Axis.YP.rotationDegrees(22.5f));
-
-        GuiGameElement.of(ForgeRegistries.BLOCKS.getValue(recipe.getBlockInFront()).defaultBlockState())
+        Block blockInFront = ForgeRegistries.BLOCKS.getValue(recipe.getBlockInFront());
+        GuiGameElement.of(blockInFront != null ? blockInFront.defaultBlockState() : Blocks.AIR.defaultBlockState())
                 .lighting(DEFAULT_LIGHTING)
                 .atLocal(0, 0, 2)
                 .scale(SCALE)

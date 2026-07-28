@@ -405,6 +405,9 @@ public class BlockInit {
                                     .apply(CopyNbtFunction
                                             .copyData(ContextNbtProvider.BLOCK_ENTITY)
                                             .copy("Oxygen", "Oxygen"))
+                                    .apply(CopyNbtFunction
+                                            .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                            .copy("CustomName", "CustomName"))
                             )
                             .when(ExplosionCondition.survivesExplosion())
                     )
@@ -428,6 +431,9 @@ public class BlockInit {
                                     .apply(CopyNbtFunction
                                             .copyData(ContextNbtProvider.BLOCK_ENTITY)
                                             .copy("Oxygen", "Oxygen"))
+                                    .apply(CopyNbtFunction
+                                            .copyData(ContextNbtProvider.BLOCK_ENTITY)
+                                            .copy("CustomName", "CustomName"))
                             )
                             .when(ExplosionCondition.survivesExplosion())
                     )
