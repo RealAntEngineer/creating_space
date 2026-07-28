@@ -18,7 +18,6 @@ import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -335,7 +334,7 @@ public class ItemInit {
             "raw_nickel",Item::new)
             .recipe((c,p) ->
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
-                        .requires(CommonMetal.NICKEL.rawStorageBlocks.items())
+                        .requires(commonItemTag("storage_blocks/raw_nickel"))
                         .unlockedBy("has_" + c.getName(), has(c.get()))
                         .save(p, resource("crafting/" + c.getName() + "_from_block")))
             .tag(commonItemTag("raw_materials/nickel"), commonItemTag("raw_materials"),commonItemTag("ores/nickel"))
@@ -357,14 +356,14 @@ public class ItemInit {
             "nickel_ingot",Item::new)
             .recipe((c,p) -> {
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
-                        .define('#', CommonMetal.NICKEL.nuggets)
+                        .define('#', commonItemTag("nuggets/nickel"))
                         .pattern("###")
                         .pattern("###")
                         .pattern("###")
                         .unlockedBy("has_" + c.getName(), has(c.get()))
                         .save(p, resource("crafting/" + c.getName() + "_from_nuggets"));
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
-                        .requires(CommonMetal.NICKEL.storageBlocks.items())
+                        .requires(commonItemTag("storage_blocks/nickel"))
                         .unlockedBy("has_" + c.getName(), has(c.get()))
                         .save(p, resource("crafting/" + c.getName() + "_from_block"));
             })
@@ -376,17 +375,17 @@ public class ItemInit {
             "nickel_nugget",Item::new)
             .recipe((c,p) ->
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
-                        .requires(CommonMetal.NICKEL.ingots)
+                        .requires(commonItemTag("ingots/nickel"))
                         .unlockedBy("has_" + c.getName(), has(c.get()))
                         .save(p, resource("crafting/" + c.getName())))
-            .tag(CommonMetal.NICKEL.nuggets, commonItemTag("nuggets"))
+            .tag(commonItemTag("nuggets/nickel"), commonItemTag("nuggets"))
             .register();
 
 
 
     public static final ItemEntry<Item> NICKEL_SHEET = REGISTRATE.item(
             "nickel_sheet",Item::new)
-            .tag(CommonMetal.NICKEL.plates, commonItemTag("plates"))
+            .tag(commonItemTag("plates/nickel"), commonItemTag("plates"))
             .register();
 
     //aluminium
@@ -395,10 +394,10 @@ public class ItemInit {
                     "raw_aluminum",Item::new)
             .recipe((c,p) ->
                     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
-                            .requires(CommonMetal.ALUMINUM.rawStorageBlocks.items())
+                            .requires(commonItemTag("storage_blocks/raw_aluminum"))
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName() + "_from_block")))
-            .tag(CommonMetal.ALUMINUM.rawOres, commonItemTag("raw_materials"))
+            .tag(commonItemTag("raw_materials/aluminum"), commonItemTag("raw_materials"))
             .register();
 
 
@@ -412,18 +411,18 @@ public class ItemInit {
                     "aluminum_ingot",Item::new)
             .recipe((c,p) -> {
                 ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
-                        .define('#', CommonMetal.ALUMINUM.nuggets)
+                        .define('#', commonItemTag("nuggets/aluminum"))
                         .pattern("###")
                         .pattern("###")
                         .pattern("###")
                         .unlockedBy("has_" + c.getName(), has(c.get()))
                         .save(p, resource("crafting/" + c.getName() + "_from_nuggets"));
                 ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
-                        .requires(CommonMetal.ALUMINUM.storageBlocks.items())
+                        .requires(commonItemTag("storage_blocks/aluminum"))
                         .unlockedBy("has_" + c.getName(), has(c.get()))
                         .save(p, resource("crafting/" + c.getName() + "_from_block"));
             })
-            .tag(CommonMetal.ALUMINUM.ingots, commonItemTag("ingots"))
+            .tag(commonItemTag("ingots/aluminum"), commonItemTag("ingots"))
             .register();
 
 
@@ -431,15 +430,15 @@ public class ItemInit {
                     "aluminum_nugget",Item::new)
             .recipe((c,p) ->
                     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, c.get(), 9)
-                            .requires(CommonMetal.ALUMINUM.ingots)
+                            .requires(commonItemTag("ingots/aluminum"))
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
-            .tag(CommonMetal.ALUMINUM.nuggets, commonItemTag("nuggets"))
+            .tag(commonItemTag("nuggets/aluminum"), commonItemTag("nuggets"))
             .register();
 
     public static final ItemEntry<Item> ALUMINUM_SHEET = REGISTRATE.item(
                     "aluminum_sheet",Item::new)
-            .tag(CommonMetal.ALUMINUM.plates, commonItemTag("plates"))
+            .tag(commonItemTag("plates/aluminum"), commonItemTag("plates"))
             .register();
 
     //cobalt
@@ -456,6 +455,7 @@ public class ItemInit {
 
     public static final ItemEntry<Item> CRUSHED_COBALT_ORE = REGISTRATE.item(
                     "crushed_cobalt_ore",Item::new)
+            .tag(commonItemTag("crushed_raw_cobalt"), commonItemTag("crushed_raw_materials"), commonItemTag("ores/cobalt"))
             .register();
 
     public static final ItemEntry<Item> COBALT_INGOT = REGISTRATE.item(
