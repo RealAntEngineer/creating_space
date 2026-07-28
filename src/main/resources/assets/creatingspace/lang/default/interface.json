@@ -93,7 +93,7 @@
   "creatingspace.recipe.chemical": "Chemical",
   "creatingspace.recipe.electrolysis": "Electrolysis",
   "creatingspace.recipe.air_liquefying": "Air Liquefying",
-  
+
   "propellant_type.creatingspace.methalox": "Metha/LOX",
   "propellant_type.creatingspace.lh2lox": "LH2/LOX",
   "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
@@ -134,8 +134,8 @@
   "creatingspace.gui.engineer_table.isp": "ISP : %d s",
   "creatingspace.gui.engineer_table.engine_size_input": "%i mb",
   "creatingspace.gui.engineer_table.engine_thrust_input": "%iN",
-
-  "gui.engineer_table_screen.material_selection": "Select Material",
+  "creatingspace.gui.engineer_table.pressure_warning": "%d / %d bar",
+  "creatingspace.gui.engineer_table_screen.material_selection": "Select Material",
   "creatingspace.gui.engineer_table.material_hint": "The material set the pressure limit at a given temperature",
   "creatingspace.entity.room_atmosphere.sealed": "Sealed",
   "creatingspace.entity.room_atmosphere.open": "Open"

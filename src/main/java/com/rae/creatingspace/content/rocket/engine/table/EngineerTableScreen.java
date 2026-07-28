@@ -44,18 +44,18 @@ import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY
 public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTableMenu> {
     //go to SelectionSrollInput (SchematicTableScreen)
     private final Component             availableExhaustTypeTitle    =
-            Component.translatable("gui.engineer_table_screen.available_exhaust");
+            Component.translatable("creatingspace.gui.engineer_table_screen.available_exhaust");
     private final Component             availablePowerTypeTitle      =
-            Component.translatable("gui.engineer_table_screen.available_power");
+            Component.translatable("creatingspace.gui.engineer_table_screen.available_power");
     private final Component             availablePropellantTypeTitle =
-            Component.translatable("gui.engineer_table_screen.available_propellants");
+            Component.translatable("creatingspace.gui.engineer_table_screen.available_propellants");
     private final Component             thrustTitle                  =
-            Component.translatable("gui.engineer_table_screen.thrust_selection");
+            Component.translatable("creatingspace.gui.engineer_table_screen.thrust_selection");
     private final Component             sizeTitle                    =
-            Component.translatable("gui.engineer_table_screen.size_selection");
+            Component.translatable("creatingspace.gui.engineer_table_screen.size_selection");
 
     private final Component materialTitle = Component.translatable(
-            "gui.engineer_table_screen.material_selection"
+            "creatingspace.gui.engineer_table_screen.material_selection"
     );
     float engineIsp;
     float engineMass;
@@ -81,6 +81,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
     private GuiTexturesInit background;
     private GuiTexturesInit input;
     private IconButton      confirmButton;
+    private Label           pressureLabel;
     private Label           realISPLabel;
     //private Label materialLevelLabel;
     private Label           massLabel;
@@ -109,7 +110,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         exhaustPackTypeLocations = new ArrayList<>();
         propellantTypeLocations = new ArrayList<>();
         propellantTypes = new ArrayList<>();
-        propellantLabel = new Label(x + 7, y + 135, Component.empty()).withShadow();
+        propellantLabel = new Label(x + 9, y + 135, Component.empty()).withShadow();
         propellantLabel.text = Component.empty();
         propellantTypes = new ArrayList<>();
         List<MutableComponent> availablePropellantType = new ArrayList<>();
@@ -122,7 +123,7 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                     propellantTypeLocations.add(ro.getKey().location());
                 }
         );
-        setPropellantType = new SelectionScrollInput(x + 7, y + 135, 100, 18)
+        setPropellantType = new SelectionScrollInput(x + 7, y + 130, 100, 18)
                 .forOptions(availablePropellantType)
                 .titled(availablePropellantTypeTitle.plainCopy())
                 .writingTo(propellantLabel)
@@ -199,9 +200,9 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
 
         addRenderableWidget(expansionRatioSlider);
 
-        engineSizeLabel = new Label(x + 7, y + 156, Component.empty()).withShadow();
+        engineSizeLabel = new Label(x + 9, y + 156, Component.empty()).withShadow();
         engineSizeLabel.text = Component.empty();
-        engineSizeInput = new ScrollInput(x + 7, y + 156,
+        engineSizeInput = new ScrollInput(x + 7, y + 151,
                 50, 18)
                 .withRange(1, Integer.MAX_VALUE)
                 .titled(sizeTitle.plainCopy())
@@ -210,9 +211,10 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 .setState(getMenu().getSyncData().size())
                 .format(i -> Component.literal(i + " mb"))
                 .calling(state -> this.syncWithBE());
-        engineThrustLabel = new Label(x + 7, y + 178, Component.empty()).withShadow();
+
+        engineThrustLabel = new Label(x + 9, y + 177, Component.empty()).withShadow();
         engineThrustLabel.text = Component.empty();
-        engineThrustInput = new ScrollInput(x + 7, y + 178,
+        engineThrustInput = new ScrollInput(x + 7, y + 172,
                 50, 18)
                 .withRange(1, Integer.MAX_VALUE)
                 .titled(thrustTitle.plainCopy())
@@ -226,14 +228,13 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
         engineThrustInput.onChanged();
         engineSizeInput.onChanged();
 
-        materialLabel = new Label(x + 7, y + 200, Component.empty()).withShadow();
+        materialLabel = new Label(x + 9, y + 198, Component.empty()).withShadow();
         materialLabel.text = Component.empty();
-        materialInput = new SelectionScrollInput(x + 7, y + 200,
+        materialInput = new SelectionScrollInput(x + 7, y + 193,
                 50, 18)
                 .forOptions(Arrays.stream(EngineMaterialInit.EngineMaterial.values()).map(
-                        m -> Component.literal(m.materialName())
-                ).toList())
-                .titled(sizeTitle.plainCopy())
+                        EngineMaterialInit.EngineMaterial::displayComponent).toList())
+                .titled(materialTitle.plainCopy())
                 .writingTo(materialLabel)
                 .addHint(Component.translatable("creatingspace.gui.engineer_table.material_hint"))
                 .setState(getMenu().getSyncData().materialLevel())
@@ -257,11 +258,12 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
                 });
         addRenderableWidget(confirmButton);
         setPowerPackType.onChanged();
-        realISPLabel = new Label(x + 260, y + 35 + 6, Component.empty());
-        //materialLevelLabel = new Label(x + 260, y + 50 + 6,Component.empty());
+
+        pressureLabel = new Label(x + 260, y + 25 + 6, Component.empty());
+        realISPLabel = new Label(x + 260, y + 45 + 6, Component.empty());
         massLabel = new Label(x + 260, y + 65 + 6, Component.empty());
         addRenderableWidget(realISPLabel);
-        //addRenderableWidget(materialLevelLabel);
+        addRenderableWidget(pressureLabel);
         addRenderableWidget(massLabel);
     }
 
@@ -374,13 +376,16 @@ public class EngineerTableScreen extends AbstractSimiContainerScreen<EngineerTab
             /*font.draw(ms, "P : " + CSUtil.scientificNbrFormatting(pressure, 3) + "bar",
                     x + 260, y + 20 + 6,
                     Theme.c(Theme.Key.TEXT).scaleAlpha(.75f).getRGB());*/
-            recipeAllowed = EngineMaterialInit.EngineMaterial.values()[materialInput.getState()].allowsConditions(temperature, pressure);
+            EngineMaterialInit.EngineMaterial material = EngineMaterialInit.EngineMaterial.values()[materialInput.getState()];
+            recipeAllowed = material.allowsConditions(temperature, pressure);
             engineIsp = prop.getRealIsp(
                     powerPack.getCombustionEfficiency(), expansionRatioSlider.getValueInt());
             realISPLabel.text = Component.translatable("creatingspace.gui.engineer_table.isp", (int) engineIsp);
 
             engineMass = exhaustPackType.getMass((float) engineSizeInput.getState() / 1000,
                     expansionRatioSlider.getValueInt());
+
+            pressureLabel.text = Component.translatable("creatingspace.gui.engineer_table.pressure_warning",(int)pressure,(int) material.pressureLimitAt(temperature));
 
             //materialLevel = ;//EngineMaterialInit.getLevelFor(temperature, pressure);
             //materialLevelLabel.text = Component.translatable("creatingspace.gui.engineer_table.material_level",materialLevel);

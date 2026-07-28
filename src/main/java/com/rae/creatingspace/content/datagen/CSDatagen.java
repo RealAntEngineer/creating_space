@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rae.creatingspace.CreatingSpace;
 
+import com.rae.creatingspace.init.EngineMaterialInit;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.data.DataGenerator;
@@ -46,11 +47,18 @@ public class CSDatagen {
 
 			provideDefaultLang("interface", langConsumer);
 			provideDefaultLang("tooltips", langConsumer);
+            for (EngineMaterialInit.EngineMaterial material : EngineMaterialInit.EngineMaterial.values()) {
+                provider.add(material.translationKey(), capitalize(material.materialName().replace("_", " ")));
+            }
 			//AllAdvancements.provideLang(langConsumer);
 			//AllSoundEvents.provideLang(langConsumer);
 			providePonderLang(langConsumer);
 		});
 	}
+    private static String capitalize(String s) {
+        if (s.isEmpty()) return s;
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
 
 	private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {
 		String path = "assets/creatingspace/lang/default/" + fileName + ".json";

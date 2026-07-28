@@ -33,6 +33,17 @@
                 }
               ],
               "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "CustomName",
+                  "target": "CustomName"
+                }
+              ],
+              "source": "block_entity"
             }
           ],
           "name": "creatingspace:netherite_oxygen_backtank"

@@ -2,6 +2,7 @@ package com.rae.creatingspace.init;
 
 import com.rae.creatingspace.init.ingameobject.ItemInit;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -31,15 +32,15 @@ public class EngineMaterialInit {//will only be used for datagen
 
 
     public enum EngineMaterial {//used by the table
-        ANDESITE(3f, 300f),
-        IRON(50f, 1000f),
-        COPPER(80f, 1200f),
-        BRASS(150f, 1500f),
-        REINFORCED_COPPER(250f, 1800f),
-        COPRONICKEL(400f, 2200f),
-        MONEL(650f, 2800f),
-        INCONEL(900f, 3500f),
-        HASTELLOY(1200f, 4500f);
+        ANDESITE(3f, 900f),
+        IRON(50f, 1200f),
+        COPPER(80f, 2200f),
+        BRASS(150f, 2500f),
+        REINFORCED_COPPER(250f, 2800f),
+        COPRONICKEL(400f, 3200f),
+        MONEL(650f, 3800f),
+        INCONEL(900f, 4500f),
+        HASTELLOY(1200f, 5500f);
 
         static {
             // Dev-time safety net: every tier must strictly dominate the one below it.
@@ -57,12 +58,14 @@ public class EngineMaterialInit {//will only be used for datagen
         }
 
         private final String             materialName;
+        private final String             translationKey;
         private final float              maxPressure;
         private final float              maxTemperature;
         private final List<TagKey<Item>> tags;
 
         EngineMaterial(float maxPressure, float maxTemperature) {
             this.materialName = name().toLowerCase(Locale.ROOT);
+            this.translationKey = "creatingspace.material." + materialName;
             this.maxPressure = maxPressure;
             this.maxTemperature = maxTemperature;
             this.tags = List.of(
@@ -73,6 +76,7 @@ public class EngineMaterialInit {//will only be used for datagen
                     ItemTags.create(new ResourceLocation("creatingspace", "blisk/" + materialName))
             );
         }
+
 
         /**
          * Lowest-tier material that can handle the given conditions, if any.
@@ -95,6 +99,14 @@ public class EngineMaterialInit {//will only be used for datagen
             if (temperatureCelsius <= 0) return maxPressure;
             if (temperatureCelsius >= maxTemperature) return 0f;
             return Math.max(0f, maxPressure * (1f - temperatureCelsius / maxTemperature));
+        }
+
+        public Component displayComponent() {
+            return Component.translatable(translationKey);
+        }
+
+        public String translationKey(){
+            return translationKey;
         }
 
         /**
