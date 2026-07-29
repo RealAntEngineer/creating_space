@@ -10,7 +10,8 @@
   "loops": 1,
   "results": [
     {
-      "id": "creatingspace:engine_blueprint"
+      "id": "creatingspace:engine_blueprint",
+      "count": 2
     }
   ],
   "sequence": [
