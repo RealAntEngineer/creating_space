@@ -1,0 +1,23 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "creatingspace:moon_regolith"
+    }
+  ],
+  "processingTime": 400,
+  "results": [
+    {
+      "chance": 0.1,
+      "item": "creatingspace:nickel_nugget"
+    },
+    {
+      "chance": 0.05,
+      "item": "creatingspace:aluminum_nugget"
+    },
+    {
+      "chance": 0.05,
+      "item": "creatingspace:cobalt_nugget"
+    }
+  ]
+}

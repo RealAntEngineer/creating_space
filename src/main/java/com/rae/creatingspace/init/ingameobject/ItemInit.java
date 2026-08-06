@@ -13,7 +13,6 @@ import com.rae.creatingspace.init.graphics.PartialModelInit;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.api.data.recipe.CuttingRecipeGen;
 import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.equipment.armor.AllArmorMaterials;
 import com.simibubi.create.content.equipment.armor.BaseArmorItem;
@@ -26,7 +25,6 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -450,8 +448,10 @@ public class ItemInit {
             .tag(forgeItemTag("raw_materials/cobalt"), forgeItemTag("raw_materials"))
             .register();
 
-    public static final ItemEntry<Item> CRUSHED_COBALT_ORE = REGISTRATE.item(
-                    "crushed_cobalt_ore",Item::new)
+
+    //TODO tags seems suspichious
+    public static final ItemEntry<Item> CRUSHED_RAW_COBALT = REGISTRATE.item(
+                    "crushed_raw_cobalt",Item::new)
             .tag(forgeItemTag("crushed_raw_cobalt"), forgeItemTag("crushed_raw_materials"), forgeItemTag("ores/cobalt"))
             .register();
 

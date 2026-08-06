@@ -5,19 +5,19 @@
       "item": "minecraft:copper_ingot"
     },
     {
-      "tag": "forge:ingots/nickel"
+      "tag": "forge:nuggets/nickel"
     },
     {
-      "tag": "forge:ingots/nickel"
+      "tag": "forge:nuggets/nickel"
     },
     {
-      "tag": "forge:ingots/nickel"
+      "tag": "forge:nuggets/nickel"
     }
   ],
   "results": [
     {
       "item": "creatingspace:copronickel_ingot",
-      "count": 2
+      "count": 1
     }
   ],
   "heatRequirement": "heated"

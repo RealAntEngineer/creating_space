@@ -1,0 +1,14 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "create:crushed_raw_aluminum"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "item": "creatingspace:aluminum_nugget"
+    }
+  ]
+}

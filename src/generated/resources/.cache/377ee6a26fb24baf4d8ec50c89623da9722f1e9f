@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-28T16:49:55.4647614	Registrate Provider for creatingspace [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2026-08-06T19:08:20.4817526	Registrate Provider for creatingspace [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 6aa984986d2a66a048e12e4a19bedadcca3745db assets/creatingspace/blockstates/air_liquefier.json
 0620b6613e075f5ba12cf5c4b8076fa0e54cd59d assets/creatingspace/blockstates/aluminum_block.json
 aae68ba48f1ac0316e5e7ea559c0fa14c82b0635 assets/creatingspace/blockstates/big_engine_structure.json
@@ -48,8 +48,8 @@ f0fc9758f75e605f361c93d1f73442df95ba8847 assets/creatingspace/blockstates/rocket
 5a2935fcada1454e8efcad071658867931b5ca10 assets/creatingspace/blockstates/small_engine_structure.json
 88daf0e2b134cddac59aa6d846d87dfb262fd125 assets/creatingspace/blockstates/small_nickel_sulfate_bud.json
 3f032bdf011d30ccb85cc24dae36c98eac6a133a assets/creatingspace/blockstates/small_rocket_engine.json
-8b766eacbafbfa2c8010391b5821923cfcf547ae assets/creatingspace/lang/en_ud.json
-d9463f3ed4f7d60180070321b7543985c82bff55 assets/creatingspace/lang/en_us.json
+d390d6e6a1e1ae2d03d42937ee7ebb1439fc6ce7 assets/creatingspace/lang/en_ud.json
+0e078301e58055f1b2327634c4771bd03136e9d8 assets/creatingspace/lang/en_us.json
 f024cf39e42695be77750e046e9f9e93e01b09db assets/creatingspace/models/block/aluminum_block.json
 7d7b9bd477a8d0557a3792ab668f2a398f341c15 assets/creatingspace/models/block/budding_nickel_sulfate.json
 fa5543d3680d8a80ee32bd0cc10277398798220d assets/creatingspace/models/block/clamps.json
@@ -139,7 +139,7 @@ c845231cc0e11ced37214f7680ccdd87b54f4d14 assets/creatingspace/models/item/copron
 2e5b08d2b6c1900d7d1df83c8f4291dd8a28d9cb assets/creatingspace/models/item/copronickel_sheet.json
 4a066d1a016391b294812ec56d0c89e7f7a21e03 assets/creatingspace/models/item/copronickel_turbine.json
 30eea7797883a2a73aa1d6213b1d65e85e4e697b assets/creatingspace/models/item/copronickel_turbine_shaft.json
-4d15fffea77e66481c392b56dddaebcedfcf0b9f assets/creatingspace/models/item/crushed_cobalt_ore.json
+5ed4b1354ccb8ac606e3d4a5fe9bd039f83bf2c7 assets/creatingspace/models/item/crushed_raw_cobalt.json
 36b3428b40493112d9558609f4182b6507e60517 assets/creatingspace/models/item/cryogenic_tank.json
 293a1aa6ab61ad75ff010ae8b74b7bce1669aa3b assets/creatingspace/models/item/deepslate_nickel_ore.json
 9186aec3aa11a45a2b24103e84126c200f2ac5c2 assets/creatingspace/models/item/design_blueprint.json
@@ -521,8 +521,8 @@ cf86ca7e3332b76f326a2d152bd8065bebea695a data/forge/tags/blocks/storage_blocks/r
 293afa129afb7de5e4785caebae0743c2cec6dbc data/forge/tags/blocks/storage_blocks/raw_cobalt.json
 3296e0e9b7c539221cd2347aa27e7bfd6f0a5c28 data/forge/tags/blocks/storage_blocks/raw_nickel.json
 e24663cc5abdc47992483d0343400b241dfd3016 data/forge/tags/blocks/storage_blocks/reinforced_copper.json
-a9edcd0a520bd9b11129faa5e775865fc4314970 data/forge/tags/items/crushed_raw_cobalt.json
-a9edcd0a520bd9b11129faa5e775865fc4314970 data/forge/tags/items/crushed_raw_materials.json
+cd52f564534a9609f2cd8791427bbf3213bd117e data/forge/tags/items/crushed_raw_cobalt.json
+cd52f564534a9609f2cd8791427bbf3213bd117e data/forge/tags/items/crushed_raw_materials.json
 827b5603e80ded4e46c66b8f318c2d9ca06fbfce data/forge/tags/items/dusts.json
 827b5603e80ded4e46c66b8f318c2d9ca06fbfce data/forge/tags/items/dusts/nickel.json
 0ba79cb32c9f8eef78efb02be1f317e47b94fd3d data/forge/tags/items/ingots.json
@@ -544,7 +544,7 @@ bc8737ed0b8425fb14b651a0ddce90966f4b4764 data/forge/tags/items/nuggets/inconel.j
 48ee099d9912d2a4c398778482b36eceb433d025 data/forge/tags/items/nuggets/nickel.json
 ad1821e787de8fcdb05b09253a06d6066e9389e9 data/forge/tags/items/nuggets/reinforced_copper.json
 40077f1b6f3fc877d5408224b29574bfb987667f data/forge/tags/items/ores/aluminum.json
-78bb64308b89c04c2d9e79bca359901fa9990f4c data/forge/tags/items/ores/cobalt.json
+270129bae141789ed68b281aee068ed50018f5dc data/forge/tags/items/ores/cobalt.json
 0e9c092e5d75f51a10d4229370f6e6baaa6f9f62 data/forge/tags/items/ores/nickel.json
 e2bca7c58c073b8fac8b7de00d690422b2447aa8 data/forge/tags/items/ores_in_ground/deepslate.json
 4b4ed92e360babe7c5f5840da5edad4a380a7b36 data/forge/tags/items/ores_in_ground/stone.json

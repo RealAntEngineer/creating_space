@@ -48,6 +48,7 @@ public class CSEventHandler {
         // Remap items
         for (MissingMappingsEvent.Mapping<Item> mapping : event.getMappings(Registries.ITEM, "creatingspace")) {
             switch (mapping.getKey().getPath()) {
+                case "crushed_cobalt_ore" -> mapping.remap(ItemInit.CRUSHED_RAW_COBALT.get());
                 case "crystal_shard" -> mapping.remap(ItemInit.NICKEL_SULFATE_SHARD.get());
                 case "crystal_block" -> mapping.remap(BlockInit.NICKEL_SULFATE_BLOCK.get().asItem());
                 case "crystal_cluster" -> mapping.remap(BlockInit.NICKEL_SULFATE_CLUSTER.get().asItem());

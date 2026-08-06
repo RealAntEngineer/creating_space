@@ -51,14 +51,19 @@ public class DataEventHandler {
         CSDimensionUtil.removeUnreachableDimensions();
     }
 
+
+    //will get sent to FormicAPI since it's something that is general.
     /**
+     * Utility function for getting a datapack driven registry from either the server or the client
      * @param registryKey the registryKey for a common registry
      * @param <T>         the registry object type
      * @return the registry
      */
     public static <T> Registry<T> getSideAwareRegistry(ResourceKey<Registry<T>> registryKey) {
+        //TODO add side checks so the relatively fragile call to
         if (registryAccess != null) {
-            return registryAccess.registryOrThrow(registryKey);
+            return registryAccess.registry(registryKey)
+                    .orElseThrow(() -> new IllegalStateException("Registry " + registryKey.location() + " not found"));
         } else {
             LOGGER.debug("Getting the registry access from the client");
             var connection = Minecraft.getInstance().getConnection();

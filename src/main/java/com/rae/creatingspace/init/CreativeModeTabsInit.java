@@ -87,7 +87,7 @@ public class CreativeModeTabsInit {
                         output.accept(ItemInit.NICKEL_NUGGET);
                         output.accept(ItemInit.NICKEL_SHEET);
                         output.accept(ItemInit.RAW_COBALT);
-                        output.accept(ItemInit.CRUSHED_COBALT_ORE);
+                        output.accept(ItemInit.CRUSHED_RAW_COBALT);
                         output.accept(ItemInit.COBALT_INGOT);
                         output.accept(ItemInit.COBALT_NUGGET);
                         output.accept(ItemInit.COBALT_SHEET);

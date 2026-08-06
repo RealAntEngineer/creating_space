@@ -96,6 +96,7 @@
   "creatingspace.gui.engineer_table.material_hint": "The material set the pressure limit at a given temperature",
   "creatingspace.gui.engineer_table.material_level": "Material Lvl : %d",
   "creatingspace.gui.engineer_table.max_isp": "Max ISP : %d s",
+  "creatingspace.gui.engineer_table.pressure_warning": "%d / %d bar",
   "creatingspace.gui.engineer_table.propellant_type_hint": "Using a better propellant will mean using better materials",
   "creatingspace.gui.engineer_table_screen.available_exhaust": "Available Exhaust",
   "creatingspace.gui.engineer_table_screen.available_power": "Available Power",
@@ -246,7 +247,7 @@
   "item.creatingspace.copronickel_sheet": "Copronickel Sheet",
   "item.creatingspace.copronickel_turbine": "Copronickel Turbine",
   "item.creatingspace.copronickel_turbine_shaft": "Copronickel Turbine Shaft",
-  "item.creatingspace.crushed_cobalt_ore": "Crushed Cobalt Ore",
+  "item.creatingspace.crushed_raw_cobalt": "Crushed Raw Cobalt",
   "item.creatingspace.design_blueprint": "Design Blueprint",
   "item.creatingspace.design_blueprint.message": "Unlocked :",
   "item.creatingspace.design_blueprint.tooltip.behaviour1": "Learn new design",
@@ -368,6 +369,5 @@
   "propellant_type.creatingspace.metalic_hydrogen": "Metalic Hydrogen",
   "propellant_type.creatingspace.methalox": "Metha/LOX",
   "propellant_type.creatingspace.monoprop": "Premixed methalox",
-  "rocket.assemble.new_rocket": "Create New Rocket",
-  "creatingspace.gui.engineer_table.pressure_warning": "%d / %d bar"
+  "rocket.assemble.new_rocket": "Create New Rocket"
 }
