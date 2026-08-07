@@ -7,18 +7,14 @@
       "fluid": "creatingspace:liquid_co2"
     },
     {
-      "amount": 286,
-      "fluid": "creatingspace:liquid_hydrogen"
+      "amount": 40,
+      "fluid": "minecraft:water"
     }
   ],
   "results": [
     {
       "amount": 80,
       "fluid": "creatingspace:liquid_methane"
-    },
-    {
-      "amount": 90,
-      "fluid": "minecraft:water"
     }
   ]
 }

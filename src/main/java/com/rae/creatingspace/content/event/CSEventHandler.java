@@ -161,7 +161,7 @@ public class CSEventHandler {
     }
 
     public static boolean playerNeedEquipment(ServerPlayer player){
-        return !player.isCreative();
+        return !(player.isCreative() || player.isSpectator());
     }
 
     public static boolean inO2(LivingEntity entity) {
