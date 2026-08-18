@@ -1,0 +1,11 @@
+{
+  "adjacentDimensions": {
+    "creatingspace:moon_orbit": {
+      "deltaV": 300
+    }
+  },
+  "arrivalHeight": 64,
+  "distanceToOrbitingBody": 400,
+  "gravity": 1.6,
+  "orbitedBody": "minecraft:overworld"
+}

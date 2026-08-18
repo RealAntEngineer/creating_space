@@ -1,0 +1,69 @@
+{
+  "type": "creatingspace:mars",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "creatingspace:mars_plains",
+          "parameters": {
+            "continentalness": [
+              -1.0,
+              1.0
+            ],
+            "depth": 0.0,
+            "erosion": [
+              -1.0,
+              1.0
+            ],
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -1.0,
+              1.0
+            ],
+            "weirdness": [
+              -1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "biome": "creatingspace:mars_cave",
+          "parameters": {
+            "continentalness": [
+              -1.0,
+              1.0
+            ],
+            "depth": [
+              0.2,
+              0.9
+            ],
+            "erosion": [
+              -1.0,
+              1.0
+            ],
+            "humidity": [
+              -1.0,
+              1.0
+            ],
+            "offset": 0.0,
+            "temperature": [
+              -1.0,
+              1.0
+            ],
+            "weirdness": [
+              -1.0,
+              1.0
+            ]
+          }
+        }
+      ]
+    },
+    "settings": "creatingspace:mars_noise"
+  }
+}

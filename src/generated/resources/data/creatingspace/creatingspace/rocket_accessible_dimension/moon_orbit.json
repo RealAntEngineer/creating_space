@@ -1,0 +1,22 @@
+{
+  "adjacentDimensions": {
+    "creatingspace:earth_orbit": {
+      "deltaV": 200
+    },
+    "creatingspace:mars_orbit": {
+      "deltaV": 1000
+    },
+    "creatingspace:the_moon": {
+      "arrivalHeight": 200,
+      "deltaV": 300
+    },
+    "creatingspace:venus": {
+      "arrivalHeight": 200,
+      "deltaV": 2200
+    }
+  },
+  "arrivalHeight": 64,
+  "distanceToOrbitingBody": 100,
+  "gravity": 0.0,
+  "orbitedBody": "creatingspace:the_moon"
+}

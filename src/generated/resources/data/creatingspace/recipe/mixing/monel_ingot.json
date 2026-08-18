@@ -3,10 +3,13 @@
   "heat_requirement": "superheated",
   "ingredients": [
     {
-      "item": "minecraft:copper_ingot"
+      "item": "create:copper_nugget"
     },
     {
-      "tag": "c:ingots/nickel"
+      "item": "create:copper_nugget"
+    },
+    {
+      "item": "create:copper_nugget"
     },
     {
       "tag": "c:ingots/nickel"

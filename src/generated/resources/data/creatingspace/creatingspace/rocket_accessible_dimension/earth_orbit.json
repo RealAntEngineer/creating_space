@@ -1,0 +1,22 @@
+{
+  "adjacentDimensions": {
+    "creatingspace:mars_orbit": {
+      "deltaV": 1000
+    },
+    "creatingspace:moon_orbit": {
+      "deltaV": 600
+    },
+    "creatingspace:venus": {
+      "arrivalHeight": 200,
+      "deltaV": 2200
+    },
+    "minecraft:overworld": {
+      "arrivalHeight": 200,
+      "deltaV": 200
+    }
+  },
+  "arrivalHeight": 64,
+  "distanceToOrbitingBody": 100,
+  "gravity": 0.0,
+  "orbitedBody": "minecraft:overworld"
+}

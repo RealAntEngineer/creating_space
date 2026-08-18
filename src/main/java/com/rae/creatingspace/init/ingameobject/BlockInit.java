@@ -633,6 +633,7 @@ public class BlockInit {
             .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
             .tag(BlockTags.NEEDS_DIAMOND_TOOL)
             .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_cobalt")))
             .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
@@ -643,6 +644,7 @@ public class BlockInit {
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
             .item()
+            .tag(Tags.Items.STORAGE_BLOCKS)
             .tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_cobalt")))
             .transform(customItemModel("raw_cobalt_block"))
             .register();
@@ -669,8 +671,8 @@ public class BlockInit {
     public static final BlockEntry<Block> RAW_ALUMINUM_BLOCK = REGISTRATE.block(
                     "raw_aluminum_block", Block::new)
             .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
-            .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
+            .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_aluminum")))
             .recipe((c, p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 1)
@@ -681,6 +683,7 @@ public class BlockInit {
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName())))
             .item()
+            .tag(Tags.Items.STORAGE_BLOCKS)
             .tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_aluminum")))
             .transform(customItemModel("raw_aluminum_block"))
             .register();

@@ -1,5 +1,3 @@
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 package com.rae.creatingspace;
 
 import net.minecraft.MethodsReturnNonnullByDefault;

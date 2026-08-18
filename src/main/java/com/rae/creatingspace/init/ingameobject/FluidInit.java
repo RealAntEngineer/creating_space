@@ -112,9 +112,9 @@ public class FluidInit {
                         level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, Blocks.OBSIDIAN.defaultBlockState()));
                     }
                     else{
-                        if (level.dimension().equals(DimensionInit.MOON_LEVEL)) {
+                        if (level.dimension().equals(DimensionInit.MOON_KEY)) {
                             level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, BlockInit.MOON_STONE.get().defaultBlockState()));
-                        } else if (level.dimension().equals(DimensionInit.MARS_LEVEL)) {
+                        } else if (level.dimension().equals(DimensionInit.MARS_KEY)) {
                             level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, BlockInit.MARS_STONE.get().defaultBlockState()));
                         } else {
                             level.setBlockAndUpdate(currentPos, EventHooks.fireFluidPlaceBlockEvent(level, currentPos, currentPos, Blocks.COBBLESTONE.defaultBlockState()));
