@@ -6,7 +6,13 @@
 
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "__[DEPRECATED]__ Needed for producing methane",
   "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split liquids in a basin",
-  "block.creatingspace.flight_recorder.tooltip.summary": "Displays information when the rocket fails, you'll need engineer googles to view the information",
+
+  "block.creatingspace.flight_recorder.tooltip.summary": "Displays information when the rocket fails, you'll need engineer googles to view the information when the rocket is disassembled. Click on it if the rocket is still assembled",
+  "block.creatingspace.flight_recorder.tooltip.condition1": "R-Click on contraption",
+  "block.creatingspace.flight_recorder.tooltip.behaviour1": "Gives information on last flight",
+  "block.creatingspace.flight_recorder.tooltip.condition2": "Shift + R-Click on contration",
+  "block.creatingspace.flight_recorder.tooltip.behaviour2": "Gives information on the rocket thrust and deltaV",
+
   "block.creatingspace.flow_meter.tooltip.summary": "Show the amount of fluid passing through a pipe",
   "block.creatingspace.oxygen_sealer.tooltip.summary": "A machine that fill a room with oxygen",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract gases form the air and liquefy them",
@@ -16,6 +22,8 @@
   "block.creatingspace.clamps.tooltip.summary": "Prevent a contraption from moving, movable by pistons. Literally a clamp",
 
   "block.creatingspace.cryogenic_tank.tooltip.summary": "It's both a bucket and a fluid tank for cold liquid, keep it's content after breaking. Can be use in a filter",
+  "block.creatingspace.copper_oxygen_backtank.tooltip.summary": "Fill the backtank connecting a pipe to the bottom of the tank and pumping in liquid oxygen.",
+  "block.creatingspace.netherite_oxygen_backtank.tooltip.summary": "Fill the backtank connecting a pipe to the bottom of the tank and pumping in liquid oxygen",
 
   "item.creatingspace.space_food.tooltip.summary": "...ew",
   "item.creatingspace.design_blueprint.tooltip.summary" : "This paper contain information on engine designs.",

@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "creatingspace:mars_surface_regolith"
+          "name": "creatingspace:mars_regolith"
         }
       ],
       "rolls": 1.0

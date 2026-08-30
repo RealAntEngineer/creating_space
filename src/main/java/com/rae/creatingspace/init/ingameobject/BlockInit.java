@@ -506,6 +506,7 @@ public class BlockInit {
             .block("moon_surface_regolith",RegolithSurfaceBlock::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.sound(SoundType.SNOW).mapColor(MapColor.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
+            .loot((lt, bl) -> lt.add(bl, lt.createSingleItemTable(MOON_REGOLITH.get())))
             .item()
             .transform(customItemModel("moon_surface_regolith"))
             .register();
@@ -529,6 +530,7 @@ public class BlockInit {
             .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.sound(SoundType.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
+            .loot((lt, bl) -> lt.add(bl, lt.createSingleItemTable(MARS_REGOLITH.get())))
             .item()
             .transform(customItemModel("mars_surface_regolith"))
             .register();
