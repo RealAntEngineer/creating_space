@@ -93,6 +93,8 @@ public class CreatingSpace {
         PacketInit.register();
         IgniteOnPlace.register();
 
+        MovementCheckInit.register();
+
         CarverInit.register(modEventBus);
 
         CSContraptionType.register(modEventBus);
@@ -104,6 +106,7 @@ public class CreatingSpace {
         //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->  CreatingSpaceClient.clientRegister(modEventBus));
 
     }
+
     public static void init(final FMLCommonSetupEvent event) {
 
 
@@ -113,8 +116,8 @@ public class CreatingSpace {
             //FluidInit.registerOpenEndedEffect();
         });
     }
-    public static void onAddReloadListeners(AddReloadListenerEvent event)
-    {
+
+    public static void onAddReloadListeners(AddReloadListenerEvent event) {
         //datagen, and tag provider
         event.addListener(MassOfBlockReader.MASS_HOLDER);
     }

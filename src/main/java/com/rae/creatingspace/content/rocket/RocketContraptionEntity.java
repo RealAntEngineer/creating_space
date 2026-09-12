@@ -26,7 +26,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -35,7 +34,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -72,7 +70,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.rae.creatingspace.content.rocket.contraption.RocketContraption.getCodecMapInfo;
 import static com.rae.creatingspace.init.ingameobject.SoundInit.ROCKET_LAUNCH;
 
 @NonnullDefault
@@ -114,7 +111,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
 
     //initializing and saving methods
 
-    public static RocketContraptionEntity create(Level level, RocketContraption contraption, ResourceLocation destination) {
+    public static RocketContraptionEntity create(Level level, RocketContraption contraption) {
         RocketContraptionEntity entity =
                 new RocketContraptionEntity(EntityInit.ROCKET_CONTRAPTION.get(), level);
         entity.setContraption(contraption);
@@ -125,16 +122,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         entity.noPhysics = false;
         LOGGER.info("finishing setting up parameters");
         return entity;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void handlePacket(RocketContraptionUpdatePacket packet) {
-        assert Minecraft.getInstance().level != null;
-        Entity entity = Minecraft.getInstance().level.getEntity(packet.entityID);
-        if (!(entity instanceof RocketContraptionEntity ce))
-            return;
-        ce.speed = packet.speed;
-        ce.clientOffsetDiff = packet.coord - ce.getAxisCoord();
     }
 
     public double getAxisCoord() {
@@ -251,11 +238,6 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     protected void tickContraption() {
         if (!(contraption instanceof RocketContraption))
             return;
-        /*if (failedToLaunch) {//happens when fail to have enough fuel
-            getEntityData().set(STATUS_DATA_ACCESSOR, RocketStatus.BLOCKED);
-            //disassemble();
-            return;
-        }*/
 
         if (level().isClientSide) {
             clientOffsetDiff *= .75f;
@@ -266,27 +248,54 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         if (!level().isClientSide) {
             if (isInPropulsionPhase()) {
                 tickConsumptionAndSpeed();
-                Vec3 movementVec = getDeltaMovement();
                 tickDimensionChangeLogic();
 
+                Vec3 candidate = getDeltaMovement();
 
-                if (ContraptionCollider.collideBlocks(this) && !(level().getMaxBuildHeight() < this.getBoundingBox().maxY + movementVec.y)) {
-                    //stopRocket();
-                    getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
-                    //setContraptionMotion(Vec3.ZERO);
+                boolean collided = false;
+                int failCount = 0;
+                final int maxFails = 8; // tune: max blocks you're willing to "eat" off the movement
 
-                } else if (tickCount > 2) {//that means the rocket takes 2 ticks more than expected to go up
-                    movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
-                    move(movementVec.x, movementVec.y, movementVec.z);
+                while (true) {
+                    setContraptionMotion(candidate);
+
+                    boolean collides = ContraptionCollider.collideBlocks(this)
+                            || level().getMaxBuildHeight() < this.getBoundingBox().maxY + candidate.y;
+
+                    if (!collides)
+                        break;
+
+                    collided = true;
+                    failCount++;
+
+                    if (failCount > maxFails) {
+                        // couldn't find any safe motion at all, don't move
+                        candidate = Vec3.ZERO;
+                        setContraptionMotion(candidate);
+                        break;
+                    }
+
+                    // step the vertical component down by one whole block, floored — allowed to go negative
+                    double steppedY = Math.floor(candidate.y) - 1;
+                    candidate = new Vec3(candidate.x, steppedY, candidate.z);
                 }
-                /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
-            contraption.stop(level);*/
+
+                // always perform whatever safe move we landed on (may be zero)
+                if (tickCount > 2 || collided) {
+                    Vec3 moveVec = VecHelper.clampComponentWise(candidate, (float) 1);
+                    move(moveVec.x, moveVec.y, moveVec.z);
+                }
+
+                if (collided) {
+                    getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
+                    setContraptionMotion(Vec3.ZERO);
+                }
+
+            } else {
+                setContraptionMotion(Vec3.ZERO);
+                this.speed = 0;
             }
             sendPacket();
-        }
-        if (!isInPropulsionPhase()) {
-            setContraptionMotion(Vec3.ZERO);
-            this.speed = 0;
         }
     }
 
@@ -458,11 +467,19 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         return this.entityData.get(STATUS_DATA_ACCESSOR) == RocketStatus.ON_FINAL;
     }
 
-    //network and client only
-
     public void sendPacket() {
         CatnipServices.NETWORK.sendToClientsTrackingEntity(this,
                 new RocketContraptionUpdatePacket(getId(), getAxisCoord(), this.speed));
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void handlePacket(RocketContraptionUpdatePacket packet) {
+        assert Minecraft.getInstance().level != null;
+        Entity entity = Minecraft.getInstance().level.getEntity(packet.entityID);
+        if (!(entity instanceof RocketContraptionEntity ce))
+            return;
+        ce.speed = packet.speed;
+        ce.clientOffsetDiff = packet.coord - ce.getAxisCoord();
     }
 
     private void consumePropellant(RocketContraptionEntity rocketContraptionEntity) {

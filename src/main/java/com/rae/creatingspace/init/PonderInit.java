@@ -21,7 +21,8 @@ public class PonderInit {
         //  flowmeter
         PonderSceneRegistrationHelper<ItemProviderEntry<?,?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
-        HELPER.forComponents(BlockInit.SMALL_ROCKET_ENGINE,BlockInit.BIG_ROCKET_ENGINE,BlockInit.ROCKET_CONTROLS,BlockInit.FLIGHT_RECORDER)
+        HELPER.forComponents(BlockInit.SMALL_ROCKET_ENGINE, BlockInit.BIG_ROCKET_ENGINE, BlockInit.ROCKET_ENGINE,
+                        BlockInit.ROCKET_CONTROLS, BlockInit.FLIGHT_RECORDER)
                 .addStoryBoard("rocket/rocket_building", RocketScene::rocketBuild)
                 .addStoryBoard("rocket/rocket_building",RocketScene::rocketDebug);
     }
