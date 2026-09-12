@@ -6,7 +6,13 @@
 
   "block.creatingspace.chemical_synthesizer.tooltip.summary": "__[DEPRECATED]__ Needed for producing methane",
   "block.creatingspace.mechanical_electrolyzer.tooltip.summary": "Split liquids in a basin",
-  "block.creatingspace.flight_recorder.tooltip.summary": "Displays information when the rocket fails, you'll need engineer googles to view the information",
+
+  "block.creatingspace.flight_recorder.tooltip.summary": "Displays information when the rocket fails, you'll need engineer googles to view the information when the rocket is disassembled. Click on it if the rocket is still assembled",
+  "block.creatingspace.flight_recorder.tooltip.condition1": "R-Click on contraption",
+  "block.creatingspace.flight_recorder.tooltip.behaviour1": "Gives information on last flight",
+  "block.creatingspace.flight_recorder.tooltip.condition2": "Shift + R-Click on contration",
+  "block.creatingspace.flight_recorder.tooltip.behaviour2": "Gives information on the rocket thrust and deltaV",
+
   "block.creatingspace.flow_meter.tooltip.summary": "Show the amount of fluid passing through a pipe",
   "block.creatingspace.oxygen_sealer.tooltip.summary": "A machine that fill a room with oxygen",
   "block.creatingspace.air_liquefier.tooltip.summary": "Extract gases form the air and liquefy them",
@@ -24,5 +30,5 @@
   "item.creatingspace.design_blueprint.tooltip.condition1": "R-Click",
   "item.creatingspace.design_blueprint.tooltip.behaviour1": "Learn new design",
 
-  "item.creatingspace.engine_blueprint.tooltip.summary" : "Use to craft rocket engines and it's component. "
+  "item.creatingspace.engine_blueprint.tooltip.summary" : "Use to craft rocket engines and it's component."
 }

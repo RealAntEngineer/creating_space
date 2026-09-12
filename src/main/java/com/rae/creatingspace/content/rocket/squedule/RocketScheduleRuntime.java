@@ -1,6 +1,7 @@
 package com.rae.creatingspace.content.rocket.squedule;
 
 import com.rae.creatingspace.CreatingSpace;
+import com.rae.creatingspace.content.rocket.contraption.RocketContraption;
 import com.rae.creatingspace.content.rocket.squedule.condition.ScheduleWaitCondition;
 import com.rae.creatingspace.content.rocket.squedule.instruction.ChangeTitleInstruction;
 import com.rae.creatingspace.content.rocket.squedule.instruction.DestinationInstruction;
@@ -176,6 +177,9 @@ public class RocketScheduleRuntime {
 
             displayLinkUpdateRequested |= i == 0 && prevVersion != tag.getInt("StatusVersion");
         }
+        if (rocket.getContraption() instanceof RocketContraption rc && rc.getStorage() != null){
+            rc.getStorage().tickIdleCargoTracker();
+        }
     }
 
     public RocketPath startCurrentInstruction() {
@@ -195,7 +199,7 @@ public class RocketScheduleRuntime {
             if (cost <= 0) {
                 return null;
             } else {
-                return new RocketPath(currentWorld, destinationWorld, cost);
+                return new RocketPath(currentWorld, destinationWorld, destination.getXYCoord(),cost);
             }
         }
 

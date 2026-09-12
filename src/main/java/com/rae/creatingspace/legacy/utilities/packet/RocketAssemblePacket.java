@@ -12,22 +12,22 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class NewRocketAssemblePacket extends BlockEntityConfigurationPacket<RocketControlsBlockEntity> {
-    private Boolean assembleNextTick;
-    private ResourceLocation destination;
-    public static final StreamCodec<RegistryFriendlyByteBuf, NewRocketAssemblePacket> STREAM_CODEC = StreamCodec.composite(
+public class RocketAssemblePacket extends BlockEntityConfigurationPacket<RocketControlsBlockEntity> {
+    private Boolean                                                                assembleNextTick;
+    private ResourceLocation                                                       destination;
+    public static final StreamCodec<RegistryFriendlyByteBuf, RocketAssemblePacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, packet -> packet.pos,
             ByteBufCodecs.BOOL, packet -> packet.assembleNextTick,
-            NewRocketAssemblePacket::new
+            RocketAssemblePacket::new
     );
 
-    public NewRocketAssemblePacket(BlockPos pos, Boolean assembleNextTick) {
+    public RocketAssemblePacket(BlockPos pos, Boolean assembleNextTick) {
         super(pos);
         this.assembleNextTick = assembleNextTick;
     }
 
-    public static NewRocketAssemblePacket tryAssemble(BlockPos pos) {
-        NewRocketAssemblePacket packet = new NewRocketAssemblePacket(pos, true);
+    public static RocketAssemblePacket tryAssemble(BlockPos pos) {
+        RocketAssemblePacket packet = new RocketAssemblePacket(pos, true);
         packet.assembleNextTick = true;
         return packet;
     }

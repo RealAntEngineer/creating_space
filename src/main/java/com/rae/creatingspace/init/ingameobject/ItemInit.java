@@ -44,21 +44,21 @@ public class ItemInit {
         REGISTRATE.setCreativeTab(CreativeModeTabsInit.COMPONENT_TAB);
     }
 
-    public static final ArrayList<ItemEntry<? extends Item>> AEROSPIKE_PLUG = smartRegisterSequencedItem("aerospike_plug");
+    public static final ItemEntry<? extends Item> AEROSPIKE_PLUG = smartRegisterSequencedItem("aerospike_plug");
 
-    public static final ArrayList<ItemEntry<? extends Item>> BELL_NOZZLE = smartRegisterSequencedItem("bell_nozzle");
-    public static final ArrayList<ItemEntry<? extends Item>> POWER_PACK = smartRegisterSequenced3DItem("power_pack");
-    public static final ArrayList<ItemEntry<? extends Item>> EXHAUST_PACK= smartRegisterSequenced3DItem("exhaust_pack");
-    public static final ArrayList<ItemEntry<? extends Item>> COMBUSTION_CHAMBER = smartRegisterSequencedItem("combustion_chamber");
+    public static final ItemEntry<? extends Item>            BELL_NOZZLE = smartRegisterSequencedItem("bell_nozzle");
+    public static final ArrayList<ItemEntry<? extends Item>> POWER_PACK  = smartRegisterSequenced3DItem("power_pack");
+    public static final ArrayList<ItemEntry<? extends Item>> EXHAUST_PACK       = smartRegisterSequenced3DItem("exhaust_pack");
+    public static final ItemEntry<? extends Item>            COMBUSTION_CHAMBER = smartRegisterSequencedItem("combustion_chamber");
     public static final ArrayList<ItemEntry<? extends Item>> ENGINE_INGREDIENTS = EngineMaterialInit.collectMaterials();
     public static final ArrayList<ItemEntry<? extends Item>> METALS_INGREDIENTS = EngineMaterialInit.collectMetals();
 
     public static ArrayList<ItemEntry<? extends Item>> registerEngineIngredientForMaterial(String name) {
         ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
 
-        collector.addAll(smartRegisterSequencedItem(name + "_injector"));
-        collector.addAll(smartRegisterSequencedItem(name + "_turbine"));
-        collector.addAll(smartRegisterSequencedItem(name + "_injector_grid"));
+        collector.add(smartRegisterSequencedItem(name + "_injector"));
+        collector.add(smartRegisterSequencedItem(name + "_turbine"));
+        collector.add(smartRegisterSequencedItem(name + "_injector_grid"));
 
         collector.add(REGISTRATE.item(
                         name + "_engine_wall", Item::new)
@@ -201,16 +201,13 @@ public class ItemInit {
         return collector;
     }
 
-    private static ArrayList<ItemEntry<? extends Item>> smartRegisterSequencedItem(String name) {
-        ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
-        collector.add(REGISTRATE.item(
-                        name, Item::new)
-                //.properties(p -> p.tab(CreativeModeTabsInit.COMPONENT_TAB))
-                .defaultModel()
-                .register());
+    private static ItemEntry<? extends Item> smartRegisterSequencedItem(String name) {
+
         registerTransitionItem(name); // we don't put the incomplete version in the creative tab
-        //System.out.println(collector);
-        return collector;
+        return REGISTRATE.item(
+                        name, Item::new)
+                .defaultModel()
+                .register();
     }
 
     private static ArrayList<ItemEntry<? extends Item>> smartRegisterSequenced3DItem(String name) {
@@ -264,16 +261,13 @@ public class ItemInit {
                     .defaultModel()
                     .register();
 
-    public static final ItemEntry<Item> BASIC_SPACESUIT_FABRIC = REGISTRATE.item(
-                    "basic_spacesuit_fabric",Item::new)
-            .register();
+    public static final ItemEntry<? extends Item> BASIC_SPACESUIT_FABRIC = smartRegisterSequencedItem(
+            "basic_spacesuit_fabric"
+    );
 
-    public static final ItemEntry<Item> ADVANCED_SPACESUIT_FABRIC = REGISTRATE.item(
-                    "advanced_spacesuit_fabric",Item::new)
-            .properties(Item.Properties::fireResistant)
-            .register();
-
-
+    public static final ItemEntry<? extends Item> ADVANCED_SPACESUIT_FABRIC = smartRegisterSequencedItem(
+            "advanced_spacesuit_fabric"
+    );
 
     public static final ItemEntry<Item> COPPER_COIL = REGISTRATE.item(
             "copper_coil",Item::new)
@@ -287,7 +281,7 @@ public class ItemInit {
                             .save(p, resource("crafting/misc/" + c.getName())))
             .register();
 
-
+/*
     public static final ItemEntry<Item> BASIC_CATALYST = REGISTRATE.item(
             "basic_catalyst",Item::new)
             .recipe((c,p) ->
@@ -304,7 +298,7 @@ public class ItemInit {
     public static final ItemEntry<Item> COAL_DUST = REGISTRATE.item(
             "coal_dust", Item::new)
             .burnTime(4000)
-            .register();
+            .register();*/
 
     //food
     //exemple -> arn't registered...
@@ -345,12 +339,12 @@ public class ItemInit {
             "crushed_nickel_ore",Item::new)
             .tag(commonItemTag("crushed_raw_nickel"), commonItemTag("crushed_raw_materials"))
             .register();*/
-
+/*
     public static final ItemEntry<Item> NICKEL_DUST = REGISTRATE.item(
                     "nickel_dust",Item::new)
             .tag(commonItemTag("dusts/nickel"), commonItemTag("dusts"))
             .register();
-
+*/
 
     public static final ItemEntry<Item> NICKEL_INGOT = REGISTRATE.item(
             "nickel_ingot",Item::new)
@@ -457,6 +451,7 @@ public class ItemInit {
                     "crushed_cobalt_ore",Item::new)
             .tag(commonItemTag("crushed_raw_cobalt"), commonItemTag("crushed_raw_materials"), commonItemTag("ores/cobalt"))
             .register();
+
 
     public static final ItemEntry<Item> COBALT_INGOT = REGISTRATE.item(
                     "cobalt_ingot",Item::new)
@@ -663,11 +658,11 @@ public class ItemInit {
     public static final ItemEntry<Item> INJECTOR = REGISTRATE.item(
                     "injector", Item::new)
             .register();
-
+/*
     public static final ItemEntry<Item> REINFORCED_INJECTOR = REGISTRATE.item(
                     "reinforced_injector", Item::new)
             .register();
-
+*/
     public static final ItemEntry<Item> STURDY_PROPELLER = REGISTRATE.item(
                     "sturdy_propeller", Item::new)
             .recipe((c,p) ->
@@ -680,7 +675,7 @@ public class ItemInit {
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/misc/" + c.getName())))
             .register();
-
+/*
     public static final ItemEntry<Item> INJECTOR_GRID = REGISTRATE.item(
                     "injector_grid", Item::new)
             .register();
@@ -688,7 +683,7 @@ public class ItemInit {
     public static final ItemEntry<Item> REINFORCED_INJECTOR_GRID = REGISTRATE.item(
                     "reinforced_injector_grid", Item::new)
             .register();
-
+*/
     public static final ItemEntry<CatalystItem> NICKEL_SULFATE_CATALYST = REGISTRATE.item(
             "nickel_sulfate_catalyst", (p) -> new CatalystItem(p, PartialModelInit.NICKEL_SULFATE_CATALYST))
             .properties(p -> p.durability(100))

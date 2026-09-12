@@ -23,18 +23,6 @@ public class CSCrushingRecipeGen extends CrushingRecipeGen {
     }
 
     GeneratedRecipe
-
-        COAL_DUST = create("coal_dust", b -> b
-            .duration(400)
-            .require(Items.COAL)
-            .output(ItemInit.COAL_DUST, 2)),
-
-        NICKEL_DUST = create("nickel_dust", b -> b
-                .duration(400)
-                .require(commonItemTag("ingots/nickel"))
-                .output(ItemInit.NICKEL_DUST, 2)
-                .output(0.5F, ItemInit.NICKEL_DUST, 1)),
-
         MOON_REGOLITH = create("moon_stone", b -> b
             .duration(400)
             .require(BlockInit.MOON_STONE)

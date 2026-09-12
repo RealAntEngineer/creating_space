@@ -4,7 +4,6 @@ import com.rae.creatingspace.CreatingSpace;
 import com.rae.creatingspace.content.rocket.engine.table.EngineerTableCraft;
 import com.rae.creatingspace.content.rocket.network.*;
 import com.rae.creatingspace.legacy.utilities.packet.*;
-import com.simibubi.create.Create;
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -19,10 +18,10 @@ public enum PacketInit implements BasePacketPayload.PacketTypeProvider {
     CRAFT_ENGINE(EngineerTableCraft.class, EngineerTableCraft.STREAM_CODEC),
     SYNC_ROCKET_ENGINEER_BE(RocketEngineerTableSync.class, RocketEngineerTableSync.STREAM_CODEC),
     //ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket.STREAM_CODEC),
-    ASSEMBLE_ROCKET_2(NewRocketAssemblePacket.class, NewRocketAssemblePacket.STREAM_CODEC),
+    ASSEMBLE_ROCKET_2(RocketAssemblePacket.class, RocketAssemblePacket.STREAM_CODEC),
     ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket.STREAM_CODEC),
-    LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket.STREAM_CODEC),
-    SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket.STREAM_CODEC),
+    //LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket.STREAM_CODEC),
+    //SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket.STREAM_CODEC),
     DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket.STREAM_CODEC),
     ROCKET_SCHEDULE_EDIT(RocketScheduleEditPacket.class, RocketScheduleEditPacket.STREAM_CODEC),
 

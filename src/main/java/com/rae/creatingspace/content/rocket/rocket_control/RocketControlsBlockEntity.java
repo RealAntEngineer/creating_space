@@ -126,7 +126,7 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
                 RocketContraptionEntity.create(level, contraption, destination);
         BlockPos anchor = worldPosition;
         rocketContraptionEntity.setPos(anchor.getX(), anchor.getY(), anchor.getZ());
-        rocketContraptionEntity.setInitialPosMap(initialPosMap);
+        //rocketContraptionEntity.setInitialPosMap(initialPosMap);
         //we should make that a little better -> no initialisation of entry point before launch
         //rocketContraptionEntity.rocketEntryCoordinate = initialPosMap.getOrDefault(destination, this.worldPosition);
         level.addFreshEntity(rocketContraptionEntity);

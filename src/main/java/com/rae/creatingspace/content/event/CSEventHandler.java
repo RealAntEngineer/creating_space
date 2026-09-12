@@ -17,7 +17,10 @@ import com.rae.creatingspace.content.life_support.spacesuit.OxygenBacktankUtil;
 import com.rae.creatingspace.content.life_support.sealer.RoomAtmosphere;
 import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.CustomTeleporter;
+import com.rae.creatingspace.init.ingameobject.BlockInit;
+import com.rae.creatingspace.init.ingameobject.ItemInit;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -25,8 +28,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -35,6 +40,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.SleepFinishedTimeEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.registries.IdMappingEvent;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +49,36 @@ import java.util.Objects;
 public class CSEventHandler {
     public CSEventHandler() {
     }
+
+    /*@SubscribeEvent
+    public static void missingEntries(IdMappingEvent event){
+
+        // Remap items
+        for (IdMappingEvent.Mapping<Item> mapping : event.ge(Registries.ITEM, "creatingspace")) {
+            switch (mapping.getKey().getPath()) {
+                case "crushed_cobalt_ore" -> mapping.remap(ItemInit.CRUSHED_RAW_COBALT.get());
+                case "crystal_shard" -> mapping.remap(ItemInit.NICKEL_SULFATE_SHARD.get());
+                case "crystal_block" -> mapping.remap(BlockInit.NICKEL_SULFATE_BLOCK.get().asItem());
+                case "crystal_cluster" -> mapping.remap(BlockInit.NICKEL_SULFATE_CLUSTER.get().asItem());
+                case "budding_crystal" -> mapping.remap(BlockInit.BUDDING_NICKEL_SULFATE.get().asItem());
+                case "large_crystal_bug" -> mapping.remap(BlockInit.LARGE_NICKEL_SULFATE_BUD.get().asItem());
+                case "medium_crystal_bug" -> mapping.remap(BlockInit.MEDIUM_NICKEL_SULFATE_BUD.get().asItem());
+                case "small_crystal_bug" -> mapping.remap(BlockInit.SMALL_NICKEL_SULFATE_BUD.get().asItem());
+            }
+        }
+
+        // Remap blocks
+        for (MissingMappingsEvent.Mapping<Block> mapping : event.getMappings(Registries.BLOCK, "creatingspace")) {
+            switch (mapping.getKey().getPath()) {
+                case "crystal_block" -> mapping.remap(BlockInit.NICKEL_SULFATE_BLOCK.get());
+                case "crystal_cluster" -> mapping.remap(BlockInit.NICKEL_SULFATE_CLUSTER.get());
+                case "budding_crystal" -> mapping.remap(BlockInit.BUDDING_NICKEL_SULFATE.get());
+                case "large_crystal_bug" -> mapping.remap(BlockInit.LARGE_NICKEL_SULFATE_BUD.get());
+                case "medium_crystal_bug" -> mapping.remap(BlockInit.MEDIUM_NICKEL_SULFATE_BUD.get());
+                case "small_crystal_bug" -> mapping.remap(BlockInit.SMALL_NICKEL_SULFATE_BUD.get());
+            }
+        }
+    }*/
 
     @SubscribeEvent
     public static void entityLivingEvent(EntityTickEvent.Pre livingTickEvent){
@@ -106,8 +142,10 @@ public class CSEventHandler {
             }
         }
     }
+
     @SubscribeEvent
     public static void playerSleeping(SleepFinishedTimeEvent sleepFinishedEvent) {
+        //the overworld control the clock for every dimensions, so if we sleep it's the overworld that need to get updated
         sleepFinishedEvent.getLevel().getServer().getLevel(Level.OVERWORLD).setDayTime(sleepFinishedEvent.getNewTime());
         /*for (ServerLevel serverlevel : sleepFinishedEvent.getLevel().getServer().getAllLevels()) {
             serverlevel.setDayTime(sleepFinishedEvent.getNewTime());
@@ -132,7 +170,7 @@ public class CSEventHandler {
     }
 
     public static boolean playerNeedEquipment(ServerPlayer player){
-        return !player.isCreative();
+        return !(player.isCreative() || player.isSpectator());
     }
 
     public static boolean inO2(LivingEntity entity) {
@@ -142,25 +180,13 @@ public class CSEventHandler {
         if (CSDimensionUtil.hasO2Atmosphere(level.getBiome(entity.getOnPos()))) {
             return true;
         }
-        /*
-        AABB colBox = entity.getBoundingBox();
-        Stream<BlockState> blockStateStream  = level.getBlockStates(colBox);
-        for (BlockState state : blockStateStream.toList()) {
-            if (isStateBreathable(state)){
-                return true;
-            }
-        }
-        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBox);
-        for (RoomAtmosphere atmosphere : entityStream) {
-            if (atmosphere.getShape().inside(colBox) && atmosphere.breathable()) {
-                return true;
-            }
-        }*/
+
         boolean flag = ((INeedOxygen)entity).insideOxygenRoom();
         ((INeedOxygen)entity).setInsideOxygenRoom(false);
         return flag;
 
     }
+
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         CommandsInit.register(event.getDispatcher());

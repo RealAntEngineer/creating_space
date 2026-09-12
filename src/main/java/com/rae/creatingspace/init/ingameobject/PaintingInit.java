@@ -13,12 +13,12 @@ public class PaintingInit {
             Registries.PAINTING_VARIANT,
             CreatingSpace.MODID);
 
-    public static final DeferredHolder<PaintingVariant,PaintingVariant> BLANK_PAINTING = PAINTINGS.register(
+    /*public static final DeferredHolder<PaintingVariant,PaintingVariant> BLANK_PAINTING = PAINTINGS.register(
             "blank_painting",
             () -> new PaintingVariant(16,16,
                     CreatingSpace.resource("blank_painting"))
             );
-
+*/
     public static void register(IEventBus bus) {
         PAINTINGS.register(bus);
     }

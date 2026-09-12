@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "priority": 900,
   "package": "com.rae.creatingspace.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "plugin": "com.rae.creatingspace.mixin.CSMixinPlugin",
   "mixins": [
     "entity.ContraptionMixin",

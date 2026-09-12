@@ -28,8 +28,8 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.rae.creatingspace.content.event.DataEventHandler.getSideAwareRegistry;
-import static com.rae.creatingspace.content.rocket.RocketContraptionEntity.addToConsumableFluids;
 import static com.rae.creatingspace.content.rocket.RocketContraptionEntity.getMassMap;
+import static com.rae.creatingspace.content.rocket.RocketContraptionEntity.searchForFluid;
 
 public class FlightRecorderInteraction extends MovingInteractionBehaviour {
     private static final boolean shouldBeDisplayed = false;
@@ -44,29 +44,22 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
             if (contraptionEntity instanceof RocketContraptionEntity rocket) {
                 FlightDataHelper.RocketAssemblyData lastAssemblyData = rocket.assemblyData;
                 if (sneaking) {
-                    RocketContraption contraption     = (RocketContraption) rocket.getContraption();
-                    float             totalThrust     = 0;
+                    RocketContraption contraption    = (RocketContraption) rocket.getContraption();
+                    float             totalThrust    = 0;
                     float             totalFluidMass = 0;
-                    IFluidHandler     fluidHandler    = contraption.getStorage().getFluids();
-                    int               nbrOfTank       = fluidHandler.getTanks();
+                    IFluidHandler     fluidHandler   = contraption.getStorage().getFluids();
+                    int               nbrOfTank      = fluidHandler.getTanks();
                     //both research of every consumable fluid and addition of the total consumption
                     float totalTheoreticalConsumption = 0;
                     //TODO that could be in the inventory manager of the rocket -> 1.8
-                    for (PropellantType combination : contraption.getTPTFluidConsumption().keySet()) {
-                        RocketContraption.ConsumptionInfo info = contraption.getTPTFluidConsumption().get(combination);
-                        //mean speed of ejected gasses for the fluid -> need to be done for a couple of tag -> ox/fuel
-                        for (float consumption :
-                                info.propellantConsumption().values()) {
-                            totalTheoreticalConsumption += consumption;
-                        }
+                    for (TagKey<Fluid> fluid : contraption.getTPTFluidConsumption().keySet()) {
+                        RocketContraption.ConsumptionInfo info = contraption.getTPTFluidConsumption().get(fluid);
+
+                        totalTheoreticalConsumption += info.fluidConsumption();
+
                         totalThrust += info.partialThrust();
 
-                        //initialize if not present
-                        for (TagKey<Fluid> fluid :
-                                combination.getPropellantRatio().keySet()) {
-                            addToConsumableFluids(rocket, fluid);
-                        }
-
+                        searchForFluid(rocket, fluid);
                     }
 
                     float meanVe = totalThrust > 0 ? totalThrust / totalTheoreticalConsumption : 0;
@@ -117,7 +110,7 @@ public class FlightRecorderInteraction extends MovingInteractionBehaviour {
 
                         );
                         for (TagKey<Fluid> fluidTagKey : lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().keySet()) {
-                            Integer consumedMass = lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey);
+                            Float consumedMass = lastAssemblyData.propellantStatusData().consumedMassForEachPropellant().get(fluidTagKey);
                             Integer fluidMass    = lastAssemblyData.propellantStatusData().massForEachPropellant().get(fluidTagKey);
 
                             if (fluidMass == null) {

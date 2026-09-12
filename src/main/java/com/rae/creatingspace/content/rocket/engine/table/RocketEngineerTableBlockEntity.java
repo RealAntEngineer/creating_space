@@ -191,11 +191,11 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
 
     //use for sync packet bwn the screen and the BE (use resource location for ease of use) ->
     // use ResourceLocation to ensure it could be encoded properly
-    public record SyncData(int thrust, int size, int expansionRatio, ResourceLocation exhaustPackType,
+    public record  SyncData(int thrust, int size, int expansionRatio, int materialLevel, ResourceLocation exhaustPackType,
                            ResourceLocation powerPackType, ResourceLocation propellantType) {
         public static SyncData defaultData() {
             //CompoundTag syncData = new CompoundTag();
-            return new SyncData(100000, 100, 50, CreatingSpace.resource("bell_nozzle")
+            return new SyncData(100000, 100, 50, 0, CreatingSpace.resource("bell_nozzle")
                     , CreatingSpace.resource("open_cycle"),
                     CreatingSpace.resource("methalox"));
 
@@ -230,6 +230,8 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
                                             Codec.INT.fieldOf("thrust").forGetter(i -> i.thrust),
                                             Codec.INT.fieldOf("size").forGetter(i -> i.size),
                                             Codec.INT.fieldOf("expansionRatio").forGetter(i -> i.expansionRatio),
+                                            Codec.INT.fieldOf("materialLevel").forGetter(i -> i.materialLevel),
+
                                             ResourceLocation.CODEC
                                                     .fieldOf("exhaustPack").forGetter(i -> i.exhaustPackType),
                                             ResourceLocation.CODEC

@@ -121,10 +121,10 @@ public class CreativeModeTabsInit {
                     BlockInit.ENGINE_STRUCTURAL,
                     BlockInit.BIG_ENGINE_STRUCTURAL,
                     BlockInit.SMALL_ENGINE_STRUCTURAL,
-                    ItemInit.REINFORCED_INJECTOR,
-                    ItemInit.REINFORCED_INJECTOR_GRID,
+                    //ItemInit.REINFORCED_INJECTOR,
+                    //ItemInit.REINFORCED_INJECTOR_GRID,
                     ItemInit.INJECTOR,
-                    ItemInit.INJECTOR_GRID,
+                    //ItemInit.INJECTOR_GRID,
                     ItemInit.COPPER_BACKTANK_PLACEABLE,
                     ItemInit.NETHERITE_BACKTANK_PLACEABLE
             );
