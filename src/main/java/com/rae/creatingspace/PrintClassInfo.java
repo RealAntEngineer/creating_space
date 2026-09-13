@@ -2,6 +2,9 @@ package com.rae.creatingspace;
 
 import java.lang.reflect.*;
 
+/**
+ * this is a tool for AI to be able to get code that are in the library we depend on
+ */
 public class PrintClassInfo {
     public static void main(String[] args) {
         printClass("com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder");

@@ -98,6 +98,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     double                                                    speed;
     HashMap<TagKey<Fluid>, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<TagKey<Fluid>, Float>                             partialDrainAmountPerFluid = new HashMap<>();
+    //TODO remove this. The Flight recoders are not meant to be used this way anymore.
     private List<BlockPos> localPosOfFlightRecorders;
 
 
@@ -251,10 +252,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
                 tickDimensionChangeLogic();
 
                 Vec3 candidate = getDeltaMovement();
+                double floorY = Math.floor(position().y);
+                double fy = position().y - floorY; // fractional offset from the block below, always in [0,1)
 
                 boolean collided = false;
                 int failCount = 0;
-                final int maxFails = 8; // tune: max blocks you're willing to "eat" off the movement
+                // scale attempts to the distance we might need to shrink through, plus slack for the fy snap
+                final int maxFails = (int) Math.abs(candidate.y) + 4;
 
                 while (true) {
                     setContraptionMotion(candidate);
@@ -266,21 +270,19 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
                         break;
 
                     collided = true;
-                    failCount++;
 
-                    if (failCount > maxFails) {
-                        // couldn't find any safe motion at all, don't move
+                    // no room left to shrink into — stop immediately instead of spinning on an unchanging candidate
+                    if (candidate.y + fy == 0 || failCount >= maxFails) {
                         candidate = Vec3.ZERO;
                         setContraptionMotion(candidate);
                         break;
                     }
 
-                    // step the vertical component down by one whole block, floored — allowed to go negative
-                    double steppedY = Math.floor(candidate.y) - 1;
+                    failCount++;
+                    double steppedY = stepTowardsBlock(candidate.y + fy) - fy;
                     candidate = new Vec3(candidate.x, steppedY, candidate.z);
                 }
 
-                // always perform whatever safe move we landed on (may be zero)
                 if (tickCount > 2 || collided) {
                     Vec3 moveVec = VecHelper.clampComponentWise(candidate, (float) 1);
                     move(moveVec.x, moveVec.y, moveVec.z);
@@ -297,6 +299,18 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
             }
             sendPacket();
         }
+    }
+
+    /**
+     * Steps a motion value back towards the nearest block boundary, one block at a time,
+     * respecting the sign of the motion (so downward motion isn't incorrectly floored further down).
+     */
+    private static double stepTowardsBlock(double value) {
+        double sign = Math.signum(value);
+        boolean alreadyOnBlock = value == Math.floor(value);
+        if (alreadyOnBlock)
+            return value - sign; // already a whole block, reduce by one more full block
+        return sign > 0 ? Math.floor(value) : Math.ceil(value); // snap to the nearest block boundary behind it
     }
 
     @Override
@@ -404,10 +418,8 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
 
     public static Codec<HashMap<TagKey<Fluid>, Float>> getCodecMapConsumption() {
         if (CODEC_MAP_CONSUMPTION == null) {
-            CODEC_MAP_CONSUMPTION = Codec.unboundedMap(
-                    TagKey.codec(Registries.FLUID),
-                    Codec.FLOAT
-            ).xmap(HashMap::new, i -> i);
+            CODEC_MAP_CONSUMPTION = Codec.unboundedMap(TagKey.codec(Registries.FLUID), Codec.FLOAT)
+                    .xmap(HashMap::new, i -> i);
         }
         return CODEC_MAP_CONSUMPTION;
     }
@@ -433,9 +445,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         }
 
         Vec3 movementVec;
-        float acceleration = getAcceleration(
-                initialMass,
-                (int) totalThrust, gravity, isReentry());
+        float acceleration = getAcceleration(initialMass, (int) totalThrust, gravity, isReentry());
 
         float speed = getPerTickSpeed(acceleration);
         movementVec = new Vec3(0, speed, 0);
@@ -448,9 +458,9 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         if (position().get(Direction.Axis.Y) > 300 && !isReentry()) {
 
 
+            assert this.nextPath != null;
             ServerLevel destServerLevel = Objects.requireNonNull(this.level().getServer()).getLevel(
-                    ResourceKey.create(Registries.DIMENSION,
-                            this.nextPath.destination)
+                    ResourceKey.create(Registries.DIMENSION, this.nextPath.destination)
             );
 
             if (destServerLevel != null) {
@@ -711,6 +721,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
 
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
+        assert rocketContraptionEntity.nextPath != null;
         float deltaVNeeded = (float) rocketContraptionEntity.nextPath.cost;
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("-------------------trajectory calculation---------------------");

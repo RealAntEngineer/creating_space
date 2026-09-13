@@ -4,7 +4,7 @@
       "deltaV": 300
     }
   },
-  "arrivalHeight": 64,
+  "arrivalHeight": 300,
   "distanceToOrbitingBody": 400,
   "gravity": 1.6,
   "orbitedBody": "minecraft:overworld"

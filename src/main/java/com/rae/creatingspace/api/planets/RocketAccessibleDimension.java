@@ -15,6 +15,10 @@ import java.util.Map;
  * because it was hideous
  */
 public class RocketAccessibleDimension {
+    //TODO add atmosphere parameters -> once we start working on the 1.21.1 dev branch.
+    //TODO change the rendering of planets in dev from 3d bodies to squares oriented toward the player
+    // -> avoid weird perspective wth cubes
+
     public static final ResourceKey<Registry<RocketAccessibleDimension>> REGISTRY_KEY =
             ResourceKey.createRegistryKey(CreatingSpace.resource("rocket_accessible_dimension"));
     public static final ResourceLocation BASE_BODY = ResourceLocation.parse("sun");
@@ -35,6 +39,8 @@ public class RocketAccessibleDimension {
     // (with changes for visibility ?)
     int arrivalHeight;
     float gravity;
+    //TODO need to add something for orbited dimensions, an idea would be to automatically choose the correct one if there is only 1 choice ?
+    // or do a galacticraft style menu, or adapt the rocket controller to
     ResourceLocation orbitedBody;//mostly used for the DestinationScreen and for falling out of an orbit
 
     public Map<ResourceLocation, AccessibilityParameter> adjacentDimensions() {

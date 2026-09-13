@@ -117,7 +117,6 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
         Button disassembleButton = new ExtendedButton(width - 110, y + 120, 16 * 4, 20,
                 Component.translatable("creatingspace.gui.rocket_controls.disassemble"),
                 ($) -> {
-
                     CatnipServices.NETWORK.sendToServer(new RocketContraptionDisassemblePacket(rocketContraption.getId()));
                     onClose();
                 });
@@ -257,7 +256,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
         if (editingCondition == null && editingDestination == null) {
             return;
         }
-        AllGuiTextures.SCHEDULE_EDITOR.render(graphics, leftPos - 2, topPos + 40);
+        GuiTexturesInit.INSTRUCTION_BACKGROUND.render(graphics, leftPos - 2, topPos + 40);
         PoseStack pPoseStack = graphics.pose();
 
         pPoseStack.pushPose();
@@ -784,11 +783,11 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
             if (x2 > 50 && x2 < 100) {
                 List<Component> components = new ArrayList<>();
                 if (y > 36 && y < 52) {
-                    components.add(Component.translatable("creatingspace.gui.rocket_controls.x_entry_coord"));
+                    //components.add(Component.translatable("creatingspace.gui.rocket_controls.x_entry_coord"));
                     renderActionTooltip(graphics, components, mx, my);
                 }
                 if (y > 56 && y < 73) {
-                    components.add(Component.translatable("creatingspace.gui.rocket_controls.z_entry_coord"));
+                    //components.add(Component.translatable("creatingspace.gui.rocket_controls.z_entry_coord"));
                     renderActionTooltip(graphics, components, mx, my);
                 }
             }

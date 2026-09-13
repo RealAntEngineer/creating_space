@@ -4,7 +4,7 @@
       "deltaV": 400
     }
   },
-  "arrivalHeight": 200,
+  "arrivalHeight": 300,
   "distanceToOrbitingBody": 2000,
   "gravity": 3.71,
   "orbitedBody": "creatingspace:sun"

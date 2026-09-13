@@ -90,8 +90,11 @@ public class DestinationInstruction extends ScheduleInstruction {
                     s.forOptions(planets.stream().map(r -> Component.translatable(r.toString())).toList());
                 },
                 "intId");
-        builder.addIntegerTextInput(125, 31,(editBox,tooltipArea) ->{},"XCoord");
-        builder.addIntegerTextInput(159, 31,(editBox,tooltipArea) ->{},"ZCoord");
+        builder.addIntegerTextInput(125, 31,(editBox,tooltipArea) -> {
+            editBox.setMessage(Component.translatable("creatingspace.gui.rocket_controls.x_entry_coord"));},"XCoord");
+        builder.addIntegerTextInput(159, 31,(editBox,tooltipArea) -> {
+            editBox.setMessage(Component.translatable("creatingspace.gui.rocket_controls.z_entry_coord"));
+        },"ZCoord");
     }
 
     @NotNull

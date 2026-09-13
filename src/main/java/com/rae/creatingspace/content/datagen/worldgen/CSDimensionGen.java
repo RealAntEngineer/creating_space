@@ -23,28 +23,6 @@ import java.util.Optional;
 import static com.rae.creatingspace.CreatingSpace.resource;
 import static com.rae.creatingspace.init.worldgen.DimensionInit.*;
 
-record BiomeParams(
-    String name,
-    float tempMin, float tempMax,
-    float humidMin, float humidMax,
-    float contMin, float contMax,
-    float erosionMin, float erosionMax,
-    float weirdMin, float weirdMax,
-    float depthMin, float depthMax,
-    float offset
-) {
-    public Climate.ParameterPoint toParameterPoint() {
-        return Climate.parameters(
-            Climate.Parameter.span(tempMin, tempMax),
-            Climate.Parameter.span(humidMin, humidMax),
-            Climate.Parameter.span(contMin, contMax),
-            Climate.Parameter.span(erosionMin, erosionMax),
-            Climate.Parameter.span(depthMin, depthMax),
-            Climate.Parameter.span(weirdMin, weirdMax),
-            offset
-        );
-    }
-}
 
 public class CSDimensionGen {
 
@@ -154,5 +132,27 @@ public class CSDimensionGen {
             context.lookup(Registries.DIMENSION_TYPE).getOrThrow(typeKey),
             new NoiseBasedChunkGenerator(biomeSource, noiseSettings)
         ));
+    }
+
+    record BiomeParams(
+            String name,
+            float tempMin, float tempMax,
+            float humidMin, float humidMax,
+            float contMin, float contMax,
+            float erosionMin, float erosionMax,
+            float weirdMin, float weirdMax,
+            float depthMin, float depthMax,
+            float offset) {
+        public Climate.ParameterPoint toParameterPoint() {
+            return Climate.parameters(
+                    Climate.Parameter.span(tempMin, tempMax),
+                    Climate.Parameter.span(humidMin, humidMax),
+                    Climate.Parameter.span(contMin, contMax),
+                    Climate.Parameter.span(erosionMin, erosionMax),
+                    Climate.Parameter.span(depthMin, depthMax),
+                    Climate.Parameter.span(weirdMin, weirdMax),
+                    offset
+            );
+        }
     }
 }
