@@ -17,6 +17,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -41,7 +42,7 @@ public class RocketSchedule {
         registerCondition("item_threshold", ItemThresholdCondition::new);
         //registerCondition("redstone_link", RedstoneLinkCondition::new);
         registerCondition("player_count", PlayerPassengerCondition::new);
-        //registerCondition("idle", IdleCargoCondition::new);
+        registerCondition("idle", IdleCargoCondition::new);
         //registerCondition("unloaded", StationUnloadedCondition::new);
         //registerCondition("powered", StationPoweredCondition::new);
     }
@@ -89,8 +90,9 @@ public class RocketSchedule {
         return tag;
     }
 
-    public static RocketSchedule fromTag(HolderLookup.Provider registries,CompoundTag tag) {
+    public static RocketSchedule fromTag(HolderLookup.Provider registries, @Nullable CompoundTag tag) {
         RocketSchedule schedule = new RocketSchedule();
+        if (tag == null) return schedule;
         schedule.entries = NBTHelper.readCompoundList(tag.getList("Entries", Tag.TAG_COMPOUND), t-> ScheduleEntry.fromTag(registries, t));
         schedule.cyclic = tag.getBoolean("Cyclic");
         if (tag.contains("Progress"))

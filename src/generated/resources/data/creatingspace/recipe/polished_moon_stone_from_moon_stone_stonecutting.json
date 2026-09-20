@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "creatingspace:moon_stone"
+  },
+  "result": {
+    "count": 1,
+    "id": "creatingspace:polished_moon_stone"
+  }
+}

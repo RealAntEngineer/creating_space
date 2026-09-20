@@ -18,11 +18,11 @@ import net.minecraft.world.phys.Vec2;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class DestinationInstruction extends ScheduleInstruction {
-
 
     private List<ResourceLocation> planets;
 
@@ -50,6 +50,7 @@ public class DestinationInstruction extends ScheduleInstruction {
         return ResourceLocation.tryParse(data);
     }
 
+    //what is this used for exactly ?
     private void updateDataFromId() {
         int id = intData("intId");
         if (planets != null && id < planets.size()) {
@@ -91,10 +92,11 @@ public class DestinationInstruction extends ScheduleInstruction {
                 },
                 "intId");
         builder.addIntegerTextInput(125, 31,(editBox,tooltipArea) -> {
-            editBox.setMessage(Component.translatable("creatingspace.gui.rocket_controls.x_entry_coord"));},"XCoord");
+            tooltipArea.withTooltip(List.of(Component.translatable("creatingspace.gui.rocket_controls.x_entry_coord")));},
+                "XCoord");
         builder.addIntegerTextInput(159, 31,(editBox,tooltipArea) -> {
-            editBox.setMessage(Component.translatable("creatingspace.gui.rocket_controls.z_entry_coord"));
-        },"ZCoord");
+            tooltipArea.withTooltip(List.of(Component.translatable("creatingspace.gui.rocket_controls.z_entry_coord")));},
+                "ZCoord");
     }
 
     @NotNull
@@ -102,10 +104,14 @@ public class DestinationInstruction extends ScheduleInstruction {
         return CSDimensionUtil.getPlanets();
     }
 
-    public Vec2 getXYCoord() {
+    public @Nullable Vec2 getXYCoord() {
         updateDataFromId();
-        int X = CSUtil.isInteger(data.getString("XCoord"))?Integer.parseInt(data.getString("XCoord")):0;
-        int Z =  CSUtil.isInteger(data.getString("ZCoord"))?Integer.parseInt(data.getString("ZCoord")):0;
-        return new Vec2(X,Z);
+        if ( CSUtil.isInteger(data.getString("XCoord")) && CSUtil.isInteger(data.getString("ZCoord"))) {
+            int X = Integer.parseInt(data.getString("XCoord"));
+            int Z = Integer.parseInt(data.getString("ZCoord"));
+            return new Vec2(X, Z);
+        } else {
+            return null;
+        }
     }
 }

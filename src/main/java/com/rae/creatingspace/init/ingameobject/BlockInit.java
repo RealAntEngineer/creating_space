@@ -41,6 +41,7 @@ import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.core.HolderLookup;
@@ -87,7 +88,8 @@ public class BlockInit {
     //just blocks
     public static final BlockEntry<RocketEngineerTableBlock> ROCKET_ENGINEER_TABLE = REGISTRATE
             .block("rocket_engineer_table", RocketEngineerTableBlock::new)
-            .properties(p -> p.strength(1.0f).noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(BlockBehaviour.Properties::noOcclusion)
             .blockstate((c, p)-> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
@@ -104,8 +106,8 @@ public class BlockInit {
 
     public static final BlockEntry<SmallEngineBlock> SMALL_ROCKET_ENGINE = REGISTRATE
             .block("small_rocket_engine", SmallEngineBlock::new)
-            //.initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p -> p.dynamicShape().noOcclusion())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .transform(axeOrPickaxe())
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
@@ -116,8 +118,8 @@ public class BlockInit {
 
     public static final BlockEntry<SuperEngineBlock> ROCKET_ENGINE = REGISTRATE
             .block("rocket_engine", SuperEngineBlock::new)
-            //.initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p -> p.dynamicShape().noOcclusion())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .loot((lt, block) -> lt.add(block, lt.createSingleItemTable(block)
                     .apply(CopyComponentsFunction
@@ -132,8 +134,8 @@ public class BlockInit {
 
     public static final BlockEntry<BigEngineBlock> BIG_ROCKET_ENGINE = REGISTRATE
             .block("big_rocket_engine", BigEngineBlock::new)
-            //.initialProperties(SharedProperties::copperMetal)
-            .properties(p-> p.strength(1.0f).dynamicShape().noOcclusion())
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p-> p.dynamicShape().noOcclusion())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.standardModel(c, p)))
             .transform(axeOrPickaxe())
@@ -144,8 +146,7 @@ public class BlockInit {
 
     public static final BlockEntry<BigRocketStructuralBlock> BIG_ENGINE_STRUCTURAL =
             REGISTRATE.block("big_engine_structure", BigRocketStructuralBlock::new)
-                    //.initialProperties(SharedProperties::copperMetal)
-                    .properties(p-> p.strength(1.0f))
+                    .initialProperties(SharedProperties::copperMetal)
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getExistingFile(p.modLoc("block/structural/big_engine"))))
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE))
@@ -156,8 +157,7 @@ public class BlockInit {
 
     public static final BlockEntry<SuperRocketStructuralBlock> ENGINE_STRUCTURAL =
             REGISTRATE.block("engine_structure", SuperRocketStructuralBlock::new)
-                    //.initialProperties(SharedProperties::copperMetal)
-                    .properties(p -> p.strength(1.0f))
+                    .initialProperties(SharedProperties::copperMetal)
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getExistingFile(p.modLoc("block/structural/super_engine"))))                    .properties(BlockBehaviour.Properties::noOcclusion)
                     .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
@@ -166,8 +166,7 @@ public class BlockInit {
 
     public static final BlockEntry<SmallRocketStructuralBlock> SMALL_ENGINE_STRUCTURAL =
             REGISTRATE.block("small_engine_structure", SmallRocketStructuralBlock::new)
-                    //.initialProperties(SharedProperties::copperMetal)
-                    .properties(p-> p.strength(1.0f))
+                    .initialProperties(SharedProperties::copperMetal)
                     .blockstate((c, p) -> p.simpleBlock(c.getEntry(), p.models()
                             .getExistingFile(p.modLoc("block/structural/small_engine"))))
                     .properties(p -> p.mapColor(MapColor.METAL))
@@ -178,7 +177,6 @@ public class BlockInit {
 
     public static final BlockEntry<Block> CLAMPS = REGISTRATE
             .block("clamps",Block::new).initialProperties(()-> Blocks.STONE)
-            .properties(p -> p.strength(1.0f))
             .tag(AllTags.AllBlockTags.NON_MOVABLE.tag)
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c,p) ->
@@ -196,6 +194,7 @@ public class BlockInit {
 
     public static final BlockEntry<CasingBlock> ROCKET_CASING = REGISTRATE
             .block("rocket_casing", CasingBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
             .transform(BuilderTransformers.casing(() -> SpriteShiftInit.ROCKET_CASING))
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .recipe((c, p) ->
@@ -215,7 +214,7 @@ public class BlockInit {
                     "rocket_controls", RocketControlsBlock::new)
             .initialProperties(SharedProperties::copperMetal)
             .blockstate((c, p) -> p.horizontalBlock(c.getEntry(), p.models().getExistingFile(c.getId())))
-            .properties(p -> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
+            .properties(p -> p.dynamicShape().noOcclusion())
             .transform(axeOrPickaxe())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
             .onRegister(interactionBehaviour(new RocketControlInteraction()))
@@ -235,6 +234,10 @@ public class BlockInit {
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/" + c.getName() + "_reset"));
             })
+            .loot((lt, block) -> lt.add(block, lt.createSingleItemTable(block)
+                    .apply(CopyComponentsFunction
+                            .copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                            .include(DataComponents.CUSTOM_NAME))))
             .item(RocketControlsItem::new)
             .transform(customItemModel("rocket_controls"))
             .register();
@@ -242,7 +245,7 @@ public class BlockInit {
     public static final BlockEntry<FlightRecorderBlock> FLIGHT_RECORDER = REGISTRATE.block(
                     "flight_recorder", FlightRecorderBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p-> p.strength(1.0f).dynamicShape().noOcclusion().requiresCorrectToolForDrops())
+            .properties(p-> p.dynamicShape().noOcclusion())
             .blockstate(BlockStateGen.directionalAxisBlockProvider())
             .transform(axeOrPickaxe())
             .tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
@@ -264,7 +267,7 @@ public class BlockInit {
     public static final BlockEntry<MechanicalElectrolyzerBlock> MECHANICAL_ELECTROLYZER = REGISTRATE.block(
                     "mechanical_electrolyzer", MechanicalElectrolyzerBlock::new)
             .initialProperties(SharedProperties::copperMetal)
-            .properties(p -> p.strength(1.0f).noOcclusion().requiresCorrectToolForDrops())
+            .properties(BlockBehaviour.Properties::noOcclusion)
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .transform(CSStress.setImpact(1024))
             .transform(axeOrPickaxe())
@@ -289,7 +292,7 @@ public class BlockInit {
     public static final BlockEntry<CatalystCarrierBlock> CATALYST_CARRIER = REGISTRATE.block(
                     "catalyst_carrier", CatalystCarrierBlock::new)
             .initialProperties(SharedProperties::stone)
-            .properties(p -> p.noOcclusion())
+            .properties(BlockBehaviour.Properties::noOcclusion)
             .transform(axeOrPickaxe())
             .blockstate(BlockStateGen.horizontalBlockProvider(true))
             .transform(CSStress.setImpact(8.0))
@@ -454,6 +457,8 @@ public class BlockInit {
     public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
             .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
             .transform(pickaxeOnly())
+            .recipe((c, p) -> p.stonecutting(
+                    DataIngredient.items(MOON_STONE.get()), RecipeCategory.BUILDING_BLOCKS, c))
             .item()
             .transform(customItemModel("moon_stone_brick"))
             .register();
@@ -461,6 +466,8 @@ public class BlockInit {
     public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
             .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
             .transform(pickaxeOnly())
+            .recipe((c, p) -> p.stonecutting(
+                    DataIngredient.items(MOON_STONE.get()), RecipeCategory.BUILDING_BLOCKS, c))
             .item()
             .transform(customItemModel("polished_moon_stone"))
             .register();
@@ -476,6 +483,7 @@ public class BlockInit {
     public static final BlockEntry<RegolithSurfaceBlock> MOON_SURFACE_REGOLITH = REGISTRATE
             .block("moon_surface_regolith",RegolithSurfaceBlock::new).initialProperties(()-> Blocks.DIRT)
             .properties(p-> p.sound(SoundType.SNOW).mapColor(MapColor.SNOW))
+            .loot((lt, bl) -> lt.add(bl, lt.createSingleItemTable(MOON_REGOLITH.get())))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
             .transform(customItemModel("moon_surface_regolith"))
@@ -485,7 +493,6 @@ public class BlockInit {
             .block("mars_stone", Block::new).initialProperties(() -> Blocks.STONE)
             .transform(pickaxeOnly())
             .item()
-            //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel("mars_stone"))
             .register();
 
@@ -494,16 +501,15 @@ public class BlockInit {
             .properties(p -> p.sound(SoundType.SNOW))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
-            //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel("mars_regolith"))
             .register();
 
     public static final BlockEntry<Block> MARS_SURFACE_REGOLITH = REGISTRATE
             .block("mars_surface_regolith", Block::new).initialProperties(() -> Blocks.DIRT)
             .properties(p -> p.sound(SoundType.SNOW))
+            .loot((lt, bl) -> lt.add(bl, lt.createSingleItemTable(MARS_REGOLITH.get())))
             .tag(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL)
             .item()
-            //.properties(p -> p.tab(CreativeModeTabsInit.MINERALS_TAB))
             .transform(customItemModel("mars_surface_regolith"))
             .register();
 
@@ -532,7 +538,6 @@ public class BlockInit {
     public static final BlockEntry<Block> DEEPSLATE_NICKEL_ORE = REGISTRATE.block(
                     "deepslate_nickel_ore", Block::new)
             .initialProperties(() -> Blocks.DEEPSLATE_GOLD_ORE)
-            .properties(p -> p.strength(4.0f).requiresCorrectToolForDrops())
             .loot((lt, b) -> {
                 HolderLookup.RegistryLookup<Enchantment> enchantmentRegistryLookup = lt.getRegistries().lookupOrThrow(Registries.ENCHANTMENT);
                 lt.add(b,
@@ -671,6 +676,7 @@ public class BlockInit {
     public static final BlockEntry<Block> RAW_ALUMINUM_BLOCK = REGISTRATE.block(
                     "raw_aluminum_block", Block::new)
             .initialProperties(() -> Blocks.RAW_IRON_BLOCK)
+            .tag(BlockTags.NEEDS_IRON_TOOL)
             .transform(TagGen.pickaxeOnly())
             .tag(Tags.Blocks.STORAGE_BLOCKS)
             .tag(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_aluminum")))

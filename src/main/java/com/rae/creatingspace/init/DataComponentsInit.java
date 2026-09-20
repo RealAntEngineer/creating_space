@@ -26,14 +26,14 @@ public class DataComponentsInit {
                             .networkSynchronized(SimpleFluidContent.STREAM_CODEC)
     );
 
-    public static final DataComponentType<Map<ResourceLocation, BlockPos>> INITIAL_POS_MAP = register(
+    /*public static final DataComponentType<Map<ResourceLocation, BlockPos>> INITIAL_POS_MAP = register(
             "initial_pos_map",
                 builder -> builder.persistent(
                         RocketControlsBlockEntity.POS_MAP_CODEC
                 ).networkSynchronized(
                         ByteBufCodecs.fromCodec(RocketControlsBlockEntity.POS_MAP_CODEC)
                 )
-    );
+    );*/
 
     public static final DataComponentType<Integer> OXYGEN_LEVEL = register(
             "oxygen",

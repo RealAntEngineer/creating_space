@@ -38,7 +38,7 @@ public class RocketAssemblePacket extends BlockEntityConfigurationPacket<RocketC
         BlockPos blockPos = controlsBlockEntity.getBlockPos();
         BlockState blockState = level.getBlockState(blockPos);
 
-        controlsBlockEntity.queueAssembly(null);
+        controlsBlockEntity.queueAssembly();
     }
 
     @Override

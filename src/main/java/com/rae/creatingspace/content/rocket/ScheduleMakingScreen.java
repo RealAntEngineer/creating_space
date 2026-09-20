@@ -37,9 +37,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -53,12 +51,11 @@ import org.lwjgl.opengl.GL30;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMakingMenu> {
+public class ScheduleMakingScreen extends AbstractSimiContainerScreen<RocketMenu> {
     //TODO transform hard coded schedule stuff to widgets
     //beginning of schedule logic
     private static final int                     CARD_HEADER       = 22;
@@ -93,7 +90,7 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
     private @Nullable    Consumer<Boolean>       onEditorClose;
     private @Nullable    LabeledBoxWidget        destinationCost;
 
-    public ScheduleMakingScreen(ScheduleMakingMenu container, Inventory inv, Component title) {
+    public ScheduleMakingScreen(RocketMenu container, Inventory inv, Component title) {
         //TODO this screen will swith bwn normal selection (single trip), schedule and rocket overview.
         super(container, inv, title);
         this.rocketContraption = container.contentHolder;
@@ -252,11 +249,13 @@ public class ScheduleMakingScreen extends AbstractSimiContainerScreen<ScheduleMa
         GuiTexturesInit.ROCKET_INFO.render(graphics, width - 130, 10);
         renderSchedule(graphics, partialTicks);
         //render the background of the
-
-        if (editingCondition == null && editingDestination == null) {
-            return;
+        if (editingDestination != null) {
+            GuiTexturesInit.INSTRUCTION_BACKGROUND.render(graphics, leftPos + 1, topPos + 40);
         }
-        GuiTexturesInit.INSTRUCTION_BACKGROUND.render(graphics, leftPos - 2, topPos + 40);
+        if (editingCondition != null) {
+            AllGuiTextures.SCHEDULE_EDITOR.render(graphics, leftPos - 2, topPos + 40);
+        }
+
         PoseStack pPoseStack = graphics.pose();
 
         pPoseStack.pushPose();

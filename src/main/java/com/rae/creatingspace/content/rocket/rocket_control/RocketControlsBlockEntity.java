@@ -32,9 +32,6 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
     protected AssemblyException lastException;
 
     private boolean assembleNextTick = false;
-    private ResourceLocation destination;
-
-    public HashMap<ResourceLocation,BlockPos> initialPosMap = new HashMap<>();
 
     public static Codec<Map<ResourceLocation,BlockPos>> POS_MAP_CODEC = Codec.unboundedMap(ResourceLocation.CODEC,BlockPos.CODEC);
     public RocketControlsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -66,28 +63,14 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         registerAwardables(behaviours, AllAdvancements.CONTRAPTION_ACTORS);
 
     }
-    /*@Override
-    public void initialize() {
-        super.initialize();
-        if (!getBlockState().canSurvive(level, worldPosition))
-            level.destroyBlock(worldPosition, true);
-
-    }*/
-
 
     @Override
     public AssemblyException getLastAssemblyException() {
         return lastException;
     }
 
-    public void queueAssembly(ResourceLocation destination) {
-        this.assembleNextTick = true;
-        this.destination = destination;
-    }
-
     public void queueAssembly() {
         this.assembleNextTick = true;
-        this.destination = null;
     }
 
     private void assemble() {
@@ -118,10 +101,6 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
 
         contraption.removeBlocksFromWorld(level, BlockPos.ZERO);
 
-        if (destination == null){
-            destination = level.dimension().location();
-        }
-
         RocketContraptionEntity rocketContraptionEntity =
                 RocketContraptionEntity.create(level, contraption);
         BlockPos anchor = worldPosition;
@@ -134,62 +113,27 @@ public class RocketControlsBlockEntity extends SmartBlockEntity implements Namea
         AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(level, worldPosition);
 
     }
+
     @Override
     public void tick() {
         super.tick();
-
         assert this.level != null;
-        if (!this.initialPosMap.containsKey(this.level.dimension().location())) {
-            this.initialPosMap.put(this.level.dimension().location(),this.getBlockPos());
-        }
-
 
         if (assembleNextTick) {
             assemble();
             assembleNextTick = false;
         }
-
     }
 
     @Override
     protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         AssemblyException.write(compound, registries,lastException);
-        compound.put("initialPosMap", putPosMap(this.initialPosMap));
         super.write(compound,registries, clientPacket);
-    }
-
-    public static CompoundTag putPosMap(HashMap<ResourceLocation,BlockPos> initialPosMap) {
-        return initialPosMap==null?new CompoundTag():(CompoundTag) POS_MAP_CODEC.encodeStart(NbtOps.INSTANCE,initialPosMap).resultOrPartial(
-                (e)-> {
-                    CreatingSpace.LOGGER.warn("Rocket Control failed to parse pos map : ");
-                    CreatingSpace.LOGGER.error(e);
-                }).orElse(new CompoundTag());
     }
 
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         lastException = AssemblyException.read(compound,registries);
-        this.initialPosMap = getPosMap((CompoundTag) compound.get("initialPosMap"));
         super.read(compound,registries, clientPacket);
-    }
-    public static  HashMap<ResourceLocation,BlockPos> getPosMap(CompoundTag compound) {
-        return  compound==null?null:new HashMap<>(POS_MAP_CODEC.parse(NbtOps.INSTANCE,compound).resultOrPartial(
-                (e)-> {
-                    CreatingSpace.LOGGER.warn("Rocket Control failed to parse pos map : ");
-                    CreatingSpace.LOGGER.error(e);
-                }).orElse(new HashMap<>()));
-    }
-
-    public boolean noLocalisation() {
-        return initialPosMap.isEmpty();
-    }
-
-    public HashMap<ResourceLocation, BlockPos> getInitialPosMap() {
-        return initialPosMap;
-    }
-
-    public void setInitialPosMap(HashMap<ResourceLocation, BlockPos> initialPosMap) {
-        this.initialPosMap = new HashMap<>(initialPosMap);
-        notifyUpdate();
     }
 }

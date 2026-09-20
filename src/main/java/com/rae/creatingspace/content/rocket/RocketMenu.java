@@ -10,19 +10,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-public class ScheduleMakingMenu extends MenuBase<RocketContraptionEntity> {
+public class RocketMenu extends MenuBase<RocketContraptionEntity> {
 
-    public ScheduleMakingMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+    public RocketMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
-    public ScheduleMakingMenu(MenuType<?> type, int id, Inventory inv, RocketContraptionEntity be) {
+    public RocketMenu(MenuType<?> type, int id, Inventory inv, RocketContraptionEntity be) {
         super(type, id, inv, be);
     }
 
 
-    public static ScheduleMakingMenu create(int id, Inventory inv, RocketContraptionEntity be) {
-        return new ScheduleMakingMenu(MenuTypesInit.ROCKET_MENU.get(), id, inv, be);
+    public static RocketMenu create(int id, Inventory inv, RocketContraptionEntity be) {
+        return new RocketMenu(MenuTypesInit.ROCKET_MENU.get(), id, inv, be);
     }
 
     @Override

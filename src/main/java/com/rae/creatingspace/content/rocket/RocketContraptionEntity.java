@@ -59,7 +59,6 @@ import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NonnullDefault;
 import org.slf4j.Logger;
@@ -74,8 +73,7 @@ import static com.rae.creatingspace.init.ingameobject.SoundInit.ROCKET_LAUNCH;
 
 @NonnullDefault
 public class RocketContraptionEntity extends AbstractContraptionEntity implements MenuProvider {
-    //TODO make a way to automate rockets ( a special menu in the rocket controller + a path and actions
-    // (spaceport block ? to define where the rocket will go)
+    //TODO space beacon
 
     public static final      EntityDataAccessor<RocketStatus>         STATUS_DATA_ACCESSOR =
             SynchedEntityData.defineId(RocketContraptionEntity.class, EntityDataSerializersInit.STATUS_SERIALIZER);
@@ -86,19 +84,26 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     static                   int                                      ROCKET_SOUND_LENGTH  = 35;
     private static @Nullable Codec<HashMap<TagKey<Fluid>, Float>>     CODEC_MAP_CONSUMPTION;
     public                   float                                    totalThrust          = 0;
-    public                   float                                    initialMass;
+    public                   float                                    initialMass;//TODO replace by inventory manager
     public @Nullable         FlightDataHelper.RocketAssemblyData      assemblyData;
     //end of inventory management
     //TODO make a record and CODEC
-    public                   HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids     = new HashMap<>();//
+    //TODO this should go to the inventory manager
+    public                   HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids     = new HashMap<>();
     public                   RocketScheduleRuntime                    schedule;
     public @Nullable                  RocketPath                      nextPath;
     int                                                       soundEffectTickCount       = 0;
     double                                                    clientOffsetDiff;
+
+    //TODO don't use that anymore
     double                                                    speed;
+
+    //TODO replace by calls to the inventory manager
     HashMap<TagKey<Fluid>, RocketContraption.ConsumptionInfo> realPerTagFluidConsumption;// to separate the fluids -> ratio of the engine ?
     HashMap<TagKey<Fluid>, Float>                             partialDrainAmountPerFluid = new HashMap<>();
-    //TODO remove this. The Flight recoders are not meant to be used this way anymore.
+    //TODO remove this. The Flight recoders are not meant to be used this way anymore,
+    // the flight recorder will just capture the rocket status when they are actors. Also change the name and textures
+    // they are misleading.
     private List<BlockPos> localPosOfFlightRecorders;
 
 
@@ -251,46 +256,19 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
                 tickConsumptionAndSpeed();
                 tickDimensionChangeLogic();
 
-                Vec3 candidate = getDeltaMovement();
-                double floorY = Math.floor(position().y);
-                double fy = position().y - floorY; // fractional offset from the block below, always in [0,1)
-
-                boolean collided = false;
-                int failCount = 0;
-                // scale attempts to the distance we might need to shrink through, plus slack for the fy snap
-                final int maxFails = (int) Math.abs(candidate.y) + 4;
-
-                while (true) {
-                    setContraptionMotion(candidate);
-
-                    boolean collides = ContraptionCollider.collideBlocks(this)
-                            || level().getMaxBuildHeight() < this.getBoundingBox().maxY + candidate.y;
-
-                    if (!collides)
-                        break;
-
-                    collided = true;
-
-                    // no room left to shrink into — stop immediately instead of spinning on an unchanging candidate
-                    if (candidate.y + fy == 0 || failCount >= maxFails) {
-                        candidate = Vec3.ZERO;
-                        setContraptionMotion(candidate);
-                        break;
-                    }
-
-                    failCount++;
-                    double steppedY = stepTowardsBlock(candidate.y + fy) - fy;
-                    candidate = new Vec3(candidate.x, steppedY, candidate.z);
-                }
+                boolean collided = manageCollision(this);
 
                 if (tickCount > 2 || collided) {
-                    Vec3 moveVec = VecHelper.clampComponentWise(candidate, (float) 1);
+                    Vec3 moveVec = VecHelper.clampComponentWise(getDeltaMovement(), (float) 1);
                     move(moveVec.x, moveVec.y, moveVec.z);
                 }
 
                 if (collided) {
                     getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
                     setContraptionMotion(Vec3.ZERO);
+                    this.speed = 0;
+                    //Snap move here so we ensure that we are on a full block.
+                    setPos(Math.round(getX()), Math.round(getY()), Math.round(getZ()));
                 }
 
             } else {
@@ -301,16 +279,60 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
         }
     }
 
-    /**
-     * Steps a motion value back towards the nearest block boundary, one block at a time,
-     * respecting the sign of the motion (so downward motion isn't incorrectly floored further down).
-     */
-    private static double stepTowardsBlock(double value) {
-        double sign = Math.signum(value);
-        boolean alreadyOnBlock = value == Math.floor(value);
-        if (alreadyOnBlock)
-            return value - sign; // already a whole block, reduce by one more full block
-        return sign > 0 ? Math.floor(value) : Math.ceil(value); // snap to the nearest block boundary behind it
+    private static final double COLLISION_EPSILON = 1.0E-4;
+
+    //TODO in the future put that in a Util class
+    private static boolean manageCollision(AbstractContraptionEntity rocket) {
+        Vec3 originalMotion = rocket.getDeltaMovement();
+        double startY = rocket.position().y;
+        double dir = Math.signum(originalMotion.y);
+
+        Vec3 candidate = originalMotion;
+        Double boundary = null; // lazily computed on first collision
+        boolean collided = false;
+
+        while (true) {
+            rocket.setContraptionMotion(candidate);
+            ((RocketContraptionEntity)rocket).speed = candidate.length();
+
+            boolean collides = ContraptionCollider.collideBlocks(rocket)
+                    || rocket.level().getMaxBuildHeight() < rocket.getBoundingBox().maxY + candidate.y;
+
+            if (!collides)
+                break;
+
+            collided = true;
+
+            if (dir == 0) {
+                candidate = Vec3.ZERO;
+                rocket.setContraptionMotion(candidate);
+                ((RocketContraptionEntity)rocket).speed = candidate.length();
+                break;
+            }
+
+            if (boundary == null) {
+                double targetY = startY + originalMotion.y;
+                boundary = dir > 0 ? Math.floor(targetY) : Math.ceil(targetY);
+            } else {
+                boundary -= dir;
+            }
+
+            // pull back a hair from the exact boundary so float error can't push us back into collision
+            double safeY = boundary - dir * COLLISION_EPSILON;
+
+            // if that safe target isn't actually a forward step from our current position, no room left
+            boolean noRoom = dir > 0 ? safeY < startY + COLLISION_EPSILON
+                    : safeY > startY - COLLISION_EPSILON;
+            if (noRoom) {
+                //candidate = Vec3.ZERO;
+                rocket.setContraptionMotion(candidate);
+                ((RocketContraptionEntity)rocket).speed = candidate.length();
+                break;
+            }
+
+            candidate = new Vec3(originalMotion.x, safeY - startY, originalMotion.z);
+        }
+        return collided;
     }
 
     @Override
@@ -716,7 +738,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     /**
      * should only be used on the server
      */
-    public static void handelTrajectoryCalculation(@NotNull RocketContraptionEntity rocketContraptionEntity) {
+    public static void handelTrajectoryCalculation(RocketContraptionEntity rocketContraptionEntity) {
         //System.out.println(rocketContraptionEntity.deltaV());
 
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
@@ -834,7 +856,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return ScheduleMakingMenu.create(i, inventory, this);
+        return RocketMenu.create(i, inventory, this);
     }
 
     public enum RocketStatus implements StringRepresentable {

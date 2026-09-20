@@ -19,7 +19,7 @@ public enum PacketInit implements BasePacketPayload.PacketTypeProvider {
     SYNC_ROCKET_ENGINEER_BE(RocketEngineerTableSync.class, RocketEngineerTableSync.STREAM_CODEC),
     //ASSEMBLE_ROCKET(RocketAssemblePacket.class, RocketAssemblePacket.STREAM_CODEC),
     ASSEMBLE_ROCKET_2(RocketAssemblePacket.class, RocketAssemblePacket.STREAM_CODEC),
-    ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket.STREAM_CODEC),
+    //ROCKET_CONTROLS_SETTING(RocketControlsSettingsPacket.class,RocketControlsSettingsPacket.STREAM_CODEC),
     //LAUNCH_ROCKET(RocketContraptionLaunchPacket.class, RocketContraptionLaunchPacket.STREAM_CODEC),
     //SYNC_POSMAP_CLIENT(RocketEntryPosMapClientPacket.class, RocketEntryPosMapClientPacket.STREAM_CODEC),
     DISASSEMBLE_ROCKET(RocketContraptionDisassemblePacket.class, RocketContraptionDisassemblePacket.STREAM_CODEC),

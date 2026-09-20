@@ -17,13 +17,14 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RocketScheduleRuntime {
     //TODO remove anything unnecessary : item + graph stuff + train stuff
-    // tick methode should be fine
+    // tick method should be fine
     private static final int TBD = -1;
     private static final int INVALID = -2;
 
@@ -199,7 +200,9 @@ public class RocketScheduleRuntime {
             if (cost <= 0) {
                 return null;
             } else {
-                return new RocketPath(currentWorld, destinationWorld, destination.getXYCoord(),cost);
+                Vec2 coords = destination.getXYCoord();
+                return new RocketPath(currentWorld, destinationWorld, coords == null ?
+                        new Vec2(rocket.getBlockX(), rocket.getBlockZ()) : coords, cost);
             }
         }
 
@@ -278,7 +281,7 @@ public class RocketScheduleRuntime {
         }
     }
 
-
+    //Why ? seems useless
     public void setSchedulePresentClientside(boolean present) {
         schedule = present ? new RocketSchedule() : null;
     }

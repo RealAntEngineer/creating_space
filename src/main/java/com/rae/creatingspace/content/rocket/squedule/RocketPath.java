@@ -3,24 +3,32 @@ package com.rae.creatingspace.content.rocket.squedule;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.NonnullDefault;
 
+import java.util.Objects;
+
+@NonnullDefault
 public class RocketPath {
     public ResourceLocation origin;
     public ResourceLocation destination;
     public Vec2 XZCoord;
     public double cost;
 
-    public RocketPath(ResourceLocation origin, ResourceLocation destinationPlanet,Vec2 XZCoord, double cost) {
+    public RocketPath(ResourceLocation origin, ResourceLocation destinationPlanet, Vec2 XZCoord, double cost) {
         this.origin = origin;
         this.destination = destinationPlanet;
         this.cost = cost;
         this.XZCoord = XZCoord;
     }
 
-    public static RocketPath parse(CompoundTag nextPath) {
+    public static @Nullable RocketPath parse(@Nullable CompoundTag nextPath) {
         if (nextPath == null || nextPath.isEmpty()) return null;
-        return new RocketPath(ResourceLocation.tryParse(nextPath.getString("origin")),ResourceLocation.tryParse(nextPath.getString("path")),
-                new Vec2(nextPath.getInt("XCoord"),nextPath.getInt("ZCoord")),nextPath.getDouble("cost"));
+        return new RocketPath(Objects.requireNonNull(ResourceLocation.tryParse(nextPath.getString("origin"))),
+                Objects.requireNonNull(ResourceLocation.tryParse(nextPath.getString("path"))),
+                new Vec2(nextPath.getInt("XCoord"),
+                        nextPath.getInt("ZCoord")),
+                nextPath.getDouble("cost"));
     }
 
     public CompoundTag serialize() {

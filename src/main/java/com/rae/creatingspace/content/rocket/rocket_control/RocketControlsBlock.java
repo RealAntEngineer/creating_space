@@ -48,7 +48,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@NonnullDefault
 public class RocketControlsBlock extends Block implements IBE<RocketControlsBlockEntity>, TooltipModifier {
+
+    public static final DirectionProperty FACING             = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty   ASSEMBLE_NEXT_TICK = BooleanProperty.create("assemble_next_tick");
 
     public RocketControlsBlock(Properties properties) {
         super(properties);
@@ -57,41 +61,18 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide()) {
-            this.displayScreen(getBlockEntity(level,pos), player);
+            this.displayScreen(getBlockEntity(level, pos), player);
         }
         return InteractionResult.SUCCESS;
     }
+
+    //blockstate
 
     @OnlyIn(value = Dist.CLIENT)
     protected void displayScreen(RocketControlsBlockEntity be, Player player) {
         if (!(player instanceof LocalPlayer))
             return;
         ScreenOpener.open(new RocketAssembleScreen(be));
-    }
-
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-        return switch (state.getValue(FACING)){
-            case NORTH -> Shapes.box(0, 0, 0.375, 1, 0.875, 1);
-            case SOUTH -> Shapes.box(0, 0, 0, 1, 0.875, 0.625);
-            case WEST -> Shapes.box(0.375, 0, 0, 1, 0.875, 1);
-            case EAST -> Shapes.box(0, 0, 0, 0.625, 0.875, 1);
-            default -> Shapes.box(0, 0, 0.375, 1, 0.875, 1);
-        };
-    }
-
-    //blockstate
-
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty ASSEMBLE_NEXT_TICK = BooleanProperty.create("assemble_next_tick");
-
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState()
-                .setValue(FACING, context.getHorizontalDirection().getOpposite())
-                .setValue(ASSEMBLE_NEXT_TICK,false);
     }
 
     @Override
@@ -105,9 +86,21 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-        builder.add(ASSEMBLE_NEXT_TICK);
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+        return switch (state.getValue(FACING)) {
+            case NORTH -> Shapes.box(0, 0, 0.375, 1, 0.875, 1);
+            case SOUTH -> Shapes.box(0, 0, 0, 1, 0.875, 0.625);
+            case WEST -> Shapes.box(0.375, 0, 0, 1, 0.875, 1);
+            case EAST -> Shapes.box(0, 0, 0, 0.625, 0.875, 1);
+            default -> Shapes.box(0, 0, 0.375, 1, 0.875, 1);
+        };
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState()
+                .setValue(FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(ASSEMBLE_NEXT_TICK, false);
     }
 
     @Override
@@ -117,11 +110,17 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
         if (worldIn.isClientSide)
             return;
         withBlockEntityDo(worldIn, pos, be -> {
-            Map<ResourceLocation, BlockPos> map = stack.get(DataComponentsInit.INITIAL_POS_MAP);
-            be.setInitialPosMap(map!=null?new HashMap<>(map):new HashMap<>());
+            //Map<ResourceLocation, BlockPos> map = stack.get(DataComponentsInit.INITIAL_POS_MAP);
+            //be.setInitialPosMap(map != null ? new HashMap<>(map) : new HashMap<>());
             if (stack.has(DataComponents.CUSTOM_NAME))
                 be.setCustomName(stack.getHoverName());
         });
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+        builder.add(ASSEMBLE_NEXT_TICK);
     }
 
     @Override
@@ -129,17 +128,12 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
     public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         Item item = asItem();
 
-        ItemStack stack = new ItemStack(item);
+        ItemStack                           stack               = new ItemStack(item);
         Optional<RocketControlsBlockEntity> blockEntityOptional = getBlockEntityOptional(level, pos);
 
-        HashMap<ResourceLocation, BlockPos> blockPosHashMap = blockEntityOptional.map(RocketControlsBlockEntity::getInitialPosMap).orElse(null);
-        if(blockPosHashMap!= null){
-
-            stack.set(DataComponentsInit.INITIAL_POS_MAP, blockPosHashMap);
-        }
         Component customName = blockEntityOptional.map(RocketControlsBlockEntity::getCustomName).orElse(null);
         if (customName != null)
-            stack.set(DataComponents.CUSTOM_NAME,customName);
+            stack.set(DataComponents.CUSTOM_NAME, customName);
 
         return stack;
     }
@@ -159,8 +153,8 @@ public class RocketControlsBlock extends Block implements IBE<RocketControlsBloc
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : ($0,pos,$1,blockEntity) -> {
-            if(blockEntity instanceof RocketControlsBlockEntity controlsBlock) {
+        return level.isClientSide() ? null : ($0, pos, $1, blockEntity) -> {
+            if (blockEntity instanceof RocketControlsBlockEntity controlsBlock) {
                 controlsBlock.tick();
             }
         };

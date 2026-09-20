@@ -33,6 +33,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.rae.creatingspace.CreatingSpace.*;
 import static com.simibubi.create.AllTags.commonItemTag;
@@ -67,7 +68,7 @@ public class ItemInit {
                 ).defaultModel()*/
                 .register());
         // Splitting off Andesite because we had to be difficult XD
-        if (name == "andesite") {
+        if (Objects.equals(name, "andesite")) {
            collector.add(REGISTRATE.item((name + "_blisk"), Item::new)
                    .defaultModel()
                    .recipe((c, p) ->
@@ -160,6 +161,7 @@ public class ItemInit {
                 .register());*/
         return collector;
     }
+
     public static ArrayList<ItemEntry<? extends Item>> registerMetalVariants(String name) {
         ArrayList<ItemEntry<? extends Item>> collector = new ArrayList<>();
 
@@ -658,11 +660,7 @@ public class ItemInit {
     public static final ItemEntry<Item> INJECTOR = REGISTRATE.item(
                     "injector", Item::new)
             .register();
-/*
-    public static final ItemEntry<Item> REINFORCED_INJECTOR = REGISTRATE.item(
-                    "reinforced_injector", Item::new)
-            .register();
-*/
+
     public static final ItemEntry<Item> STURDY_PROPELLER = REGISTRATE.item(
                     "sturdy_propeller", Item::new)
             .recipe((c,p) ->
@@ -675,15 +673,7 @@ public class ItemInit {
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/misc/" + c.getName())))
             .register();
-/*
-    public static final ItemEntry<Item> INJECTOR_GRID = REGISTRATE.item(
-                    "injector_grid", Item::new)
-            .register();
 
-    public static final ItemEntry<Item> REINFORCED_INJECTOR_GRID = REGISTRATE.item(
-                    "reinforced_injector_grid", Item::new)
-            .register();
-*/
     public static final ItemEntry<CatalystItem> NICKEL_SULFATE_CATALYST = REGISTRATE.item(
             "nickel_sulfate_catalyst", (p) -> new CatalystItem(p, PartialModelInit.NICKEL_SULFATE_CATALYST))
             .properties(p -> p.durability(100))
