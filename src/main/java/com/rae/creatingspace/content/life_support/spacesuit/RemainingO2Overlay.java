@@ -63,7 +63,7 @@ public class RemainingO2Overlay implements IGuiOverlay {
             //TODO create one at initialization the keep the same
             gauge.setMax(OxygenBacktankUtil.maxOxygen(itemInChestSlot));
             gauge.setChase((int) o2Value);
-            //gauge.tickChaser(deltaTracker);
+            gauge.tickChaser(partialTick);
             gauge.render(graphics, (int) mc.mouseHandler.xpos(),(int) mc.mouseHandler.ypos() ,partialTick);
 
         }

@@ -69,8 +69,7 @@ public class CreativeModeTabsInit {
                         .icon(ItemInit.INJECTOR::asStack)
                     .displayItems(($1,output)-> {
                         output.accept(ItemInit.COPPER_COIL);
-                        output.accept(ItemInit.BASIC_CATALYST);
-                        output.accept(ItemInit.COAL_DUST);
+                        output.accept(ItemInit.NICKEL_SULFATE_CATALYST);
                         output.accept(ItemInit.STURDY_PROPELLER);
                         output.accept( ItemInit.COMBUSTION_CHAMBER);
                         output.accept(ItemInit.BELL_NOZZLE);
@@ -209,6 +208,7 @@ public class CreativeModeTabsInit {
             return Collections.singleton(new ItemStack(item));
         };
     }
+
     private static Function<Item, Collection<ItemStack>> makeStackEngineListFunc() {
         Map<Item, Function<Item, Collection<ItemStack>>> factories = new Reference2ReferenceOpenHashMap<>();
 

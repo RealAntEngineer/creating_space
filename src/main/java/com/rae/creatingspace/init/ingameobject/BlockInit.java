@@ -41,6 +41,7 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
+import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.core.registries.Registries;
@@ -482,6 +483,8 @@ public class BlockInit {
 
     public static final BlockEntry<Block> MOON_STONE_BRICK = REGISTRATE
             .block("moon_stone_brick",Block::new).initialProperties(()-> Blocks.STONE)
+            .recipe((c, p) -> p.stonecutting(
+                    DataIngredient.items(MOON_STONE.get()), RecipeCategory.BUILDING_BLOCKS, c))
             .transform(pickaxeOnly())
             .item()
             .transform(customItemModel("moon_stone_brick"))
@@ -489,6 +492,8 @@ public class BlockInit {
 
     public static final BlockEntry<Block> POLISHED_MOON_STONE = REGISTRATE
             .block("polished_moon_stone",Block::new).initialProperties(()-> Blocks.STONE)
+            .recipe((c, p) -> p.stonecutting(
+                    DataIngredient.items(MOON_STONE.get()), RecipeCategory.BUILDING_BLOCKS, c))
             .transform(pickaxeOnly())
             .item()
             .transform(customItemModel("polished_moon_stone"))

@@ -12,11 +12,11 @@ public class PaintingInit {
             ForgeRegistries.PAINTING_VARIANTS,
             CreatingSpace.MODID);
 
-    public static final RegistryObject<PaintingVariant> BLANK_PAINTING = PAINTINGS.register(
+    /*public static final RegistryObject<PaintingVariant> BLANK_PAINTING = PAINTINGS.register(
             "blank_painting",
             () -> new PaintingVariant(16,16)
             );
-
+*/
     public static void register(IEventBus bus) {
         PAINTINGS.register(bus);
     }

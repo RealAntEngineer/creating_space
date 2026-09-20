@@ -12,10 +12,15 @@ public class CSOxygenBacktank extends CSConfigBase {
         return "oxygenBacktank";
     }
 
-
     @Override
     public void onReload() {
         super.onReload();
+        RemainingO2Overlay.reload();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
         RemainingO2Overlay.reload();
     }
 

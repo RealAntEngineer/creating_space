@@ -283,7 +283,7 @@ public class ItemInit {
                             .save(p, resource("crafting/misc/" + c.getName())))
             .register();
 
-    public static final ItemEntry<Item> BASIC_CATALYST = REGISTRATE.item(
+    /*public static final ItemEntry<Item> BASIC_CATALYST = REGISTRATE.item(
             "basic_catalyst",Item::new)
             .recipe((c,p) ->
                     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, c.get(), 4)
@@ -294,12 +294,12 @@ public class ItemInit {
                             .pattern("NBN")
                             .unlockedBy("has_" + c.getName(), has(c.get()))
                             .save(p, resource("crafting/misc/" + c.getName())))
-            .register();
+            .register();*/
 
-    public static final ItemEntry<CombustibleItem> COAL_DUST = CreatingSpace.REGISTRATE.item(
+    /*public static final ItemEntry<CombustibleItem> COAL_DUST = CreatingSpace.REGISTRATE.item(
             "coal_dust", CombustibleItem::new)
             .onRegister(i -> i.setBurnTime(500))
-            .register();
+            .register();*/
 
     //food
     //exemple -> arn't registered...
@@ -449,7 +449,7 @@ public class ItemInit {
             .register();
 
 
-    //TODO tags seems suspichious
+    //TODO tags seems suspicious
     public static final ItemEntry<Item> CRUSHED_RAW_COBALT = REGISTRATE.item(
                     "crushed_raw_cobalt",Item::new)
             .tag(forgeItemTag("crushed_raw_cobalt"), forgeItemTag("crushed_raw_materials"), forgeItemTag("ores/cobalt"))

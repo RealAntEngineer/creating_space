@@ -85,7 +85,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
     //TODO make a record and CODEC
     public                   HashMap<TagKey<Fluid>, ArrayList<Fluid>> consumableFluids     = new HashMap<>();//
     public                   RocketScheduleRuntime                    schedule;
-    public                   RocketPath                               nextPath;
+    public @Nullable                  RocketPath                      nextPath;
     int                                                       soundEffectTickCount       = 0;
     double                                                    clientOffsetDiff;
     double                                                    speed;
@@ -257,28 +257,68 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         if (!level().isClientSide) {
             if (isInPropulsionPhase()) {
                 tickConsumptionAndSpeed();
-                Vec3 movementVec = getDeltaMovement();
                 tickDimensionChangeLogic();
 
+                Vec3 candidate = getDeltaMovement();
+                double floorY = Math.floor(position().y);
+                double fy = position().y - floorY; // fractional offset from the block below, always in [0,1)
 
-                if (ContraptionCollider.collideBlocks(this) && !(level().getMaxBuildHeight() < this.getBoundingBox().maxY + movementVec.y)) {
-                    //stopRocket();
-                    getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
-                    //setContraptionMotion(Vec3.ZERO);
+                boolean collided = false;
+                int failCount = 0;
+                // scale attempts to the distance we might need to shrink through, plus slack for the fy snap
+                final int maxFails = (int) Math.abs(candidate.y) + 4;
 
-                } else if (tickCount > 2) {//that means the rocket takes 2 ticks more than expected to go up
-                    movementVec = VecHelper.clampComponentWise(movementVec, (float) 1);
-                    move(movementVec.x, movementVec.y, movementVec.z);
+                while (true) {
+                    setContraptionMotion(candidate);
+
+                    boolean collides = ContraptionCollider.collideBlocks(this)
+                            || level().getMaxBuildHeight() < this.getBoundingBox().maxY + candidate.y;
+
+                    if (!collides)
+                        break;
+
+                    collided = true;
+
+                    // no room left to shrink into — stop immediately instead of spinning on an unchanging candidate
+                    if (candidate.y + fy == 0 || failCount >= maxFails) {
+                        candidate = Vec3.ZERO;
+                        setContraptionMotion(candidate);
+                        break;
+                    }
+
+                    failCount++;
+                    double steppedY = stepTowardsBlock(candidate.y + fy) - fy;
+                    candidate = new Vec3(candidate.x, steppedY, candidate.z);
                 }
-                /*if (Math.signum(prevAxisMotion) != Math.signum(axisMotion) && prevAxisMotion != 0)
-            contraption.stop(level);*/
+
+                if (tickCount > 2 || collided) {
+                    Vec3 moveVec = VecHelper.clampComponentWise(candidate, (float) 1);
+                    move(moveVec.x, moveVec.y, moveVec.z);
+                }
+
+                if (collided) {
+                    getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
+                    setContraptionMotion(Vec3.ZERO);
+                }
+
+            } else {
+                setContraptionMotion(Vec3.ZERO);
+                this.speed = 0;
             }
             sendPacket();
         }
-        if (!isInPropulsionPhase()) {
-            setContraptionMotion(Vec3.ZERO);
-            this.speed = 0;
-        }
+    }
+
+    /**
+     * Steps a motion value back towards the nearest block boundary, one block at a time,
+     * respecting the sign of the motion (so downward motion isn't incorrectly floored further down).
+     */
+    private static double stepTowardsBlock(double value) {
+        double sign = Math.signum(value);
+        boolean alreadyOnBlock = value == Math.floor(value);
+        if (alreadyOnBlock)
+            return value - sign; // already a whole block, reduce by one more full block
+        return sign > 0 ? Math.floor(value) : Math.ceil(value); // snap to the nearest block boundary behind it
     }
 
     @Override
@@ -414,9 +454,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
         }
 
         Vec3 movementVec;
-        float acceleration = getAcceleration(
-                initialMass,
-                (int) totalThrust, gravity, isReentry());
+        float acceleration = getAcceleration(initialMass, (int) totalThrust, gravity, isReentry());
 
         float speed = getPerTickSpeed(acceleration);
         movementVec = new Vec3(0, speed, 0);
@@ -430,8 +468,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
 
             ServerLevel destServerLevel = Objects.requireNonNull(this.level().getServer()).getLevel(
-                    ResourceKey.create(Registries.DIMENSION,
-                            this.nextPath.destination)
+                    ResourceKey.create(Registries.DIMENSION, this.nextPath.destination)
             );
 
             if (destServerLevel != null) {
@@ -674,6 +711,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         RocketContraption contraption = (RocketContraption) rocketContraptionEntity.contraption;
 
+        assert rocketContraptionEntity.nextPath != null;
         float deltaVNeeded = (float) rocketContraptionEntity.nextPath.cost;
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("-------------------trajectory calculation---------------------");
@@ -757,7 +795,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity {
 
         if (CSConfigs.COMMON.additionalLogInfo.get()) {
             CreatingSpace.LOGGER.info("finished correction of consumption path :");
-            CreatingSpace.LOGGER.info("consumed mass for each fluid tag :{}", consumedMassForEachPropellant);
+            CreatingSpace.LOGGER.info("consumed mass for each fluid tag : {}", consumedMassForEachPropellant);
             CreatingSpace.LOGGER.info("consumed mass per propellant : {}", rocketContraptionEntity.realPerTagFluidConsumption);
         }
         //verify if there is enough fluid
