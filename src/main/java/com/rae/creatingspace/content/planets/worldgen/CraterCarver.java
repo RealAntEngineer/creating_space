@@ -26,11 +26,14 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 public class CraterCarver extends WorldCarver<CraterCarverConfig> {
 
-    public HashMap<Couple<Integer>, Integer> heightMap = new HashMap<>();
+    // Carvers are shared singletons and chunk generation runs on several worker threads,
+    // so this cache must be thread-safe.
+    public final Map<Couple<Integer>, Integer> heightMap = new ConcurrentHashMap<>();
 
     public CraterCarver(Codec codec) {
         super(codec);
@@ -186,8 +189,9 @@ public class CraterCarver extends WorldCarver<CraterCarverConfig> {
         int y = chunk.getMaxBuildHeight();
         Couple<Integer> coor = Couple.create(pos.getBlockX(x),pos.getBlockZ(z));
         if (chunk.getPos().getChessboardDistance(pos) <= config.maxRadius/16+1) {
-            if (heightMap.containsKey(coor)){
-                return heightMap.get(coor);
+            Integer cachedY = heightMap.get(coor);
+            if (cachedY != null) {
+                return cachedY;
             }
             while (density < 0f && y > chunk.getMinBuildHeight()) {
                 int finalY = y;
