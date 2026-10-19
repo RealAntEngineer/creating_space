@@ -19,6 +19,7 @@ import com.rae.creatingspace.content.planets.CSDimensionUtil;
 import com.rae.creatingspace.content.rocket.CustomTeleporter;
 import com.rae.creatingspace.init.ingameobject.BlockInit;
 import com.rae.creatingspace.init.ingameobject.ItemInit;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -42,6 +43,7 @@ import net.neoforged.neoforge.event.level.SleepFinishedTimeEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.registries.IdMappingEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -194,38 +196,56 @@ public class CSEventHandler {
 
     @SubscribeEvent
     public static void onBlockPlaced(BlockEvent.NeighborNotifyEvent event) {
-        boolean blockPlaced = false;
-        Level level = (Level) event.getLevel();
-        AABB colBoxInside = new AABB(event.getPos());
+        // rooms only exist (and only matter) on the logical server
+        if (!(event.getLevel() instanceof ServerLevel level)) {
+            return;
+        }
+        BlockPos pos = event.getPos();
+        AABB colBoxInside = new AABB(pos);
 
-        List<RoomAtmosphere> entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBoxInside);
-        for (RoomAtmosphere atmosphere : entityStream) {
+        // one query covering the block and its 6 neighbours, instead of up to 7 separate queries
+        // for every single block update in every dimension
+        List<RoomAtmosphere> nearby = level.getEntitiesOfClass(RoomAtmosphere.class, colBoxInside.inflate(1.0));
+        if (nearby.isEmpty()) {
+            return;
+        }
+
+        boolean smarter = CSConfigs.SERVER.smarterSearch.get();
+        List<RoomAtmosphere> insideRooms = new ArrayList<>();
+        for (RoomAtmosphere atmosphere : nearby) {
+            if (atmosphere.getBoundingBox().intersects(colBoxInside)) {
+                insideRooms.add(atmosphere);
+            }
+        }
+
+        boolean blockPlaced = false;
+        for (RoomAtmosphere atmosphere : insideRooms) {
             if (atmosphere.getShape().inside(colBoxInside)) {
                 blockPlaced = true;
             }
         }
+
         if (blockPlaced) {
-            for (RoomAtmosphere atmosphere : entityStream) {
-                if (CSConfigs.SERVER.smarterSearch.get()){
-                    atmosphere.regenerateRoom(event.getPos());
+            for (RoomAtmosphere atmosphere : insideRooms) {
+                if (smarter) {
+                    atmosphere.regenerateRoom(pos);
                 } else {
                     atmosphere.resetShape();
                     atmosphere.regenerateRoom(atmosphere.getOnPos());
                 }
             }
-        }
-        else {
-            for (Direction direction :
-                    event.getNotifiedSides()) {
-                AABB colBoxOutside = new AABB(event.getPos().relative(direction));
-                entityStream = level.getEntitiesOfClass(RoomAtmosphere.class, colBoxOutside);
-
-                for (RoomAtmosphere atmosphere : entityStream) {
-                    if (CSConfigs.SERVER.smarterSearch.get()) {
-                        atmosphere.regenerateRoom(event.getPos().relative(direction));
-                    } else {
-                        atmosphere.resetShape();
-                        atmosphere.regenerateRoom(atmosphere.getOnPos());
+        } else {
+            for (Direction direction : event.getNotifiedSides()) {
+                BlockPos neighbour = pos.relative(direction);
+                AABB colBoxOutside = new AABB(neighbour);
+                for (RoomAtmosphere atmosphere : nearby) {
+                    if (atmosphere.getBoundingBox().intersects(colBoxOutside)) {
+                        if (smarter) {
+                            atmosphere.regenerateRoom(neighbour);
+                        } else {
+                            atmosphere.resetShape();
+                            atmosphere.regenerateRoom(atmosphere.getOnPos());
+                        }
                     }
                 }
             }
