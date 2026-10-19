@@ -90,7 +90,8 @@ public class RoomAtmosphere extends Entity {
 
     private RoomShape searchTopology(BlockPos start) {
         toVist.add(start);
-        ArrayList<AABB> tempRoom = getShape().getListOfBox();
+        // build a new list: the current shape is shared with in-flight packets and must never be modified
+        ArrayList<AABB> tempRoom = new ArrayList<>(getShape().getListOfBox());
 
         tempRoom.removeIf(a ->a.contains(Vec3.atCenterOf(start)));
 
@@ -154,7 +155,7 @@ public class RoomAtmosphere extends Entity {
             }
         }
 
-        RoomShape shape = new RoomShape(tempRoom,getShape().volume+addedSize);
+        RoomShape shape = RoomShape.adopt(tempRoom, getShape().volume + addedSize);
         if (shape.volume >=  CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             shape.setOpen();
             toVist = new ArrayDeque<>();
