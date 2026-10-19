@@ -250,6 +250,10 @@ public class RoomAtmosphere extends Entity {
     }
 
     private void applyOnBlock(BlockPos pos) {
+        // never touch unloaded chunks: getBlockState/getBlockEntity would load or generate them on the server thread
+        if (!level().hasChunkAt(pos)) {
+            return;
+        }
         BlockState state = level().getBlockState(pos);
         if (level().getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp && !roomSealers.contains(pos)) {
             roomSealers.add(pos);
@@ -265,6 +269,10 @@ public class RoomAtmosphere extends Entity {
     }
 
     private boolean canGoThrough(Level world, BlockPos currentPos, Direction dir) {
+        // unloaded chunks count as solid, so the search can never force a synchronous chunk load
+        if (!world.hasChunkAt(currentPos)) {
+            return false;
+        }
         //copied from AirCurrent
         BlockState state = world.getBlockState(currentPos);
         BlockState copycatState = CopycatBlock.getMaterial(world, currentPos);
