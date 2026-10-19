@@ -366,6 +366,9 @@ public class RoomAtmosphere extends Entity {
         return entityBuilder.sized(1, 1);
     }
 
+    // how often (in ticks) the room scans the entities inside it; oxygen use/production is scaled to match
+    private static final int SCAN_INTERVAL = 5;
+
     @Override
     public void tick() {
         super.tick();
@@ -377,18 +380,17 @@ public class RoomAtmosphere extends Entity {
             if (!getShape().closed){
                 entityData.set(O2_AMOUNT,0);
             }
-            if (hasShape()) {
-                List<Entity> entitiesInside = getShape().getEntitiesInside(level());
-                for (Entity entity :
-                        entitiesInside) {
-                    if (entity instanceof LivingEntity living && breathable()) {
-                        consumeO2();//cancel event ?
+            // entity scan + oxygen bookkeeping every SCAN_INTERVAL ticks instead of every tick;
+            // consumption and production are multiplied by the interval so the totals stay the same
+            if (hasShape() && tickCount % SCAN_INTERVAL == 0) {
+                for (LivingEntity living : getShape().getLivingInside(level())) {
+                    if (breathable()) {
+                        consumeO2(SCAN_INTERVAL);//cancel event ?
                         ((INeedOxygen)living).setInsideOxygenRoom(true);
                     }
                 }
                 for (AtmosphereFilterData data : passiveFilters.values()) {
-                    //System.out.println("globalImpact of "+this.getId()+ ": "+data.globalImpact);
-                    addO2(data.globalImpact);
+                    addO2(data.globalImpact * SCAN_INTERVAL);
                 }
             }
         }
@@ -407,8 +409,18 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void consumeO2() {
-        if (entityData.get(O2_AMOUNT) >= CSConfigs.SERVER.livingO2Consumption.get()) {
-            entityData.set(O2_AMOUNT,entityData.get(O2_AMOUNT) - CSConfigs.SERVER.livingO2Consumption.get());
+        consumeO2(1);
+    }
+
+    /**
+     * @param ticks how many ticks worth of consumption to apply at once
+     */
+    public void consumeO2(int ticks) {
+        int unit = CSConfigs.SERVER.livingO2Consumption.get();
+        int current = entityData.get(O2_AMOUNT);
+        if (current >= unit) {
+            long amount = (long) unit * Math.max(ticks, 1);
+            entityData.set(O2_AMOUNT, current - (int) Math.min(current, amount));
         }
     }
 
