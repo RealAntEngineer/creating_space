@@ -75,12 +75,40 @@ public class RoomAtmosphere extends Entity {
 
 
     private boolean contains(List<AABB> tempRoom, BlockPos tempPos) {
+        // no Vec3 allocation per box: this runs for every candidate block against every box
+        double x = tempPos.getX() + 0.5;
+        double y = tempPos.getY() + 0.5;
+        double z = tempPos.getZ() + 0.5;
         for (AABB aabb : tempRoom) {
-            if (aabb.contains(Vec3.atCenterOf(tempPos))) {
+            if (aabb.contains(x, y, z)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Queue the cells around a box we stopped growing because of a size cap (not because it was
+     * blocked on every side), so the search continues from there instead of declaring the room closed.
+     */
+    private void enqueueFrontier(AABB box, List<AABB> tempRoom) {
+        for (Direction dir : Direction.values()) {
+            AABB slab = getExpandedPart(dir, box).contract(1, 1, 1);
+            for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(slab.minX), Mth.floor(slab.minY), Mth.floor(slab.minZ),
+                    Mth.floor(slab.maxX), Mth.floor(slab.maxY), Mth.floor(slab.maxZ))) {
+                if (contains(tempRoom, pos)) {
+                    continue;
+                }
+                if (canGoThrough(level(), pos, dir)) {
+                    toVist.add(pos.immutable());
+                    if (!level().getBlockState(pos).isAir()) {
+                        applyOnBlock(pos);
+                    }
+                } else {
+                    applyOnBlock(pos);
+                }
+            }
+        }
     }
 
     /**
@@ -114,7 +142,10 @@ public class RoomAtmosphere extends Entity {
                 AABB tempAabb = new AABB(tempPos);
 
                 boolean canContinue = true;//map for the 6 directions
-                while (canContinue && tempAabb.getSize() < 30) {
+                // a single box may not use more than what is left of this tick's budget
+                double boxBudget = Math.max(CSConfigs.SERVER.maxBlockPerTick.get() - addedSize, 1);
+                while (canContinue && tempAabb.getSize() < 30
+                        && tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize() < boxBudget) {
                     canContinue = false;
                     for (Direction dir : Direction.values()) {
 
@@ -161,6 +192,10 @@ public class RoomAtmosphere extends Entity {
                 }
                 tempRoom.add(tempAabb);
                 addedSize += (int) (tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize());
+                if (canContinue) {
+                    // stopped by a size cap while it could still grow: keep exploring around it
+                    enqueueFrontier(tempAabb, tempRoom);
+                }
             }
         }
 
