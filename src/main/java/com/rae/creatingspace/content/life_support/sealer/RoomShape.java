@@ -48,6 +48,28 @@ public class RoomShape {
         this.closed = closed;
     }
 
+    /**
+     * Takes ownership of {@code listOfBox} (no defensive copy). The caller must not touch the list afterwards.
+     */
+    static RoomShape adopt(ArrayList<AABB> listOfBox, int volume) {
+        return new RoomShape(volume, listOfBox);
+    }
+
+    private RoomShape(int volume, ArrayList<AABB> ownedList) {
+        this.listOfBox = ownedList;
+        this.volume = volume;
+    }
+
+    /**
+     * A published shape is never modified: {@code RoomAtmosphere.searchTopology} builds a new list and a new
+     * shape on every rebuild and only sets {@code closed} before publishing. Entity-data packets are encoded
+     * later on a Netty thread, and sharing an immutable shape needs neither a lock nor a copy per sync.
+     * Do not call the mutators (add/remove/...) on a shape that has already been set on the entity.
+     */
+    public RoomShape copy() {
+        return this;
+    }
+
     public static RoomShape fromNbt(CompoundTag nbt) {
 
         return new RoomShape(LIST_CODEC.decode(NbtOps.INSTANCE, nbt.get("listOfBox")).result().orElseThrow().getFirst(), nbt.getInt("volume"), nbt.getBoolean("closed"));

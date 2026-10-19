@@ -35,6 +35,8 @@ public class RoomShapeSerializer implements EntityDataSerializer<RoomShape> {
 
     @Override
     public @NotNull RoomShape copy(@NotNull RoomShape shape) {
-        return shape;
+        // Shapes are immutable once published (see RoomShape#copy), so the packet can share the instance
+        // safely: no lock and no per-sync allocation.
+        return shape.copy();
     }
 }
