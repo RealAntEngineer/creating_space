@@ -64,6 +64,48 @@ public class RoomAtmosphere extends Entity {
     ArrayList<BlockPos> roomSealers = new ArrayList<>();
     HashMap<ResourceLocation, AtmosphereFilterData> passiveFilters = new HashMap<>();
     Queue<BlockPos> toVist = new ArrayDeque<>();
+    // minimum ticks between two rebuilds triggered by block changes
+    private static final int REGEN_COOLDOWN = 5;
+    private final LinkedHashSet<BlockPos> pendingRegen = new LinkedHashSet<>();
+    private boolean pendingFullRebuild = false;
+    private int lastRegenTick = -REGEN_COOLDOWN;
+
+    /**
+     * Ask for a full rebuild (reset + new search). Many requests in a short time collapse into one.
+     */
+    public void requestFullRebuild() {
+        pendingFullRebuild = true;
+    }
+
+    /**
+     * Ask for an incremental rebuild around a changed block (smarterSearch mode).
+     */
+    public void requestRegenerate(BlockPos pos) {
+        pendingRegen.add(pos.immutable());
+    }
+
+    private void processPendingRegeneration() {
+        if (!pendingFullRebuild && pendingRegen.isEmpty()) {
+            return;
+        }
+        if (tickCount - lastRegenTick < REGEN_COOLDOWN) {
+            return;
+        }
+        lastRegenTick = tickCount;
+        if (pendingFullRebuild) {
+            pendingFullRebuild = false;
+            pendingRegen.clear();
+            toVist = new ArrayDeque<>();
+            resetShape();
+            regenerateRoom(getOnPos());
+        } else {
+            List<BlockPos> positions = new ArrayList<>(pendingRegen);
+            pendingRegen.clear();
+            for (BlockPos pos : positions) {
+                regenerateRoom(pos);
+            }
+        }
+    }
     //TODO make a regenerateRoom and a searchFrontier methode (regenerateRoom will only initiate the call, searchFrontier will be private)
     public void regenerateRoom(BlockPos firstPos) {
         passiveFilters = new HashMap<>();
@@ -326,6 +368,7 @@ public class RoomAtmosphere extends Entity {
         super.tick();
 
         if (!level().isClientSide()) {
+            processPendingRegeneration();
             if (!toVist.isEmpty()){
                 entityData.set(SHAPE_DATA_ACCESSOR,searchTopology(toVist.poll()));
             }

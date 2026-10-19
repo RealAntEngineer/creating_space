@@ -225,13 +225,14 @@ public class CSEventHandler {
             }
         }
 
+        // rebuilds are queued on the room and processed on its next tick, so a burst of block
+        // updates (piston, door, machine) results in one rebuild instead of one per update
         if (blockPlaced) {
             for (RoomAtmosphere atmosphere : insideRooms) {
                 if (smarter) {
-                    atmosphere.regenerateRoom(pos);
+                    atmosphere.requestRegenerate(pos);
                 } else {
-                    atmosphere.resetShape();
-                    atmosphere.regenerateRoom(atmosphere.getOnPos());
+                    atmosphere.requestFullRebuild();
                 }
             }
         } else {
@@ -241,10 +242,9 @@ public class CSEventHandler {
                 for (RoomAtmosphere atmosphere : nearby) {
                     if (atmosphere.getBoundingBox().intersects(colBoxOutside)) {
                         if (smarter) {
-                            atmosphere.regenerateRoom(neighbour);
+                            atmosphere.requestRegenerate(neighbour);
                         } else {
-                            atmosphere.resetShape();
-                            atmosphere.regenerateRoom(atmosphere.getOnPos());
+                            atmosphere.requestFullRebuild();
                         }
                     }
                 }
