@@ -117,12 +117,40 @@ public class RoomAtmosphere extends Entity {
 
 
     private boolean contains(List<AABB> tempRoom, BlockPos tempPos) {
+        // no Vec3 allocation per box: this runs for every candidate block against every box
+        double x = tempPos.getX() + 0.5;
+        double y = tempPos.getY() + 0.5;
+        double z = tempPos.getZ() + 0.5;
         for (AABB aabb : tempRoom) {
-            if (aabb.contains(Vec3.atCenterOf(tempPos))) {
+            if (aabb.contains(x, y, z)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Queue the cells around a box we stopped growing because of a size cap (not because it was
+     * blocked on every side), so the search continues from there instead of declaring the room closed.
+     */
+    private void enqueueFrontier(AABB box, List<AABB> tempRoom) {
+        for (Direction dir : Direction.values()) {
+            AABB slab = getExpandedPart(dir, box).contract(1, 1, 1);
+            for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(slab.minX), Mth.floor(slab.minY), Mth.floor(slab.minZ),
+                    Mth.floor(slab.maxX), Mth.floor(slab.maxY), Mth.floor(slab.maxZ))) {
+                if (contains(tempRoom, pos)) {
+                    continue;
+                }
+                if (canGoThrough(level(), pos, dir)) {
+                    toVist.add(pos.immutable());
+                    if (!level().getBlockState(pos).isAir()) {
+                        applyOnBlock(pos);
+                    }
+                } else {
+                    applyOnBlock(pos);
+                }
+            }
+        }
     }
 
     /**
@@ -135,7 +163,16 @@ public class RoomAtmosphere extends Entity {
         // build a new list: the current shape is shared with in-flight packets and must never be modified
         ArrayList<AABB> tempRoom = new ArrayList<>(getShape().getListOfBox());
 
-        tempRoom.removeIf(a ->a.contains(Vec3.atCenterOf(start)));
+        // drop the box(es) containing the start, and take their volume out of the running total
+        int removedVolume = 0;
+        for (Iterator<AABB> it = tempRoom.iterator(); it.hasNext(); ) {
+            AABB a = it.next();
+            if (a.contains(Vec3.atCenterOf(start))) {
+                removedVolume += (int) (a.getXsize() * a.getYsize() * a.getZsize());
+                it.remove();
+            }
+        }
+        int baseVolume = Math.max(0, getShape().volume - removedVolume);
 
         int addedSize = 0;
 
@@ -147,7 +184,10 @@ public class RoomAtmosphere extends Entity {
                 AABB tempAabb = new AABB(tempPos);
 
                 boolean canContinue = true;//map for the 6 directions
-                while (canContinue && tempAabb.getSize() < 30) {
+                // a single box may not use more than what is left of this tick's budget
+                double boxBudget = Math.max(CSConfigs.SERVER.maxBlockPerTick.get() - addedSize, 1);
+                while (canContinue && tempAabb.getSize() < 30
+                        && tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize() < boxBudget) {
                     canContinue = false;
                     for (Direction dir : Direction.values()) {
 
@@ -194,10 +234,14 @@ public class RoomAtmosphere extends Entity {
                 }
                 tempRoom.add(tempAabb);
                 addedSize += (int) (tempAabb.getXsize() * tempAabb.getYsize() * tempAabb.getZsize());
+                if (canContinue) {
+                    // stopped by a size cap while it could still grow: keep exploring around it
+                    enqueueFrontier(tempAabb, tempRoom);
+                }
             }
         }
 
-        RoomShape shape = RoomShape.adopt(tempRoom, getShape().volume + addedSize);
+        RoomShape shape = RoomShape.adopt(tempRoom, baseVolume + addedSize);
         if (shape.volume >=  CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             shape.setOpen();
             toVist = new ArrayDeque<>();
@@ -372,6 +416,9 @@ public class RoomAtmosphere extends Entity {
         return entityBuilder.sized(1, 1);
     }
 
+    // how often (in ticks) the room scans the entities inside it; oxygen use/production is scaled to match
+    private static final int SCAN_INTERVAL = 5;
+
     @Override
     public void tick() {
         super.tick();
@@ -384,18 +431,17 @@ public class RoomAtmosphere extends Entity {
             if (!getShape().closed){
                 entityData.set(O2_AMOUNT,0);
             }
-            if (hasShape()) {
-                List<Entity> entitiesInside = getShape().getEntitiesInside(level());
-                for (Entity entity :
-                        entitiesInside) {
-                    if (entity instanceof LivingEntity living && breathable()) {
-                        consumeO2();//cancel event ?
+            // entity scan + oxygen bookkeeping every SCAN_INTERVAL ticks instead of every tick;
+            // consumption and production are multiplied by the interval so the totals stay the same
+            if (hasShape() && tickCount % SCAN_INTERVAL == 0) {
+                for (LivingEntity living : getShape().getLivingInside(level())) {
+                    if (breathable()) {
+                        consumeO2(SCAN_INTERVAL);//cancel event ?
                         ((INeedOxygen)living).setInsideOxygenRoom(true);
                     }
                 }
                 for (AtmosphereFilterData data : passiveFilters.values()) {
-                    //System.out.println("globalImpact of "+this.getId()+ ": "+data.globalImpact);
-                    addO2(data.globalImpact);
+                    addO2(data.globalImpact * SCAN_INTERVAL);
                 }
             }
         }
@@ -414,8 +460,18 @@ public class RoomAtmosphere extends Entity {
     }
 
     public void consumeO2() {
-        if (entityData.get(O2_AMOUNT) >= CSConfigs.SERVER.livingO2Consumption.get()) {
-            entityData.set(O2_AMOUNT,entityData.get(O2_AMOUNT) - CSConfigs.SERVER.livingO2Consumption.get());
+        consumeO2(1);
+    }
+
+    /**
+     * @param ticks how many ticks worth of consumption to apply at once
+     */
+    public void consumeO2(int ticks) {
+        int unit = CSConfigs.SERVER.livingO2Consumption.get();
+        int current = entityData.get(O2_AMOUNT);
+        if (current >= unit) {
+            long amount = (long) unit * Math.max(ticks, 1);
+            entityData.set(O2_AMOUNT, current - (int) Math.min(current, amount));
         }
     }
 

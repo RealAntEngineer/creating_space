@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -21,6 +22,9 @@ public class RoomShape {
     float yRot;
     float zRot;
     int volume;
+    // cached encapsulating box, invalidated whenever the list is modified through this class
+    private AABB cachedBounds;
+    private boolean boundsValid;
     static Codec<List<AABB>> LIST_CODEC = Codec.list(
             RecordCodecBuilder.create(
                     instance ->
@@ -94,36 +98,34 @@ public class RoomShape {
         add(firstBlock);
     }
 
-    //TODO use AABB::minmax
+    /**
+     * @return the box enclosing every box of the room, or null if the room is empty. Cached.
+     */
     public AABB getEncapsulatingBox() {
-        Double minX = null;
-        Double minY = null;
-        Double minZ = null;
-        Double maxX = null;
-        Double maxY = null;
-        Double maxZ = null;
-        for (AABB aabb : listOfBox) {
-            if (minX == null || minX > aabb.minX) {
-                minX = aabb.minX;
-            }
-            if (minY == null || minY > aabb.minY) {
-                minY = aabb.minY;
-            }
-            if (minZ == null || minZ > aabb.minZ) {
-                minZ = aabb.minZ;
-            }
-            if (maxX == null || maxX < aabb.maxX) {
-                maxX = aabb.maxX;
-            }
-            if (maxY == null || maxY < aabb.maxY) {
-                maxY = aabb.maxY;
-            }
-            if (maxZ == null || maxZ < aabb.maxZ) {
-                maxZ = aabb.maxZ;
-            }
+        if (!boundsValid) {
+            cachedBounds = computeBounds();
+            boundsValid = true;
         }
+        return cachedBounds;
+    }
+
+    private AABB computeBounds() {
         if (listOfBox.isEmpty()) {
             return null;
+        }
+        double minX = Double.POSITIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        double minZ = Double.POSITIVE_INFINITY;
+        double maxX = Double.NEGATIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+        double maxZ = Double.NEGATIVE_INFINITY;
+        for (AABB aabb : listOfBox) {
+            if (aabb.minX < minX) minX = aabb.minX;
+            if (aabb.minY < minY) minY = aabb.minY;
+            if (aabb.minZ < minZ) minZ = aabb.minZ;
+            if (aabb.maxX > maxX) maxX = aabb.maxX;
+            if (aabb.maxY > maxY) maxY = aabb.maxY;
+            if (aabb.maxZ > maxZ) maxZ = aabb.maxZ;
         }
         return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
     }
@@ -141,10 +143,14 @@ public class RoomShape {
     }
     private void add(List<AABB> aabbs) {
         listOfBox.addAll(aabbs);
+        boundsValid = false;
         for (AABB aabb : aabbs) {
             volume += (int) getVolume(aabb);
         }
     }
+    /**
+     * Kept for compatibility. Prefer {@link #getLivingInside(Level)}.
+     */
     public List<Entity> getEntitiesInside(Level level) {
         ArrayList<Entity> entities = new ArrayList<>();
         for (AABB box :
@@ -152,6 +158,32 @@ public class RoomShape {
             entities.addAll(level.getEntities(null, box));
         }
         return entities.stream().distinct().toList();
+    }
+
+    /**
+     * Living entities whose bounding box touches the room. Uses one typed query on the room's
+     * bounding box instead of one all-entity query per box, then filters against the boxes.
+     */
+    public List<LivingEntity> getLivingInside(Level level) {
+        AABB bounds = getEncapsulatingBox();
+        if (bounds == null) {
+            return List.of();
+        }
+        List<LivingEntity> candidates = level.getEntitiesOfClass(LivingEntity.class, bounds);
+        if (candidates.isEmpty()) {
+            return candidates;
+        }
+        List<LivingEntity> inside = new ArrayList<>(candidates.size());
+        for (LivingEntity entity : candidates) {
+            AABB entityBox = entity.getBoundingBox();
+            for (AABB box : listOfBox) {
+                if (box.intersects(entityBox)) {
+                    inside.add(entity);
+                    break;
+                }
+            }
+        }
+        return inside;
     }
 
     public void calculateVolume() {
@@ -180,7 +212,7 @@ public class RoomShape {
 
     public void remove(BlockPos pos) {
         listOfBox.removeIf(aabb -> aabb.contains(Vec3.atCenterOf(pos)));
-
+        boundsValid = false;
     }
 
     public void remove(AABB toRemove) {
@@ -189,6 +221,7 @@ public class RoomShape {
             toRemoveList.addAll(carve(toRemove, aabb));
         }
         listOfBox = toRemoveList;
+        boundsValid = false;
     }
 
     public void setClosed() {
