@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RoomShape {
     ArrayList<AABB> listOfBox;
@@ -218,5 +219,18 @@ public class RoomShape {
         aabbs.add(new AABB(iCarver.minX, iCarver.maxY, iCarver.minZ, iCarver.maxX, carved.maxY, iCarver.maxZ));
 
         return aabbs.stream().filter(aabb -> aabb.getSize() != 0).toList();
+    }
+
+    // Value equality lets SynchedEntityData skip re-sending an unchanged shape to every tracking player.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoomShape other)) return false;
+        return volume == other.volume && closed == other.closed && listOfBox.equals(other.listOfBox);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(listOfBox, volume, closed);
     }
 }

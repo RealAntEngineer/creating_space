@@ -64,6 +64,48 @@ public class RoomAtmosphere extends Entity {
     ArrayList<BlockPos> roomSealers = new ArrayList<>();
     HashMap<ResourceLocation, AtmosphereFilterData> passiveFilters = new HashMap<>();
     Queue<BlockPos> toVist = new ArrayDeque<>();
+    // minimum ticks between two rebuilds triggered by block changes
+    private static final int REGEN_COOLDOWN = 5;
+    private final LinkedHashSet<BlockPos> pendingRegen = new LinkedHashSet<>();
+    private boolean pendingFullRebuild = false;
+    private int lastRegenTick = -REGEN_COOLDOWN;
+
+    /**
+     * Ask for a full rebuild (reset + new search). Many requests in a short time collapse into one.
+     */
+    public void requestFullRebuild() {
+        pendingFullRebuild = true;
+    }
+
+    /**
+     * Ask for an incremental rebuild around a changed block (smarterSearch mode).
+     */
+    public void requestRegenerate(BlockPos pos) {
+        pendingRegen.add(pos.immutable());
+    }
+
+    private void processPendingRegeneration() {
+        if (!pendingFullRebuild && pendingRegen.isEmpty()) {
+            return;
+        }
+        if (tickCount - lastRegenTick < REGEN_COOLDOWN) {
+            return;
+        }
+        lastRegenTick = tickCount;
+        if (pendingFullRebuild) {
+            pendingFullRebuild = false;
+            pendingRegen.clear();
+            toVist = new ArrayDeque<>();
+            resetShape();
+            regenerateRoom(getOnPos());
+        } else {
+            List<BlockPos> positions = new ArrayList<>(pendingRegen);
+            pendingRegen.clear();
+            for (BlockPos pos : positions) {
+                regenerateRoom(pos);
+            }
+        }
+    }
     //TODO make a regenerateRoom and a searchFrontier methode (regenerateRoom will only initiate the call, searchFrontier will be private)
     public void regenerateRoom(BlockPos firstPos) {
         passiveFilters = new HashMap<>();
@@ -209,6 +251,10 @@ public class RoomAtmosphere extends Entity {
     }
 
     private void applyOnBlock(BlockPos pos) {
+        // never touch unloaded chunks: getBlockState/getBlockEntity would load or generate them on the server thread
+        if (!level().hasChunkAt(pos)) {
+            return;
+        }
         BlockState state = level().getBlockState(pos);
         if (level().getBlockEntity(pos) instanceof RoomPressuriserBlockEntity rp && !roomSealers.contains(pos)) {
             roomSealers.add(pos);
@@ -224,6 +270,10 @@ public class RoomAtmosphere extends Entity {
     }
 
     private boolean canGoThrough(Level world, BlockPos currentPos, Direction dir) {
+        // unloaded chunks count as solid, so the search can never force a synchronous chunk load
+        if (!world.hasChunkAt(currentPos)) {
+            return false;
+        }
         //copied from AirCurrent
         BlockState state = world.getBlockState(currentPos);
         BlockState copycatState = CopycatBlock.getMaterial(world, currentPos);
@@ -327,6 +377,7 @@ public class RoomAtmosphere extends Entity {
         super.tick();
 
         if (!level().isClientSide()) {
+            processPendingRegeneration();
             if (!toVist.isEmpty()){
                 entityData.set(SHAPE_DATA_ACCESSOR,searchTopology(toVist.poll()));
             }
