@@ -93,7 +93,16 @@ public class RoomAtmosphere extends Entity {
         // build a new list: the current shape is shared with in-flight packets and must never be modified
         ArrayList<AABB> tempRoom = new ArrayList<>(getShape().getListOfBox());
 
-        tempRoom.removeIf(a ->a.contains(Vec3.atCenterOf(start)));
+        // drop the box(es) containing the start, and take their volume out of the running total
+        int removedVolume = 0;
+        for (Iterator<AABB> it = tempRoom.iterator(); it.hasNext(); ) {
+            AABB a = it.next();
+            if (a.contains(Vec3.atCenterOf(start))) {
+                removedVolume += (int) (a.getXsize() * a.getYsize() * a.getZsize());
+                it.remove();
+            }
+        }
+        int baseVolume = Math.max(0, getShape().volume - removedVolume);
 
         int addedSize = 0;
 
@@ -155,7 +164,7 @@ public class RoomAtmosphere extends Entity {
             }
         }
 
-        RoomShape shape = RoomShape.adopt(tempRoom, getShape().volume + addedSize);
+        RoomShape shape = RoomShape.adopt(tempRoom, baseVolume + addedSize);
         if (shape.volume >=  CSConfigs.SERVER.maxSizePerSealer.get() * Math.max(roomSealers.size(), 1)) {
             shape.setOpen();
             toVist = new ArrayDeque<>();
