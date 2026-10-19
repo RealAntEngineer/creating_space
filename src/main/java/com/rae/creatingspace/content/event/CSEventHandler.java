@@ -112,9 +112,13 @@ public class CSEventHandler {
                     }
                 }
             }
-            //suffocating
             if (entityLiving.tickCount % 20 == 0) {
-                if (!inO2(entityLiving) && entityLiving.isAttackable()) {
+                // inO2() consumes the "inside an oxygen room" flag, so it must be evaluated exactly once
+                // per check. Calling it twice made the second call report "no oxygen" for entities
+                // standing in a sealed room (they took overheating damage inside pressurised rooms).
+                boolean hasAir = inO2(entityLiving);
+                if (!hasAir && entityLiving.isAttackable()) {
+                    //suffocating
                     if (entityLiving instanceof ServerPlayer player) {
                         if (playerNeedEquipment(player)) {
                             if (checkPlayerO2Equipment(player)) {
@@ -128,16 +132,14 @@ public class CSEventHandler {
                     } else if (!(TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving))) {
                         entityLiving.hurt(CSDamageSources.no_oxygen(level), 2f);
                     }
-                }
-            }
-            //overheating
-            if (entityLiving.tickCount % 20 == 0 && !inO2(entityLiving) && entityLiving.isAttackable()) {
-                if (entityLiving instanceof ServerPlayer player) {
-                    if (playerNeedEquipment(player) && player.level().dimension().location().toString().equals("creatingspace:venus") && !checkPlayerO2Equipment(player)) {
-                        player.hurt(CSDamageSources.over_heat(level), 0.5F);
+                    //overheating
+                    if (entityLiving instanceof ServerPlayer player) {
+                        if (playerNeedEquipment(player) && player.level().dimension().location().toString().equals("creatingspace:venus") && !checkPlayerO2Equipment(player)) {
+                            player.hurt(CSDamageSources.over_heat(level), 0.5F);
+                        }
+                    } else if (!TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving)) {
+                        entityLiving.hurt(CSDamageSources.over_heat(level), 0.5F);
                     }
-                } else if (!TagsInit.CustomEntityTag.SPACE_CREATURES.matches(entityLiving)) {
-                    entityLiving.hurt(CSDamageSources.over_heat(level), 0.5F);
                 }
             }
         }
