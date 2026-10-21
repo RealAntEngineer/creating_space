@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Read versions from gradle.properties
+        id: versions
+        run: |
+          MC=$(grep -E '^minecraft_version\s*=' gradle.properties \
+               | sed 's/.*=\s*//' | tr -d '[:space:]')
+          MOD=$(grep -E '^mod_version\s*=' gradle.properties \
+                | sed 's/.*=\s*//' | tr -d '[:space:]')
+          echo "mc=$MC"   >> "$GITHUB_OUTPUT"
+          echo "mod=$MOD" >> "$GITHUB_OUTPUT"
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create or move tag
+        run: |
+          TAG="v${{ steps.versions.outputs.mc }}-${{ steps.versions.outputs.mod }}"
+
+          # Delete local tag if it exists
+          git tag -d "$TAG" 2>/dev/null || true
+
+          # Delete remote tag if it exists
+          git push origin ":refs/tags/$TAG" 2>/dev/null || true
+
+          # Recreate it on the current commit
+          git tag "$TAG"
+          git push origin "$TAG" --force
+
+          echo "TAG=$TAG" >> $GITHUB_ENV
+
+      - name: Upload JAR to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          files: build/libs/*.jar
+          replace_artifacts: true
+          generate_release_notes: true

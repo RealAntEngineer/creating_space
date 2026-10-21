@@ -41,6 +41,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
     public int size = 100;
     public int thrust = 100000;
     public int expansionRatio = 50;
+    public int materialLevel = 0;
     public ResourceLocation powerPackType;
     public ResourceLocation exhaustPackType;
     public ResourceLocation propellantType;
@@ -111,6 +112,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         screenInfo.putInt("thrust", thrust);
         screenInfo.putInt("size", size);
         screenInfo.putInt("expansionRatio", expansionRatio);
+        screenInfo.putInt("materialLevel", materialLevel);
         screenInfo.put("exhaustPack", ResourceLocation.CODEC
                 .encodeStart(NbtOps.INSTANCE, exhaustPackType)
                 .result().orElse(new CompoundTag()));
@@ -127,6 +129,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
         thrust = screenInfo.getInt("thrust");
         size = screenInfo.getInt("size");
         expansionRatio = screenInfo.getInt("expansionRatio");
+        materialLevel = screenInfo.getInt("materialLevel");
         propellantType = ResourceLocation.CODEC
                 .parse(NbtOps.INSTANCE, screenInfo.get("propellantType")).result().orElse(null);
         exhaustPackType = ResourceLocation.CODEC
@@ -139,6 +142,7 @@ public class RocketEngineerTableBlockEntity extends SmartBlockEntity implements 
     public void readScreenData(SyncData screenInfo) {
         thrust = screenInfo.thrust;
         size = screenInfo.size;
+        materialLevel = screenInfo.materialLevel;
         expansionRatio = screenInfo.expansionRatio;
         exhaustPackType = screenInfo.exhaustPackType;
         powerPackType = screenInfo.powerPackType;

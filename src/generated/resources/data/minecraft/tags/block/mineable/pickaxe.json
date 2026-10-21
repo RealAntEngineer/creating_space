@@ -35,6 +35,12 @@
     "creatingspace:reinforced_copper_block",
     "creatingspace:inconel_block",
     "creatingspace:hastelloy_block",
-    "creatingspace:monel_block"
+    "creatingspace:monel_block",
+    "creatingspace:nickel_sulfate_block",
+    "creatingspace:nickel_sulfate_cluster",
+    "creatingspace:large_nickel_sulfate_bud",
+    "creatingspace:medium_nickel_sulfate_bud",
+    "creatingspace:small_nickel_sulfate_bud",
+    "creatingspace:budding_nickel_sulfate"
   ]
 }

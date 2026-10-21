@@ -1,0 +1,142 @@
+name: Publish to Modrinth and CurseForge
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Release channel'
+        type: choice
+        options: [release, beta, alpha]
+        default: release
+      changelog:
+        description: 'Changelog (Markdown). Leave empty to use the GitHub release notes'
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  # Resolves versions, downloads the JAR once and shares it with both publish jobs.
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      mc: ${{ steps.versions.outputs.mc }}
+      mc_family: ${{ steps.versions.outputs.mc_family }}
+      mod: ${{ steps.versions.outputs.mod }}
+      jar: ${{ steps.release.outputs.jar }}
+      changelog: ${{ steps.release.outputs.changelog }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read versions from gradle.properties
+        id: versions
+        run: |
+          MC=$(grep -E '^minecraft_version\s*=' gradle.properties \
+               | sed 's/.*=\s*//' | tr -d '[:space:]')
+          MOD=$(grep -E '^mod_version\s*=' gradle.properties \
+                | sed 's/.*=\s*//' | tr -d '[:space:]')
+          echo "mc=$MC"   >> "$GITHUB_OUTPUT"
+          echo "mod=$MOD" >> "$GITHUB_OUTPUT"
+          # CurseForge groups versions by family, e.g. 1.21.1 -> "Minecraft 1.21"
+          echo "mc_family=$(echo "$MC" | cut -d. -f1,2)" >> "$GITHUB_OUTPUT"
+
+      # Release for v<mc>-<mod>; if it doesn't exist, use the latest release.
+      - name: Download JAR and notes from GitHub release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.versions.outputs.mc }}-${{ steps.versions.outputs.mod }}
+          INPUT_CHANGELOG: ${{ inputs.changelog }}
+        run: |
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            echo "No release for $TAG, falling back to latest release"
+            TAG=$(gh release view --json tagName --jq .tagName 2>/dev/null || true)
+            if [ -z "$TAG" ]; then
+              echo "::error::No GitHub releases found in this repository"
+              exit 1
+            fi
+          fi
+          echo "Using release $TAG"
+
+          mkdir -p dist
+          gh release download "$TAG" --pattern '*.jar' --dir dist
+
+          # Only the compiled mod JAR: skip -sources / -javadoc / -dev
+          find dist -name '*.jar' \
+            \( -name '*-sources.jar' -o -name '*-javadoc.jar' -o -name '*-dev.jar' -o -name '*-slim.jar' \) -delete
+
+          COUNT=$(find dist -name '*.jar' | wc -l)
+          if [ "$COUNT" -ne 1 ]; then
+            echo "::error::Expected exactly 1 JAR from release $TAG, found $COUNT"
+            ls -l dist
+            exit 1
+          fi
+          echo "jar=$(find dist -name '*.jar')" >> "$GITHUB_OUTPUT"
+
+          # Typed changelog wins, otherwise the release notes
+          if [ -n "$INPUT_CHANGELOG" ]; then
+            BODY="$INPUT_CHANGELOG"
+          else
+            BODY=$(gh release view "$TAG" --json body --jq .body)
+          fi
+          {
+            echo 'changelog<<CHANGELOG_EOF'
+            echo "$BODY"
+            echo 'CHANGELOG_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Share JAR with publish jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: mod-jar
+          path: dist/*.jar
+          if-no-files-found: error
+
+  modrinth:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: mod-jar
+          path: dist
+
+      - name: Publish to Modrinth
+        uses: cloudnode-pro/modrinth-publish@v2
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          project: ${{ vars.MODRINTH_ID }}
+          name: ${{ needs.prepare.outputs.mod }} (MC ${{ needs.prepare.outputs.mc }})
+          version: ${{ needs.prepare.outputs.mod }}
+          channel: ${{ inputs.channel }}
+          changelog: ${{ needs.prepare.outputs.changelog }}
+          loaders: neoforge
+          game-versions: ${{ needs.prepare.outputs.mc }}
+          files: ${{ needs.prepare.outputs.jar }}
+
+  curseforge:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: mod-jar
+          path: dist
+
+      - name: Publish to CurseForge
+        uses: itsmeow/curseforge-upload@v3
+        with:
+          token: ${{ secrets.CURSEFORGE_TOKEN }}
+          project_id: ${{ vars.CURSEFORGE_ID }}
+          game_endpoint: minecraft
+          file_path: ${{ needs.prepare.outputs.jar }}
+          display_name: ${{ needs.prepare.outputs.mod }} (MC ${{ needs.prepare.outputs.mc }})
+          release_type: ${{ inputs.channel }}
+          changelog: ${{ needs.prepare.outputs.changelog }}
+          changelog_type: markdown
+          game_versions: "Minecraft ${{ needs.prepare.outputs.mc_family }}:${{ needs.prepare.outputs.mc }},Java 21,NeoForge,Client,Server"

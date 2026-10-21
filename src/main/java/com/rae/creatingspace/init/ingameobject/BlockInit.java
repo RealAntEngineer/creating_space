@@ -853,6 +853,7 @@ public class BlockInit {
                     "nickel_sulfate_block", AmethystBlock::new)
             .initialProperties(() -> Blocks.AMETHYST_BLOCK)
             .properties(p -> p.strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+            .transform(TagGen.pickaxeOnly())
             .item()
             .build()
             .register();
@@ -873,6 +874,7 @@ public class BlockInit {
                                 lt.applyExplosionDecay(b, LootItem.lootTableItem(ItemInit.NICKEL_SULFATE_SHARD.get())
                                         .apply(ApplyBonusCount.addOreBonusCount(enchantmentRegistryLookup.getOrThrow(Enchantments.FORTUNE))))));
             })
+            .transform(TagGen.pickaxeOnly())
             .item()
             .transform((b) -> b.model(AssetLookup.itemModel("nickel_sulfate_cluster")))
             .build().register();
@@ -886,6 +888,7 @@ public class BlockInit {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 4))
+            .transform(TagGen.pickaxeOnly())
             .item()
             .transform((b) -> b.model(AssetLookup.itemModel("large_nickel_sulfate_bud")))
             .build().register();
@@ -899,6 +902,7 @@ public class BlockInit {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 2))
+            .transform(TagGen.pickaxeOnly())
             .item()
             .transform((b) -> b.model(AssetLookup.itemModel("medium_nickel_sulfate_bud")))
             .build().register();
@@ -912,6 +916,7 @@ public class BlockInit {
                     .noOcclusion()
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 1))
+            .transform(TagGen.pickaxeOnly())
             .item()
             .transform((b) -> b.model(AssetLookup.itemModel("small_nickel_sulfate_bud")))
             .build().register();
@@ -924,6 +929,7 @@ public class BlockInit {
                             NICKEL_SULFATE_CLUSTER.get()))
             .initialProperties(() -> Blocks.BUDDING_AMETHYST)
             .properties(p -> p.strength(1.5F).randomTicks().sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+            .transform(TagGen.pickaxeOnly())
             .item()
             .build().register();
 
