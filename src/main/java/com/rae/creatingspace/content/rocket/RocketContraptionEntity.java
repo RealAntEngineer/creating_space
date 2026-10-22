@@ -269,9 +269,12 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
                     setContraptionMotion(Vec3.ZERO);
                     this.speed = 0;
                     //Snap y to a full block, back out of whatever we hit: up when landing, down when blocked while rising.
-                    double snappedY = travelDirY < 0 ? Math.ceil(getY() - SNAP_TOLERANCE)
-                            : Math.floor(getY() + SNAP_TOLERANCE);
-                    setPos(getX(), snappedY, getZ());
+                    //No snap without a travel direction: flooring then could sink the rocket.
+                    if (travelDirY != 0) {
+                        double snappedY = travelDirY < 0 ? Math.ceil(getY() - SNAP_TOLERANCE)
+                                : Math.floor(getY() + SNAP_TOLERANCE);
+                        setPos(getX(), snappedY, getZ());
+                    }
                 }
 
             } else {
