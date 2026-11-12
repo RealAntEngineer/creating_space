@@ -256,6 +256,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
                 tickConsumptionAndSpeed();
                 tickDimensionChangeLogic();
 
+                double travelDirY = Math.signum(getDeltaMovement().y);
                 boolean collided = manageCollision(this);
 
                 if (tickCount > 2 || collided) {
@@ -267,8 +268,13 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
                     getEntityData().set(STATUS_DATA_ACCESSOR, isReentry() ? RocketStatus.IDLE : RocketStatus.COLLISION);
                     setContraptionMotion(Vec3.ZERO);
                     this.speed = 0;
-                    //Snap move here so we ensure that we are on a full block.
-                    setPos(Math.round(getX()), Math.round(getY()), Math.round(getZ()));
+                    //Snap y to a full block, back out of whatever we hit: up when landing, down when blocked while rising.
+                    //No snap without a travel direction: flooring then could sink the rocket.
+                    if (travelDirY != 0) {
+                        double snappedY = travelDirY < 0 ? Math.ceil(getY() - SNAP_TOLERANCE)
+                                : Math.floor(getY() + SNAP_TOLERANCE);
+                        setPos(getX(), snappedY, getZ());
+                    }
                 }
 
             } else {
@@ -280,6 +286,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
     }
 
     private static final double COLLISION_EPSILON = 1.0E-4;
+    private static final double SNAP_TOLERANCE = 1.0E-3;
 
     //TODO in the future put that in a Util class
     private static boolean manageCollision(AbstractContraptionEntity rocket) {
@@ -324,7 +331,7 @@ public class RocketContraptionEntity extends AbstractContraptionEntity implement
             boolean noRoom = dir > 0 ? safeY < startY + COLLISION_EPSILON
                     : safeY > startY - COLLISION_EPSILON;
             if (noRoom) {
-                //candidate = Vec3.ZERO;
+                candidate = Vec3.ZERO;
                 rocket.setContraptionMotion(candidate);
                 ((RocketContraptionEntity)rocket).speed = candidate.length();
                 break;
